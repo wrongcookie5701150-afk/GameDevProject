@@ -33,7 +33,6 @@
 
 ไฟล์หลายตัวในโฟลเดอร์โปรเจกต์เปลี่ยนนามสกุลเป็น `.locked`  
 และมีไฟล์ใหม่ชื่อ `README_TO_RECOVER_FILES.txt` ปรากฏขึ้นตรงกลางหน้าจอ
-
 ## Scene 3: เวลา 21.27 น.
 
 ไทน์ลองดับเบิลคลิกไฟล์รายงาน
@@ -52,23 +51,28 @@
 
 หน้าจอเปลี่ยนเป็นข้อความสีขาวบนพื้นดำ
 
-> **YOUR FILES HAVE BEEN ENCRYPTED.**
+> **YOUR FILES HAVE BEEN ENCRYPTED**
 >
-> Your documents, projects and other important files are no longer accessible.
+> All files on this system have been encrypted and are currently inaccessible.
 >
-> Do not rename the encrypted files.
+> **DO NOT** rename, move, or delete any encrypted files.
+> **DO NOT** attempt to recover the files using third-party software.
+> **DO NOT** shut down or reinstall the affected system.
 >
-> Do not delete the README file.
+> To restore access to your files, follow the instructions below.
 >
-> To recover your files, contact us using the information below.
+> **Recovery ID:** `TYN-0923-LOCK`
+> **Incident Time:** `21:23`
+> **Encrypted Files:** `*.locked`
 >
-> **Recovery ID:** \`TYN-0923-LOCK\`  
-> **Time of Incident:** \`21:23\`  
-> **Payment Address:** \`bc1q-FAKE-LOCK-0923\`
+> **Contact:** `hxxp://recover-[REDACTED].example`
 >
-> **Contact:** \`hxxp://recover-[REDACTED].example\`
+> Your recovery window is limited.
 >
-> Your deadline is approaching.
+> **Failure to contact us before the deadline may result in permanent loss of access to your files.**
+>
+> — **LOCK INCIDENT RESPONSE**
+
 
 ไทน์นิ่งไปหลายวินาที
 
@@ -98,8 +102,89 @@ Your incident began when the clock showed 19:02.
 
 ไทน์:“มิว… มันรู้เวลาที่ฉันเปิดไฟล์ด้วย”
 
-มิว:“งั้น 19:02 อาจไม่ใช่แค่เวลาธรรมดาแล้ว”
+มิว:“งั้น 19:02 มันต้องมีอะไรเกิดขึ้นแล้วล่ะ”
 
 หน้าจอเกมตัดเป็นสีดำ
-CASE FILE OPENED
-INCIDENT #0923
+> **CASE FILE OPENED**
+> **INCIDENT #0923**
+
+## Scene 4: เวลา 21.30 น.
+
+หน้าจอคอมพิวเตอร์ยังคงแสดงข้อความ
+
+> **CASE FILE OPENED**
+> **INCIDENT #0923**
+
+ไทน์มองหน้าจออยู่ครู่หนึ่ง ก่อนจะหันไปมองเราเตอร์ที่อยู่ข้างโต๊ะ
+
+เสียงของมิวดังออกมาจากโทรศัพท์
+
+มิว: “ไทน์ ตอนนี้เครื่องยังต่ออินเทอร์เน็ตอยู่ไหม?”
+
+ไทน์: “ยัง... ทำไมเหรอ?”
+
+มิว: “ตัดการเชื่อมต่อก่อนเลย อย่าเพิ่งปิดเครื่อง”
+
+ไทน์ถอดสาย LAN ออกจากคอมพิวเตอร์ทันที
+
+ไอคอน Network บนหน้าจอเปลี่ยนสถานะ
+
+**Disconnected**
+
+มิว: “ดี อย่าเพิ่งลบไฟล์อะไรทั้งนั้น เราต้องเก็บหลักฐานไว้ก่อน”
+
+ไทน์: “แล้วไฟล์โปรเจกต์เราล่ะ? มันถูกล็อกหมดแล้ว”
+
+มิว: “เรายังไม่รู้ว่ากู้ได้หรือเปล่า ต้องตรวจสอบ Backup หรือ Version History ก่อน”
+
+ไทน์เปิด Google Drive ขึ้นมา
+
+โฟลเดอร์ของโปรเจกต์ยังคงอยู่
+
+แต่ไฟล์ล่าสุดหลายไฟล์ถูกแก้ไขในช่วงเวลาใกล้กับเหตุการณ์
+
+ไทน์คลิกที่ไฟล์
+
+**Final_Project_Update_v3.docx**
+
+แล้วเปิดเมนู **Version History**
+
+มีรายการเวอร์ชันเก่าปรากฏขึ้นบนหน้าจอ
+
+**19:01 — Version 2**
+**19:02 — Version 3**
+**21:23 — Current Version**
+
+ไทน์นิ่งไป
+
+ไทน์: “มิว... มีไฟล์เวอร์ชันก่อนเกิดเรื่องอยู่”
+
+มิว: “อย่าเพิ่งกู้ทับไฟล์ปัจจุบันนะ ลองเปิดเวอร์ชันเก่าก่อน”
+
+ไทน์เปิด Version 2
+
+ไฟล์สามารถเปิดได้ตามปกติ
+
+ไทน์ถอนหายใจด้วยความโล่งอก
+
+แต่ก่อนที่เขาจะพูดอะไรต่อ สายตาก็หยุดอยู่ที่รายละเอียดของไฟล์
+
+**Last modified: 19:01**
+
+มิวเงียบไปครู่หนึ่ง
+
+มิว: “นั่นหมายความว่าเรายังมีสำเนาก่อนเกิดเหตุ”
+
+ไทน์: “แล้ว 19:02 ล่ะ?”
+
+มิว: “นั่นแหละที่เราต้องหาคำตอบ”
+
+หน้าจอเกมค่อย ๆ เปลี่ยนเป็นสีดำ
+
+> **RECOVERY POINT FOUND**
+>
+> **19:01 — SAFE VERSION**
+>
+> **NEXT OBJECTIVE**
+>
+> Find out what happened at **19:02**.
