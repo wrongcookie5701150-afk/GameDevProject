@@ -38,13 +38,12 @@
 
 ไทน์ลองดับเบิลคลิกไฟล์รายงาน
 
-![หน้าต่างแจ้งเตือน Windows]\([https://learn-attachment.microsoft.com/api/attachments/5e1c3bf8-c753-4a87-992d-f970a822d50a?platform=QnA](https://learn-attachment.microsoft.com/api/attachments/5e1c3bf8-c753-4a87-992d-f970a822d50a?platform=QnA)\)
-
 **\*\*Windows:\*\*** “This file type cannot be opened.”
 
 หัวใจของไทน์เต้นแรงขึ้นทันที
 
 ตรงกลางโฟลเดอร์มีไฟล์หนึ่งที่ไม่เคยเห็นมาก่อน
+
 `README_TO_RECOVER_FILES.txt`
 
 ไทน์จ้องไฟล์นั้นอยู่ครู่หนึ่ง ก่อนจะดับเบิลคลิกเปิดขึ้นมา
