@@ -33,3 +33,74 @@
 
 ไฟล์หลายตัวในโฟลเดอร์โปรเจกต์เปลี่ยนนามสกุลเป็น `.locked`  
 และมีไฟล์ใหม่ชื่อ `README_TO_RECOVER_FILES.txt` ปรากฏขึ้นตรงกลางหน้าจอ
+
+## Scene 3: เวลา 21.27 น.
+
+ไทน์ลองดับเบิลคลิกไฟล์รายงาน
+
+![หน้าต่างแจ้งเตือน Windows]\([https://learn-attachment.microsoft.com/api/attachments/5e1c3bf8-c753-4a87-992d-f970a822d50a?platform=QnA](https://learn-attachment.microsoft.com/api/attachments/5e1c3bf8-c753-4a87-992d-f970a822d50a?platform=QnA)\)
+
+**\*\*Windows:\*\*** “This file type cannot be opened.”
+
+หัวใจของไทน์เต้นแรงขึ้นทันที
+
+ตรงกลางโฟลเดอร์มีไฟล์หนึ่งที่ไม่เคยเห็นมาก่อน
+`README_TO_RECOVER_FILES.txt`
+
+ไทน์จ้องไฟล์นั้นอยู่ครู่หนึ่ง ก่อนจะดับเบิลคลิกเปิดขึ้นมา
+
+ไฟล์ถูกเปิดด้วยโปรแกรม Notepad
+
+หน้าจอเปลี่ยนเป็นข้อความสีขาวบนพื้นดำ
+
+> **YOUR FILES HAVE BEEN ENCRYPTED.**
+>
+> Your documents, projects and other important files are no longer accessible.
+>
+> Do not rename the encrypted files.
+>
+> Do not delete the README file.
+>
+> To recover your files, contact us using the information below.
+>
+> **Recovery ID:** \`TYN-0923-LOCK\`  
+> **Time of Incident:** \`21:23\`  
+> **Payment Address:** \`bc1q-FAKE-LOCK-0923\`
+>
+> **Contact:** \`hxxp://recover-[REDACTED].example\`
+>
+> Your deadline is approaching.
+
+ไทน์นิ่งไปหลายวินาที
+
+แล้วรีบหยิบโทรศัพท์ขึ้นมาโทรหามิว
+
+ไทน์:“มิว… ไฟล์โปรเจกต์เราเปิดไม่ได้หมดเลย”
+
+มิว:“เดี๋ยวนะ เป็นทุกไฟล์หรือเฉพาะ Word?”
+
+ไทน์:“ทุกอย่างที่อยู่ในโฟลเดอร์นี้ ชื่อไฟล์กลายเป็น .locked หมดเลย”
+
+มิว:“โอเค ฟังเราก่อน อย่าเพิ่งจ่ายเงิน อย่าเพิ่งกดลิงก์ใน README แล้วก็อย่าเพิ่งลบอะไร”
+
+ไทน์:“แล้วฉันต้องทำยังไง?”
+
+มิว:“เราต้องเก็บหลักฐานก่อน ถ้าเครื่องยังเชื่อมอินเทอร์เน็ตอยู่ ให้ตัดการเชื่อมต่อ แล้วค่อยหาว่ามันเข้ามาทางไหน”
+
+ไทน์มองหน้าจออีกครั้ง
+
+เวลาบนหน้าจอ: 21:28
+
+ด้านล่างของ README มีข้อความเล็ก ๆ อีกบรรทัดหนึ่ง
+
+Your incident began when the clock showed 19:02.
+
+ไทน์ชะงัก
+
+ไทน์:“มิว… มันรู้เวลาที่ฉันเปิดไฟล์ด้วย”
+
+มิว:“งั้น 19:02 อาจไม่ใช่แค่เวลาธรรมดาแล้ว”
+
+หน้าจอเกมตัดเป็นสีดำ
+CASE FILE OPENED
+INCIDENT #0923
