@@ -74,12 +74,12 @@ Trigger: พิมพ์เนื้อในรายงานเพิ่ม 3
 - ป๊อปอัปจากโปรแกรมป้องกันไวรัสที่บอกว่า “ไม่พบภัยคุกคาม”
 
 ตัดมาที่หน้ารวมไฟล์รายงานที่เมล์ทำเสร็จแล้ว 4 ไฟล์
-```tree
-|-งานกลุ่มล้านแปด/
-	|-Report_Final.docx
-	|-Network_Diagram.png
-	|-Research_Data.xlsx
-	|-Presentation.pptx
+```text
+งานกลุ่มล้านแปด/
+├── Report_Final.docx
+├── Network_Diagram.png
+├── Research_Data.xlsx
+├── Presentation.pptx
 ```
 
 **เมย์:** "เหลือแค่ upload files กลับก็เสร็จแล้ว"
@@ -110,7 +110,6 @@ WAIT FOR FURTHER INSTRUCTIONS.
 **เมย์:** "ทักมาได้จังหวะเหมาะมาก"
 
 ---
-
 ### Scene 4: เข้าสู่วิถีไซเบอร์
 
 ```text
@@ -130,7 +129,7 @@ WAIT FOR FURTHER INSTRUCTIONS.
 
 **เมย์:** "ยังอยู่ค่ะ"
 
-Cutscene ไปที่ Notebook เก่าสีดำลายเต่า
+(Cutscene) ไปที่ Notebook เก่าสีดำลายเต่า
 
 **มาร์ช:** "นั่น ทำไมไม่เอาไปคืน"
 
@@ -138,7 +137,7 @@ Cutscene ไปที่ Notebook เก่าสีดำลายเต่า
 
 **มาร์ช:** "มาเช็คสภาพกันก่อน"
 
-interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `HxD Hex Editor`
+interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `HxD Hex Editor`ม `olevba`
 
 > - [ ] **Task 5: เช็คสภาพเต่าดำ**
 > - [ ] Wi‑Fi ปิดอยู่
@@ -146,38 +145,53 @@ interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `
 > - [ ] ไม่มีเชื่อมต่อบัญชีหรืออีเมลส่วนตัว
 > - [ ] ไม่มีไฟล์งานสำคัญ
 
----
-
-## Scene 4: Tracking Footprints
-
-เมษาดูบันทึกเหตุการณ์ที่เก็บได้จากเครื่องหลัก โดยข้อมูลถูกสลับลำดับ
+เมย์เปิดดูบันทึกเหตุการณ์ใน Event log
 
 ```text
-21:23:08 | README_TO_RECOVER_FILES.txt created
+## Windows Event Log
+
+18:31:04 | explorer.exe started
+18:34:19 | CloudSync.exe started
+18:47:53 | SearchIndexer.exe started
+
+18:58:07 | Report_Final.docx appeared in shared folder
+18:58:07 | Shared by: kim.studygroup@university.example
+18:58:07 | Owner: External collaborator
+
+19:02:10 | WINWORD.EXE opened Report_Final.docx
 19:03:16 | User selected Enable Content
-21:22:39 | Report_Final.docx renamed to Report_Final.docx.locked
-19:02:10 | WINWORD.EXE opened Final_Report_Revision_v4.docx
+
 19:05:11 | New activity associated with WINWORD.EXE detected
+19:05:19 | Office_Update_Helper.dat created in Temp folder
 19:05:32 | New logon item created: Office_Update_Helper
+
+19:06:04 | WindowsUpdate.exe checked for updates
+20:12:45 | CloudSync.exe completed normal sync
+20:59:12 | User idle detected
+
 21:21:50 | Office_Update_Helper started
+21:22:04 | Report_Final.docx modified
+21:22:39 | Report_Final.docx renamed to Report_Final.docx.locked
+21:22:47 | Research_Data.xlsx renamed to Research_Data.xlsx.locked
+21:22:55 | Presentation.pptx renamed to Presentation.pptx.locked
+21:23:08 | README_TO_RECOVER_FILES.txt created
+
+21:23:21 | CloudSync.exe queued 3 changed files
+21:23:54 | Wi-Fi disconnected by user
+21:24:03 | CloudSync.exe paused
 ```
 
-**มาร์ช:** "เริ่มจากดูว่าเกิดอะไรขึ้นก่อน"
+**มาร์ช:** "มีเหตุการณ์ถูกบันทึกไว้เยอะมาก พอจำได้มั้ยว่าทำอะไรก่อนไฟล์จะล็อกไป"
 
-> - [ ] **Task 6: ลำดับเหตุการณ์ที่เกิดขึ้น**  เริ่ม Analytics
-ให้ผู้เล่นเรียงลำดับเหตุการณ์ตามช่วงเวลา
-Trigger: เหตุการณ์ทั้งหมดถูกเรียงอย่างถูกต้อง
+> - [ ] **Task 7: ขีดเส้นแบ่งเวลา**
+> - ให้ผู้เล่นคลิ๊กโปรเซสที่เป็นจุดเริ่มต้นจนถึงจุดที่เกิดเหตุการณ์
+> - Trigger: `19:02:10` ถูกคลิ๊ก
+> - Hint (wait 5sec.): **เมย์:** “บางทีฉันอาจลองเช็คจากเวลาโทรของเมษาได้”
+> - action: เวลาถูกจดลงในโน็ตข้างๆ + (เสียงเขียนดินสอ)
 
-**มาร์ช:** "มีไฟล์ถูกสร้างขึ้นมาใหม่ด้วย ควรจะจำชื่อเอาไว้"
+**เมย์:** “เริ่มต้นจากไฟล์ Report_Final.docx เมษาแก้เค้นฉันที่ไม่ทำงานรรึป่าวนะ”
 
-> - [ ] **Task 7: Log ต้องสงสัย**
-ให้ผู้เล่นคลิ๊กชื่อโปรเซสที่น่าสงสัย
-Trigger: `Office_Update_Helper` ถูกคลิ๊ก
-action: `Office_Update_Helper` ถูกจดลงในโน็ตข้างๆ + (เสียงเขียนดินสอ)
-
-**เมษา:** “ปัญหาไม่ได้เกิดตอนเปิด Word ทันที”
-
-**มาร์ช**“ใช่ เอกสารอาจเป็นจุดเริ่ม แต่ต้องหาเพิ่มว่าอะไรที่ทำงานต่อหลังปิด Word”
+**มาร์ช:**“ลองเช็คที่มาของไฟล์กันก่อน”
 
 ```text
 ## Drive Activity History
@@ -211,22 +225,43 @@ action: `Office_Update_Helper` ถูกจดลงในโน็ตข้า�
 19:03 | Active Content enabled by: May  
 ```
 
-> - [ ] **Task 8: เมษาโซฮอต**
-ให้ผู้เล่นหาว่าไฟล์ตัวไหนที่ผิดปกติ
-Trigger: `Report_Final.docx` ถูกคลิ๊ก
-action: `Report_Final.docx` ถูกจดลงในโน็ตข้างๆ + (เสียงเขียนดินสอ)
+> - [ ] **Task 8: คนร้ายนั้นก็คือ..**
+> - ให้ผู้เล่นเปิดประวัติบน `GG Disk` เพื่ออ่านรายการเปลี่ยนแปลง
+> - Trigger: `Report_Final.docx` ถูกคลิ๊ก
+> - hint (wait 6 sec.): **มาร์ช**“โดนเมษาโซฮอตแอตยูนิเวิร์สหลอกซะแล้ว”
+> - action: `Report_Final.docx` ถูกจดลงในโน็ตข้างๆ + (เสียงเขียนดินสอ)
 
-hint: **มาร์ช**“โดนเมษาโซฮอตแอตยูนิเวิร์สหลอกซะแล้ว”
+**เมย์:** “เธอไม่ได้ส่งไฟล์นี้มาหรอเนี้ย”
 
-**เมย์:** “..”
+**มาร์ช:**“เอาล่ะได้เวลาวิเคราะห์หลักฐานแล้ว ยังมี `EV Drive` มั้ย”
 
-**เมย์:** “เมษาไม่ได้ส่งไฟล์นี้มาหรอเนี้ย”
+! เดินไปหา `EV Drive` จากชั้นหนังสือ แล้วมา Interact กับ คอมพิวเตอร์
 
-**มาร์ช**“มาดูกันว่าไฟล์นี้มี macro ได้ยังไงทั้งที่ไม่ใช่ `.docm`”
+---
+### Scene 5: วิเคราะห์หลักฐาน
+*Timelapse Cutscene:* เมย์กำลังสร้างสำเนาไฟล์หลักฐาน (Forensic)
+(ตัดฉาก) เมย์ยืนข้างโต๊ะคอมพิวเตอร์
+
+**เมย์:** “ทำสำเนาเสร็จเรียบร้อยแล้ว”
+
+! ใช้ `EV Drive` interact กับ เต่าดำ
+
+ไฟล์ EV ที่เมย์ทำมา
+```text
+CASE/
+├── Report_Final.docx
+├── Office_Update_Helper.dat
+├── Windows_Event_Log.txt
+├── File_Activity.log
+├── Task_Details.txt
+├── Drive_Activity_History.md
+├── README_TO_RECOVER_FILES.txt
+└── Evidence_Manifest.txt
+```
 
 > - [ ] **Task 9: เปิดโปงสปาย**
-ให้ผู้เล่นใช้โปรแกรมเปิดเอกสารแบบ Read-only
-Trigger: `Report_Final.docx` ถูกเปิดผ่านโปรแกรม `FTK Image`
+> - ให้ผู้เล่นใช้โปรแกรมเปิดเอกสารแบบ Read-only
+> - Trigger: `Report_Final.docx` ถูกเปิดผ่านโปรแกรม `FTK Image`
 
 ภายในไฟล์
 ```text
@@ -243,3 +278,77 @@ word/_rels/document.xml.rels
 ```
 
 **เมย์:** “มันชื่อ `.docx` แต่ข้างในมี `vbaProject.bin`”
+
+**มาร์ช**“มาแกะดูข้างในกันดีกว่า” /ใช้ `olavba` เปิดอ่านไฟล์ VBA
+
+```text
+Macro project found
+Module: OfficeUpdate
+Trigger: Document_Open
+Encoded value: T2ZmaWNlX1VwZGF0ZV9IZWxwZXI=
+```
+
+**มาร์ช**“ลองดูรายละเอียดพวกนี้ว่าแต่ละอันคืออะไร”
+
+> - [ ] **Task 10: จับคู่ไฟล์กับราะละเอียด**
+> - แสดงหน้าต่างจับคู่ขึ้นมา(กระดาษทดของเมย์) 3-3
+> - Trigger: รายการทั้งหมดถูกจับคู่ได้ถูกต้อง
+
+**เมย์:** “มีรหัสอะไรสักอย่างด้วยถูกเข้ารหัสไว้”
+
+> - [ ] **Task 11: ถอดรหัส Base64**
+> - ให้ผู้เล่นใช้เครื่องมือถอดรหัสเลขฐาน (decoder)
+> - Trigger: section ถอดรหัสของโปรแกรมได้รับรหัส Base64 มา
+> - Hint (wait 4 sec.): **มาร์ช**“มี `=` ต่อท้าย ดูเหมือนจะเป็น Base64 นะ ”
+> - action: ส่งคำแปลออกไป `Office_Update_Helper` จดลงโน็ต
+
+**เมย์:** “คือไฟล์ที่ถูกสร้างหลังจาก Enable Content ”
+
+**มาร์ช**“เบื้องหลังงของไฟล์คงมีคำตอบอยู่”
+
+> - [ ] **Task 12: เปิดหลักฐาน**
+> - ให้ผู้เล่นเปิดไฟล์ `Office_Update_Helper.dat` ผ่าน inspector
+> - Trigger: inspector ได้รับไฟล์ `Office_Update_Helper.dat` 
+> - Hint (wait 4 sec.): **เมย์:**“ตัว inspector อยู่ตรง.. ”
+> - action: ส่งหน้า file `Office_Update_Helper.txt`
+
+```text
+## Office_Update_Helper.dat
+
+TARGET: UHJvamVjdF9Gb2xkZXI= //Project_Folder
+MODE: 526B6C4D5256395853564246 //FILE_WIPE
+STATUS: ACTIVE
+```
+
+> - [ ] **Task 12: ถอดรหัส**
+> - ให้ผู้เล่นถอดรหัส TARGAT, MODE ผ่าน decoder
+> - Trigger: inspector ได้รับไฟล์ รหัสครบทั้งสองชุด
+> - Hint (wait 4 sec.): **เมย์:**“ตัว decoder อยู่ตรง.. ”
+> - action: ส่งคำแปลแต่ละตัวกลับคืน
+
+! ตรสจไฟล์ที่ถูกเปลี่ยนชื่อ
+
+```text
+## File Inspector
+
+Filename: Report_Final.docx.locked
+File size: 0 KB
+File signature: Not found
+Office document structure: Not found
+Recoverable content: Not found
+```
+
+**เมย์:**“ถึงว่าเปิดไฟล์ไม่ได้”
+
+
+## รวม Puzzle
+
+| Puzzle | ผู้เล่นทำอะไร                    | สิ่งที่เรียนรู้                          |
+| ------ | -------------------------------- | ---------------------------------------- |
+| 1      | ตรวจ Drive History               | ตรวจผู้ส่งและไฟล์ปลอม                    |
+| 2      | อ่าน Windows Event Log           | หา Timeline, process ต้องสงสัย และ Scope |
+| 3      | ตรวจโครงสร้างไฟล์                | พบ Macro ที่ซ่อนในเอกสาร                 |
+| 4      | ถอด Base64 จาก Macro             | เชื่อม Macro กับ `Office_Update_Helper`  |
+| 5      | ถอด Hex และ Base64 จาก Helper    | รู้ว่าไฟล์ถูกล้าง ไม่ใช่เข้ารหัส         |
+| 6      | ปิด persistence และหยุด Sync     | กำจัดต้นเหตุก่อนกู้ข้อมูล                |
+| 7      | เลือก Version History ที่ปลอดภัย | กู้ข้อมูลโดยไม่ถูกทำลายซ้ำ               |
