@@ -248,7 +248,7 @@ interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `
 
 ไฟล์ EV ที่เมย์ทำมา
 ```text
-CASE/
+CASE_Evidence/
 ├── Report_Final.docx
 ├── Office_Update_Helper.dat
 ├── Windows_Event_Log.txt
@@ -338,7 +338,89 @@ Office document structure: Not found
 Recoverable content: Not found
 ```
 
-**เมย์:**“ถึงว่าเปิดไฟล์ไม่ได้”
+**เมย์:**“ถึงว่าเปิดไฟล์ไม่ได้ ”
+
+**มาร์ช**“ตอนนี้คงเราไม่ต้องหาคีย์มาปลดแล้ว แค่ต้องหยุดการทำลายไฟล์”
+
+```text
+## Task Details
+
+Task Name: Office_Update_Helper
+Created by: WINWORD.EXE
+Location: Temp\Office_Update_Helper.dat
+
+Triggers:
+- User logon
+- User idle for 15 minutes
+- Network connection available
+
+Action:
+- Start Office_Update_Helper
+```
+
+```text
+## Event Log
+20:59:12 | User idle detected
+21:21:50 | Office_Update_Helper started
+21:22:04 | Project files modified
+21:23:21 | CloudSync.exe queued 3 changed files
+
+```
+
+> - [ ] **Task 13: การหยุด macro**
+> - ให้ผู้เล่นเรียงลำดับขัั้นตอนหยุดยั้งการทำงานของไฟล์มาโคร โดยพิจารณาจาก `Task_Details.txt` เทียบกับ `Event_log`
+> - Trigger: ผู้เล่นเรียงลำดับได้ถูกต้อง
+> - Hint (wait 4 sec.): **เมย์:**“นึกเหตุการณ์และพึมพำ ”
+> - ใช้เงื่อนไขเพื่อ activate คำใบ้ไปเรื่อยๆ
+> - action: **มาร์ช**“เท่านี้ก็เพียงพอจะไม่ Trigger เงื่อนไขขึ้นมาแล้ว”
+
+### Scene 6: วิเคราะห์หลักฐาน
+*Timelapse Cutscene:* เมย์ลุกขึ้นกลับไป Settings ที่คอมพิวเตอร์หลัก
+(ตัดฉาก) หน้าจอรายงานที่ว่างเปล่า
+
+**เมย์:**“ถ้าต้องทำใหม่ตั้งแต่ต้น คงมีตกหล่นไปบ้างแน่ๆ”
+
+**มาร์ช**“ไฟส่วนล์ที่เสียหาย ถ้าจำไม่ผิด `GG Disk` น่าจะ Backup ตามช่วงเวลาไว้อยู่”
+
+```text
+## Project Folder Version History
+
+18:40 | Report_Final.docx | Normal version
+18:54 | Network_Diagram.png | Normal version
+18:56 | Research_Data.xlsx | Normal version
+18:57 | Presentation.pptx | Normal version
+
+21:22 | Report_Final.docx.locked | Suspicious change
+21:22 | Research_Data.xlsx.locked | Suspicious change
+21:22 | Presentation.pptx.locked | Suspicious change
+```
+
+> - [ ] **Task 14: Safe Backup**
+> - ให้ผู้เล่นทำเลือกการตั้งค่าเพื่อ backup ข้อมูลอย่างปลอดภัย
+> - Trigger: ผู้เล่นเรียงลำดับได้ถูกต้อง
+> - Hint (wait 4 sec.): **เมย์:**“นึกเหตุการณ์และพึมพำ ”
+> - ใช้เงื่อนไขเพื่อ activate คำใบ้ไปเรื่อยๆ
+> - action: **มาร์ช**“เท่านี้ก็เพียงพอจะไม่ Trigger เงื่อนไขขึ้นมาแล้ว”
+
+```text
+Recovery point:
+[✓] ก่อน 19:02
+[ ] หลัง 21:22
+
+Recovery destination:
+[✓] โฟลเดอร์ใหม่
+[ ] โฟลเดอร์เดิมทันที
+
+Cloud Sync:
+[ ] เปิด
+```
+
+**เมย์:**“ก็ยังดีกว่าเริ่มใหม่”
+
+> - [ ] **Task 15: The Last Boss**
+> - ให้ผู้เล่นช่วยเมย์เติมคำลงในรายงาน
+> - Trigger: การกด save
+> - action: **เมย์:**“ได้นอนสักที”
 
 
 ## รวม Puzzle
