@@ -1,17 +1,21 @@
 # Story Board
 
 ## ตัวละคร
-1. เมย์ - (ตัวหลัก) นักศึกษาปี2 ในสาขาคอมพิวเตอร์
-2. เมษา - ตัวทวงงาน
-3. มาร์ช - (ตัวช่วย) นักศึกษาใกล้จบ พี่ในชมรม CYBER
+
+1. **เมย์** - (ตัวหลัก) นักศึกษาปี 2 สาขาคอมพิวเตอร์
+
+2. **เมษา** - (เพื่อน) ตัวทวงงาน
+
+3. **มาร์ช** - (ตัวช่วย) นักศึกษาใกล้จบ พี่ในชมรม CYBER
 
 ## เนื้อเรื่อง
 
-### Scene 1: Cutscene เวลา 19.02 น.
+### Scene 1: Cutscene เวลา 19.02 น
 
 เมย์กำลังใช้มือถือ เสียบหูฟังนอน และเปิดฟังเพลงผ่านลำโพง
 
-! มีสายจากเมษาโทรเข้ามา
+_(มีสายจากเมษาโทรเข้ามา)_
+
 **เมษา** : “เมย์ เธอยังไม่ได้ส่งงานเลยนะ พรุ่งนี้จะเดดไลน์แล้ว”
 
 **เมย์** : “โอ๊ะ !”
@@ -20,134 +24,168 @@
 
 **เมย์** : “เดี๋ยวส่งไป~”
 
----
-### Scene 2 : Game Tutorial
+### Scene 2: Game Tutorial
 
-เมย์ยืนข้างเตียง + (เสียงถอนหายใจ), notification <font color="#ff0000">+4 </font>
+เมย์ยืนข้างเตียง _(เสียงถอนหายใจ)_, ไอคอนแจ้งเตือน +4
 
 **เมย์** : "จริงๆ แล้วฉันยังไม่ได้เริ่มแก้อะไรนั่นเลย"
 
->- [ ] **Task 1: อ่านข้อความจากเมษา**
-สอนผู้เล่นใช้มือถือ [p] = เรียกหน้ามือถือขึ้นมา และ Notification จะขึ้นที่มุมจอเสมอถ้ามีข้อความ ใช้กดแทน [p] ได้}
-Trigger action: อ่านข้อความจากเมษา
+> - [ ] **Task 1: อ่านข้อความจากเมษา**
+>     _(สอนผู้เล่นใช้มือถือ `[p]` = เรียกหน้ามือถือขึ้นมา และ Notification จะขึ้นที่มุมจอเสมอถ้ามีข้อความ ใช้กดแทน `[p]` ได้)_
+>     Trigger action: อ่านข้อความจากเมษา
 
-! {Notification+4}
-```text 
+_(Notification +4)_
+
+Plaintext
+
+```
 (today)
 14:33 | Mesasohot131415: "เมย์"
-14:33 | Mesasohot131415: "การบ้านเธอจำทำส่วนไหน"
+14:33 | Mesasohot131415: "การบ้านเธอจะทำส่วนไหน"
 17:47 | Mesasohot131415: "ฉันทำหมดแล้วล่ะ เหลือส่วนของรายงาน"
 18:48 | Mesasohot131415: "ฮาโหลลลลลล มีใครอยู่มั้ย"
 ```
 
-**เมย์** : "เมษาเป็นคนตลกนะ แต่ฉันทำงานไม่เสร็จก่อนวันพรุ่งนี้ เธอคงกลายเป็น IT"
+**เมย์** : "เมษาเป็นคนตลกนะ แต่ถ้าฉันทำงานไม่เสร็จก่อนวันพรุ่งนี้ เธอคงกลายร่างเป็นผีไอทีแน่ๆ"
 
->- [ ] **Task 2: ไปที่โต๊ะคอม และเข้าใช้งาน**
-สอน player ควบคุมตัวละคร [W S A D]= move , [spacebar] = interact with object, 
-[p] = เรียกหน้ามือถือขึ้นมา {Notification จะขึ้นที่มุมจอเสมอถ้ามีข้อความ ใช้กดแทน [p] ได้}
-Trigger action: เดินไปใช้งานคอมพิวเตอร์ที่เปิดอยู่
+> - [ ] **Task 2: ไปที่โต๊ะคอม และเข้าใช้งาน**
+>     _(สอน player ควบคุมตัวละคร `[W S A D]` = move, `[Spacebar]` = interact with object)_
+>     Trigger action: เดินไปใช้งานคอมพิวเตอร์ที่เปิดอยู่
 
-แสดงหน้าจอคอมเปล่า มีไอคอนแอป (`GG Disk`, `text editor`,  `Recycle bin`, `Settings`)
+แสดงหน้าจอคอมเปล่า มีไอคอนแอป: `GG Disk`, `Text Editor`, `Recycle Bin`, `Settings`
 
 > - [ ] **Task 3: เปิดไฟล์งาน**
-สอนใช้เมาส์ interact กับ interface ในหน้าจอคอมพิวเตอร์ 
-Trigger action: เปิดอ่านไฟล์งานใน `GG Disk` 
+>     _(สอนใช้เมาส์ interact กับ interface ในหน้าจอคอมพิวเตอร์)_
+>     Trigger action: เปิดอ่านไฟล์งานใน `GG Disk`
 
-! กดเข้า `GG Disk`
-**เมย์** : มีไฟล์รายงานงานอยู่ด้วย เพิ่งแก้ไม่ไปนานเลย เมษาคงรอไหว"
+_(กดเข้า `GG Disk`)_
 
-! กดโหลดและเปิดงาน + มีข้อความเตือนให้กด Enable Content
-**เมย์** : "งานเก่าฉันคือสร้างไวรัสรึป่าวนะ XD"
+**เมย์** : "มีไฟล์รายงานอยู่ด้วย เพิ่งแก้ไปไม่นานเลย เมษาคงรอไหว"
 
-เนื้อหาในไฟล์เป็นสรุปเรื่อง "ความปลอดภัยไซเบอร์" แวร์ต่างๆ การเข้ารหัส เนื้อหาคร่าวๆ เกี่ยวกับความรู้ในเกม
+_(กดโหลดและเปิดงาน + มีข้อความเตือนให้กด Enable Content)_
+
+**เมย์** : "งานเก่าฉันคือสร้างไวรัสรึเปล่านะ XD"
+
+_(เนื้อหาในไฟล์เป็นสรุปเรื่อง "ความปลอดภัยไซเบอร์" มัลแวร์ต่างๆ การเข้ารหัส ซึ่งเป็นเนื้อหาความรู้ในเกม)_
 
 > - [ ] **Task 4: ทำรายงานต่อ**
-(อาจขึ้นข้อความคล้าย type training)
-แสดง cursor กระพริบที่บรรทัดสุดท้ายของรายงาน ให้ผู้เล่นกดมั่วๆ 
-Trigger: พิมพ์เนื้อในรายงานเพิ่ม 300 คำ
+>
+>     _(มินิเกมคล้าย Type Training)_
+>
+>     แสดง Cursor กะพริบที่บรรทัดสุดท้ายของรายงาน ให้ผู้เล่นกดแป้นพิมพ์เพื่อจำลองการพิมพ์
+>
+>     Trigger action: พิมพ์เนื้อหาในรายงานเพิ่ม 300 คำ
 
----
-### Scene 3: Cutscene เวลา 21.23 น.
-(ไทม์แลป) เมย์กำลังพิมพ์เนื้อหารายงานเพิ่ม ในขณะที่มุมขวาล่างจอมีการแจ้งเตือนขึ้นมาแล้วก็หายไป
+### Scene 3: Cutscene เวลา 21.23 น
+
+_(ไทม์แลปส์)_ เมย์กำลังพิมพ์เนื้อหารายงานเพิ่ม ในขณะที่มุมขวาล่างจอมีการแจ้งเตือนขึ้นมาแล้วก็หายไป:
+
 - ข่าวด่วนเรื่องอากาศร้อน
+
 - การแจ้งเตือนจากเบราว์เซอร์เรื่อง “อัปเดตโปรแกรม”
+
 - ป๊อปอัปจากโปรแกรมป้องกันไวรัสที่บอกว่า “ไม่พบภัยคุกคาม”
 
-ตัดมาที่หน้ารวมไฟล์รายงานที่เมล์ทำเสร็จแล้ว 4 ไฟล์
-```text
+ตัดมาที่หน้ารวมไฟล์รายงานที่เมย์ทำเสร็จแล้ว 4 ไฟล์
+
+Plaintext
+
+```
 งานกลุ่มล้านแปด/
 ├── Report_Final.docx
 ├── Network_Diagram.png
 ├── Research_Data.xlsx
-├── Presentation.pptx
+└── Presentation.pptx
 ```
 
-**เมย์:** "เหลือแค่ upload files กลับก็เสร็จแล้ว"
+**เมย์:** "เหลือแค่ Upload files กลับก็เสร็จแล้ว"
 
-หน้าต่าง Folder เป็นสีเทาพักหนึ่ง จากนั้นไฟล์งานที่ทำต่อท้ายด้วย `.locked`
+หน้าต่าง Folder กลายเป็นสีเทาพักหนึ่ง จากนั้นไฟล์งานทั้งหมดถูกเปลี่ยนนามสกุลต่อท้ายด้วย `.locked`
 
-! `README_TO_RECOVER_FILES.txt` เปิดขึ้นมากลางจอ 
+ไฟล์ `README_TO_RECOVER_FILES.txt` เด้งเปิดขึ้นมากลางจอ
 
-```text
-YOUR FILES HAVE BEEN ENCRYPTED.  
-DO NOT MODIFY OR DELETE FILES.  
+Plaintext
+
+```
+YOUR FILES HAVE BEEN ENCRYPTED.
+DO NOT MODIFY OR DELETE FILES.
 WAIT FOR FURTHER INSTRUCTIONS.
 ```
 
-**เมย์:** "ท่าทางรายงานที่ฉันทำ จะปลอดภัยจริงๆ ...จากตัวฉันด้วย"
+**เมย์:** "ท่าทางรายงานที่ฉันทำจะปลอดภัยมาก... ปลอดภัยจากตัวฉันเองด้วย"
 
-! ลองเปิดไฟล์ หน้าต่างโฟล์เดอร์จะเป็นสีเทาแล้วกลับมาที่ไฟล์ `.txt`
+_(ลองเปิดไฟล์ หน้าต่างโฟลเดอร์จะเป็นสีเทาแล้วเด้งกลับมาที่ไฟล์ `.txt`)_
 
-**เมย์:** "ท่าทางฉันคงต้องหาคนช่วย"
+**เมย์:** "ฉันคงต้องหาคนช่วยแล้ว"
 
-! {Notification+1}
+_(Notification +1)_
 
-```text
+Plaintext
+
+```
 (today)
 21:25 | M4rchupikchu_inw101: "Roblox ป่าวน้อง"
 ```
 
 **เมย์:** "ทักมาได้จังหวะเหมาะมาก"
 
----
 ### Scene 4: เข้าสู่วิถีไซเบอร์
 
-```text
+Plaintext
+
+```
 (today)
 21:25 | M4rchupikchu_inw101: "Roblox ป่าวน้อง"
 21:26 | Mayicomeinpls: "พี่มาร์ชคะ คอมเปิดไฟล์ไม่ได้ค่ะ"
 21:28 | M4rchupikchu_inw101: "ไฟล์อะไร"
-21:28 | Mayicomeinpls: "ไฟล์ docx แล้ว .locked ค่ะ"
-21:28 | M4rchupikchu_inw101: "ยังไงนะ ถ่ายรูปมาหน่อย"
-21:29 | Mayicomeinpls: send a picture
-21:30 | M4rchupikchu_inw101: "อืมม ตัดเน็ตคอมพิวเตอร์ก่อน"
+21:28 | Mayicomeinpls: "ไฟล์ docx แล้วติด .locked ค่ะ"
+21:28 | M4rchupikchu_inw101: "ยังไงนะ ถ่ายรูปมาดูหน่อย"
+21:29 | Mayicomeinpls: (Send a picture)
+21:30 | M4rchupikchu_inw101: "อืมม ตัดเน็ตคอมพิวเตอร์ก่อนเลยด่วนๆ!"
 ```
 
-! มือถือสายเข้าจากมาร์ช
+_(มือถือสายเข้าจากมาร์ช)_
 
 **มาร์ช:** "ยังมีเต่าดำอยู่ใช่มั้ย"
 
 **เมย์:** "ยังอยู่ค่ะ"
 
-(Cutscene) ไปที่ Notebook เก่าสีดำลายเต่า
+_(Cutscene: เดินไปที่ Notebook เก่าสีดำลายเต่า)_
 
 **มาร์ช:** "นั่น ทำไมไม่เอาไปคืน"
 
-**เมย์:** ".."
+**เมย์:** "..."
 
-**มาร์ช:** "มาเช็คสภาพกันก่อน"
+**มาร์ช:** "ช่างเถอะ มาเช็กสภาพเต่าดำกันก่อน"
 
-interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `HxD Hex Editor`ม `olevba`
+Interface ภายในเต่าดำ: `Settings`, `Recycle bin`, `Autopsy`, `FTK Imager`, `HxD Hex Editor`, `olevba`
 
-> - [ ] **Task 5: เช็คสภาพเต่าดำ**
+> - [ ] **Task 5: เช็กสภาพเต่าดำ (Isolated Environment)**
+>
+>
+>
 > - [ ] Wi‑Fi ปิดอยู่
+>
+>
+>
 > - [ ] ไม่เสียบสาย LAN
+>
+>
+>
 > - [ ] ไม่มีเชื่อมต่อบัญชีหรืออีเมลส่วนตัว
+>
+>
+>
 > - [ ] ไม่มีไฟล์งานสำคัญ
+>
+>
+>
 
-เมย์เปิดดูบันทึกเหตุการณ์ใน Event log
+เมย์เปิดดูบันทึกเหตุการณ์ใน Event Log
 
-```text
+Plaintext
+
+```
 ## Windows Event Log
 
 18:31:04 | explorer.exe started
@@ -155,7 +193,7 @@ interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `
 18:47:53 | SearchIndexer.exe started
 
 18:58:07 | Report_Final.docx appeared in shared folder
-18:58:07 | Shared by: kim.studygroup@university.example
+18:58:07 | Shared by: mesasohot.sukj@universcity.example // ปรับแก้อีเมลให้ตรงกับคนร้ายในระบบ Drive (Typosquatting)
 18:58:07 | Owner: External collaborator
 
 19:02:10 | WINWORD.EXE opened Report_Final.docx
@@ -181,73 +219,68 @@ interface ภายใน : `Settings`, `Recycle bin`, `Autopsy`, `FTK Image`, `
 21:24:03 | CloudSync.exe paused
 ```
 
-**มาร์ช:** "มีเหตุการณ์ถูกบันทึกไว้เยอะมาก พอจำได้มั้ยว่าทำอะไรก่อนไฟล์จะล็อกไป"
+**มาร์ช:** "มีเหตุการณ์ถูกบันทึกไว้เยอะมาก พอจำได้มั้ยว่าทำอะไรก่อนไฟล์จะล็อก"
 
-> - [ ] **Task 7: ขีดเส้นแบ่งเวลา**
-> - ให้ผู้เล่นคลิ๊กโปรเซสที่เป็นจุดเริ่มต้นจนถึงจุดที่เกิดเหตุการณ์
-> - Trigger: `19:02:10` ถูกคลิ๊ก
-> - Hint (wait 5sec.): **เมย์:** “บางทีฉันอาจลองเช็คจากเวลาโทรของเมษาได้”
-> - action: เวลาถูกจดลงในโน็ตข้างๆ + (เสียงเขียนดินสอ)
+> - [ ] **Task 6: ขีดเส้นแบ่งเวลา** _(เดิม Task 7: แก้ไขเลขลำดับ)_
+> - ให้ผู้เล่นคลิกโปรเซสที่เป็นจุดเริ่มต้นจนถึงจุดที่เกิดเหตุการณ์
+> - Trigger: `19:02:10` ถูกคลิก
+> - Hint (Wait 5 sec.): **เมย์:** “บางทีฉันอาจลองเช็กจากเวลาที่เมษาโทรมาได้”
+> - Action: เวลาถูกจดลงในสมุดโน้ตข้างๆ + _(เสียงเขียนดินสอ)_
 
-**เมย์:** “เริ่มต้นจากไฟล์ Report_Final.docx เมษาแก้เค้นฉันที่ไม่ทำงานรรึป่าวนะ”
+**เมย์:** “เริ่มต้นจากไฟล์ `Report_Final.docx` เมษาแกล้งฉันที่ไม่ทำงานรึเปล่านะ”
 
-**มาร์ช:**“ลองเช็คที่มาของไฟล์กันก่อน”
+**มาร์ช:** “ลองเช็กที่มาของไฟล์กันก่อน”
 
-```text
+Plaintext
+
+```
 ## Drive Activity History
 
-18:54 | `Network_Diagram.png` appeared in shared folder  
-18:54 | Shared by: mesa.sukj@university.example  
-18:54 | Owner: Mesa Sukjai  
-18:54 | File type verified: PNG image  
-18:54 | Status: Normal file activity  
+18:54 | Network_Diagram.png appeared in shared folder
+18:54 | Shared by: mesa.sukj@university.example
+18:54 | Owner: Mesa Sukjai
+18:54 | Status: Normal file activity
 
-18:56 | `Research_Data.xlsx` appeared in shared folder  
-18:56 | Shared by: mesa.sukj@university.example  
-18:56 | Owner: Mesa Sukjai  
-18:56 | File type verified: Microsoft Excel Workbook  
-18:56 | Status: Normal file activity  
+18:56 | Research_Data.xlsx appeared in shared folder
+18:56 | Shared by: mesa.sukj@university.example
+18:56 | Owner: Mesa Sukjai
+18:56 | Status: Normal file activity
 
-18:57 | `Presentation.pptx` appeared in shared folder  
-18:57 | Shared by: mesa.sukj@university.example  
-18:57 | Owner: Mesa Sukjai  
-18:57 | File type verified: Microsoft PowerPoint Presentation  
-18:57 | Status: Normal file activity  
+18:58 | Report_Final.docx appeared in shared folder
+18:58 | Shared by: mesasohot.sukj@universcity.example
+18:58 | Owner: External collaborator
+18:58 | Internal file inspection: Macro-enabled content detected
+18:58 | Status: Suspicious file activity
 
-18:58 | `Report_Final.docx` appeared in shared folder  
-18:58 | Shared by: mesasohot.sukj@universcity.example  
-18:58 | Owner: External collaborator  
-18:58 | File type displayed: Microsoft Word Document  
-18:58 | Internal file inspection: Macro-enabled content detected  
-18:58 | Status: Suspicious file activity  
-
-19:02 | `Report_Final.docx` opened by: May  
-19:03 | Active Content enabled by: May  
+19:02 | Report_Final.docx opened by: May
+19:03 | Active Content enabled by: May
 ```
 
-> - [ ] **Task 8: คนร้ายนั้นก็คือ..**
+> - [ ] **Task 7: คนร้ายนั้นก็คือ..** _(เดิม Task 8)_
 > - ให้ผู้เล่นเปิดประวัติบน `GG Disk` เพื่ออ่านรายการเปลี่ยนแปลง
-> - Trigger: `Report_Final.docx` ถูกคลิ๊ก
-> - hint (wait 6 sec.): **มาร์ช**“โดนเมษาโซฮอตแอตยูนิเวิร์สหลอกซะแล้ว”
-> - action: `Report_Final.docx` ถูกจดลงในโน็ตข้างๆ + (เสียงเขียนดินสอ)
+> - Trigger: `Report_Final.docx` ถูกคลิก
+> - Hint (Wait 6 sec.): **มาร์ช:** “สังเกตอีเมลดีๆ โดนอีเมลปลอมหลอกซะแล้ว”
+> - Action: `Report_Final.docx` ถูกจดลงในสมุดโน้ตข้างๆ + _(เสียงเขียนดินสอ)_
 
-**เมย์:** “เธอไม่ได้ส่งไฟล์นี้มาหรอเนี้ย”
+**เมย์:** “เธอไม่ได้ส่งไฟล์นี้มาหรอกเหรอเนี่ย โดเมนสะกดผิดด้วย (`universcity.example`)”
 
-**มาร์ช:**“เอาล่ะได้เวลาวิเคราะห์หลักฐานแล้ว ยังมี `EV Drive` มั้ย”
+**มาร์ช:** “เอาล่ะ ได้เวลาวิเคราะห์หลักฐานแล้ว หยิบทัมบ์ไดรฟ์เปล่ามา เดี๋ยวพี่ส่งสคริปต์ก๊อป Log ให้” // เพิ่มบทสนทนาให้มาร์ชเป็นคนไกด์เมย์ เพื่อความสมเหตุสมผล
 
-! เดินไปหา `EV Drive` จากชั้นหนังสือ แล้วมา Interact กับ คอมพิวเตอร์
+_(เดินไปหา `EV Drive` จากชั้นหนังสือ แล้วนำมา Interact กับคอมพิวเตอร์หลักที่ติดไวรัส)_
 
----
 ### Scene 5: วิเคราะห์หลักฐาน
-*Timelapse Cutscene:* เมย์กำลังสร้างสำเนาไฟล์หลักฐาน (Forensic)
-(ตัดฉาก) เมย์ยืนข้างโต๊ะคอมพิวเตอร์
+
+_(Timelapse Cutscene)_ เมย์ใช้สคริปต์ของมาร์ชสร้างสำเนาไฟล์หลักฐาน (Forensic Copy) ลงใน `EV Drive`
+
+_(ตัดฉาก)_ เมย์นำ `EV Drive` มาเสียบที่เต่าดำ
 
 **เมย์:** “ทำสำเนาเสร็จเรียบร้อยแล้ว”
 
-! ใช้ `EV Drive` interact กับ เต่าดำ
+ไฟล์ใน EV Drive ที่คัดลอกมา:
 
-ไฟล์ EV ที่เมย์ทำมา
-```text
+Plaintext
+
+```
 CASE_Evidence/
 ├── Report_Final.docx
 ├── Office_Update_Helper.dat
@@ -259,17 +292,21 @@ CASE_Evidence/
 └── Evidence_Manifest.txt
 ```
 
+> - [ ] **Task 8: ยืนยันความถูกต้องของหลักฐาน (Hash Verification)** // เพิ่ม Task ใหม่ ปูความรู้เรื่อง Integrity
+> - ให้ผู้เล่นใช้เครื่องมือเช็กค่า MD5 ของไฟล์ใน EV Drive เทียบกับ Manifest
+> - Trigger: ค่า Hash ตรงกันทั้งหมด ระบบขึ้นสถานะ "Evidence Verified"
+
 > - [ ] **Task 9: เปิดโปงสปาย**
 > - ให้ผู้เล่นใช้โปรแกรมเปิดเอกสารแบบ Read-only
-> - Trigger: `Report_Final.docx` ถูกเปิดผ่านโปรแกรม `FTK Image`
+> - Trigger: `Report_Final.docx` ถูกเปิดผ่านโปรแกรม `FTK Imager`
 
 ภายในไฟล์
-```text
-ชื่อไฟล์:
-Final_Report_Revision_v4.docx
 
-ชนิดไฟล์ที่ตรวจพบ:
-Word Macro-Enabled Document
+Plaintext
+
+```
+ชื่อไฟล์: Final_Report_Revision_v4.docx
+ชนิดไฟล์ที่ตรวจพบ: Word Macro-Enabled Document
 
 รายการภายใน:
 word/document.xml
@@ -277,42 +314,46 @@ word/vbaProject.bin
 word/_rels/document.xml.rels
 ```
 
-**เมย์:** “มันชื่อ `.docx` แต่ข้างในมี `vbaProject.bin`”
+**เมย์:** “มันชื่อ `.docx` แต่ข้างในมี `vbaProject.bin` ซ่อนอยู่”
 
-**มาร์ช**“มาแกะดูข้างในกันดีกว่า” /ใช้ `olavba` เปิดอ่านไฟล์ VBA
+**มาร์ช:** “มาแกะดูข้างในกันดีกว่า” _(ใช้ `olevba` เปิดอ่านไฟล์ VBA)_ // แก้คำผิดจาก olavba เป็น olevba
 
-```text
+Plaintext
+
+```
 Macro project found
 Module: OfficeUpdate
 Trigger: Document_Open
 Encoded value: T2ZmaWNlX1VwZGF0ZV9IZWxwZXI=
 ```
 
-**มาร์ช**“ลองดูรายละเอียดพวกนี้ว่าแต่ละอันคืออะไร”
+**มาร์ช:** “ลองจับคู่ดูว่ารายละเอียดพวกนี้คืออะไร”
 
-> - [ ] **Task 10: จับคู่ไฟล์กับราะละเอียด**
-> - แสดงหน้าต่างจับคู่ขึ้นมา(กระดาษทดของเมย์) 3-3
-> - Trigger: รายการทั้งหมดถูกจับคู่ได้ถูกต้อง
+> - [ ] **Task 10: จับคู่ไฟล์กับรายละเอียด**
+> - แสดงหน้าต่างจับคู่ (กระดาษทดของเมย์) แบบ 3 คู่
+> - Trigger: รายการทั้งหมดถูกจับคู่ถูกต้อง
 
-**เมย์:** “มีรหัสอะไรสักอย่างด้วยถูกเข้ารหัสไว้”
+**เมย์:** “มีรหัสอะไรสักอย่างถูกเข้ารหัสไว้ด้วย”
 
 > - [ ] **Task 11: ถอดรหัส Base64**
-> - ให้ผู้เล่นใช้เครื่องมือถอดรหัสเลขฐาน (decoder)
-> - Trigger: section ถอดรหัสของโปรแกรมได้รับรหัส Base64 มา
-> - Hint (wait 4 sec.): **มาร์ช**“มี `=` ต่อท้าย ดูเหมือนจะเป็น Base64 นะ ”
-> - action: ส่งคำแปลออกไป `Office_Update_Helper` จดลงโน็ต
+> - ให้ผู้เล่นใช้เครื่องมือถอดรหัสเลขฐาน (Decoder)
+> - Trigger: นำค่า Encoded value ไปถอดรหัสผ่าน Base64
+> - Hint (Wait 4 sec.): **มาร์ช:** “มี `=` ต่อท้าย ดูเหมือนจะเป็น Base64 นะ”
+> - Action: ถอดรหัสได้คำว่า `Office_Update_Helper` และถูกจดลงโน้ต
 
-**เมย์:** “คือไฟล์ที่ถูกสร้างหลังจาก Enable Content ”
+**เมย์:** “นี่คือไฟล์ที่ถูกสร้างหลังจากฉันกด Enable Content สินะ”
 
-**มาร์ช**“เบื้องหลังงของไฟล์คงมีคำตอบอยู่”
+**มาร์ช:** “เบื้องหลังของไฟล์นี้คงมีคำตอบอยู่”
 
 > - [ ] **Task 12: เปิดหลักฐาน**
-> - ให้ผู้เล่นเปิดไฟล์ `Office_Update_Helper.dat` ผ่าน inspector
-> - Trigger: inspector ได้รับไฟล์ `Office_Update_Helper.dat` 
-> - Hint (wait 4 sec.): **เมย์:**“ตัว inspector อยู่ตรง.. ”
-> - action: ส่งหน้า file `Office_Update_Helper.txt`
+> - ให้ผู้เล่นเปิดไฟล์ `Office_Update_Helper.dat` ผ่าน Inspector
+> - Trigger: Inspector โหลดไฟล์ `Office_Update_Helper.dat`
+> - Hint (Wait 4 sec.): **เมย์:** “ตัว Inspector อยู่ตรงไหนนะ...”
+> - Action: แสดงเนื้อหาไฟล์ `Office_Update_Helper.txt`
 
-```text
+Plaintext
+
+```
 ## Office_Update_Helper.dat
 
 TARGET: UHJvamVjdF9Gb2xkZXI= //Project_Folder
@@ -320,31 +361,32 @@ MODE: 526B6C4D5256395853564246 //FILE_WIPE
 STATUS: ACTIVE
 ```
 
-> - [ ] **Task 12: ถอดรหัส**
-> - ให้ผู้เล่นถอดรหัส TARGAT, MODE ผ่าน decoder
-> - Trigger: inspector ได้รับไฟล์ รหัสครบทั้งสองชุด
-> - Hint (wait 4 sec.): **เมย์:**“ตัว decoder อยู่ตรง.. ”
-> - action: ส่งคำแปลแต่ละตัวกลับคืน
+> - [ ] **Task 13: ถอดรหัสเป้าหมาย** _(แก้ตัวเลข Task ที่ซ้ำกัน)_
+> - ให้ผู้เล่นถอดรหัส `TARGET` (Base64) และ `MODE` (Hex) ผ่าน Decoder
+> - Trigger: ถอดรหัสครบทั้งสองชุด
+> - Action: ทราบว่าเป้าหมายคือ Project Folder และโหมดคือ FILE_WIPE
 
-! ตรสจไฟล์ที่ถูกเปลี่ยนชื่อ
+_(ตรวจสอบไฟล์ที่ถูกเปลี่ยนชื่อ)_
 
-```text
+Plaintext
+
+```
 ## File Inspector
 
 Filename: Report_Final.docx.locked
 File size: 0 KB
 File signature: Not found
-Office document structure: Not found
 Recoverable content: Not found
 ```
 
-**เมย์:**“ถึงว่าเปิดไฟล์ไม่ได้ ”
+**เมย์:** “ไฟล์เหลือ 0 KB ถึงว่าเปิดไฟล์ไม่ได้เลย”
 
-**มาร์ช**“ตอนนี้คงเราไม่ต้องหาคีย์มาปลดแล้ว แค่ต้องหยุดการทำลายไฟล์”
+**มาร์ช:** “มันคือ Wiper (มัลแวร์ทำลายข้อมูล) ที่หลอกว่าเป็น Ransomware ตอนนี้เราไม่ต้องหาคีย์มาปลดแล้ว แค่ต้องหยุดการทำงานของมันก่อน”
 
-```text
+Plaintext
+
+```
 ## Task Details
-
 Task Name: Office_Update_Helper
 Created by: WINWORD.EXE
 Location: Temp\Office_Update_Helper.dat
@@ -353,36 +395,38 @@ Triggers:
 - User logon
 - User idle for 15 minutes
 - Network connection available
-
-Action:
-- Start Office_Update_Helper
 ```
 
-```text
-## Event Log
-20:59:12 | User idle detected
-21:21:50 | Office_Update_Helper started
-21:22:04 | Project files modified
-21:23:21 | CloudSync.exe queued 3 changed files
-
-```
-
-> - [ ] **Task 13: การหยุด macro**
-> - ให้ผู้เล่นเรียงลำดับขัั้นตอนหยุดยั้งการทำงานของไฟล์มาโคร โดยพิจารณาจาก `Task_Details.txt` เทียบกับ `Event_log`
+> - [ ] **Task 14: การหยุด Macro และ Persistence** _(เดิม Task 13)_
+> - ให้ผู้เล่นเรียงลำดับขั้นตอนหยุดยั้งการทำงาน (เช่น เข้า Safe Mode -> Kill Process -> ลบ Task Scheduler) โดยพิจารณาจาก `Task_Details.txt` เทียบกับ `Event_Log` // เพิ่มขั้นตอน Safe mode/Kill process ก่อนการกู้ไฟล์ เพื่อความสมจริง
 > - Trigger: ผู้เล่นเรียงลำดับได้ถูกต้อง
-> - Hint (wait 4 sec.): **เมย์:**“นึกเหตุการณ์และพึมพำ ”
-> - ใช้เงื่อนไขเพื่อ activate คำใบ้ไปเรื่อยๆ
-> - action: **มาร์ช**“เท่านี้ก็เพียงพอจะไม่ Trigger เงื่อนไขขึ้นมาแล้ว”
+> - Action: **มาร์ช:** “เท่านี้ก็เคลียร์โปรเซสอันตรายออกไปได้แล้ว”
 
-### Scene 6: วิเคราะห์หลักฐาน
-*Timelapse Cutscene:* เมย์ลุกขึ้นกลับไป Settings ที่คอมพิวเตอร์หลัก
-(ตัดฉาก) หน้าจอรายงานที่ว่างเปล่า
+```
+## Stop Persistance Step
 
-**เมย์:**“ถ้าต้องทำใหม่ตั้งแต่ต้น คงมีตกหล่นไปบ้างแน่ๆ”
+1. Preserve task details as evidence
+2. Disable Office_Update_Helper task
+3. Quarantine Office_Update_Helper.dat
+4. Check for related persistence entries
+5. Confirm Office_Update_Helper is no longer running
+6. Pause CloudSync for the project folder
+7. Restore files from backup
+```
 
-**มาร์ช**“ไฟส่วนล์ที่เสียหาย ถ้าจำไม่ผิด `GG Disk` น่าจะ Backup ตามช่วงเวลาไว้อยู่”
+### Scene 6: กำจัดภัยคุกคามและกู้คืนข้อมูล
 
-```text
+_(Timelapse Cutscene)_ เมย์จัดการลบโปรเซสไวรัสในคอมพิวเตอร์หลักเสร็จสิ้น
+
+_(ตัดฉาก)_ หน้าจอเปิดโฟลเดอร์รายงานที่ว่างเปล่า
+
+**เมย์:** “ถ้าต้องพิมพ์ใหม่ตั้งแต่ต้น คงมีตกหล่นไปบ้างแน่ๆ”
+
+**มาร์ช:** “ไฟล์ส่วนที่เสียหาย ถ้าจำไม่ผิด `GG Disk` น่าจะ Backup ตามช่วงเวลาไว้อยู่”
+
+Plaintext
+
+```
 ## Project Folder Version History
 
 18:40 | Report_Final.docx | Normal version
@@ -395,42 +439,119 @@ Action:
 21:22 | Presentation.pptx.locked | Suspicious change
 ```
 
-> - [ ] **Task 14: Safe Backup**
-> - ให้ผู้เล่นทำเลือกการตั้งค่าเพื่อ backup ข้อมูลอย่างปลอดภัย
-> - Trigger: ผู้เล่นเรียงลำดับได้ถูกต้อง
-> - Hint (wait 4 sec.): **เมย์:**“นึกเหตุการณ์และพึมพำ ”
-> - ใช้เงื่อนไขเพื่อ activate คำใบ้ไปเรื่อยๆ
-> - action: **มาร์ช**“เท่านี้ก็เพียงพอจะไม่ Trigger เงื่อนไขขึ้นมาแล้ว”
+> - [ ] **Task 15: Safe Backup (3-2-1 Rule)** _(เดิม Task 14)_
+> - ให้ผู้เล่นเลือกการตั้งค่าเพื่อกู้คืนและ Backup ข้อมูลอย่างปลอดภัย
+> - Action: **มาร์ช:** “กู้ไฟล์เสร็จ อย่าลืมโหลดเก็บไว้ใน External Drive ด้วยล่ะ กฎ 3-2-1 สำคัญเสมอ” // เพิ่มคอนเซปต์ 3-2-1 Backup (เก็บออฟไลน์ 1 ชุด)
 
-```text
+Plaintext
+
+```
 Recovery point:
 [✓] ก่อน 19:02
 [ ] หลัง 21:22
 
 Recovery destination:
-[✓] โฟลเดอร์ใหม่
+[✓] โฟลเดอร์ใหม่ (เพื่อไม่ให้ปะปนกับไฟล์ที่อาจติดเชื้อซ่อนอยู่)
 [ ] โฟลเดอร์เดิมทันที
 
 Cloud Sync:
+[✓] ปิดชั่วคราวก่อนกู้ไฟล์ (กัน Sync ทับไฟล์เดิม)
 [ ] เปิด
 ```
 
-**เมย์:**“ก็ยังดีกว่าเริ่มใหม่”
+**เมย์:** “เหนื่อยหน่อยแต่ก็ยังดีกว่าเริ่มใหม่ทั้งหมด”
 
-> - [ ] **Task 15: The Last Boss**
-> - ให้ผู้เล่นช่วยเมย์เติมคำลงในรายงาน
-> - Trigger: การกด save
-> - action: **เมย์:**“ได้นอนสักที”
-
+> - [ ] **Task 16: The Last Boss (สรุปบทเรียน)** _(เดิม Task 15)_
+> - ให้ผู้เล่นช่วยเมย์เติมคำลงในรายงาน 3-4 ข้อสุดท้าย ซึ่งเป็นข้อสรุปจากสิ่งที่เมย์เพิ่งเจอ (เช่น 1. ตรวจสอบอีเมลผู้ส่งเสมอ 2. อย่ากด Enable Content ซี้ซั้ว 3. แบ็กอัปข้อมูลไว้แบบออฟไลน์ด้วย) // ปรับให้เนื้อหาสุดท้ายคือการทบทวนบทเรียนของผู้เล่น
+> - Trigger: พิมพ์เสร็จและกด Save
+> - Action: **เมย์:** “ได้นอนสักที!”
 
 ## รวม Puzzle
 
-| Puzzle | ผู้เล่นทำอะไร                    | สิ่งที่เรียนรู้                          |
-| ------ | -------------------------------- | ---------------------------------------- |
-| 1      | ตรวจ Drive History               | ตรวจผู้ส่งและไฟล์ปลอม                    |
-| 2      | อ่าน Windows Event Log           | หา Timeline, process ต้องสงสัย และ Scope |
-| 3      | ตรวจโครงสร้างไฟล์                | พบ Macro ที่ซ่อนในเอกสาร                 |
-| 4      | ถอด Base64 จาก Macro             | เชื่อม Macro กับ `Office_Update_Helper`  |
-| 5      | ถอด Hex และ Base64 จาก Helper    | รู้ว่าไฟล์ถูกล้าง ไม่ใช่เข้ารหัส         |
-| 6      | ปิด persistence และหยุด Sync     | กำจัดต้นเหตุก่อนกู้ข้อมูล                |
-| 7      | เลือก Version History ที่ปลอดภัย | กู้ข้อมูลโดยไม่ถูกทำลายซ้ำ               |
+| **Puzzle** | **ผู้เล่นทำอะไร**                         | **สิ่งที่เรียนรู้**                             |
+| ---------- | ------------------------------------- | ---------------------------------------- |
+| 1          | ตรวจ Drive History                    | ตรวจผู้ส่ง สังเกตอีเมลปลอม (Typosquatting)    |
+| 2          | อ่าน Windows Event Log                 | หา Timeline, Process ต้องสงสัย และ Scope   |
+| 3          | ตรวจสอบค่า Hash ของหลักฐาน              | ความสมบูรณ์ของหลักฐาน (Integrity)           |
+| 4          | ตรวจโครงสร้างไฟล์                       | พบ Macro ที่ซ่อนในเอกสาร (`vbaProject.bin`) |
+| 5          | ถอด Base64 จาก Macro                  | เชื่อมโยง Macro กับ `Office_Update_Helper`  |
+| 6          | ถอด Hex และ Base64                    | รู้พฤติกรรมว่าไฟล์ถูกล้าง (Wiper) ไม่ใช่เข้ารหัส    |
+| 7          | ตัดวงจร Persistence (Kill Process)     | การระงับเหตุ (Containment & Eradication)   |
+| 8          | เลือก Version History และ 3-2-1 Backup | การกู้ข้อมูลอย่างปลอดภัย (Safe Recovery)       |
+
+## Learning Outcomes
+
+การกำหนดผลการเรียนรู้ (Learning Outcomes) สำหรับปริศนาแต่ละส่วน สามารถจัดโครงสร้างตามหลักการแบ่งจุดประสงค์การเรียนรู้แบบ K-S-A (Knowledge, Skills, Attitude) เพื่อให้สามารถนำไปใช้วัดผลและประเมินผู้เล่นในเชิงการศึกษาได้อย่างเป็นระบบครับ ดังนี้:
+
+| **Puzzle**                | **K (Knowledge / ความรู้)**                | **S (Skills / ทักษะ)**                    | **A (Attitude / เจตคติ)**                    |
+| ------------------------- | ---------------------------------------- | ---------------------------------------- | ------------------------------------------- |
+| **1: ตรวจ Drive History** | อธิบายลักษณะ Phishing และ Typosquatting    | ตรวจสอบและแยกแยะโดเมน/อีเมลแอบอ้าง         | ระแวดระวังแหล่งที่มาก่อนเปิดไฟล์เสมอ               |
+| **2: อ่าน Event Log**      | เข้าใจโครงสร้างและประโยชน์ของ Event Log     | ค้นหาและสร้าง Timeline ลำดับเหตุการณ์โจมตี      | รอบคอบและไม่ข้ามขั้นตอนการรวบรวมหลักฐาน          |
+| **3: ตรวจสอบ Hash**       | เข้าใจการทำงานของ Hash และ Data Integrity  | ใช้เครื่องมือเทียบค่า Hash เพื่อยืนยันความถูกต้องไฟล์ | ให้ความสำคัญกับความน่าเชื่อถือของหลักฐาน (Forensics) |
+| **4: ตรวจโครงสร้างไฟล์**    | รู้กลไกการซ่อนโค้ดอันตรายในเอกสาร (Macro)     | แยกแยะความต่างของไฟล์ปกติกับไฟล์ที่มี Macro      | ไม่เพิกเฉยหรือกด Enable Content โดยไม่ตรวจสอบ   |
+| **5: ถอดรหัส Base64**      | รู้จักรูปแบบการเข้ารหัสพรางตัวเบื้องต้น            | ใช้ Decoder ถอดรหัสเพื่อหาจุดเชื่อมโยง Payload  | มีความพยายามคิดวิเคราะห์สืบสาวไปถึงต้นตอ           |
+| **6: วิเคราะห์ Helper**     | จำแนกความต่างของ Ransomware และ Wiper      | อ่านค่า Hex และแปลพฤติกรรมมัลแวร์จากคอนฟิก     | มีสติ ไม่ตื่นตระหนกต่อคำขู่ มุ่งวิเคราะห์ตามความเป็นจริง   |
+| **7: หยุดการทำงาน**         | เข้าใจเทคนิคการฝังตัว (Persistence) ของมัลแวร์ | ลำดับขั้นตอนระงับเหตุและหยุดโปรเซสได้ถูกต้อง       | ปฏิบัติตามขั้นตอน Incident Response อย่างเป็นระบบ  |
+| **8: กู้คืนข้อมูล**            | เข้าใจกฎการสำรองข้อมูลแบบ 3-2-1              | เลือกจุดกู้คืน (Version History) ได้อย่างปลอดภัย | ตระหนักว่าการ Backup คือเกราะป้องกันที่สำคัญที่สุด      |
+
+**Puzzle 1: ตรวจ Drive History (สังเกตอีเมลปลอม - Typosquatting)**
+
+- **Knowledge (ความรู้):** ผู้เล่นสามารถอธิบายลักษณะของการโจมตีแบบ Phishing และ Typosquatting ได้
+- **Skills (ทักษะ):** ผู้เล่นสามารถตรวจสอบและแยกแยะความผิดปกติของชื่ออีเมลหรือโดเมนที่แอบอ้างบนระบบ Cloud Drive ได้
+- **Attitude (เจตคติ):** ตระหนักถึงความสำคัญของการตรวจสอบแหล่งที่มาของผู้ส่งก่อนเปิดไฟล์หรือดาวน์โหลดข้อมูลเสมอ
+
+**Puzzle 2: อ่าน Windows Event Log (หา Timeline และ Process)**
+
+- **Knowledge (ความรู้):** ผู้เล่นเข้าใจโครงสร้างและประโยชน์ของ Windows Event Log ในการบันทึกพฤติกรรมของระบบ
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถคัดกรอง ค้นหา และเรียงลำดับเหตุการณ์ (Timeline) เพื่อหาจุดเริ่มต้นของการโจมตีได้
+
+- **Attitude (เจตคติ):** มีความละเอียดรอบคอบในการรวบรวมหลักฐานทางดิจิทัลโดยไม่ข้ามขั้นตอน
+
+**Puzzle 3: ตรวจสอบค่า Hash ของหลักฐาน (Data Integrity)**
+
+- **Knowledge (ความรู้):** ผู้เล่นเข้าใจหลักการทำงานของฟังก์ชัน Hash (เช่น MD5, SHA-256) และแนวคิดเรื่องความสมบูรณ์ของข้อมูล (Integrity)
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถใช้เครื่องมือตรวจสอบและเปรียบเทียบค่า Hash เพื่อยืนยันความถูกต้องของไฟล์หลักฐานได้
+
+- **Attitude (เจตคติ):** เห็นความสำคัญของการรักษาความน่าเชื่อถือของหลักฐานทางนิติวิทยาศาสตร์ดิจิทัล (Digital Forensics)
+
+**Puzzle 4: ตรวจโครงสร้างไฟล์ (พบ Macro ที่ซ่อนในเอกสาร)**
+
+- **Knowledge (ความรู้):** ผู้เล่นทราบถึงกลไกการซ่อนโค้ดอันตรายในรูปแบบ Macro-enabled Document (`vbaProject.bin`)
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถแยกแยะความแตกต่างระหว่างไฟล์เอกสารธรรมดากับไฟล์ที่มีการฝัง Macro ได้
+
+- **Attitude (เจตคติ):** ระมัดระวังและไม่เพิกเฉยต่อคำเตือน "Enable Content" ในโปรแกรมเปิดเอกสาร
+
+**Puzzle 5: ถอด Base64 จาก Macro (เชื่อมโยง Payload)**
+
+- **Knowledge (ความรู้):** ผู้เล่นรู้จักรูปแบบการเข้ารหัสข้อมูลเบื้องต้น เช่น Base64 ที่มัลแวร์มักใช้ในการพรางตัว
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถใช้เครื่องมือ Decoder ในการถอดรหัสข้อความเพื่อหาจุดเชื่อมโยงไปยังโปรเซสอื่น (เช่น `Office_Update_Helper`) ได้
+
+- **Attitude (เจตคติ):** มีความพยายามในการคิดวิเคราะห์และแก้ปัญหาเพื่อสืบสาวไปถึงต้นตอของภัยคุกคาม
+
+**Puzzle 6: ถอด Hex และ Base64 (วิเคราะห์พฤติกรรมมัลแวร์)**
+
+- **Knowledge (ความรู้):** ผู้เล่นสามารถจำแนกความแตกต่างระหว่าง Ransomware (เข้ารหัสเพื่อเรียกค่าไถ่) และ Wiper (มัลแวร์ทำลายข้อมูล) ได้
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถอ่านค่า Hexadecimal เบื้องต้น และแปลความหมายการทำงานของมัลแวร์จากการตั้งค่าในไฟล์ Configuration ได้
+
+- **Attitude (เจตคติ):** ไม่ตื่นตระหนกต่อข้อความข่มขู่ของมัลแวร์ และมุ่งเน้นที่การวิเคราะห์ตามหลักฐานความเป็นจริง
+
+**Puzzle 7: ตัดวงจร Persistence (ระงับเหตุ - Containment)**
+
+- **Knowledge (ความรู้):** ผู้เล่นเข้าใจเทคนิคที่มัลแวร์ใช้ในการฝังตัว (Persistence) เช่น การสร้าง Scheduled Tasks หรือ Run keys
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถประยุกต์ใช้ข้อมูลจากการวิเคราะห์ เพื่อลำดับขั้นตอนการหยุดการทำงานของโปรเซสอันตรายได้อย่างถูกต้อง (เช่น การเข้า Safe Mode หรือ Kill Process)
+
+- **Attitude (เจตคติ):** มีสติและปฏิบัติตามขั้นตอนการรับมือเหตุการณ์ละเมิดความมั่นคงปลอดภัย (Incident Response) อย่างเป็นระบบ
+
+**Puzzle 8: เลือก Version History และ 3-2-1 Backup (กู้ข้อมูลอย่างปลอดภัย)**
+
+- **Knowledge (ความรู้):** ผู้เล่นเข้าใจหลักการสำรองข้อมูลแบบ 3-2-1 (มีข้อมูล 3 ชุด, เก็บในสื่อ 2 ประเภทที่ต่างกัน, เก็บออฟไซต์ 1 ชุด)
+
+- **Skills (ทักษะ):** ผู้เล่นสามารถเลือกจุดกู้คืน (Recovery Point) จาก Version History ได้อย่างปลอดภัย โดยไม่ทำให้ไฟล์ที่สำรองไว้ติดเชื้อมัลแวร์ซ้ำ
+
+- **Attitude (เจตคติ):** เห็นคุณค่าของการทำ Backup อย่างสม่ำเสมอ และตระหนักว่านี่คือเกราะป้องกันสุดท้ายที่เชื่อถือได้มากที่สุด
