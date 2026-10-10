@@ -125,7 +125,7 @@ pytest tests/test_analytics_contract.py -v
   *(อธิบายขั้นตอนการแตก Branch, การตั้งชื่อ Commit, การเปิด Pull Request และการผูกคำสั่งปิด Issue อัตโนมัติ)*
 
 * 📋 **รายการงาน Scene และ Script ที่ต้องพัฒนา (Work Plan):**
-  👉 [คลิกเพื่อดูรายละเอียด Scenes & Scripts List](<docs/Work_Plan/Scenes&Scripts_list>)
+  👉 [คลิกเพื่อดูรายละเอียด Scenes & Scripts List](<docs/Work_Plan/Scenes&Scripts_list.md>)
   *(รายละเอียดโหนด, ฟังก์ชัน GDScript, และขอบเขตการทำงานของแต่ละ Scene และ Task)*
 
 ---
