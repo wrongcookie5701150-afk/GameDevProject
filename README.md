@@ -121,11 +121,11 @@ pytest tests/test_analytics_contract.py -v
 สำหรับสมาชิกในทีม กรุณาศึกษาแนวทางการทำงานและรายละเอียดงานจากเอกสารดังต่อไปนี้:
 
 * 📖 **คู่มือการใช้งาน GitHub และขั้นตอนการส่งงาน (Git Workflow):**
-  👉 [คลิกเพื่อดูคู่มือ Git Tutorial](<docs/Git tutorial.md>)
+  👉 [คลิกเพื่อดูคู่มือ Git Tutorial](<docs/Git Tutorial.md>)
   *(อธิบายขั้นตอนการแตก Branch, การตั้งชื่อ Commit, การเปิด Pull Request และการผูกคำสั่งปิด Issue อัตโนมัติ)*
 
 * 📋 **รายการงาน Scene และ Script ที่ต้องพัฒนา (Work Plan):**
-  👉 [คลิกเพื่อดูรายละเอียด Scenes & Scripts List](docs/Work_Plan/Scenes&Scripts_list)
+  👉 [คลิกเพื่อดูรายละเอียด Scenes & Scripts List](<docs/Work_Plan/Scenes&Scripts_list>)
   *(รายละเอียดโหนด, ฟังก์ชัน GDScript, และขอบเขตการทำงานของแต่ละ Scene และ Task)*
 
 ---
