@@ -1,0 +1,485 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/ui/continue_modal.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_share_tech_mono"]
+[ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="3_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://ummpjpqbcvkn" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="4_noto_sans_thai_medium"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
+content_margin_left = 28.0
+content_margin_top = 22.0
+content_margin_right = 28.0
+content_margin_bottom = 22.0
+bg_color = Color(0.051, 0.075, 0.133, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.301961, 0.65098, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.301961, 0.65098, 1, 0.2)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_puzzle_unlocked"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.13, 0.24, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.301961, 0.65098, 1, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_puzzle_locked"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.045, 0.065, 0.11, 0.65)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.28, 0.4, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0784314, 0.117647, 0.211765, 0.823529)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.28, 0.62, 0.88, 0.75)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0470588, 0.0784314, 0.14902, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.9, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.12549, 0.207843, 0.364706, 0.921569)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.44, 0.84, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.44, 0.84, 1, 0.3)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_focus"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.12549, 0.207843, 0.364706, 0.921569)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.44, 0.84, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="ContinueModal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.051, 0.075, 0.133, 0.75)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(760, 600)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Center/ModalPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderBox" type="HBoxContainer" parent="Center/ModalPanel/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Center/ModalPanel/VBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 1)
+theme_override_fonts/font = ExtResource("3_press_start_2p")
+theme_override_font_sizes/font_size = 28
+text = "CONTINUE"
+
+[node name="Spacer" type="Control" parent="Center/ModalPanel/VBox/HeaderBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ContinueSubtitle" type="Label" parent="Center/ModalPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.623529, 0.701961, 0.784314, 1)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 20
+text = "Select a saved puzzle to continue"
+
+[node name="HSeparator" type="HSeparator" parent="Center/ModalPanel/VBox"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Center/ModalPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PuzzleList" type="VBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Puzzle01Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_puzzle_unlocked")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle01Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle01Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "01 ตรวจ Drive History (Typosquatting)"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle01Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.301961, 0.65098, 1, 1)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "● UNLOCKED"
+
+[node name="Puzzle02Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle02Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle02Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "02 ตรวจ Windows Event Log (Timeline 19:02)"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle02Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Puzzle03Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle03Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle03Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "03 ตรวจสอบค่า Hash (Data Integrity)"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle03Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Puzzle04Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle04Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle04Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "04 ตรวจโครงสร้างไฟล์ Macro (.docx vs vbaProject.bin)"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle04Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Puzzle05Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle05Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle05Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "05 ถอดรหัส Base64 จาก Macro"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle05Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Puzzle06Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle06Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle06Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "06 วิเคราะห์ Hex / Wiper Behavior"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle06Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Puzzle07Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle07Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle07Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "07 ตัดวงจร Persistence & Kill Process"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle07Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Puzzle08Button" type="Button" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_puzzle_locked")
+disabled = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle08Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle08Button/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.62, 0.7, 0.7)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 16
+text = "08 Version History & 3-2-1 Backup"
+
+[node name="Status" type="Label" parent="Center/ModalPanel/VBox/ScrollContainer/PuzzleList/Puzzle08Button/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 0.8)
+theme_override_fonts/font = ExtResource("2_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "🔒 LOCKED"
+
+[node name="Footer" type="HBoxContainer" parent="Center/ModalPanel/VBox"]
+layout_mode = 2
+
+[node name="ContinueBackButton" type="Button" parent="Center/ModalPanel/VBox/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 42)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
+theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
+text = "← Back"
+
+[node name="Spacer" type="Control" parent="Center/ModalPanel/VBox/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ContinueEscHint" type="Label" parent="Center/ModalPanel/VBox/Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.55, 0.68, 1)
+theme_override_fonts/font = ExtResource("4_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 14
+text = "Press ESC to close"
