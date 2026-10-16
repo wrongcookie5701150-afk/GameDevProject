@@ -1,6 +1,4 @@
-res://Tile_Map/floor.tscn
-res://Player/Scenes/player.tscn
-res://Tile_Map/Map.tscn
-res://Player/Scenes/node_2d.tscn
-res://Scripts/TelemetryManager.gd
-res://Scenes/map.tscn
+res://Scenes/playground.tscn
+res://Scripts/player.gd
+res://Scenes/room.tscn
+res://Scenes/player.tscn
