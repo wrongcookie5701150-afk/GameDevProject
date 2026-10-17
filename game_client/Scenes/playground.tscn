@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cahpqs4fo3l42"]
+
+[ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/room.tscn" id="1_uof5o"]
+[ext_resource type="Script" uid="uid://ddxiusovc4ivw" path="res://Scripts/player.gd" id="2_qyfof"]
+[ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://Scenes/player.tscn" id="2_u4ce8"]
+
+[node name="Playground" type="Node2D" unique_id=1245398925]
+
+[node name="Map" parent="." unique_id=1668373968 instance=ExtResource("1_uof5o")]
+
+[node name="Player" parent="." unique_id=2063336817 instance=ExtResource("2_u4ce8")]
+z_index = 1
+position = Vector2(98, 169)
+script = ExtResource("2_qyfof")
+metadata/_edit_group_ = true
