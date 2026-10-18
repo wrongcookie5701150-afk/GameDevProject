@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bhu4n5dxydmxy"]
 
-[ext_resource type="Script" uid="uid://drin4ofrntfht" path="res://Scripts/main_menu.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://21abcox6x2d3" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
-[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
-[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
-[ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
+[ext_resource type="FontFile" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+[ext_resource type="FontFile" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
+[ext_resource type="FontFile" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
 [ext_resource type="PackedScene" uid="uid://cj7duttg68mas" path="res://Scenes/ui/ContinueModal.tscn" id="6_continue_modal"]
 [ext_resource type="PackedScene" uid="uid://rfcu2i8mplrx" path="res://Scenes/ui/SettingsModal.tscn" id="7_settings_modal"]
 

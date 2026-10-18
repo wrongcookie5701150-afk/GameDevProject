@@ -8,3 +8,12 @@ res://assets/styles/UnselectedButton.tres
 res://Scripts/ui/settings_modal.gd
 res://Scenes/ui/SettingsModal.tscn
 res://Scenes/Fundamental/MainMenu.tscn
+res://assets/styles/AlertButton.tres
+res://assets/styles/DisableBoxButton.tres
+res://assets/styles/FocusBoxButton.tres
+res://assets/styles/InnerPanel.tres
+res://assets/styles/NormalBoxButton.tres
+res://assets/styles/NormalPanel.tres
+res://assets/styles/PresslBoxButton.tres
+res://assets/styles/SelectedButton.tres
+res://Scenes/ui/ContinueModal.tscn
