@@ -1,0 +1,10 @@
+res://scenes/ui/SettingsModal.tscn
+res://assets/Themes/SettingsTheme.tres
+res://assets/styles/HoverBoxButton.tres
+res://assets/styles/NormalSaveButton.tres
+res://assets/styles/HoverSaveButton.tres
+res://scenes/ui/ContinueModal.tscn
+res://assets/styles/UnselectedButton.tres
+res://Scripts/ui/settings_modal.gd
+res://Scenes/ui/SettingsModal.tscn
+res://Scenes/Fundamental/MainMenu.tscn
