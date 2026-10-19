@@ -1,9 +1,0 @@
-VBoxContainer
-ScrollContainer
-VScrollBar
-CollisionShape2D
-AnimatedSprite2D
-CharacterBody2D
-TileMap
-TileMapLayer
-Node2D
