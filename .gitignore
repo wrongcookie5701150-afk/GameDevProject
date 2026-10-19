@@ -1,2 +1,9 @@
 .obsidian/
 .venv/
+.godot/
+*.import_cache
+
+# Build outputs
+*.exe
+*.apk
+*.aab

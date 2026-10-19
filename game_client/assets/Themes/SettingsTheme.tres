@@ -1,7 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://brv6o3n4qqtts"]
 
-[ext_resource type="FontFile" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="1_nxijx"]
-[ext_resource type="FontFile" uid="uid://con38dyrt7687" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai_ExtraCondensed-Bold.ttf" id="2_6bqfs"]
+[ext_resource type="FontFile" uid="uid://b0eqnetjgxcbe" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai_ExtraCondensed-Bold.ttf" id="2_6bqfs"]
 [ext_resource type="StyleBox" uid="uid://cm4n0jsfrx4qk" path="res://assets/styles/HoverBoxButton.tres" id="2_b4x2b"]
 [ext_resource type="StyleBox" uid="uid://niasv7suu5xv" path="res://assets/styles/NormalPanel.tres" id="3_qe3bj"]
 
@@ -228,7 +227,7 @@ PopupMenu/constants/separator_outline_size = 0
 PopupMenu/constants/v_separation = 4
 PopupMenu/font_sizes/font_size = 8
 PopupMenu/font_sizes/title_font_size = 12
-PopupMenu/fonts/font = ExtResource("1_nxijx")
+PopupMenu/fonts/font = ExtResource("2_6bqfs")
 PopupMenu/icons/checked = SubResource("DPITexture_b4x2b")
 PopupMenu/icons/checked_disabled = SubResource("DPITexture_qe3bj")
 PopupMenu/icons/radio_checked = SubResource("DPITexture_l6h50")

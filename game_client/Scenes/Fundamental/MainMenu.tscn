@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://bhu4n5dxydmxy"]
 
-[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
-[ext_resource type="FontFile" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
-[ext_resource type="FontFile" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
-[ext_resource type="FontFile" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
+[ext_resource type="Script" uid="uid://jgh2tap132ml" path="res://Scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://21abcox6x2d3" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
 [ext_resource type="PackedScene" uid="uid://cj7duttg68mas" path="res://Scenes/ui/ContinueModal.tscn" id="6_continue_modal"]
+[ext_resource type="Script" uid="uid://dwr6w8df5o0br" path="res://Scripts/ContinueModal.gd" id="7_rinio"]
 [ext_resource type="PackedScene" uid="uid://rfcu2i8mplrx" path="res://Scenes/ui/SettingsModal.tscn" id="7_settings_modal"]
+[ext_resource type="Script" uid="uid://c1dcvurv2c6f6" path="res://Scripts/SettingsModal.gd" id="9_yeuhm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
 content_margin_left = 16.0
@@ -270,7 +272,15 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
+script = ExtResource("7_rinio")
 
 [node name="SettingsModal" parent="." unique_id=1821818516 instance=ExtResource("7_settings_modal")]
 unique_name_in_owner = true
 layout_mode = 1
+script = ExtResource("9_yeuhm")
+tab_active_style = null
+tab_active_hover_style = null
+tab_inactive_style = null
+tab_inactive_hover_style = null
+popup_panel_style = null
+popup_hover_style = null

@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://jxjev23pb8is" path="res://assets/Sprites/RUN/run_right.png" id="7_tx1dd"]
 [ext_resource type="Texture2D" uid="uid://c2ppx7nmp12c" path="res://assets/Sprites/RUN/run_up.png" id="8_gymyn"]
 
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
 atlas = ExtResource("1_vgqql")
 region = Rect2(23, 19, 47, 47)
@@ -512,7 +511,7 @@ visibility_layer = 2
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=141561010]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_d37hm")
-animation = &"Walk_Up"
+animation = &"Idle_Down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=533212913]
 position = Vector2(2, 12)
