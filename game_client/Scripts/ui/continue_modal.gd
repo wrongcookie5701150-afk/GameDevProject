@@ -9,14 +9,25 @@ signal closed()
 @onready var continue_subtitle: Label = %ContinueSubtitle
 @onready var continue_esc_hint: Label = %ContinueEscHint
 @onready var puzzle_01_button: Button = %Puzzle01Button
+@onready var scroll_container: ScrollContainer = %ScrollContainer
 
-const PUZZLE_01_SCENE_PATH: String = "res://scenes/Puzzle_Drive_History.tscn"
+const PUZZLE_01_SCENE_PATH: String = "res://Scenes/Puzzle_Drive_History.tscn"
 
 func _ready() -> void:
+	_setup_cyber_scrollbar()
 	if continue_back_button and not continue_back_button.pressed.is_connected(_on_back_pressed):
 		continue_back_button.pressed.connect(_on_back_pressed)
 	if puzzle_01_button and not puzzle_01_button.pressed.is_connected(_on_puzzle_01_pressed):
 		puzzle_01_button.pressed.connect(_on_puzzle_01_pressed)
+
+func _setup_cyber_scrollbar() -> void:
+	if not scroll_container:
+		return
+	var v_bar = scroll_container.get_v_scroll_bar()
+	if v_bar:
+		v_bar.custom_minimum_size.x = 4
+		v_bar.custom_step = 22.0
+		v_bar.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:

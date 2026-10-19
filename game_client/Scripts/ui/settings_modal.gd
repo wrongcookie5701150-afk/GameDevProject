@@ -1,10 +1,19 @@
 extends Control
 
 ## SettingsModal Controller for Godot 4.x
-## ควบคุมระบบตั้งค่า (General, Audio, Video, Other) และ Confirm Dialog
+## ควบคุมระบบตั้งค่า (General, Audio, Video, Other), หน้าต่างยืนยัน, และการบันทึกการตั้งค่าลงดิสก์
 
 signal closed()
 signal language_changed(index: int)
+
+const SETTINGS_FILE_PATH: String = "user://settings.cfg"
+
+const RESOLUTIONS: Array[Dictionary] = [
+	{"label": "960 x 540 (2x)", "size": Vector2i(960, 540)},
+	{"label": "1280 x 720 (16:9)", "size": Vector2i(1280, 720)},
+	{"label": "1600 x 900 (16:9)", "size": Vector2i(1600, 900)},
+	{"label": "1920 x 1080 (FHD)", "size": Vector2i(1920, 1080)},
+]
 
 # --- Settings Header & Footer ---
 @onready var settings_back_button: Button = %SettingsBackButton
@@ -85,13 +94,14 @@ signal language_changed(index: int)
 
 var current_language_idx: int = 0 # 0: English, 1: Thai
 var _pending_confirm_action: String = ""
+var _saved_snapshot: Dictionary = {}
 
 func _ready() -> void:
 	_init_tab_styles()
 	_init_option_popups()
 	_connect_signals()
 	_init_settings_values()
-	_apply_language(0)
+	load_settings_from_disk()
 	_select_tab("general")
 
 func _init_option_popups() -> void:
@@ -185,9 +195,14 @@ func _init_settings_values() -> void:
 		text_speed_option.add_item("Instant", 3)
 		text_speed_option.select(0)
 
+	_populate_resolution_options()
+	var detected_idx: int = _detect_current_resolution_index()
+	if resolution_option:
+		resolution_option.select(detected_idx)
+
 	if fullscreen_check_box:
 		var mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
-		fullscreen_check_box.set_pressed_no_signal(mode == DisplayServer.WINDOW_MODE_FULLSCREEN)
+		fullscreen_check_box.set_pressed_no_signal(mode == DisplayServer.WINDOW_MODE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 
 	if vsync_check_box:
 		var is_vsync: bool = (DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED)
@@ -211,7 +226,52 @@ func _init_settings_values() -> void:
 		if master_idx != -1:
 			mute_all_check_box.set_pressed_no_signal(AudioServer.is_bus_mute(master_idx))
 
+func _populate_resolution_options() -> void:
+	if not resolution_option:
+		return
+	var prev_selected: int = resolution_option.selected
+	resolution_option.clear()
+	for i in range(RESOLUTIONS.size()):
+		resolution_option.add_item(RESOLUTIONS[i]["label"], i)
+	if prev_selected >= 0 and prev_selected < RESOLUTIONS.size():
+		resolution_option.select(prev_selected)
+
+func _detect_current_resolution_index() -> int:
+	var current_size: Vector2i = DisplayServer.window_get_size()
+	var best_idx: int = 1 # default 1280x720
+	var min_diff: int = 9999999
+	for i in range(RESOLUTIONS.size()):
+		var res: Vector2i = RESOLUTIONS[i]["size"]
+		if res == current_size:
+			return i
+		var diff: int = abs(res.x - current_size.x) + abs(res.y - current_size.y)
+		if diff < min_diff:
+			min_diff = diff
+			best_idx = i
+	return best_idx
+
+func _center_window(target_size: Vector2i) -> void:
+	var screen_idx: int = DisplayServer.window_get_current_screen()
+	var rect: Rect2i = DisplayServer.screen_get_usable_rect(screen_idx)
+	if rect.size.x <= 0 or rect.size.y <= 0:
+		rect = Rect2i(Vector2i.ZERO, DisplayServer.screen_get_size(screen_idx))
+	if rect.size.x > 0 and rect.size.y > 0:
+		var target_pos: Vector2i = rect.position + (rect.size - target_size) / 2
+		target_pos.x = maxi(target_pos.x, rect.position.x)
+		target_pos.y = maxi(target_pos.y, rect.position.y)
+		DisplayServer.window_set_position(target_pos)
+
+func _apply_resolution_from_option() -> void:
+	if not resolution_option:
+		return
+	var idx: int = resolution_option.selected
+	if idx >= 0 and idx < RESOLUTIONS.size():
+		var target_size: Vector2i = RESOLUTIONS[idx]["size"]
+		DisplayServer.window_set_size(target_size)
+		_center_window(target_size)
+
 func open() -> void:
+	_take_settings_snapshot()
 	show()
 	_select_tab("general")
 	if tab_general:
@@ -221,12 +281,171 @@ func close() -> void:
 	hide()
 	closed.emit()
 
+func _take_settings_snapshot() -> void:
+	_saved_snapshot = {
+		"fullscreen": fullscreen_check_box.button_pressed if fullscreen_check_box else false,
+		"vsync": vsync_check_box.button_pressed if vsync_check_box else true,
+		"resolution_index": resolution_option.selected if resolution_option else _detect_current_resolution_index(),
+		"master_volume": master_slider.value if master_slider else 80.0,
+		"bgm_volume": bgm_slider.value if bgm_slider else 80.0,
+		"sfx_volume": sfx_slider.value if sfx_slider else 80.0,
+		"mute_all": mute_all_check_box.button_pressed if mute_all_check_box else false,
+		"language": language_option.selected if language_option else current_language_idx,
+		"text_speed": text_speed_option.selected if text_speed_option else 0,
+	}
+
+func _restore_settings_snapshot() -> void:
+	if _saved_snapshot.is_empty():
+		return
+	
+	if _saved_snapshot.has("language"):
+		var lang: int = _saved_snapshot["language"]
+		_apply_language(lang)
+		language_changed.emit(lang)
+	
+	if text_speed_option and _saved_snapshot.has("text_speed"):
+		text_speed_option.select(_saved_snapshot["text_speed"])
+		
+	if master_slider and _saved_snapshot.has("master_volume"):
+		master_slider.value = _saved_snapshot["master_volume"]
+		_on_master_slider_changed(master_slider.value)
+		
+	if bgm_slider and _saved_snapshot.has("bgm_volume"):
+		bgm_slider.value = _saved_snapshot["bgm_volume"]
+		_on_bgm_slider_changed(bgm_slider.value)
+		
+	if sfx_slider and _saved_snapshot.has("sfx_volume"):
+		sfx_slider.value = _saved_snapshot["sfx_volume"]
+		_on_sfx_slider_changed(sfx_slider.value)
+		
+	if mute_all_check_box and _saved_snapshot.has("mute_all"):
+		mute_all_check_box.set_pressed_no_signal(_saved_snapshot["mute_all"])
+		_on_mute_all_toggled(_saved_snapshot["mute_all"])
+		
+	if vsync_check_box and _saved_snapshot.has("vsync"):
+		vsync_check_box.set_pressed_no_signal(_saved_snapshot["vsync"])
+		_on_vsync_toggled(_saved_snapshot["vsync"])
+		
+	var is_fs: bool = _saved_snapshot.get("fullscreen", false)
+	if fullscreen_check_box:
+		fullscreen_check_box.set_pressed_no_signal(is_fs)
+	
+	if is_fs:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		var res_idx: int = _saved_snapshot.get("resolution_index", -1)
+		if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+			if resolution_option:
+				resolution_option.select(res_idx)
+			var target_size: Vector2i = RESOLUTIONS[res_idx]["size"]
+			DisplayServer.window_set_size(target_size)
+			_center_window(target_size)
+
+func save_settings_to_disk() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	config.load(SETTINGS_FILE_PATH)
+	
+	# Video
+	var is_fullscreen: bool = fullscreen_check_box.button_pressed if fullscreen_check_box else false
+	var is_vsync: bool = vsync_check_box.button_pressed if vsync_check_box else true
+	var res_idx: int = resolution_option.selected if resolution_option else 1
+	config.set_value("video", "fullscreen", is_fullscreen)
+	config.set_value("video", "vsync", is_vsync)
+	config.set_value("video", "resolution_index", res_idx)
+	if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+		config.set_value("video", "resolution_width", RESOLUTIONS[res_idx]["size"].x)
+		config.set_value("video", "resolution_height", RESOLUTIONS[res_idx]["size"].y)
+		
+	# Audio
+	if master_slider: config.set_value("audio", "master_volume", master_slider.value)
+	if bgm_slider: config.set_value("audio", "bgm_volume", bgm_slider.value)
+	if sfx_slider: config.set_value("audio", "sfx_volume", sfx_slider.value)
+	if mute_all_check_box: config.set_value("audio", "mute_all", mute_all_check_box.button_pressed)
+	
+	# General
+	if language_option: config.set_value("general", "language", language_option.selected)
+	if text_speed_option: config.set_value("general", "text_speed", text_speed_option.selected)
+	
+	var err: Error = config.save(SETTINGS_FILE_PATH)
+	if err == OK:
+		print("[SettingsModal] Saved settings to %s" % SETTINGS_FILE_PATH)
+	else:
+		push_error("[SettingsModal] Failed to save settings: %s" % err)
+	
+	_take_settings_snapshot()
+
+func load_settings_from_disk() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	var err: Error = config.load(SETTINGS_FILE_PATH)
+	if err != OK:
+		_take_settings_snapshot()
+		return
+		
+	# General
+	var lang: int = config.get_value("general", "language", 0)
+	_apply_language(lang)
+	language_changed.emit(lang)
+	if text_speed_option:
+		var speed_val: int = config.get_value("general", "text_speed", 0)
+		text_speed_option.select(speed_val)
+		
+	# Audio
+	if master_slider:
+		var val: float = config.get_value("audio", "master_volume", 80.0)
+		master_slider.value = val
+		_on_master_slider_changed(val)
+	if bgm_slider:
+		var val: float = config.get_value("audio", "bgm_volume", 80.0)
+		bgm_slider.value = val
+		_on_bgm_slider_changed(val)
+	if sfx_slider:
+		var val: float = config.get_value("audio", "sfx_volume", 80.0)
+		sfx_slider.value = val
+		_on_sfx_slider_changed(val)
+	if mute_all_check_box:
+		var is_mute: bool = config.get_value("audio", "mute_all", false)
+		mute_all_check_box.set_pressed_no_signal(is_mute)
+		_on_mute_all_toggled(is_mute)
+
+	# Video
+	var is_vsync: bool = config.get_value("video", "vsync", true)
+	if vsync_check_box:
+		vsync_check_box.set_pressed_no_signal(is_vsync)
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if is_vsync else DisplayServer.VSYNC_DISABLED)
+
+	var res_idx: int = config.get_value("video", "resolution_index", -1)
+	if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+		if resolution_option:
+			resolution_option.select(res_idx)
+	else:
+		res_idx = _detect_current_resolution_index()
+		if resolution_option:
+			resolution_option.select(res_idx)
+
+	var is_fullscreen: bool = config.get_value("video", "fullscreen", false)
+	if fullscreen_check_box:
+		fullscreen_check_box.set_pressed_no_signal(is_fullscreen)
+	
+	if is_fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+			var target_size: Vector2i = RESOLUTIONS[res_idx]["size"]
+			DisplayServer.window_set_size(target_size)
+			_center_window(target_size)
+			
+	_take_settings_snapshot()
+
 func _on_back_pressed() -> void:
-	print("ปิดหน้าต่าง SettingsModal (Back Button)")
+	print("ปิดหน้าต่าง SettingsModal (Reverting uncommitted changes)")
+	_restore_settings_snapshot()
 	close()
 
 func _on_settings_save_pressed() -> void:
-	print("บันทึกการตั้งค่าและปิด SettingsModal")
+	print("บันทึกการตั้งค่าลงดิสก์และปิด SettingsModal")
+	save_settings_to_disk()
 	close()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -237,6 +456,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_close_confirm_modal()
 			get_viewport().set_input_as_handled()
 		else:
+			_restore_settings_snapshot()
 			close()
 			get_viewport().set_input_as_handled()
 
@@ -301,15 +521,12 @@ func _apply_language(idx: int) -> void:
 
 	# Dynamic Resolution Option
 	if resolution_option:
-		var curr_res: int = resolution_option.selected if resolution_option.selected >= 0 else 0
+		var curr_res: int = resolution_option.selected if resolution_option.selected >= 0 else _detect_current_resolution_index()
 		resolution_option.clear()
-		if idx == 0:
-			resolution_option.add_item("1280 x 720 (Recommended 16:9)", 0)
-			resolution_option.add_item("1920 x 1080 (Full HD)", 1)
-		else:
-			resolution_option.add_item("1280 x 720 (แนะนำ 16:9)", 0)
-			resolution_option.add_item("1920 x 1080 (Full HD)", 1)
-		resolution_option.select(curr_res)
+		for i in range(RESOLUTIONS.size()):
+			resolution_option.add_item(RESOLUTIONS[i]["label"], i)
+		if curr_res >= 0 and curr_res < RESOLUTIONS.size():
+			resolution_option.select(curr_res)
 
 	if idx == 0:
 		# --- English (Default) ---
@@ -361,7 +578,7 @@ func _apply_language(idx: int) -> void:
 		if settings_back_button: settings_back_button.text = "← ย้อนกลับ"
 		if settings_save_button: settings_save_button.text = "บันทึกและปิด"
 
-		# Tab Buttons (Pure Thai, no English)
+		# Tab Buttons
 		if tab_general: tab_general.text = "ทั่วไป"
 		if tab_audio: tab_audio.text = "เสียง"
 		if tab_video: tab_video.text = "ภาพ"
@@ -461,6 +678,7 @@ func _on_fullscreen_toggled(toggled_on: bool) -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		_apply_resolution_from_option()
 
 func _on_vsync_label_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -474,11 +692,20 @@ func _on_vsync_toggled(toggled_on: bool) -> void:
 	)
 
 func _on_resolution_selected(index: int) -> void:
-	match index:
-		0:
-			DisplayServer.window_set_size(Vector2i(1280, 720))
-		1:
-			DisplayServer.window_set_size(Vector2i(1920, 1080))
+	if index < 0 or index >= RESOLUTIONS.size():
+		return
+	var target_size: Vector2i = RESOLUTIONS[index]["size"]
+	
+	# If currently in fullscreen, switch back to windowed so the resolution change is clearly visible
+	var current_mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
+	if current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN or current_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+		if fullscreen_check_box:
+			fullscreen_check_box.set_pressed_no_signal(false)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		
+	DisplayServer.window_set_size(target_size)
+	_center_window(target_size)
+	print("[SettingsModal] เปลี่ยนความละเอียดหน้าต่างเป็น: %dx%d และจัดกึ่งกลางหน้าจอ" % [target_size.x, target_size.y])
 
 # --- Settings General Controls & Confirmation ---
 func _on_reset_save_pressed() -> void:

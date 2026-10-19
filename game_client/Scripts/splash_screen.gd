@@ -4,7 +4,7 @@ extends Control
 @onready var studio_label: Label = %StudioLabel
 @onready var status_label: Label = %StatusLabel
 
-const MAIN_MENU_PATH: String = "res://scenes/MainMenu.tscn"
+const MAIN_MENU_PATH: String = "res://Scenes/MainMenu.tscn"
 
 var _is_transitioning: bool = false
 var _main_tween: Tween

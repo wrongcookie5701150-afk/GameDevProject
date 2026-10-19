@@ -11,13 +11,16 @@ extends Control
 @onready var continue_modal: Control = %ContinueModal
 @onready var settings_modal: Control = %SettingsModal
 
-const INTRO_SCENE_PATH: String = "res://scenes/Scene_01_Intro.tscn"
+const GAMEPLAY_SCENE_PATH: String = "res://Scenes/playground.tscn"
 
 var current_language_idx: int = 0
 
 func _ready() -> void:
 	_connect_signals()
-	_apply_language(0)
+	if settings_modal and "current_language_idx" in settings_modal:
+		_apply_language(settings_modal.current_language_idx)
+	else:
+		_apply_language(0)
 	if start_button:
 		start_button.call_deferred("grab_focus")
 
@@ -42,12 +45,12 @@ func _connect_signals() -> void:
 
 func _on_start_button_pressed() -> void:
 	print("กดปุ่มเริ่มเกมใหม่ (Start Game)")
-	if ResourceLoader.exists(INTRO_SCENE_PATH):
-		var change_result: Error = get_tree().change_scene_to_file(INTRO_SCENE_PATH)
+	if ResourceLoader.exists(GAMEPLAY_SCENE_PATH):
+		var change_result: Error = get_tree().change_scene_to_file(GAMEPLAY_SCENE_PATH)
 		if change_result != OK:
-			push_error("ไม่สามารถเปลี่ยนฉากไปยัง %s ได้ (Error code: %d)" % [INTRO_SCENE_PATH, change_result])
+			push_error("ไม่สามารถเปลี่ยนฉากไปยัง %s ได้ (Error code: %d)" % [GAMEPLAY_SCENE_PATH, change_result])
 	else:
-		print("ไม่พบฉาก %s ในระบบ (Scene ยังไม่ถูกสร้าง)" % INTRO_SCENE_PATH)
+		push_error("ไม่พบฉาก %s ในระบบ" % GAMEPLAY_SCENE_PATH)
 
 func _on_continue_button_pressed() -> void:
 	print("กดปุ่มเล่นต่อ (Continue) -> เปิด ContinueModal")

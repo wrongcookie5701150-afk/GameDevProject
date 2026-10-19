@@ -1,83 +1,83 @@
 [gd_scene format=3 uid="uid://bhu4n5dxydmxy"]
 
-[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://drin4ofrntfht" path="res://Scripts/main_menu.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://byi314ldbvsme" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
 [ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
 [ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
 [ext_resource type="FontFile" uid="uid://dberc7svvrmgp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
-[ext_resource type="PackedScene" path="res://scenes/ui/ContinueModal.tscn" id="6_continue_modal"]
-[ext_resource type="PackedScene" path="res://scenes/ui/SettingsModal.tscn" id="7_settings_modal"]
+[ext_resource type="PackedScene" path="res://Scenes/ui/ContinueModal.tscn" id="6_continue_modal"]
+[ext_resource type="PackedScene" path="res://Scenes/ui/SettingsModal.tscn" id="7_settings_modal"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
 bg_color = Color(0.0784314, 0.117647, 0.211765, 0.823529)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color(0.28, 0.62, 0.88, 0.75)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 shadow_color = Color(0, 0, 0, 0.35)
-shadow_size = 4
-shadow_offset = Vector2(0, 2)
+shadow_size = 2
+shadow_offset = Vector2(0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
 bg_color = Color(0.0470588, 0.0784314, 0.14902, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color(0.2, 0.9, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
 bg_color = Color(0.12549, 0.207843, 0.364706, 0.921569)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color(0.44, 0.84, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 shadow_color = Color(0.44, 0.84, 1, 0.3)
-shadow_size = 6
+shadow_size = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_focus"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
 bg_color = Color(0.12549, 0.207843, 0.364706, 0.921569)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color(0.44, 0.84, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=83028110]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -86,7 +86,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=316646391]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,102 +97,102 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HeaderLeft" type="MarginContainer" parent="."]
+[node name="HeaderLeft" type="MarginContainer" parent="." unique_id=2137479237]
 layout_mode = 1
-offset_left = 32.0
-offset_top = 24.0
-offset_right = 450.0
-offset_bottom = 64.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 240.0
+offset_bottom = 22.0
 
-[node name="StatusLabel" type="Label" parent="HeaderLeft"]
+[node name="StatusLabel" type="Label" parent="HeaderLeft" unique_id=1144419785]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 1)
 theme_override_colors/font_shadow_color = Color(0.4, 0.05, 0.05, 0.7)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("3_share_tech_mono")
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 7
 text = "⚠ SYSTEM STATUS : UNKNOWN"
 
-[node name="HeaderRight" type="MarginContainer" parent="."]
+[node name="HeaderRight" type="MarginContainer" parent="." unique_id=1771484184]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -232.0
-offset_top = 24.0
-offset_right = -32.0
-offset_bottom = 64.0
+offset_left = -90.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 22.0
 grow_horizontal = 0
 
-[node name="TimeLabel" type="Label" parent="HeaderRight"]
+[node name="TimeLabel" type="Label" parent="HeaderRight" unique_id=1228093662]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.439216, 0.839216, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.05, 0.25, 0.45, 0.7)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("3_share_tech_mono")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 8
 text = "19:02:00"
 horizontal_alignment = 2
 
-[node name="RightMenuContainer" type="VBoxContainer" parent="."]
+[node name="RightMenuContainer" type="VBoxContainer" parent="." unique_id=2040118284]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -460.0
-offset_top = -245.0
-offset_right = -100.0
-offset_bottom = 245.0
+offset_left = -162.0
+offset_top = -80.0
+offset_right = -38.0
+offset_bottom = 80.0
 grow_horizontal = 0
 grow_vertical = 2
-theme_override_constants/separation = 22
-
-[node name="TitleSection" type="VBoxContainer" parent="RightMenuContainer"]
-layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="TitleLocked" type="Label" parent="RightMenuContainer/TitleSection"]
+[node name="TitleSection" type="VBoxContainer" parent="RightMenuContainer" unique_id=427013145]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="TitleLocked" type="Label" parent="RightMenuContainer/TitleSection" unique_id=260745526]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.2, 0.25, 1)
 theme_override_colors/font_shadow_color = Color(0.2, 0, 0.05, 0.9)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 3
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("4_press_start_2p")
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 14
 text = "LOCKED"
 horizontal_alignment = 1
 
-[node name="TitleTime" type="Label" parent="RightMenuContainer/TitleSection"]
+[node name="TitleTime" type="Label" parent="RightMenuContainer/TitleSection" unique_id=496865455]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.95, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.15, 0.05, 0.1, 0.8)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("3_share_tech_mono")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 11
 text = "19:02"
 horizontal_alignment = 1
 
-[node name="TitleTagline" type="Label" parent="RightMenuContainer/TitleSection"]
+[node name="TitleTagline" type="Label" parent="RightMenuContainer/TitleSection" unique_id=1060655719]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.65, 0.78, 0.88, 1)
 theme_override_fonts/font = ExtResource("3_share_tech_mono")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 5
 text = "ONE FILE. ONE MISTAKE. NO WAY BACK?"
 horizontal_alignment = 1
 
-[node name="MenuButtons" type="VBoxContainer" parent="RightMenuContainer"]
+[node name="MenuButtons" type="VBoxContainer" parent="RightMenuContainer" unique_id=1992296278]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 14
+theme_override_constants/separation = 4
 
-[node name="StartButton" type="Button" parent="RightMenuContainer/MenuButtons"]
+[node name="StartButton" type="Button" parent="RightMenuContainer/MenuButtons" unique_id=1847996559]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(260, 46)
+custom_minimum_size = Vector2(130, 19)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
@@ -200,16 +200,16 @@ theme_override_colors/font_focus_color = Color(0.44, 0.84, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "New Game"
 
-[node name="ContinueButton" type="Button" parent="RightMenuContainer/MenuButtons"]
+[node name="ContinueButton" type="Button" parent="RightMenuContainer/MenuButtons" unique_id=489689798]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(260, 46)
+custom_minimum_size = Vector2(130, 19)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
@@ -217,16 +217,16 @@ theme_override_colors/font_focus_color = Color(0.44, 0.84, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Continue"
 
-[node name="SettingsButton" type="Button" parent="RightMenuContainer/MenuButtons"]
+[node name="SettingsButton" type="Button" parent="RightMenuContainer/MenuButtons" unique_id=894097993]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(260, 46)
+custom_minimum_size = Vector2(130, 19)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
@@ -234,16 +234,16 @@ theme_override_colors/font_focus_color = Color(0.44, 0.84, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Settings"
 
-[node name="ExitButton" type="Button" parent="RightMenuContainer/MenuButtons"]
+[node name="ExitButton" type="Button" parent="RightMenuContainer/MenuButtons" unique_id=1482727710]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(260, 46)
+custom_minimum_size = Vector2(130, 19)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
@@ -251,29 +251,30 @@ theme_override_colors/font_focus_color = Color(0.44, 0.84, 1, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Exit"
 
-[node name="FooterSection" type="MarginContainer" parent="RightMenuContainer"]
+[node name="FooterSection" type="MarginContainer" parent="RightMenuContainer" unique_id=721243563]
 layout_mode = 2
-theme_override_constants/margin_top = 6
 
-[node name="FooterLabel" type="Label" parent="RightMenuContainer/FooterSection"]
+[node name="FooterLabel" type="Label" parent="RightMenuContainer/FooterSection" unique_id=1567016488]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.68, 0.8, 0.85)
 theme_override_fonts/font = ExtResource("3_share_tech_mono")
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 5
 text = "— A CYBERSECURITY MYSTERY —"
 horizontal_alignment = 1
 
-[node name="ContinueModal" parent="." instance=ExtResource("6_continue_modal")]
+[node name="ContinueModal" parent="." unique_id=535292603 instance=ExtResource("6_continue_modal")]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
 
-[node name="SettingsModal" parent="." instance=ExtResource("7_settings_modal")]
+[node name="SettingsModal" parent="." unique_id=71231610 instance=ExtResource("7_settings_modal")]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
