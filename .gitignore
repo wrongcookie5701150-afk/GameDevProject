@@ -1,7 +1,9 @@
 .obsidian/
 .venv/
 .godot/
-*.import
-__pycache__/
-*.pyc
-.pytest_cache/
+*.import_cache
+
+# Build outputs
+*.exe
+*.apk
+*.aab

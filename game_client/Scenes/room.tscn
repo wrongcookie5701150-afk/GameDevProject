@@ -1,10 +1,10 @@
 [gd_scene format=4 uid="uid://bfsifnqbykj0p"]
 
-[ext_resource type="Texture2D" uid="uid://dkehvn3aljd11" path="res://assets/house/InteriorTilesLITE.png" id="1_fr46g"]
-[ext_resource type="Texture2D" uid="uid://bcuecmlyumsmx" path="res://assets/house/room_elements_1.png" id="3_gkney"]
+[ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="2_lsht4"]
+[ext_resource type="Texture2D" uid="uid://hvyljww33m8r" path="res://assets/House/InteriorTilesLITE.png" id="3_gkney"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lsht4"]
-texture = ExtResource("1_fr46g")
+texture = ExtResource("3_gkney")
 0:0/0 = 0
 1:0/0 = 0
 6:0/0 = 0
@@ -687,7 +687,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_lsht4")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fr46g"]
-texture = ExtResource("3_gkney")
+texture = ExtResource("2_lsht4")
 9:0/0 = 0
 10:0/0 = 0
 11:0/0 = 0
@@ -944,7 +944,7 @@ texture = ExtResource("3_gkney")
 4:12/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6mpvv"]
-texture = ExtResource("1_fr46g")
+texture = ExtResource("3_gkney")
 0:0/0 = 0
 1:0/0 = 0
 6:0/0 = 0
@@ -1576,11 +1576,11 @@ texture = ExtResource("1_fr46g")
 
 [sub_resource type="TileSet" id="TileSet_mbine"]
 physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_fr46g")
 sources/1 = SubResource("TileSetAtlasSource_6mpvv")
+sources/0 = SubResource("TileSetAtlasSource_fr46g")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gkney"]
-texture = ExtResource("1_fr46g")
+texture = ExtResource("3_gkney")
 0:0/0 = 0
 1:0/0 = 0
 6:0/0 = 0
@@ -2233,7 +2233,7 @@ texture = ExtResource("1_fr46g")
 31:27/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nfrpb"]
-texture = ExtResource("3_gkney")
+texture = ExtResource("2_lsht4")
 9:0/0 = 0
 9:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, 4, 8, 4, 8, 8, 5, 8)
 10:0/0 = 0
@@ -2501,8 +2501,8 @@ texture = ExtResource("3_gkney")
 
 [sub_resource type="TileSet" id="TileSet_rmv6o"]
 physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_gkney")
 sources/1 = SubResource("TileSetAtlasSource_nfrpb")
+sources/0 = SubResource("TileSetAtlasSource_gkney")
 
 [node name="Map" type="Node2D" unique_id=1668373968]
 

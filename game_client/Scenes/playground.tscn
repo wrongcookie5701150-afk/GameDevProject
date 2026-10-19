@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cahpqs4fo3l42"]
 
 [ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/room.tscn" id="1_uof5o"]
-[ext_resource type="Script" uid="uid://ddxiusovc4ivw" path="res://Scripts/player.gd" id="2_qyfof"]
+[ext_resource type="Script" uid="uid://qm5co3e547if" path="res://Scripts/player.gd" id="2_qyfof"]
 [ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://Scenes/player.tscn" id="2_u4ce8"]
 
 [node name="Playground" type="Node2D" unique_id=1245398925]
