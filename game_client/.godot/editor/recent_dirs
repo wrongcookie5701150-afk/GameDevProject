@@ -1,9 +1,9 @@
-res://assets/fonts/Noto_Sans_Thai/static/
 res://assets/House/
-res://Scripts/
-res://assets/house/
 res://assets/Sprites/RUN/
 res://assets/Sprites/IDLE/
+res://assets/house/
+res://assets/fonts/Noto_Sans_Thai/static/
+res://Scripts/
 res://assets/styles/
 res://Scenes/ui/
 res://Scenes/Fundamental/

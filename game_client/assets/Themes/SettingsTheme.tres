@@ -5,7 +5,6 @@
 [ext_resource type="StyleBox" uid="uid://cm4n0jsfrx4qk" path="res://assets/styles/HoverBoxButton.tres" id="2_b4x2b"]
 [ext_resource type="StyleBox" uid="uid://niasv7suu5xv" path="res://assets/styles/NormalPanel.tres" id="3_qe3bj"]
 
-
 [sub_resource type="DPITexture" id="DPITexture_dliv2"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\"><path fill=\"none\" stroke=\"#b2b2b2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\".85\" stroke-width=\"2\" d=\"m2 4 4 4 4-4\"/></svg>
 "
