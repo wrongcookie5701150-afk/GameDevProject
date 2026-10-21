@@ -1,0 +1,1031 @@
+[gd_scene format=3 uid="uid://b6ftkbcxjco0f"]
+
+[ext_resource type="Script" uid="uid://cx0xy336pa2kh" path="res://Scripts/desktop/desktop_screen.gd" id="1_screen_script"]
+[ext_resource type="Texture2D" uid="uid://cjs6xpfymc8p6" path="res://assets/images/backgrounds/bg_Desktop.jpeg" id="2_bg"]
+[ext_resource type="PackedScene" uid="uid://c83k4nv8t6g52" path="res://Scenes/desktop/DesktopIcon.tscn" id="3_icon_scene"]
+[ext_resource type="PackedScene" uid="uid://b8v1q4k70aw2p" path="res://Scenes/desktop/DesktopWindow.tscn" id="4_win_scene"]
+[ext_resource type="Texture2D" uid="uid://c555mephchm5a" path="res://assets/Icon/Google Drive.png" id="5_icon_drive"]
+[ext_resource type="Texture2D" uid="uid://bs3hhdtg0ioct" path="res://assets/Icon/Microsoft Word.png" id="6_icon_word"]
+[ext_resource type="Texture2D" uid="uid://d1khaa4a365su" path="res://assets/Icon32x32/folder.png" id="7_icon_folder"]
+[ext_resource type="Texture2D" uid="uid://q4empavp12iy" path="res://assets/Icon32x32/script_text.png" id="8_icon_text"]
+[ext_resource type="Texture2D" uid="uid://cqihxeox1mfnj" path="res://assets/Icon/Discord.png" id="9_icon_discord"]
+[ext_resource type="Texture2D" uid="uid://bt2xaxc0njvyf" path="res://assets/Icon32x32/delete.png" id="10_icon_trash"]
+[ext_resource type="Texture2D" uid="uid://dp7xr3xs058rf" path="res://assets/Icon32x32/windows_logo.png" id="11_icon_win"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="12_font_pixel"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="13_font_mono"]
+[ext_resource type="Texture2D" uid="uid://0ldr3xieek12" path="res://assets/Icon32x32/world_enable.png" id="15_icon_wifi_on"]
+[ext_resource type="Texture2D" uid="uid://wpy6at3gcx6k" path="res://assets/Icon/Toggl.png" id="18_icon_power"]
+[ext_resource type="Texture2D" uid="uid://ym2djyxwmnkn" path="res://assets/Icon32x32/character.png" id="19_icon_user"]
+[ext_resource type="Texture2D" uid="uid://dqknnjcir6gyc" path="res://assets/Icon32x32/character_npc.png" id="20_icon_npc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+bg_color = Color(0.06, 0.08, 0.13, 0.75)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.32, 0.5, 0.6)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_macro_warning"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.5, 0.4, 0.05, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.95, 0.8, 0.2, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_discord_sidebar"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.08, 0.1, 0.15, 0.95)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_notif_badge"]
+bg_color = Color(0.95, 0.22, 0.22, 1.0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_discord_input"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12, 0.15, 0.22, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.18, 0.24, 0.35, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_taskbar"]
+content_margin_left = 3.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.06, 0.1, 0.16, 0.96)
+border_width_top = 1
+border_color = Color(0.28, 0.5, 0.75, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_start_btn"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.16, 0.28, 0.46, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.6, 0.9, 0.8)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_start_menu"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.08, 0.11, 0.17, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.55, 0.85, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
+
+[node name="DesktopScreen" type="Control" unique_id=1608793853]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen_script")
+
+[node name="Wallpaper" type="TextureRect" parent="." unique_id=1575137379]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 2
+
+[node name="IconsContainer" type="HBoxContainer" parent="." unique_id=81870696]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 50.0
+offset_bottom = 246.0
+theme_override_constants/separation = 4
+
+[node name="Col1" type="VBoxContainer" parent="IconsContainer" unique_id=569419995]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Icon_GGDisk" parent="IconsContainer/Col1" unique_id=570476071 instance=ExtResource("3_icon_scene")]
+layout_mode = 2
+app_id = "gg_disk"
+app_name = "GG Disk"
+icon_texture = ExtResource("5_icon_drive")
+
+[node name="Icon_Word" parent="IconsContainer/Col1" unique_id=1678927111 instance=ExtResource("3_icon_scene")]
+layout_mode = 2
+app_id = "ms_word"
+app_name = "Word"
+icon_texture = ExtResource("6_icon_word")
+
+[node name="Icon_Files" parent="IconsContainer/Col1" unique_id=1427548332 instance=ExtResource("3_icon_scene")]
+layout_mode = 2
+app_id = "files"
+app_name = "งานกลุ่ม"
+icon_texture = ExtResource("7_icon_folder")
+
+[node name="Icon_Notepad" parent="IconsContainer/Col1" unique_id=1173206737 instance=ExtResource("3_icon_scene")]
+layout_mode = 2
+app_id = "notepad"
+app_name = "Notepad"
+icon_texture = ExtResource("8_icon_text")
+
+[node name="Icon_Discord" parent="IconsContainer/Col1" unique_id=1916859972 instance=ExtResource("3_icon_scene")]
+layout_mode = 2
+app_id = "discord"
+app_name = "Discord"
+icon_texture = ExtResource("9_icon_discord")
+
+[node name="Icon_RecycleBin" parent="IconsContainer/Col1" unique_id=1337921083 instance=ExtResource("3_icon_scene")]
+layout_mode = 2
+app_id = "recycle_bin"
+app_name = "Trash"
+icon_texture = ExtResource("10_icon_trash")
+
+[node name="WindowContainer" type="Control" parent="." unique_id=194827103]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GGDiskWindow" parent="WindowContainer" unique_id=427887728 instance=ExtResource("4_win_scene")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 120.0
+offset_top = 38.0
+offset_right = 360.0
+offset_bottom = 193.0
+window_title = "Google Drive - งานกลุ่มล้านแปด"
+window_icon = ExtResource("5_icon_drive")
+
+[node name="GGDiskContent" type="VBoxContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea" index="0" unique_id=1776907245]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="TabBar" type="HBoxContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent" unique_id=1528674723]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="GGTabFilesBtn" type="Button" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/TabBar" unique_id=1232013210]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "ไฟล์ทั้งหมด"
+
+[node name="GGTabHistoryBtn" type="Button" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/TabBar" unique_id=1106196067]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "ประวัติการใช้งาน (Log)"
+
+[node name="AccountLabel" type="Label" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/TabBar" unique_id=953975521]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 0.7)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "may.cs@university.example"
+horizontal_alignment = 2
+
+[node name="GGFilesPanel" type="VBoxContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent" unique_id=1931116856]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 2
+
+[node name="FileRow1" type="PanelContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel" unique_id=248269654]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="HBox" type="HBoxContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel/FileRow1" unique_id=1110899153]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel/FileRow1/HBox" unique_id=540065019]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Report_Final.docx (shared by mesasohot...)"
+
+[node name="GGOpenWordBtn" type="Button" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel/FileRow1/HBox" unique_id=829186273]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "ดาวน์โหลด & เปิด"
+
+[node name="FileRow2" type="PanelContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel" unique_id=1558764036]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Label" type="Label" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel/FileRow2" unique_id=687400775]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Network_Diagram.png (mesa.sukj@university.example)"
+
+[node name="FileRow3" type="PanelContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel" unique_id=194999732]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Label" type="Label" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel/FileRow3" unique_id=1670049580]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Research_Data.xlsx (mesa.sukj@university.example)"
+
+[node name="FileRow4" type="PanelContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel" unique_id=184048940]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Label" type="Label" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGFilesPanel/FileRow4" unique_id=1691251894]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Presentation.pptx (mesa.sukj@university.example)"
+
+[node name="GGHistoryPanel" type="ScrollContainer" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent" unique_id=295027129]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HistoryText" type="Label" parent="WindowContainer/GGDiskWindow/VBox/ContentArea/GGDiskContent/GGHistoryPanel" unique_id=2034098139]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.8, 0.95, 0.85, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "## Drive Activity History (Story Log)
+18:54 | Network_Diagram.png | mesa.sukj@university.example
+18:56 | Research_Data.xlsx  | mesa.sukj@university.example
+18:57 | Presentation.pptx   | mesa.sukj@university.example
+18:58 | Report_Final.docx   | mesasohot.sukj@universcity.example [!]
+19:02 | Report_Final.docx opened by May
+19:03 | Active Content enabled by May"
+
+[node name="MSWordWindow" parent="WindowContainer" unique_id=1810248958 instance=ExtResource("4_win_scene")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 125.0
+offset_top = 42.0
+offset_right = 365.0
+offset_bottom = 197.0
+window_title = "Word - Report_Final.docx"
+window_icon = ExtResource("6_icon_word")
+
+[node name="WordContent" type="VBoxContainer" parent="WindowContainer/MSWordWindow/VBox/ContentArea" index="0" unique_id=1637327865]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="WordMacroBanner" type="PanelContainer" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent" unique_id=1977399653]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_macro_warning")
+
+[node name="HBox" type="HBoxContainer" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent/WordMacroBanner" unique_id=1915022507]
+layout_mode = 2
+
+[node name="WarnLabel" type="Label" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent/WordMacroBanner/HBox" unique_id=1569980993]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 0.85, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "⚠ SECURITY WARNING: Macros have been disabled."
+
+[node name="EnableContentBtn" type="Button" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent/WordMacroBanner/HBox" unique_id=2105043524]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.2, 0.2, 1)
+theme_override_fonts/font = ExtResource("12_font_pixel")
+theme_override_font_sizes/font_size = 6
+text = "Enable Content"
+
+[node name="WordDocStatus" type="Label" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent" unique_id=2140580981]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.8)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "สถานะ: เอกสารรายงานวิชาความมั่นคงปลอดภัยไซเบอร์"
+
+[node name="Scroll" type="ScrollContainer" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent" unique_id=1326976690]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DocText" type="Label" parent="WindowContainer/MSWordWindow/VBox/ContentArea/WordContent/Scroll" unique_id=362762209]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "หัวข้อ: การป้องกันและรับมือมัลแวร์ในองค์กร
+ผู้จัดทำ: เมษา และ เมย์ (กลุ่ม 4)
+
+1. บทนำ (Introduction)
+ความมั่นคงปลอดภัยไซเบอร์ (Cybersecurity) คือแนวปฏิบัติ...
+2. การสำรองข้อมูล (3-2-1 Backup Rule)
+- มีสำเนา 3 ชุด บนสื่อ 2 ชนิด เก็บแยกต่างหาก 1 ที่...
+[จุดกระพริบ Cursor รอพิมพ์ต่อ 300 คำ...]"
+
+[node name="FilesWindow" parent="WindowContainer" unique_id=1819937374 instance=ExtResource("4_win_scene")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 130.0
+offset_top = 48.0
+offset_right = 350.0
+offset_bottom = 193.0
+window_title = "Explorer - งานกลุ่มล้านแปด"
+window_icon = ExtResource("7_icon_folder")
+
+[node name="FilesContent" type="VBoxContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea" index="0" unique_id=1490243152]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="PathBar" type="Label" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent" unique_id=472189899]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.85, 1, 0.8)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "C:\\Users\\May\\Documents\\งานกลุ่มล้านแปด\\"
+
+[node name="FilesList" type="VBoxContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent" unique_id=1021547367]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FileItemReadme" type="PanelContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList" unique_id=321103904]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="HBoxReadme" type="HBoxContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItemReadme" unique_id=1293523613]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItemReadme/HBoxReadme" unique_id=1826498754]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "⚠ README_TO_RECOVER_FILES.txt"
+
+[node name="ReadmeOpenBtn" type="Button" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItemReadme/HBoxReadme" unique_id=574742924]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 14)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "เปิด"
+
+[node name="FileItem1" type="PanelContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList" unique_id=1115627234]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="HBox1" type="HBoxContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItem1" unique_id=459139222]
+layout_mode = 2
+
+[node name="FileItemReportLabel" type="Label" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItem1/HBox1" unique_id=2008606786]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Report_Final.docx"
+
+[node name="FileItemReportOpenBtn" type="Button" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItem1/HBox1" unique_id=644411537]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 14)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "เปิด"
+
+[node name="FileItem2" type="PanelContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList" unique_id=1903211837]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="FileItemDataLabel" type="Label" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItem2" unique_id=1738114472]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Research_Data.xlsx"
+
+[node name="FileItem3" type="PanelContainer" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList" unique_id=1324942416]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="FileItemPresLabel" type="Label" parent="WindowContainer/FilesWindow/VBox/ContentArea/FilesContent/FilesList/FileItem3" unique_id=187220331]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Presentation.pptx"
+
+[node name="TextEditorWindow" parent="WindowContainer" unique_id=850970454 instance=ExtResource("4_win_scene")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 135.0
+offset_top = 50.0
+offset_right = 355.0
+offset_bottom = 195.0
+window_title = "Notepad - README"
+window_icon = ExtResource("8_icon_text")
+
+[node name="TextContent" type="VBoxContainer" parent="WindowContainer/TextEditorWindow/VBox/ContentArea" index="0" unique_id=858291496]
+layout_mode = 2
+
+[node name="AlertBanner" type="Label" parent="WindowContainer/TextEditorWindow/VBox/ContentArea/TextContent" unique_id=1245376779]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
+theme_override_fonts/font = ExtResource("12_font_pixel")
+theme_override_font_sizes/font_size = 6
+text = "YOUR FILES HAVE BEEN ENCRYPTED."
+horizontal_alignment = 1
+
+[node name="BodyText" type="Label" parent="WindowContainer/TextEditorWindow/VBox/ContentArea/TextContent" unique_id=803005517]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "DO NOT MODIFY OR DELETE FILES.
+WAIT FOR FURTHER INSTRUCTIONS.
+
+All personal files on this system (.docx, .xlsx, .pptx)
+have been locked with AES-256 encryption.
+Contact ransomware operator to recover."
+
+[node name="DiscordWindow" parent="WindowContainer" unique_id=2020309594 instance=ExtResource("4_win_scene")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 125.0
+offset_top = 40.0
+offset_right = 355.0
+offset_bottom = 190.0
+window_title = "Discord - CS Group"
+window_icon = ExtResource("9_icon_discord")
+
+[node name="DiscordContent" type="HBoxContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea" index="0" unique_id=243176421]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="DiscordSidebar" type="PanelContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent" unique_id=57730231]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_discord_sidebar")
+
+[node name="SidebarVBox" type="VBoxContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordSidebar" unique_id=586740677]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="SidebarTitle" type="Label" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordSidebar/SidebarVBox" unique_id=780334456]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.65, 0.8, 0.85)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "DIRECT MESSAGES"
+
+[node name="BtnChatMesa" type="Button" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordSidebar/SidebarVBox" unique_id=642627753]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/icon_max_width = 11
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = " เมษา"
+icon = ExtResource("19_icon_user")
+alignment = 0
+expand_icon = true
+
+[node name="BtnChatMarch" type="Button" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordSidebar/SidebarVBox" unique_id=1802704975]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/icon_max_width = 11
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = " พี่มาร์ช"
+icon = ExtResource("20_icon_npc")
+alignment = 0
+expand_icon = true
+
+[node name="MarchNotifBadge" type="Panel" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordSidebar/SidebarVBox/BtnChatMarch" unique_id=1982736451]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -2.5
+offset_right = -3.0
+offset_bottom = 2.5
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_notif_badge")
+
+[node name="DiscordChatArea" type="VBoxContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent" unique_id=544265354]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="ChatHeader" type="PanelContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea" unique_id=1664041310]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="HBox" type="HBoxContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea/ChatHeader" unique_id=508885905]
+layout_mode = 2
+
+[node name="DiscordChatTitle" type="Label" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea/ChatHeader/HBox" unique_id=1250450784]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "@ Mesasohot131415"
+
+[node name="DiscordChatStatus" type="Label" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea/ChatHeader/HBox" unique_id=1591626136]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.5, 0.9)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "● Online"
+
+[node name="ChatScrollMesa" type="ScrollContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea" unique_id=658388629]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChatLogMesa" type="Label" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea/ChatScrollMesa" unique_id=1362261631]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "[Direct Message]
+14:33 | Mesasohot131415:
+\"เมย์\"
+
+14:33 | Mesasohot131415:
+\"การบ้านเธอจะทำส่วนไหน\"
+
+17:47 | Mesasohot131415:
+\"ฉันทำหมดแล้วล่ะ เหลือส่วนของรายงาน\"
+
+18:48 | Mesasohot131415:
+\"ฮาโหลลลลลล มีใครอยู่มั้ย\""
+autowrap_mode = 2
+
+[node name="ChatScrollMarch" type="ScrollContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea" unique_id=1469255875]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChatLogMarch" type="Label" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea/ChatScrollMarch" unique_id=2022128636]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "[Direct Message]
+21:25 | M4rchupikchu_inw101:
+\"Roblox ป่าวน้อง\"
+
+21:26 | Mayicomeinpls:
+\"พี่มาร์ชคะ คอมเปิดไฟล์ไม่ได้ค่ะ\"
+
+21:28 | M4rchupikchu_inw101:
+\"อืมม ตัดเน็ตคอมพิวเตอร์ก่อน\""
+autowrap_mode = 2
+
+[node name="DiscordInputBar" type="PanelContainer" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea" unique_id=1432890123]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_discord_input")
+
+[node name="DiscordInputPlaceholder" type="Label" parent="WindowContainer/DiscordWindow/VBox/ContentArea/DiscordContent/DiscordChatArea/DiscordInputBar" unique_id=1432890124]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.52, 0.65, 0.8)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Message @Mesasohot131415"
+vertical_alignment = 1
+
+[node name="RecycleBinWindow" parent="WindowContainer" unique_id=454257924 instance=ExtResource("4_win_scene")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 140.0
+offset_top = 55.0
+offset_right = 340.0
+offset_bottom = 185.0
+window_title = "Recycle Bin"
+window_icon = ExtResource("10_icon_trash")
+
+[node name="TrashLabel" type="Label" parent="WindowContainer/RecycleBinWindow/VBox/ContentArea" index="0" unique_id=371671813]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.7, 0.8, 0.7)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "This folder is empty."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Taskbar" type="PanelContainer" parent="." unique_id=987654321]
+z_index = 10
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_taskbar")
+
+[node name="HBox" type="HBoxContainer" parent="Taskbar" unique_id=462602679]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="StartButton" type="Button" parent="Taskbar/HBox" unique_id=2002004834]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/h_separation = 3
+theme_override_constants/icon_max_width = 11
+theme_override_fonts/font = ExtResource("12_font_pixel")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_start_btn")
+text = "Start"
+icon = ExtResource("11_icon_win")
+expand_icon = true
+
+[node name="TaskbarTabsContainer" type="HBoxContainer" parent="Taskbar/HBox" unique_id=1556529718]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="SystemTray" type="HBoxContainer" parent="Taskbar/HBox" unique_id=962620312]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="WifiTrayButton" type="Button" parent="Taskbar/HBox/SystemTray" unique_id=1256905846]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(46, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.5, 1)
+theme_override_constants/h_separation = 3
+theme_override_constants/icon_max_width = 11
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Wi-Fi"
+icon = ExtResource("15_icon_wifi_on")
+flat = true
+expand_icon = true
+
+[node name="ClockLabel" type="Label" parent="Taskbar/HBox/SystemTray" unique_id=452944610]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "19:02"
+horizontal_alignment = 1
+
+[node name="LeavePCButton" type="Button" parent="Taskbar/HBox/SystemTray" unique_id=266192649]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(34, 15)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "⏻ ออก"
+
+[node name="StartMenuPopup" type="PanelContainer" parent="." unique_id=748291038]
+unique_name_in_owner = true
+visible = false
+z_index = 20
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -175.0
+offset_right = 148.0
+offset_bottom = -22.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_start_menu")
+
+[node name="VBox" type="VBoxContainer" parent="StartMenuPopup" unique_id=2038033010]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="UserHeader" type="Label" parent="StartMenuPopup/VBox" unique_id=2015470729]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "User: May (CS Yr 2)"
+
+[node name="HSeparator1" type="HSeparator" parent="StartMenuPopup/VBox" unique_id=261361292]
+layout_mode = 2
+
+[node name="MenuGGDisk" type="Button" parent="StartMenuPopup/VBox" unique_id=849729811]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Google Drive"
+icon = ExtResource("5_icon_drive")
+alignment = 0
+expand_icon = true
+
+[node name="MenuWord" type="Button" parent="StartMenuPopup/VBox" unique_id=340412327]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Microsoft Word"
+icon = ExtResource("6_icon_word")
+alignment = 0
+expand_icon = true
+
+[node name="MenuFiles" type="Button" parent="StartMenuPopup/VBox" unique_id=230895705]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "งานกลุ่มล้านแปด"
+icon = ExtResource("7_icon_folder")
+alignment = 0
+expand_icon = true
+
+[node name="MenuNotepad" type="Button" parent="StartMenuPopup/VBox" unique_id=1233759940]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Notepad (บันทึก)"
+icon = ExtResource("8_icon_text")
+alignment = 0
+expand_icon = true
+
+[node name="MenuDiscord" type="Button" parent="StartMenuPopup/VBox" unique_id=1295014396]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Discord"
+icon = ExtResource("9_icon_discord")
+alignment = 0
+expand_icon = true
+
+[node name="MenuRecycleBin" type="Button" parent="StartMenuPopup/VBox" unique_id=104662013]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Recycle Bin"
+icon = ExtResource("10_icon_trash")
+alignment = 0
+expand_icon = true
+
+[node name="HSeparator2" type="HSeparator" parent="StartMenuPopup/VBox" unique_id=1784028259]
+layout_mode = 2
+
+[node name="StartMenuLeaveBtn" type="Button" parent="StartMenuPopup/VBox" unique_id=1734630603]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.4, 1)
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "ปิดเครื่อง (Exit PC)"
+icon = ExtResource("18_icon_power")
+alignment = 0
+expand_icon = true
+
+[node name="WifiPopup" type="PanelContainer" parent="." unique_id=381940281]
+unique_name_in_owner = true
+visible = false
+z_index = 20
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -175.0
+offset_top = -120.0
+offset_right = -4.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_start_menu")
+
+[node name="VBox" type="VBoxContainer" parent="WifiPopup" unique_id=1568579028]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="WifiHeader" type="HBoxContainer" parent="WifiPopup/VBox" unique_id=275304532]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="WifiPopup/VBox/WifiHeader" unique_id=78420741]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_fonts/font = ExtResource("12_font_pixel")
+theme_override_font_sizes/font_size = 6
+text = "Network & Wi-Fi"
+
+[node name="WifiCloseBtn" type="Button" parent="WifiPopup/VBox/WifiHeader" unique_id=932798609]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(14, 12)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "✕"
+flat = true
+
+[node name="HSeparator1" type="HSeparator" parent="WifiPopup/VBox" unique_id=873632675]
+layout_mode = 2
+
+[node name="NetworkCard" type="PanelContainer" parent="WifiPopup/VBox" unique_id=584243996]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="CardVBox" type="VBoxContainer" parent="WifiPopup/VBox/NetworkCard" unique_id=1795045273]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="SSIDLabel" type="Label" parent="WifiPopup/VBox/NetworkCard/CardVBox" unique_id=1244582756]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "SSID: University_WiFi_5G"
+
+[node name="WifiStatusLabel" type="Label" parent="WifiPopup/VBox/NetworkCard/CardVBox" unique_id=977732886]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.5, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "สถานะ: เชื่อมต่อแล้ว (Connected)"
+
+[node name="WifiToggleBtn" type="Button" parent="WifiPopup/VBox" unique_id=1296142931]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "● สัญญาณ Wi-Fi: เปิดใช้งาน"
+
+[node name="HSeparator2" type="HSeparator" parent="WifiPopup/VBox" unique_id=1240441953]
+layout_mode = 2
+
+[node name="WifiCloudSyncLabel" type="Label" parent="WifiPopup/VBox" unique_id=398958033]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 0.8)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "CloudSync: ซิงค์อัตโนมัติเปิดใช้งาน"
+autowrap_mode = 2
+
+[editable path="WindowContainer/GGDiskWindow"]
+[editable path="WindowContainer/MSWordWindow"]
+[editable path="WindowContainer/FilesWindow"]
+[editable path="WindowContainer/TextEditorWindow"]
+[editable path="WindowContainer/DiscordWindow"]
+[editable path="WindowContainer/RecycleBinWindow"]

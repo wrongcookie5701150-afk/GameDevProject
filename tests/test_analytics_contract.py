@@ -9,10 +9,12 @@ from backend_api.main import app
 
 client = TestClient(app)
 
-# กำหนด Path ไปยังโฟลเดอร์ game-client
-GAME_CLIENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../game-client"))
+# กำหนด Path ไปยังโฟลเดอร์ game_client
+GAME_CLIENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../game_client"))
+if not os.path.exists(GAME_CLIENT_DIR):
+    GAME_CLIENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../game-client"))
 SCENES_DIR = os.path.join(GAME_CLIENT_DIR, "scenes")
-SCRIPTS_DIR = os.path.join(GAME_CLIENT_DIR, "scripts")
+SCRIPTS_DIR = os.path.join(GAME_CLIENT_DIR, "Scripts" if os.path.exists(os.path.join(GAME_CLIENT_DIR, "Scripts")) else "scripts")
 
 def create_base_payload(scene_id: str, task_id: str, metrics: dict):
     return {
