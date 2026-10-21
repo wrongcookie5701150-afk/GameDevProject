@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody2D
 
 # กำหนดความเร็วการเคลื่อนที่
-@export var speed: float = 150.0
+@export var speed: float = 125.0
 
 # using name space
 @onready var _animated_sprite = $AnimatedSprite2D

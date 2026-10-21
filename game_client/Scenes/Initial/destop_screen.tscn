@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://byys2hdyrijny"]
+
+[ext_resource type="Texture2D" uid="uid://cjs6xpfymc8p6" path="res://assets/images/backgrounds/bg_Desktop.jpeg" id="1_pxgsu"]
+[ext_resource type="Texture2D" uid="uid://c555mephchm5a" path="res://assets/Icon/Google Drive.png" id="2_j6mno"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="3_h3cbx"]
+[ext_resource type="Texture2D" uid="uid://bs3hhdtg0ioct" path="res://assets/Icon/Microsoft Word.png" id="4_j6mno"]
+[ext_resource type="Texture2D" uid="uid://cqihxeox1mfnj" path="res://assets/Icon/Discord.png" id="5_h3cbx"]
+
+[node name="DestopScreen" type="Control" unique_id=1608793853]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WindowBackground" type="TextureRect" parent="." unique_id=1575137379]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pxgsu")
+expand_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowBackground" unique_id=1594286630]
+layout_mode = 0
+offset_right = 49.0
+offset_bottom = 134.0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+
+[node name="Menu" type="VBoxContainer" parent="WindowBackground/MarginContainer" unique_id=81870696]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="GoogleDriveIcon" type="TextureButton" parent="WindowBackground/MarginContainer/Menu" unique_id=324463732]
+layout_mode = 2
+tooltip_text = ",dvsnmvpampp"
+texture_normal = ExtResource("2_j6mno")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="WindowBackground/MarginContainer/Menu/GoogleDriveIcon" unique_id=1277032084]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 43.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.65882355, 0.3254902, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_h3cbx")
+theme_override_font_sizes/font_size = 5
+text = "Google
+Drive"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="MSWord" type="TextureButton" parent="WindowBackground/MarginContainer/Menu" unique_id=423681381]
+layout_mode = 2
+texture_normal = ExtResource("4_j6mno")
+stretch_mode = 3
+
+[node name="Label2" type="Label" parent="WindowBackground/MarginContainer/Menu/MSWord" unique_id=1819768878]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 43.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.65882355, 0.3254902, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_h3cbx")
+theme_override_font_sizes/font_size = 5
+text = "MS Word"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="Discord" type="TextureButton" parent="WindowBackground/MarginContainer/Menu" unique_id=1923346394]
+layout_mode = 2
+texture_normal = ExtResource("5_h3cbx")
+stretch_mode = 3
+
+[node name="Label3" type="Label" parent="WindowBackground/MarginContainer/Menu/Discord" unique_id=719917451]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 43.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.65882355, 0.3254902, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_h3cbx")
+theme_override_font_sizes/font_size = 5
+text = "Discord"
+horizontal_alignment = 1

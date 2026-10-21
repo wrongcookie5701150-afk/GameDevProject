@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://cahpqs4fo3l42"]
+
+[ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/Initial/room.tscn" id="1_hccr6"]
+[ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://Scenes/Initial/player.tscn" id="2_cplki"]
+[ext_resource type="Script" uid="uid://qm5co3e547if" path="res://Scripts/Player.gd" id="3_isu03"]
+[ext_resource type="FontFile" uid="uid://g6hovebpvdx7" path="res://assets/fonts/ARMBOX MOON Night Demo Version 1.0.0/Demo Version 1.0.0/MOON Night DEMO Mac.otf" id="4_cplki"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_isu03"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isu03"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9359631, 0.7605945, 0.6346329, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqs4c"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Playground" type="Node2D" unique_id=1245398925]
+
+[node name="Map" parent="." unique_id=1668373968 instance=ExtResource("1_hccr6")]
+metadata/_edit_group_ = true
+
+[node name="Player" parent="." unique_id=1657159317 instance=ExtResource("2_cplki")]
+position = Vector2(98, 169)
+script = ExtResource("3_isu03")
+metadata/_edit_group_ = true
+
+[node name="Textbox" type="CanvasLayer" parent="." unique_id=1621444230]
+
+[node name="MarginContainer" type="MarginContainer" parent="Textbox" unique_id=50589375]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -78.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Panel" type="Panel" parent="Textbox/MarginContainer" unique_id=934248219]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_isu03")
+
+[node name="MarginContainer" type="MarginContainer" parent="Textbox/MarginContainer/Panel" unique_id=1735361204]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Panel" type="Panel" parent="Textbox/MarginContainer/Panel/MarginContainer" unique_id=1500290027]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Textbox/MarginContainer/Panel/MarginContainer/Panel" unique_id=767875038]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Start" type="Label" parent="Textbox/MarginContainer/Panel/MarginContainer/Panel/HBoxContainer" unique_id=109980823]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("4_isu03")
+theme_override_font_sizes/font_size = 12
+text = "*"
+vertical_alignment = 3
+
+[node name="Text" type="Label" parent="Textbox/MarginContainer/Panel/MarginContainer/Panel/HBoxContainer" unique_id=1782789429]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("4_cplki")
+theme_override_font_sizes/font_size = 20
+text = "สัสดีจ้า ฉันชื่อ.........."
+horizontal_alignment = 3
+autowrap_mode = 2
+justification_flags = 129
+clip_text = true
+text_overrun_behavior = 1
+max_lines_visible = 2
+
+[node name="End" type="Label" parent="Textbox/MarginContainer/Panel/MarginContainer/Panel/HBoxContainer" unique_id=583011738]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("4_isu03")
+theme_override_font_sizes/font_size = 10
+text = "V"
+vertical_alignment = 2
