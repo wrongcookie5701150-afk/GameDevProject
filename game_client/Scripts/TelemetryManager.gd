@@ -66,7 +66,7 @@ func _send_payload_to_backend(payload: Dictionary) -> void:
 	var headers: PackedStringArray = ["Content-Type: application/json"]
 	_http_request.request(BACKEND_URL, headers, HTTPClient.METHOD_POST, json_data)
 
-func _on_http_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_http_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if response_code == 200:
 		var json: JSON = JSON.new()
 		if json.parse(body.get_string_from_utf8()) == OK and typeof(json.data) == TYPE_DICTIONARY:

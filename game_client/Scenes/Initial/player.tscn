@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://kcrnqw2c0ic0"]
 
-[ext_resource type="Texture2D" uid="uid://qj8sgps1ybeq" path="res://assets/Sprites/IDLE/idle_down.png" id="1_vgqql"]
-[ext_resource type="Texture2D" uid="uid://d1gjqraaf15g8" path="res://assets/Sprites/IDLE/idle_left.png" id="2_fkybt"]
-[ext_resource type="Texture2D" uid="uid://b3ar6ksnxq7sy" path="res://assets/Sprites/IDLE/idle_right.png" id="3_x3wgy"]
-[ext_resource type="Texture2D" uid="uid://cnhqyr5cefa8n" path="res://assets/Sprites/IDLE/idle_up.png" id="4_3smsa"]
-[ext_resource type="Texture2D" uid="uid://ce1kqejtnj6u" path="res://assets/Sprites/RUN/run_down.png" id="5_8erm5"]
-[ext_resource type="Texture2D" uid="uid://bs5kpnhbk6o1f" path="res://assets/Sprites/RUN/run_left.png" id="6_f1ek2"]
-[ext_resource type="Texture2D" uid="uid://jxjev23pb8is" path="res://assets/Sprites/RUN/run_right.png" id="7_tx1dd"]
-[ext_resource type="Texture2D" uid="uid://c2ppx7nmp12c" path="res://assets/Sprites/RUN/run_up.png" id="8_gymyn"]
+[ext_resource type="Texture2D" uid="uid://cx6sqvjgqh6l1" path="res://assets/sprite/IDLE/idle_down.png" id="1_vgqql"]
+[ext_resource type="Texture2D" uid="uid://d2caw80e1f63u" path="res://assets/sprite/IDLE/idle_left.png" id="2_fkybt"]
+[ext_resource type="Texture2D" uid="uid://dgm5u1wceyo2" path="res://assets/sprite/IDLE/idle_right.png" id="3_x3wgy"]
+[ext_resource type="Texture2D" uid="uid://c6qrmk1tqtg6i" path="res://assets/sprite/IDLE/idle_up.png" id="4_3smsa"]
+[ext_resource type="Texture2D" uid="uid://6306ax7vtn6y" path="res://assets/sprite/RUN/run_down.png" id="5_8erm5"]
+[ext_resource type="Texture2D" uid="uid://bkl0xhmakwhxc" path="res://assets/sprite/RUN/run_left.png" id="6_f1ek2"]
+[ext_resource type="Texture2D" uid="uid://baw4lkhdbwn44" path="res://assets/sprite/RUN/run_right.png" id="7_tx1dd"]
+[ext_resource type="Texture2D" uid="uid://w6s304hiwcqb" path="res://assets/sprite/RUN/run_up.png" id="8_gymyn"]
+[ext_resource type="Script" uid="uid://qm5co3e547if" path="res://Scripts/Player.gd" id="9_qyfof"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
 atlas = ExtResource("1_vgqql")
@@ -505,6 +506,7 @@ radius = 8.675
 height = 17.35
 
 [node name="Player" type="CharacterBody2D" unique_id=1657159317]
+script = ExtResource("9_qyfof")
 light_mask = 16
 visibility_layer = 16
 z_index = 2

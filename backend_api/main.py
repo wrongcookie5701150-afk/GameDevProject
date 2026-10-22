@@ -54,7 +54,7 @@ def validate_task_metrics(payload: TelemetryEvent) -> None:
         ]
         if missing_keys:
             raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status_code=422,
                 detail={
                     "error": "Missing Required Metrics",
                     "task_id": payload.task_id,
@@ -68,6 +68,7 @@ def validate_task_metrics(payload: TelemetryEvent) -> None:
 async def root():
     return {"service": "Cyber Game Telemetry Backend", "status": "running"}
 
+@app.post("/api/telemetry", response_model=DynamicGameplayResponse, status_code=status.HTTP_200_OK)
 @app.post("/api/v1/telemetry/event", response_model=DynamicGameplayResponse, status_code=status.HTTP_200_OK)
 async def ingest_telemetry_event(payload: TelemetryEvent):
     validate_task_metrics(payload)

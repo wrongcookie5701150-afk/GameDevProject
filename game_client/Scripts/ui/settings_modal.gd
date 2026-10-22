@@ -1,0 +1,745 @@
+extends Control
+
+## SettingsModal Controller for Godot 4.x
+## ควบคุมระบบตั้งค่า (General, Audio, Video, Other), หน้าต่างยืนยัน, และการบันทึกการตั้งค่าลงดิสก์
+
+signal closed()
+signal language_changed(index: int)
+
+const SETTINGS_FILE_PATH: String = "user://settings.cfg"
+
+const RESOLUTIONS: Array[Dictionary] = [
+	{"label": "960 x 540 (2x)", "size": Vector2i(960, 540)},
+	{"label": "1280 x 720 (16:9)", "size": Vector2i(1280, 720)},
+	{"label": "1600 x 900 (16:9)", "size": Vector2i(1600, 900)},
+	{"label": "1920 x 1080 (FHD)", "size": Vector2i(1920, 1080)},
+]
+
+# --- Settings Header & Footer ---
+@onready var settings_back_button: Button = %SettingsBackButton
+@onready var settings_save_button: Button = %SettingsSaveButton
+@onready var settings_subtitle: Label = %SettingsSubtitle
+
+# --- Settings Tabs & Panels ---
+@onready var tab_general: Button = %TabGeneral
+@onready var tab_audio: Button = %TabAudio
+@onready var tab_video: Button = %TabVideo
+@onready var tab_other: Button = %TabOther
+
+@onready var panel_general: Control = %PanelGeneral
+@onready var panel_audio: Control = %PanelAudio
+@onready var panel_video: Control = %PanelVideo
+@onready var panel_other: Control = %PanelOther
+
+# --- General Tab Controls ---
+@onready var lang_label: Label = %LangLabel
+@onready var language_option: OptionButton = %LanguageOption
+@onready var text_speed_label: Label = %TextSpeedLabel
+@onready var text_speed_option: OptionButton = %TextSpeedOption
+@onready var save_data_label: Label = %SaveDataLabel
+@onready var reset_save_button: Button = %ResetSaveButton
+@onready var delete_all_button: Button = %DeleteAllButton
+
+# --- Confirmation Modal ---
+@onready var confirm_modal: Control = %ConfirmModal
+@onready var confirm_message: Label = %ConfirmMessage
+@onready var confirm_cancel_button: Button = %ConfirmCancelButton
+@onready var confirm_ok_button: Button = %ConfirmOkButton
+
+# --- Audio Tab Controls ---
+@onready var master_label: Label = %MasterLabel
+@onready var master_slider: HSlider = %MasterSlider
+@onready var master_val_label: Label = %MasterValLabel
+
+@onready var bgm_label: Label = %BGMLabel
+@onready var bgm_slider: HSlider = %BGMSlider
+@onready var bgm_val_label: Label = %BGMValLabel
+
+@onready var sfx_label: Label = %SFXLabel
+@onready var sfx_slider: HSlider = %SFXSlider
+@onready var sfx_val_label: Label = %SFXValLabel
+
+@onready var mute_all_check_box: CheckBox = %MuteAllCheckBox
+@onready var mute_all_label: Label = %MuteAllLabel
+
+# --- Video Tab Controls ---
+@onready var fullscreen_check_box: CheckBox = %FullscreenCheckBox
+@onready var fullscreen_label: Label = %FullscreenLabel
+@onready var vsync_check_box: CheckBox = %VsyncCheckBox
+@onready var vsync_label: Label = %VsyncLabel
+@onready var resolution_label: Label = %ResolutionLabel
+@onready var resolution_option: OptionButton = %ResolutionOption
+
+# --- Other Tab Controls ---
+@onready var studio_label: Label = %StudioLabel
+@onready var studio_val: Label = %StudioVal
+@onready var ver_label: Label = %VerLabel
+@onready var version_val: Label = %VersionVal
+@onready var dev_title_label: Label = %DevTitleLabel
+@onready var control_guide_title: Label = %ControlGuideTitle
+@onready var desc_1: Label = %Desc1
+@onready var desc_2: Label = %Desc2
+@onready var desc_3: Label = %Desc3
+@onready var desc_4: Label = %Desc4
+
+# StyleBoxes for Tabs
+@export var tab_active_style: StyleBox
+@export var tab_active_hover_style: StyleBox
+@export var tab_inactive_style: StyleBox
+@export var tab_inactive_hover_style: StyleBox
+
+# StyleBoxes for OptionButton PopupMenu
+@export var popup_panel_style: StyleBox
+@export var popup_hover_style: StyleBox
+
+var current_language_idx: int = 0 # 0: English, 1: Thai
+var _pending_confirm_action: String = ""
+var _saved_snapshot: Dictionary = {}
+
+func _ready() -> void:
+	_init_tab_styles()
+	_init_option_popups()
+	_connect_signals()
+	_init_settings_values()
+	load_settings_from_disk()
+	_select_tab("general")
+
+func _init_option_popups() -> void:
+	for opt in [language_option, text_speed_option, resolution_option]:
+		if opt:
+			var popup: PopupMenu = opt.get_popup()
+			if popup:
+				popup.transparent_bg = true
+				if popup_panel_style:
+					popup.add_theme_stylebox_override("panel", popup_panel_style)
+				if popup_hover_style:
+					popup.add_theme_stylebox_override("hover", popup_hover_style)
+				popup.add_theme_color_override("font_color", Color(0.91, 0.953, 1.0, 1.0))
+				popup.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+
+func _init_tab_styles() -> void:
+	if not tab_active_style and tab_general and tab_general.has_theme_stylebox("normal"):
+		tab_active_style = tab_general.get_theme_stylebox("normal")
+	if not tab_inactive_style and tab_audio and tab_audio.has_theme_stylebox("normal"):
+		tab_inactive_style = tab_audio.get_theme_stylebox("normal")
+
+func _connect_signals() -> void:
+	# Footer buttons
+	if settings_back_button and not settings_back_button.pressed.is_connected(_on_back_pressed):
+		settings_back_button.pressed.connect(_on_back_pressed)
+	if settings_save_button and not settings_save_button.pressed.is_connected(_on_settings_save_pressed):
+		settings_save_button.pressed.connect(_on_settings_save_pressed)
+
+	# Settings Tabs
+	if tab_general and not tab_general.pressed.is_connected(func() -> void: _select_tab("general")):
+		tab_general.pressed.connect(func() -> void: _select_tab("general"))
+	if tab_audio and not tab_audio.pressed.is_connected(func() -> void: _select_tab("audio")):
+		tab_audio.pressed.connect(func() -> void: _select_tab("audio"))
+	if tab_video and not tab_video.pressed.is_connected(func() -> void: _select_tab("video")):
+		tab_video.pressed.connect(func() -> void: _select_tab("video"))
+	if tab_other and not tab_other.pressed.is_connected(func() -> void: _select_tab("other")):
+		tab_other.pressed.connect(func() -> void: _select_tab("other"))
+
+	# Audio Controls
+	if master_slider and not master_slider.value_changed.is_connected(_on_master_slider_changed):
+		master_slider.value_changed.connect(_on_master_slider_changed)
+	if bgm_slider and not bgm_slider.value_changed.is_connected(_on_bgm_slider_changed):
+		bgm_slider.value_changed.connect(_on_bgm_slider_changed)
+	if sfx_slider and not sfx_slider.value_changed.is_connected(_on_sfx_slider_changed):
+		sfx_slider.value_changed.connect(_on_sfx_slider_changed)
+	if mute_all_check_box and not mute_all_check_box.toggled.is_connected(_on_mute_all_toggled):
+		mute_all_check_box.toggled.connect(_on_mute_all_toggled)
+	if mute_all_label and not mute_all_label.gui_input.is_connected(_on_mute_all_label_gui_input):
+		mute_all_label.gui_input.connect(_on_mute_all_label_gui_input)
+
+	# Video Controls
+	if fullscreen_check_box and not fullscreen_check_box.toggled.is_connected(_on_fullscreen_toggled):
+		fullscreen_check_box.toggled.connect(_on_fullscreen_toggled)
+	if fullscreen_label and not fullscreen_label.gui_input.is_connected(_on_fullscreen_label_gui_input):
+		fullscreen_label.gui_input.connect(_on_fullscreen_label_gui_input)
+	if vsync_check_box and not vsync_check_box.toggled.is_connected(_on_vsync_toggled):
+		vsync_check_box.toggled.connect(_on_vsync_toggled)
+	if vsync_label and not vsync_label.gui_input.is_connected(_on_vsync_label_gui_input):
+		vsync_label.gui_input.connect(_on_vsync_label_gui_input)
+	if resolution_option and not resolution_option.item_selected.is_connected(_on_resolution_selected):
+		resolution_option.item_selected.connect(_on_resolution_selected)
+
+	# General Controls
+	if language_option and not language_option.item_selected.is_connected(_on_language_selected):
+		language_option.item_selected.connect(_on_language_selected)
+	if text_speed_option and not text_speed_option.item_selected.is_connected(_on_text_speed_selected):
+		text_speed_option.item_selected.connect(_on_text_speed_selected)
+	if reset_save_button and not reset_save_button.pressed.is_connected(_on_reset_save_pressed):
+		reset_save_button.pressed.connect(_on_reset_save_pressed)
+	if delete_all_button and not delete_all_button.pressed.is_connected(_on_delete_all_pressed):
+		delete_all_button.pressed.connect(_on_delete_all_pressed)
+
+	# Confirmation Modal
+	if confirm_cancel_button and not confirm_cancel_button.pressed.is_connected(_close_confirm_modal):
+		confirm_cancel_button.pressed.connect(_close_confirm_modal)
+	if confirm_ok_button and not confirm_ok_button.pressed.is_connected(_on_confirm_ok_pressed):
+		confirm_ok_button.pressed.connect(_on_confirm_ok_pressed)
+
+func _init_settings_values() -> void:
+	if language_option:
+		language_option.clear()
+		language_option.add_item("English", 0)
+		language_option.add_item("ไทย", 1)
+		language_option.select(0)
+
+	if text_speed_option:
+		text_speed_option.clear()
+		text_speed_option.add_item("Normal", 0)
+		text_speed_option.add_item("Slow", 1)
+		text_speed_option.add_item("Fast", 2)
+		text_speed_option.add_item("Instant", 3)
+		text_speed_option.select(0)
+
+	_populate_resolution_options()
+	var detected_idx: int = _detect_current_resolution_index()
+	if resolution_option:
+		resolution_option.select(detected_idx)
+
+	if fullscreen_check_box:
+		var mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
+		fullscreen_check_box.set_pressed_no_signal(mode == DisplayServer.WINDOW_MODE_FULLSCREEN or mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+
+	if vsync_check_box:
+		var is_vsync: bool = (DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED)
+		vsync_check_box.set_pressed_no_signal(is_vsync)
+
+	if master_slider and master_val_label:
+		master_val_label.text = "%d%%" % int(master_slider.value)
+		_update_bus_volume("Master", master_slider.value)
+
+	if bgm_slider and bgm_val_label:
+		bgm_val_label.text = "%d%%" % int(bgm_slider.value)
+		_update_bus_volume("BGM", bgm_slider.value)
+		_update_bus_volume("Music", bgm_slider.value)
+
+	if sfx_slider and sfx_val_label:
+		sfx_val_label.text = "%d%%" % int(sfx_slider.value)
+		_update_bus_volume("SFX", sfx_slider.value)
+
+	if mute_all_check_box:
+		var master_idx: int = AudioServer.get_bus_index("Master")
+		if master_idx != -1:
+			mute_all_check_box.set_pressed_no_signal(AudioServer.is_bus_mute(master_idx))
+
+func _populate_resolution_options() -> void:
+	if not resolution_option:
+		return
+	var prev_selected: int = resolution_option.selected
+	resolution_option.clear()
+	for i in range(RESOLUTIONS.size()):
+		resolution_option.add_item(RESOLUTIONS[i]["label"], i)
+	if prev_selected >= 0 and prev_selected < RESOLUTIONS.size():
+		resolution_option.select(prev_selected)
+
+func _detect_current_resolution_index() -> int:
+	var current_size: Vector2i = DisplayServer.window_get_size()
+	var best_idx: int = 1 # default 1280x720
+	var min_diff: int = 9999999
+	for i in range(RESOLUTIONS.size()):
+		var res: Vector2i = RESOLUTIONS[i]["size"]
+		if res == current_size:
+			return i
+		var diff: int = abs(res.x - current_size.x) + abs(res.y - current_size.y)
+		if diff < min_diff:
+			min_diff = diff
+			best_idx = i
+	return best_idx
+
+func _center_window(target_size: Vector2i) -> void:
+	var screen_idx: int = DisplayServer.window_get_current_screen()
+	var rect: Rect2i = DisplayServer.screen_get_usable_rect(screen_idx)
+	if rect.size.x <= 0 or rect.size.y <= 0:
+		rect = Rect2i(Vector2i.ZERO, DisplayServer.screen_get_size(screen_idx))
+	if rect.size.x > 0 and rect.size.y > 0:
+		var target_pos: Vector2i = rect.position + (rect.size - target_size) / 2
+		target_pos.x = maxi(target_pos.x, rect.position.x)
+		target_pos.y = maxi(target_pos.y, rect.position.y)
+		DisplayServer.window_set_position(target_pos)
+
+func _apply_resolution_from_option() -> void:
+	if not resolution_option:
+		return
+	var idx: int = resolution_option.selected
+	if idx >= 0 and idx < RESOLUTIONS.size():
+		var target_size: Vector2i = RESOLUTIONS[idx]["size"]
+		DisplayServer.window_set_size(target_size)
+		_center_window(target_size)
+
+func open() -> void:
+	_take_settings_snapshot()
+	show()
+	_select_tab("general")
+	if tab_general:
+		tab_general.grab_focus()
+
+func close() -> void:
+	hide()
+	closed.emit()
+
+func _take_settings_snapshot() -> void:
+	_saved_snapshot = {
+		"fullscreen": fullscreen_check_box.button_pressed if fullscreen_check_box else false,
+		"vsync": vsync_check_box.button_pressed if vsync_check_box else true,
+		"resolution_index": resolution_option.selected if resolution_option else _detect_current_resolution_index(),
+		"master_volume": master_slider.value if master_slider else 80.0,
+		"bgm_volume": bgm_slider.value if bgm_slider else 80.0,
+		"sfx_volume": sfx_slider.value if sfx_slider else 80.0,
+		"mute_all": mute_all_check_box.button_pressed if mute_all_check_box else false,
+		"language": language_option.selected if language_option else current_language_idx,
+		"text_speed": text_speed_option.selected if text_speed_option else 0,
+	}
+
+func _restore_settings_snapshot() -> void:
+	if _saved_snapshot.is_empty():
+		return
+	
+	if _saved_snapshot.has("language"):
+		var lang: int = _saved_snapshot["language"]
+		_apply_language(lang)
+		language_changed.emit(lang)
+	
+	if text_speed_option and _saved_snapshot.has("text_speed"):
+		text_speed_option.select(_saved_snapshot["text_speed"])
+		
+	if master_slider and _saved_snapshot.has("master_volume"):
+		master_slider.value = _saved_snapshot["master_volume"]
+		_on_master_slider_changed(master_slider.value)
+		
+	if bgm_slider and _saved_snapshot.has("bgm_volume"):
+		bgm_slider.value = _saved_snapshot["bgm_volume"]
+		_on_bgm_slider_changed(bgm_slider.value)
+		
+	if sfx_slider and _saved_snapshot.has("sfx_volume"):
+		sfx_slider.value = _saved_snapshot["sfx_volume"]
+		_on_sfx_slider_changed(sfx_slider.value)
+		
+	if mute_all_check_box and _saved_snapshot.has("mute_all"):
+		mute_all_check_box.set_pressed_no_signal(_saved_snapshot["mute_all"])
+		_on_mute_all_toggled(_saved_snapshot["mute_all"])
+		
+	if vsync_check_box and _saved_snapshot.has("vsync"):
+		vsync_check_box.set_pressed_no_signal(_saved_snapshot["vsync"])
+		_on_vsync_toggled(_saved_snapshot["vsync"])
+		
+	var is_fs: bool = _saved_snapshot.get("fullscreen", false)
+	if fullscreen_check_box:
+		fullscreen_check_box.set_pressed_no_signal(is_fs)
+	
+	if is_fs:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		var res_idx: int = _saved_snapshot.get("resolution_index", -1)
+		if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+			if resolution_option:
+				resolution_option.select(res_idx)
+			var target_size: Vector2i = RESOLUTIONS[res_idx]["size"]
+			DisplayServer.window_set_size(target_size)
+			_center_window(target_size)
+
+func save_settings_to_disk() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	config.load(SETTINGS_FILE_PATH)
+	
+	# Video
+	var is_fullscreen: bool = fullscreen_check_box.button_pressed if fullscreen_check_box else false
+	var is_vsync: bool = vsync_check_box.button_pressed if vsync_check_box else true
+	var res_idx: int = resolution_option.selected if resolution_option else 1
+	config.set_value("video", "fullscreen", is_fullscreen)
+	config.set_value("video", "vsync", is_vsync)
+	config.set_value("video", "resolution_index", res_idx)
+	if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+		config.set_value("video", "resolution_width", RESOLUTIONS[res_idx]["size"].x)
+		config.set_value("video", "resolution_height", RESOLUTIONS[res_idx]["size"].y)
+		
+	# Audio
+	if master_slider: config.set_value("audio", "master_volume", master_slider.value)
+	if bgm_slider: config.set_value("audio", "bgm_volume", bgm_slider.value)
+	if sfx_slider: config.set_value("audio", "sfx_volume", sfx_slider.value)
+	if mute_all_check_box: config.set_value("audio", "mute_all", mute_all_check_box.button_pressed)
+	
+	# General
+	if language_option: config.set_value("general", "language", language_option.selected)
+	if text_speed_option: config.set_value("general", "text_speed", text_speed_option.selected)
+	
+	var err: Error = config.save(SETTINGS_FILE_PATH)
+	if err == OK:
+		print("[SettingsModal] Saved settings to %s" % SETTINGS_FILE_PATH)
+	else:
+		push_error("[SettingsModal] Failed to save settings: %s" % err)
+	
+	_take_settings_snapshot()
+
+func load_settings_from_disk() -> void:
+	var config: ConfigFile = ConfigFile.new()
+	var err: Error = config.load(SETTINGS_FILE_PATH)
+	if err != OK:
+		_take_settings_snapshot()
+		return
+		
+	# General
+	var lang: int = config.get_value("general", "language", 0)
+	_apply_language(lang)
+	language_changed.emit(lang)
+	if text_speed_option:
+		var speed_val: int = config.get_value("general", "text_speed", 0)
+		text_speed_option.select(speed_val)
+		
+	# Audio
+	if master_slider:
+		var val: float = config.get_value("audio", "master_volume", 80.0)
+		master_slider.value = val
+		_on_master_slider_changed(val)
+	if bgm_slider:
+		var val: float = config.get_value("audio", "bgm_volume", 80.0)
+		bgm_slider.value = val
+		_on_bgm_slider_changed(val)
+	if sfx_slider:
+		var val: float = config.get_value("audio", "sfx_volume", 80.0)
+		sfx_slider.value = val
+		_on_sfx_slider_changed(val)
+	if mute_all_check_box:
+		var is_mute: bool = config.get_value("audio", "mute_all", false)
+		mute_all_check_box.set_pressed_no_signal(is_mute)
+		_on_mute_all_toggled(is_mute)
+
+	# Video
+	var is_vsync: bool = config.get_value("video", "vsync", true)
+	if vsync_check_box:
+		vsync_check_box.set_pressed_no_signal(is_vsync)
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if is_vsync else DisplayServer.VSYNC_DISABLED)
+
+	var res_idx: int = config.get_value("video", "resolution_index", -1)
+	if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+		if resolution_option:
+			resolution_option.select(res_idx)
+	else:
+		res_idx = _detect_current_resolution_index()
+		if resolution_option:
+			resolution_option.select(res_idx)
+
+	var is_fullscreen: bool = config.get_value("video", "fullscreen", false)
+	if fullscreen_check_box:
+		fullscreen_check_box.set_pressed_no_signal(is_fullscreen)
+	
+	if is_fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		if res_idx >= 0 and res_idx < RESOLUTIONS.size():
+			var target_size: Vector2i = RESOLUTIONS[res_idx]["size"]
+			DisplayServer.window_set_size(target_size)
+			_center_window(target_size)
+			
+	_take_settings_snapshot()
+
+func _on_back_pressed() -> void:
+	print("ปิดหน้าต่าง SettingsModal (Reverting uncommitted changes)")
+	_restore_settings_snapshot()
+	close()
+
+func _on_settings_save_pressed() -> void:
+	print("บันทึกการตั้งค่าลงดิสก์และปิด SettingsModal")
+	save_settings_to_disk()
+	close()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE):
+		if confirm_modal and confirm_modal.visible:
+			_close_confirm_modal()
+			get_viewport().set_input_as_handled()
+		else:
+			_restore_settings_snapshot()
+			close()
+			get_viewport().set_input_as_handled()
+
+func _select_tab(tab_name: String) -> void:
+	if panel_general: panel_general.visible = (tab_name == "general")
+	if panel_audio: panel_audio.visible = (tab_name == "audio")
+	if panel_video: panel_video.visible = (tab_name == "video")
+	if panel_other: panel_other.visible = (tab_name == "other")
+
+	_set_tab_button_state(tab_general, tab_name == "general")
+	_set_tab_button_state(tab_audio, tab_name == "audio")
+	_set_tab_button_state(tab_video, tab_name == "video")
+	_set_tab_button_state(tab_other, tab_name == "other")
+
+func _set_tab_button_state(btn: Button, is_active: bool) -> void:
+	if not btn:
+		return
+	if is_active:
+		if tab_active_style:
+			btn.add_theme_stylebox_override("normal", tab_active_style)
+			btn.add_theme_stylebox_override("hover", tab_active_hover_style if tab_active_hover_style else tab_active_style)
+			btn.add_theme_stylebox_override("pressed", tab_active_style)
+			btn.add_theme_stylebox_override("focus", tab_active_style)
+		btn.add_theme_color_override("font_color", Color(0.05, 0.08, 0.15, 1.0))
+		btn.add_theme_color_override("font_hover_color", Color(0.05, 0.08, 0.15, 1.0))
+		btn.add_theme_color_override("font_pressed_color", Color(0.05, 0.08, 0.15, 1.0))
+		btn.add_theme_color_override("font_focus_color", Color(0.05, 0.08, 0.15, 1.0))
+	else:
+		if tab_inactive_style:
+			btn.add_theme_stylebox_override("normal", tab_inactive_style)
+			btn.add_theme_stylebox_override("hover", tab_inactive_hover_style if tab_inactive_hover_style else tab_inactive_style)
+			btn.add_theme_stylebox_override("pressed", tab_inactive_style)
+			btn.add_theme_stylebox_override("focus", tab_inactive_style)
+		btn.add_theme_color_override("font_color", Color(0.62, 0.73, 0.84, 1.0))
+		btn.add_theme_color_override("font_hover_color", Color(0.92, 0.96, 1.0, 1.0))
+		btn.add_theme_color_override("font_pressed_color", Color(0.62, 0.73, 0.84, 1.0))
+		btn.add_theme_color_override("font_focus_color", Color(0.62, 0.73, 0.84, 1.0))
+
+func apply_language(idx: int) -> void:
+	_apply_language(idx)
+
+func _apply_language(idx: int) -> void:
+	current_language_idx = idx
+	if language_option and language_option.selected != idx:
+		language_option.select(idx)
+
+	# Dynamic Text Speed Option
+	if text_speed_option:
+		var curr_speed: int = text_speed_option.selected if text_speed_option.selected >= 0 else 0
+		text_speed_option.clear()
+		if idx == 0:
+			text_speed_option.add_item("Normal", 0)
+			text_speed_option.add_item("Slow", 1)
+			text_speed_option.add_item("Fast", 2)
+			text_speed_option.add_item("Instant", 3)
+		else:
+			text_speed_option.add_item("ปกติ", 0)
+			text_speed_option.add_item("ช้า", 1)
+			text_speed_option.add_item("เร็ว", 2)
+			text_speed_option.add_item("ทันที", 3)
+		text_speed_option.select(curr_speed)
+
+	# Dynamic Resolution Option
+	if resolution_option:
+		var curr_res: int = resolution_option.selected if resolution_option.selected >= 0 else _detect_current_resolution_index()
+		resolution_option.clear()
+		for i in range(RESOLUTIONS.size()):
+			resolution_option.add_item(RESOLUTIONS[i]["label"], i)
+		if curr_res >= 0 and curr_res < RESOLUTIONS.size():
+			resolution_option.select(curr_res)
+
+	if idx == 0:
+		# --- English (Default) ---
+		if settings_subtitle: settings_subtitle.text = "Adjust game settings"
+		if settings_back_button: settings_back_button.text = "← Back"
+		if settings_save_button: settings_save_button.text = "Save & Close"
+
+		# Tab Buttons
+		if tab_general: tab_general.text = "General"
+		if tab_audio: tab_audio.text = "Audio"
+		if tab_video: tab_video.text = "Video"
+		if tab_other: tab_other.text = "Other"
+
+		# General Panel
+		if lang_label: lang_label.text = "Language:"
+		if text_speed_label: text_speed_label.text = "Text Speed:"
+		if save_data_label: save_data_label.text = "Save Data Management:"
+		if reset_save_button: reset_save_button.text = "Reset Save Data"
+		if delete_all_button: delete_all_button.text = "Delete All Save Data"
+
+		# Audio Panel
+		if master_label: master_label.text = "Master Volume"
+		if bgm_label: bgm_label.text = "BGM Volume"
+		if sfx_label: sfx_label.text = "SFX Volume"
+		if mute_all_label: mute_all_label.text = "Mute All"
+
+		# Video Panel
+		if fullscreen_label: fullscreen_label.text = "Fullscreen"
+		if vsync_label: vsync_label.text = "V-Sync"
+		if resolution_label: resolution_label.text = "Resolution:"
+
+		# Other Panel
+		if studio_label: studio_label.text = "Studio:"
+		if studio_val: studio_val.text = "GAME STUDIO"
+		if ver_label: ver_label.text = "Game Version:"
+		if dev_title_label: dev_title_label.text = "Development Team:"
+		if control_guide_title: control_guide_title.text = "Control Guide:"
+		if desc_1: desc_1.text = "Character Movement"
+		if desc_2: desc_2.text = "Interact / Inspect"
+		if desc_3: desc_3.text = "Open Smartphone"
+		if desc_4: desc_4.text = "Pause Menu / Back"
+
+		# Confirm Modal
+		if confirm_cancel_button: confirm_cancel_button.text = "Cancel"
+		if confirm_ok_button: confirm_ok_button.text = "Confirm"
+	else:
+		# --- ไทย (Thai) ---
+		if settings_subtitle: settings_subtitle.text = "ปรับแต่งการตั้งค่าของเกม"
+		if settings_back_button: settings_back_button.text = "← ย้อนกลับ"
+		if settings_save_button: settings_save_button.text = "บันทึกและปิด"
+
+		# Tab Buttons
+		if tab_general: tab_general.text = "ทั่วไป"
+		if tab_audio: tab_audio.text = "เสียง"
+		if tab_video: tab_video.text = "ภาพ"
+		if tab_other: tab_other.text = "อื่นๆ"
+
+		# General Panel
+		if lang_label: lang_label.text = "ภาษา:"
+		if text_speed_label: text_speed_label.text = "ความเร็วข้อความ:"
+		if save_data_label: save_data_label.text = "จัดการข้อมูลบันทึก:"
+		if reset_save_button: reset_save_button.text = "รีเซ็ตข้อมูลบันทึก"
+		if delete_all_button: delete_all_button.text = "ลบข้อมูลบันทึกทั้งหมด"
+
+		# Audio Panel
+		if master_label: master_label.text = "ระดับเสียงหลัก"
+		if bgm_label: bgm_label.text = "เสียงดนตรีประกอบ"
+		if sfx_label: sfx_label.text = "เสียงเอฟเฟกต์"
+		if mute_all_label: mute_all_label.text = "ปิดเสียงทั้งหมด"
+
+		# Video Panel
+		if fullscreen_label: fullscreen_label.text = "เต็มจอ"
+		if vsync_label: vsync_label.text = "เปิดใช้งาน V-Sync"
+		if resolution_label: resolution_label.text = "ความละเอียดหน้าจอ:"
+
+		# Other Panel
+		if studio_label: studio_label.text = "สตูดิโอ:"
+		if studio_val: studio_val.text = "GAME STUDIO"
+		if ver_label: ver_label.text = "เวอร์ชันของเกม:"
+		if dev_title_label: dev_title_label.text = "ทีมพัฒนา:"
+		if control_guide_title: control_guide_title.text = "คู่มือปุ่มควบคุม:"
+		if desc_1: desc_1.text = "เดินควบคุมตัวละคร"
+		if desc_2: desc_2.text = "สำรวจ / โต้ตอบ"
+		if desc_3: desc_3.text = "เปิดโทรศัพท์มือถือ"
+		if desc_4: desc_4.text = "เมนูหยุดเกม / ย้อนกลับ"
+
+		# Confirm Modal
+		if confirm_cancel_button: confirm_cancel_button.text = "ยกเลิก"
+		if confirm_ok_button: confirm_ok_button.text = "ยืนยัน"
+
+func _on_language_selected(index: int) -> void:
+	print("เปลี่ยนภาษาเป็น: %s" % ("English" if index == 0 else "ไทย"))
+	_apply_language(index)
+	language_changed.emit(index)
+
+func _on_text_speed_selected(index: int) -> void:
+	var speeds_en: Array[String] = ["Normal", "Slow", "Fast", "Instant"]
+	var speeds_th: Array[String] = ["ปกติ", "ช้า", "เร็ว", "ทันที"]
+	var selected_name: String = speeds_th[index] if current_language_idx == 1 else speeds_en[index]
+	print("ตั้งค่าความเร็วข้อความ: %s" % selected_name)
+
+# --- Settings Audio Controls ---
+func _on_master_slider_changed(value: float) -> void:
+	if master_val_label:
+		master_val_label.text = "%d%%" % int(value)
+	_update_bus_volume("Master", value)
+
+func _on_bgm_slider_changed(value: float) -> void:
+	if bgm_val_label:
+		bgm_val_label.text = "%d%%" % int(value)
+	_update_bus_volume("BGM", value)
+	_update_bus_volume("Music", value)
+
+func _on_sfx_slider_changed(value: float) -> void:
+	if sfx_val_label:
+		sfx_val_label.text = "%d%%" % int(value)
+	_update_bus_volume("SFX", value)
+
+func _update_bus_volume(bus_name: String, percentage: float) -> void:
+	var bus_idx: int = AudioServer.get_bus_index(bus_name)
+	if bus_idx != -1:
+		if percentage <= 0.0:
+			AudioServer.set_bus_mute(bus_idx, true)
+		else:
+			AudioServer.set_bus_mute(bus_idx, false)
+			var db: float = linear_to_db(percentage / 100.0)
+			AudioServer.set_bus_volume_db(bus_idx, db)
+
+func _on_mute_all_label_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if mute_all_check_box:
+			mute_all_check_box.button_pressed = not mute_all_check_box.button_pressed
+
+func _on_mute_all_toggled(toggled_on: bool) -> void:
+	print("สลับสถานะ Mute All: %s" % toggled_on)
+	var bus_idx: int = AudioServer.get_bus_index("Master")
+	if bus_idx != -1:
+		AudioServer.set_bus_mute(bus_idx, toggled_on)
+
+# --- Settings Video Controls ---
+func _on_fullscreen_label_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if fullscreen_check_box:
+			fullscreen_check_box.button_pressed = not fullscreen_check_box.button_pressed
+
+func _on_fullscreen_toggled(toggled_on: bool) -> void:
+	print("สลับโหมดหน้าจอ: Fullscreen = %s" % toggled_on)
+	if toggled_on:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		_apply_resolution_from_option()
+
+func _on_vsync_label_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if vsync_check_box:
+			vsync_check_box.button_pressed = not vsync_check_box.button_pressed
+
+func _on_vsync_toggled(toggled_on: bool) -> void:
+	print("ตั้งค่า V-Sync: %s" % toggled_on)
+	DisplayServer.window_set_vsync_mode(
+		DisplayServer.VSYNC_ENABLED if toggled_on else DisplayServer.VSYNC_DISABLED
+	)
+
+func _on_resolution_selected(index: int) -> void:
+	if index < 0 or index >= RESOLUTIONS.size():
+		return
+	var target_size: Vector2i = RESOLUTIONS[index]["size"]
+	
+	# If currently in fullscreen, switch back to windowed so the resolution change is clearly visible
+	var current_mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
+	if current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN or current_mode == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+		if fullscreen_check_box:
+			fullscreen_check_box.set_pressed_no_signal(false)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		
+	DisplayServer.window_set_size(target_size)
+	_center_window(target_size)
+	print("[SettingsModal] เปลี่ยนความละเอียดหน้าต่างเป็น: %dx%d และจัดกึ่งกลางหน้าจอ" % [target_size.x, target_size.y])
+
+# --- Settings General Controls & Confirmation ---
+func _on_reset_save_pressed() -> void:
+	_pending_confirm_action = "reset_save"
+	if confirm_message:
+		if current_language_idx == 0:
+			confirm_message.text = "Are you sure you want to reset save data? This action cannot be undone."
+		else:
+			confirm_message.text = "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลบันทึก? ข้อมูลจะไม่สามารถกู้คืนได้"
+	if confirm_modal:
+		confirm_modal.show()
+		if confirm_cancel_button:
+			confirm_cancel_button.grab_focus()
+
+func _on_delete_all_pressed() -> void:
+	_pending_confirm_action = "delete_all"
+	if confirm_message:
+		if current_language_idx == 0:
+			confirm_message.text = "Are you sure you want to delete all save data? This action cannot be undone."
+		else:
+			confirm_message.text = "คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลบันทึกทั้งหมด? ข้อมูลจะไม่สามารถกู้คืนได้"
+	if confirm_modal:
+		confirm_modal.show()
+		if confirm_cancel_button:
+			confirm_cancel_button.grab_focus()
+
+func _close_confirm_modal() -> void:
+	if confirm_modal:
+		confirm_modal.hide()
+	_pending_confirm_action = ""
+
+func _on_confirm_ok_pressed() -> void:
+	if _pending_confirm_action == "reset_save":
+		print("ยืนยันการดำเนินการ: รีเซ็ตข้อมูลบันทึกเรียบร้อยแล้ว")
+	elif _pending_confirm_action == "delete_all":
+		print("ยืนยันการดำเนินการ: ลบข้อมูลบันทึกทั้งหมดเรียบร้อยแล้ว")
+	_close_confirm_modal()
