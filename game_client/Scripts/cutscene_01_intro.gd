@@ -59,9 +59,6 @@ var typewriter_player: AudioStreamPlayer
 # May on Bed Visuals
 var may_node: Node2D
 var may_sprite: Sprite2D
-var may_anim_timer: float = 0.0
-var may_frame: int = 0
-var is_kicking_legs: bool = true
 var music_notes_container: Node2D
 var music_note_timer: float = 0.0
 var surprise_badge: Label
@@ -117,38 +114,48 @@ func _setup_audio_players() -> void:
 	add_child(typewriter_player)
 
 func _setup_may_on_bed() -> void:
-	may_node = Node2D.new()
-	may_node.name = "MayOnBed"
-	may_node.position = Vector2(58, 150)
-	may_node.z_index = 5  # Render above bed furniture tilemap (z_index = 1)
-	add_child(may_node)
+	may_node = get_node_or_null("MayOnBed")
+	if not may_node:
+		may_node = Node2D.new()
+		may_node.name = "MayOnBed"
+		may_node.position = Vector2(58, 142)
+		may_node.z_index = 5  # Render above bed furniture tilemap (z_index = 1)
+		add_child(may_node)
 
-	may_sprite = Sprite2D.new()
-	may_sprite.name = "Sprite"
+	may_sprite = may_node.get_node_or_null("Sprite") as Sprite2D
+	if not may_sprite:
+		may_sprite = Sprite2D.new()
+		may_sprite.name = "Sprite"
+		may_node.add_child(may_sprite)
+
+	may_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var texture_path := "res://assets/sprite/may_bed_lying.png"
 	if ResourceLoader.exists(texture_path):
 		var tex: Texture2D = load(texture_path)
 		may_sprite.texture = tex
 		may_sprite.hframes = 5
-		may_sprite.frame = 0
-	may_node.add_child(may_sprite)
+		may_sprite.frame = 0  # May resting peacefully on bed
 
-	surprise_badge = Label.new()
-	surprise_badge.name = "SurpriseBadge"
-	surprise_badge.text = "!"
-	surprise_badge.add_theme_font_size_override("font_size", 14)
-	surprise_badge.add_theme_color_override("font_color", Color(1.0, 0.2, 0.2, 1.0))
-	surprise_badge.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
-	surprise_badge.add_theme_constant_override("shadow_offset_x", 1)
-	surprise_badge.add_theme_constant_override("shadow_offset_y", 1)
-	surprise_badge.position = Vector2(8, -26)
-	surprise_badge.visible = false
-	may_node.add_child(surprise_badge)
+	surprise_badge = may_node.get_node_or_null("SurpriseBadge") as Label
+	if not surprise_badge:
+		surprise_badge = Label.new()
+		surprise_badge.name = "SurpriseBadge"
+		surprise_badge.text = "!"
+		surprise_badge.add_theme_font_size_override("font_size", 14)
+		surprise_badge.add_theme_color_override("font_color", Color(1.0, 0.2, 0.2, 1.0))
+		surprise_badge.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+		surprise_badge.add_theme_constant_override("shadow_offset_x", 1)
+		surprise_badge.add_theme_constant_override("shadow_offset_y", 1)
+		surprise_badge.position = Vector2(8, -26)
+		surprise_badge.visible = false
+		may_node.add_child(surprise_badge)
 
-	music_notes_container = Node2D.new()
-	music_notes_container.name = "MusicNotes"
-	music_notes_container.position = Vector2(0, -10)
-	may_node.add_child(music_notes_container)
+	music_notes_container = may_node.get_node_or_null("MusicNotes") as Node2D
+	if not music_notes_container:
+		music_notes_container = Node2D.new()
+		music_notes_container.name = "MusicNotes"
+		music_notes_container.position = Vector2(0, -10)
+		may_node.add_child(music_notes_container)
 
 func _setup_ui() -> void:
 	canvas_layer = CanvasLayer.new()
@@ -262,23 +269,30 @@ func _setup_ui() -> void:
 	avatar_panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var av_style := StyleBoxFlat.new()
 	av_style.bg_color = Color(0.10, 0.14, 0.24, 0.95)
-	av_style.border_width_left = 2
-	av_style.border_width_top = 2
-	av_style.border_width_right = 2
-	av_style.border_width_bottom = 2
+	av_style.border_width_left = 1
+	av_style.border_width_top = 1
+	av_style.border_width_right = 1
+	av_style.border_width_bottom = 1
 	av_style.border_color = Color(0.88, 0.74, 0.58, 0.95)
 	av_style.corner_radius_top_left = 4
 	av_style.corner_radius_top_right = 4
 	av_style.corner_radius_bottom_right = 4
 	av_style.corner_radius_bottom_left = 4
+	av_style.content_margin_left = 2.0
+	av_style.content_margin_right = 2.0
+	av_style.content_margin_top = 2.0
+	av_style.content_margin_bottom = 2.0
 	avatar_panel.add_theme_stylebox_override("panel", av_style)
+	avatar_panel.clip_contents = true
 	left_box.add_child(avatar_panel)
 
+	# Speaker portrait frame (centered base emoji without skin tone modifiers)
 	speaker_avatar_rect = TextureRect.new()
 	speaker_avatar_rect.name = "AvatarRect"
 	speaker_avatar_rect.custom_minimum_size = Vector2(44, 44)
 	speaker_avatar_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	speaker_avatar_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	speaker_avatar_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	speaker_avatar_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	speaker_avatar_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	avatar_panel.add_child(speaker_avatar_rect)
@@ -352,14 +366,6 @@ func _setup_ui() -> void:
 func _process(delta: float) -> void:
 	state_timer += delta
 
-	# Animate leg kicks on bed
-	if is_kicking_legs and may_sprite:
-		may_anim_timer += delta
-		if may_anim_timer >= 0.32:
-			may_anim_timer = 0.0
-			may_frame = (may_frame + 1) % 4
-			may_sprite.frame = may_frame
-
 	# Floating music notes during chill intro
 	if current_state == State.INTRO_CHILL:
 		music_note_timer += delta
@@ -409,7 +415,6 @@ func _on_dialogue_box_gui_input(event: InputEvent) -> void:
 func _start_intro_chill() -> void:
 	current_state = State.INTRO_CHILL
 	state_timer = 0.0
-	is_kicking_legs = true
 	if bgm_player:
 		bgm_player.play()
 	cutscene_started.emit()
@@ -475,7 +480,6 @@ func _answer_call() -> void:
 	_play_beep(880.0, 0.08)
 
 	# Switch May sprite to phone call pose
-	is_kicking_legs = false
 	if may_sprite:
 		may_sprite.frame = 4
 	if surprise_badge:
