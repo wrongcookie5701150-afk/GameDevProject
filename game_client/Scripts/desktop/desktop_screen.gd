@@ -1,26 +1,22 @@
 class_name DesktopScreenController extends Control
 
-## DesktopScreenController - Full In-game Simulated Desktop for May's PC
-## Conforms strictly to Story Content (Scenes 2, 3, 4, 5)
+## Simulated OS desktop for May's PC (Story Scenes 2-5).
 
 const BEDROOM_SCENE_PATH: String = "res://Scenes/Scene_01_Intro.tscn"
 
-# Preloaded assets for UI & tray (Original Project Fonts)
+# System fonts & tray textures
 const TEX_WIFI_CONNECTED: Texture2D = preload("res://assets/Icon32x32/world_enable.png")
 const TEX_WIFI_DISCONNECTED: Texture2D = preload("res://assets/Icon32x32/world_disable.png")
 const FONT_MONO: FontFile = preload("res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf")
 const FONT_PIXEL: FontFile = preload("res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf")
 
-# --- Signals ---
 signal wifi_toggled(is_connected: bool)
 
-# --- Desktop Icons Container ---
+# Desktop & window containers
 var icons_container: Control
-
-# --- Window Container ---
 var window_container: Control
 
-# --- Applications / Windows ---
+# Application windows
 var gg_disk_window: DesktopWindow
 var ms_word_window: DesktopWindow
 var files_window: DesktopWindow
@@ -28,7 +24,7 @@ var text_editor_window: DesktopWindow
 var discord_window: DesktopWindow
 var recycle_bin_window: DesktopWindow
 
-# --- Taskbar Controls ---
+# Taskbar controls
 var start_button: Button
 var start_menu_popup: PanelContainer
 var clock_label: Label
@@ -36,7 +32,7 @@ var taskbar_tabs_container: HBoxContainer
 var leave_pc_button: Button
 var start_menu_leave_btn: Button
 
-# --- Start Menu App Buttons ---
+# Start Menu buttons
 var menu_gg_disk: Button
 var menu_word: Button
 var menu_files: Button
@@ -44,7 +40,7 @@ var menu_notepad: Button
 var menu_discord: Button
 var menu_recycle_bin: Button
 
-# --- Wi-Fi Controls ---
+# Wi-Fi tray & modal controls
 var wifi_tray_btn: Button
 var wifi_popup: PanelContainer
 var wifi_toggle_btn: Button
@@ -52,20 +48,19 @@ var wifi_status_label: Label
 var wifi_cloud_sync_label: Label
 var wifi_close_btn: Button
 
-# --- In-App Content References ---
-# GG Disk
+# In-app references: GG Disk
 var gg_tab_files_btn: Button
 var gg_tab_history_btn: Button
 var gg_files_panel: Control
 var gg_history_panel: Control
 var gg_open_word_btn: Button
 
-# Word Macro Banner
+# In-app references: Word Macro Banner
 var word_macro_banner: PanelContainer
 var enable_content_btn: Button
 var word_doc_status: Label
 
-# File Explorer Files
+# In-app references: File Explorer
 var file_item_report_label: Label
 var file_item_data_label: Label
 var file_item_pres_label: Label
@@ -73,7 +68,7 @@ var file_item_readme: Control
 var file_item_report_open_btn: Button
 var file_item_readme_open_btn: Button
 
-# Discord Channels & Chat
+# In-app references: Discord
 var btn_chat_mesa: Button
 var btn_chat_march: Button
 var chat_scroll_mesa: ScrollContainer
@@ -89,12 +84,12 @@ var _current_discord_channel: String = "mesa"
 var _discord_btn_active: StyleBoxFlat
 var _discord_btn_inactive: StyleBoxFlat
 
-# Story & System State
+# Incident timeline state (starts at 19:02)
 var is_wifi_connected: bool = true
 var is_ransomware_triggered: bool = false
 var story_time_string: String = "19:02"
 
-# Taskbar Tab Styles
+# Taskbar tab styles
 var _tab_style_active: StyleBoxFlat
 var _tab_style_inactive: StyleBoxFlat
 
@@ -113,20 +108,17 @@ func _ready() -> void:
 	_update_file_status_ui()
 	_update_wifi_ui()
 
-## Dynamic Safe Node Lookup: never crashes and never prints debugger errors
+# Safe node lookup (unique name -> subtree -> fallback)
 func _find_node_safe(node_name: String, search_roots: Array = []) -> Node:
-	# 1. Check unique name via has_node to avoid debugger error
 	if has_node("%" + node_name):
 		return get_node("%" + node_name)
 	
-	# 2. Check in specific search roots
 	for root_node in search_roots:
 		if root_node and is_instance_valid(root_node):
 			var found: Node = root_node.find_child(node_name, true, false)
 			if found:
 				return found
 	
-	# 3. Search whole tree
 	var anywhere: Node = find_child(node_name, true, false)
 	if anywhere:
 		return anywhere
@@ -232,6 +224,7 @@ func _init_taskbar() -> void:
 	if wifi_popup:
 		wifi_popup.visible = false
 	
+	# Connect taskbar buttons
 	if start_button and not start_button.pressed.is_connected(_toggle_start_menu):
 		start_button.pressed.connect(_toggle_start_menu)
 	if wifi_tray_btn and not wifi_tray_btn.pressed.is_connected(_toggle_wifi_popup):
@@ -241,12 +234,13 @@ func _init_taskbar() -> void:
 	if wifi_close_btn and not wifi_close_btn.pressed.is_connected(func() -> void: if wifi_popup: wifi_popup.visible = false):
 		wifi_close_btn.pressed.connect(func() -> void: if wifi_popup: wifi_popup.visible = false)
 	
+	# Power button: leave PC and return to bedroom
 	if leave_pc_button and not leave_pc_button.pressed.is_connected(_on_leave_pc_pressed):
 		leave_pc_button.pressed.connect(_on_leave_pc_pressed)
 	if start_menu_leave_btn and not start_menu_leave_btn.pressed.is_connected(_on_leave_pc_pressed):
 		start_menu_leave_btn.pressed.connect(_on_leave_pc_pressed)
 	
-	# Connect Start Menu apps
+	# Start Menu app launchers
 	if menu_gg_disk and not menu_gg_disk.pressed.is_connected(func() -> void: _on_app_activated("gg_disk")):
 		menu_gg_disk.pressed.connect(func() -> void: _on_app_activated("gg_disk"))
 	if menu_word and not menu_word.pressed.is_connected(func() -> void: _on_app_activated("ms_word")):
@@ -260,25 +254,26 @@ func _init_taskbar() -> void:
 	if menu_recycle_bin and not menu_recycle_bin.pressed.is_connected(func() -> void: _on_app_activated("recycle_bin")):
 		menu_recycle_bin.pressed.connect(func() -> void: _on_app_activated("recycle_bin"))
 
-## Global input handling: Click outside to close Start Menu & Wi-Fi popup
+# Click outside to dismiss Start Menu & Wi-Fi popup
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var click_pos: Vector2 = event.global_position
 		
-		# Auto-close Start Menu when clicking outside
+		# Dismiss Start Menu when clicking outside
 		if start_menu_popup and start_menu_popup.visible:
 			var menu_rect: Rect2 = start_menu_popup.get_global_rect()
 			var start_btn_rect: Rect2 = start_button.get_global_rect() if start_button else Rect2()
 			if not menu_rect.has_point(click_pos) and not start_btn_rect.has_point(click_pos):
 				start_menu_popup.visible = false
 		
-		# Auto-close Wi-Fi popup when clicking outside
+		# Dismiss Wi-Fi popup when clicking outside
 		if wifi_popup and wifi_popup.visible:
 			var wifi_rect: Rect2 = wifi_popup.get_global_rect()
 			var tray_btn_rect: Rect2 = wifi_tray_btn.get_global_rect() if wifi_tray_btn else Rect2()
 			if not wifi_rect.has_point(click_pos) and not tray_btn_rect.has_point(click_pos):
 				wifi_popup.visible = false
 
+# Sync taskbar clock to incident timeline (19:02 -> 21:25)
 func _update_clock() -> void:
 	if clock_label:
 		clock_label.text = story_time_string
@@ -292,6 +287,7 @@ func _get_all_desktop_icons() -> Array[DesktopIcon]:
 			result.append(node)
 	return result
 
+# Connect desktop icon click and activate signals
 func _connect_icons() -> void:
 	for icon in _get_all_desktop_icons():
 		icon._update_ui()
@@ -304,6 +300,7 @@ func _on_icon_selected(selected_app_id: String) -> void:
 	for icon in _get_all_desktop_icons():
 		icon.set_selected(icon.app_id == selected_app_id)
 
+# Connect DesktopWindow management events (focus, minimize, close)
 func _connect_windows() -> void:
 	var windows: Array[DesktopWindow] = [
 		gg_disk_window,
@@ -322,7 +319,7 @@ func _connect_windows() -> void:
 			if not win.window_focused.is_connected(_on_window_focused.bind(win)):
 				win.window_focused.connect(_on_window_focused.bind(win))
 
-# --- Explorer Content Setup & Resiliency ---
+# File Explorer window setup
 func _setup_files_explorer() -> void:
 	if not files_window:
 		return
@@ -375,7 +372,7 @@ func _setup_word_window() -> void:
 func _on_enable_content_pressed() -> void:
 	trigger_macro_infection()
 
-# --- Discord Window Setup & Channel Switching ---
+# Discord Window setup
 func _setup_discord_window() -> void:
 	if not discord_window:
 		return
@@ -415,6 +412,7 @@ func _setup_discord_window() -> void:
 	
 	_select_discord_chat(_current_discord_channel)
 
+# Switch Discord chat tab and clear unread badge
 func _select_discord_chat(channel_id: String) -> void:
 	_current_discord_channel = channel_id
 	if channel_id == "mesa":
@@ -443,6 +441,7 @@ func _select_discord_chat(channel_id: String) -> void:
 		if discord_chat_title and is_instance_valid(discord_chat_title): discord_chat_title.text = "@ M4rchupikchu_inw101"
 		if discord_input_placeholder and is_instance_valid(discord_input_placeholder):
 			discord_input_placeholder.text = "Message @M4rchupikchu_inw101"
+		# Dismiss notification badge once user clicks March's chat
 		if march_notif_badge and is_instance_valid(march_notif_badge):
 			march_notif_badge.visible = false
 		if discord_chat_status and is_instance_valid(discord_chat_status):
@@ -499,6 +498,7 @@ func _hide_all_windows() -> void:
 		if win:
 			win.hide()
 
+# App launcher router
 func _on_app_activated(app_id: String) -> void:
 	if start_menu_popup:
 		start_menu_popup.visible = false
@@ -521,6 +521,7 @@ func _on_app_activated(app_id: String) -> void:
 		_:
 			print("[Desktop] Unknown app id: ", app_id)
 
+# Open window and register taskbar tab
 func _open_app_window(win: DesktopWindow, tab_title: String, default_pos: Vector2 = Vector2(125, 45)) -> void:
 	if not win:
 		return
@@ -530,6 +531,7 @@ func _open_app_window(win: DesktopWindow, tab_title: String, default_pos: Vector
 	_update_taskbar_tab(win, tab_title, true)
 	_highlight_active_tab(win)
 
+# Sync taskbar tabs with open/closed windows
 func _update_taskbar_tab(win: DesktopWindow, tab_title: String, is_active: bool) -> void:
 	if not taskbar_tabs_container or not win:
 		return
@@ -664,19 +666,20 @@ func _update_wifi_ui() -> void:
 				wifi_cloud_sync_label.text = "CloudSync: ออฟไลน์ ไม่มีการซิงค์"
 				wifi_cloud_sync_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 0.8))
 
+# Power button / Leave PC: return to bedroom
 func _on_leave_pc_pressed() -> void:
-	print("[Desktop] Exiting PC, returning to bedroom...")
 	if ResourceLoader.exists(BEDROOM_SCENE_PATH):
 		get_tree().change_scene_to_file(BEDROOM_SCENE_PATH)
 	else:
 		push_error("Bedroom scene not found: " + BEDROOM_SCENE_PATH)
 
-# --- Story Integration: Enable Content -> Ransomware Locked ---
+# Ransomware trigger: Macro executes, locks files, advances clock to 21:25
 func trigger_macro_infection() -> void:
 	if is_ransomware_triggered:
 		return
 	is_ransomware_triggered = true
-	story_time_string = "21:23"
+	# Sync taskbar clock to incident timeline (19:02 -> 21:25)
+	story_time_string = "21:25"
 	_update_clock()
 	
 	if word_macro_banner and is_instance_valid(word_macro_banner):
@@ -688,15 +691,16 @@ func trigger_macro_infection() -> void:
 	_update_file_status_ui()
 	_update_wifi_ui()
 	
-	# Story Alert: P'March messages about Roblox / malware -> show red notification badge on March's contact
+	# Show unread badge on March's contact ("Roblox ป่าวน้อง")
 	if march_notif_badge and is_instance_valid(march_notif_badge):
 		march_notif_badge.visible = true
 	
-	print("[Story Alert] Macro enabled -> Files locked -> README popped up!")
+	# Open ransom note in Notepad
 	if text_editor_window and is_instance_valid(text_editor_window):
 		text_editor_window.position = Vector2(130, 48)
 		_open_app_window(text_editor_window, "Notepad - README")
 
+# Update File Explorer items (.locked file extensions)
 func _update_file_status_ui() -> void:
 	if is_ransomware_triggered:
 		if file_item_report_label and is_instance_valid(file_item_report_label):
