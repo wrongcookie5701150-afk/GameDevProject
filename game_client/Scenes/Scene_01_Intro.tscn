@@ -1,7 +1,19 @@
 [gd_scene format=3 uid="uid://qeaqjyqbxvas"]
 
-[ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://Scenes/Initial/playground.tscn" id="1_3ir2m"]
+[ext_resource type="Script" path="res://Scripts/cutscene_01_intro.gd" id="1_cutscene_script"]
+[ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/Initial/room.tscn" id="2_room_scene"]
+[ext_resource type="Texture2D" path="res://assets/sprite/may_bed_lying.png" id="3_may_lying"]
 
 [node name="Scene_01_Intro" type="Node2D" unique_id=1461647612]
+script = ExtResource("1_cutscene_script")
 
-[node name="Playground" parent="." unique_id=1245398925 instance=ExtResource("1_3ir2m")]
+[node name="Map" parent="." unique_id=1668373968 instance=ExtResource("2_room_scene")]
+
+[node name="MayOnBed" type="Node2D" parent="."]
+position = Vector2(58, 142)
+z_index = 5
+
+[node name="Sprite" type="Sprite2D" parent="MayOnBed"]
+texture_filter = 1
+texture = ExtResource("3_may_lying")
+hframes = 5

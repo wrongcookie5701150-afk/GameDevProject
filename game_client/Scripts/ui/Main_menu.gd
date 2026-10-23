@@ -1,7 +1,6 @@
 extends Control
 
-## MainMenu Controller for Godot 4.x
-## ควบคุมหน้าต่างหลักและเชื่อมโยง ContinueModal กับ SettingsModal
+## Main Menu controller: handles navigation, modal popups, and localization.
 
 @onready var start_button: Button = %StartButton
 @onready var continue_button: Button = %ContinueButton
@@ -25,7 +24,7 @@ func _ready() -> void:
 		start_button.call_deferred("grab_focus")
 
 func _connect_signals() -> void:
-	# Main Buttons
+	# Main menu buttons
 	if start_button and not start_button.pressed.is_connected(_on_start_button_pressed):
 		start_button.pressed.connect(_on_start_button_pressed)
 	if continue_button and not continue_button.pressed.is_connected(_on_continue_button_pressed):
@@ -35,7 +34,7 @@ func _connect_signals() -> void:
 	if exit_button and not exit_button.pressed.is_connected(_on_exit_button_pressed):
 		exit_button.pressed.connect(_on_exit_button_pressed)
 
-	# Modals signals
+	# Modal callbacks
 	if continue_modal and continue_modal.has_signal("closed") and not continue_modal.closed.is_connected(_on_continue_modal_closed):
 		continue_modal.closed.connect(_on_continue_modal_closed)
 	if settings_modal and settings_modal.has_signal("closed") and not settings_modal.closed.is_connected(_on_settings_modal_closed):
@@ -44,16 +43,16 @@ func _connect_signals() -> void:
 		settings_modal.language_changed.connect(_on_language_changed)
 
 func _on_start_button_pressed() -> void:
-	print("กดปุ่มเริ่มเกมใหม่ (Start Game)")
-	if ResourceLoader.exists(INTRO_SCENE_PATH):
-		var change_result: Error = get_tree().change_scene_to_file(INTRO_SCENE_PATH)
-		if change_result != OK:
-			push_error("ไม่สามารถเปลี่ยนฉากไปยัง %s ได้ (Error code: %d)" % [INTRO_SCENE_PATH, change_result])
+	# Reset game session state and launch Scene 1 Cutscene via SceneRouter
+	if has_node("/root/SceneRouter"):
+		SceneRouter.goto_scene_1_intro()
+	elif ResourceLoader.exists(INTRO_SCENE_PATH):
+		get_tree().change_scene_to_file(INTRO_SCENE_PATH)
 	else:
-		push_error("ไม่พบฉาก %s ในระบบ" % INTRO_SCENE_PATH)
+		push_error("Scene not found: %s" % INTRO_SCENE_PATH)
 
 func _on_continue_button_pressed() -> void:
-	print("กดปุ่มเล่นต่อ (Continue) -> เปิด ContinueModal")
+	# Open save slot / continue modal
 	if continue_modal:
 		if continue_modal.has_method("open"):
 			continue_modal.open()
@@ -61,7 +60,7 @@ func _on_continue_button_pressed() -> void:
 			continue_modal.show()
 
 func _on_settings_button_pressed() -> void:
-	print("กดปุ่มตั้งค่า (Settings) -> เปิด SettingsModal")
+	# Open settings modal
 	if settings_modal:
 		if settings_modal.has_method("open"):
 			settings_modal.open()
@@ -69,7 +68,7 @@ func _on_settings_button_pressed() -> void:
 			settings_modal.show()
 
 func _on_exit_button_pressed() -> void:
-	print("กดปุ่มออกจากเกม (Exit)")
+	# Quit desktop app
 	get_tree().quit()
 
 func _on_continue_modal_closed() -> void:

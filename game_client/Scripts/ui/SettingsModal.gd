@@ -131,14 +131,14 @@ func _connect_signals() -> void:
 		settings_save_button.pressed.connect(_on_settings_save_pressed)
 
 	# Settings Tabs
-	if tab_general and not tab_general.pressed.is_connected(func() -> void: _select_tab("general")):
-		tab_general.pressed.connect(func() -> void: _select_tab("general"))
-	if tab_audio and not tab_audio.pressed.is_connected(func() -> void: _select_tab("audio")):
-		tab_audio.pressed.connect(func() -> void: _select_tab("audio"))
-	if tab_video and not tab_video.pressed.is_connected(func() -> void: _select_tab("video")):
-		tab_video.pressed.connect(func() -> void: _select_tab("video"))
-	if tab_other and not tab_other.pressed.is_connected(func() -> void: _select_tab("other")):
-		tab_other.pressed.connect(func() -> void: _select_tab("other"))
+	if tab_general and not tab_general.pressed.is_connected(_select_tab.bind("general")):
+		tab_general.pressed.connect(_select_tab.bind("general"))
+	if tab_audio and not tab_audio.pressed.is_connected(_select_tab.bind("audio")):
+		tab_audio.pressed.connect(_select_tab.bind("audio"))
+	if tab_video and not tab_video.pressed.is_connected(_select_tab.bind("video")):
+		tab_video.pressed.connect(_select_tab.bind("video"))
+	if tab_other and not tab_other.pressed.is_connected(_select_tab.bind("other")):
+		tab_other.pressed.connect(_select_tab.bind("other"))
 
 	# Audio Controls
 	if master_slider and not master_slider.value_changed.is_connected(_on_master_slider_changed):

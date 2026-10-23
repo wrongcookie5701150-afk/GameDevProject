@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 TelemetryManager="*res://Scripts/TelemetryManager.gd"
+GameState="*res://Scripts/GameState.gd"
+SceneRouter="*res://Scripts/SceneRouter.gd"
 
 [display]
 

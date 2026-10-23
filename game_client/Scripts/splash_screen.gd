@@ -4,7 +4,8 @@ extends Control
 @onready var studio_label: Label = %StudioLabel
 @onready var status_label: Label = %StatusLabel
 
-const MAIN_MENU_PATH: String = "res://Scenes/MainMenu.tscn"
+const MAIN_MENU_PATH: String = "res://Scenes/ui/MainMenu.tscn"
+const FALLBACK_MAIN_MENU_PATH: String = "res://Scenes/MainMenu.tscn"
 
 var _is_transitioning: bool = false
 var _main_tween: Tween
@@ -76,9 +77,13 @@ func _go_to_main_menu() -> void:
 	if _is_transitioning and not is_inside_tree():
 		return
 	_is_transitioning = true
-	if ResourceLoader.exists(MAIN_MENU_PATH):
-		var err: Error = get_tree().change_scene_to_file(MAIN_MENU_PATH)
+	var target_path: String = MAIN_MENU_PATH
+	if not ResourceLoader.exists(target_path) and ResourceLoader.exists(FALLBACK_MAIN_MENU_PATH):
+		target_path = FALLBACK_MAIN_MENU_PATH
+	
+	if ResourceLoader.exists(target_path):
+		var err: Error = get_tree().change_scene_to_file(target_path)
 		if err != OK:
-			push_error("ไม่สามารถเปลี่ยนฉากไปยัง %s ได้ (Error code: %d)" % [MAIN_MENU_PATH, err])
+			push_error("ไม่สามารถเปลี่ยนฉากไปยัง %s ได้ (Error code: %d)" % [target_path, err])
 	else:
 		push_error("ไม่พบฉาก %s ในระบบ" % MAIN_MENU_PATH)
