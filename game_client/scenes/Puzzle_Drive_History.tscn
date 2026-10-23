@@ -1,5 +1,10 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://Scripts/puzzle_drive_history.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_font_pixel"]
+[ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="3_font_thai_bold"]
+[ext_resource type="FontFile" uid="uid://but7ctdme0p66" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="4_font_thai_med"]
+
 [node name="Puzzle_Drive_History" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -7,19 +12,59 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
-[node name="Label" type="Label" parent="."]
+[node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -20.0
-offset_right = 200.0
-offset_bottom = 20.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Puzzle: Drive History (Typosquatting) (Task 07)"
-horizontal_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 3
+
+[node name="HeaderHBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBox/HeaderHBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai_bold")
+theme_override_font_sizes/font_size = 7
+text = "Google Drive - ประวัติกิจกรรมในโฟลเดอร์งานกลุ่ม"
+
+[node name="Hint" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 0.9)
+theme_override_fonts/font = ExtResource("4_font_thai_med")
+theme_override_font_sizes/font_size = 6
+text = "[คลิกเลือกแถวของไฟล์เพื่อตรวจสอบความผิดปกติของผู้ส่ง (Phishing / Typosquatting)]"
+
+[node name="Scroll" type="ScrollContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="HistoryContainer" type="VBoxContainer" parent="VBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="FeedbackLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_fonts/font = ExtResource("4_font_thai_med")
+theme_override_font_sizes/font_size = 6
+text = "สถานะ: รอการตรวจสอบบัญชีผู้ส่ง..."

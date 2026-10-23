@@ -62,6 +62,7 @@ corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
 [node name="DesktopWindow" type="PanelContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(200, 120)
 offset_right = 220.0
 offset_bottom = 140.0
@@ -136,6 +137,7 @@ text = "x"
 
 [node name="ContentArea" type="MarginContainer" parent="VBox"]
 unique_name_in_owner = true
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 4

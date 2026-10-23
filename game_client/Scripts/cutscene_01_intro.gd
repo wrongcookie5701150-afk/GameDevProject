@@ -82,8 +82,21 @@ var state_timer: float = 0.0
 var current_dialogue_idx: int = -1
 var is_typing: bool = false
 var typewriter_tween: Tween
+var typewriter_sfx_timer: float = 0.0
+const TYPEWRITER_SFX_INTERVAL: float = 0.055
+
+func _exit_tree() -> void:
+	if typewriter_tween and typewriter_tween.is_valid():
+		typewriter_tween.kill()
 
 func _ready() -> void:
+	# Reset any GameState flags to avoid leaking Scene 4 mode
+	if is_inside_tree() and get_tree().root:
+		var game_state := get_tree().root.get_node_or_null("GameState")
+		if game_state:
+			game_state.set("scene_phase", "SCENE_01_INTRO")
+			game_state.set("is_scene_4", false)
+
 	_setup_audio_players()
 	_setup_may_on_bed()
 	_setup_ui()
@@ -174,10 +187,7 @@ func _setup_ui() -> void:
 	incoming_call_modal.size = Vector2(190, 50)
 	incoming_call_modal.mouse_filter = Control.MOUSE_FILTER_STOP
 	incoming_call_modal.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	incoming_call_modal.gui_input.connect(func(event: InputEvent):
-		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			_answer_call()
-	)
+	incoming_call_modal.gui_input.connect(_on_incoming_call_modal_gui_input)
 	var call_style := StyleBoxFlat.new()
 	call_style.bg_color = Color(0.08, 0.12, 0.20, 0.95)
 	call_style.border_width_left = 2
@@ -363,8 +373,22 @@ func _setup_ui() -> void:
 	var in_tween := create_tween()
 	in_tween.tween_property(fade_overlay, "color:a", 0.0, 0.8)
 
+func _on_incoming_call_modal_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		_answer_call()
+
 func _process(delta: float) -> void:
 	state_timer += delta
+
+	# Typewriter sound loop without SceneTree timers
+	if is_typing:
+		typewriter_sfx_timer += delta
+		if typewriter_sfx_timer >= TYPEWRITER_SFX_INTERVAL:
+			typewriter_sfx_timer = 0.0
+			if typewriter_player:
+				typewriter_player.play()
+	else:
+		typewriter_sfx_timer = 0.0
 
 	# Floating music notes during chill intro
 	if current_state == State.INTRO_CHILL:
@@ -543,17 +567,7 @@ func _show_dialogue_line(index: int) -> void:
 		typewriter_tween.tween_property(dialogue_text_label, "visible_ratio", 1.0, duration)
 		typewriter_tween.finished.connect(_on_typing_finished)
 
-		_play_typewriter_sound_loop(text_content.length(), duration)
-
 	dialogue_line_started.emit(item.get("speaker", ""), text_content)
-
-func _play_typewriter_sound_loop(total_chars: int, duration: float) -> void:
-	var step: float = duration / maxf(1.0, float(total_chars))
-	for i in range(mini(total_chars, 30)):
-		get_tree().create_timer(i * step).timeout.connect(func():
-			if is_typing and typewriter_player:
-				typewriter_player.play()
-		)
 
 func _on_typing_finished() -> void:
 	is_typing = false
@@ -565,6 +579,7 @@ func _finish_dialogue() -> void:
 	if current_state == State.TRANSITION:
 		return
 	current_state = State.TRANSITION
+	is_typing = false
 	dialogue_finished.emit()
 
 	# Close dialogue box immediately
@@ -578,15 +593,13 @@ func _finish_dialogue() -> void:
 	fade_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	var fade_tween := create_tween()
 	fade_tween.tween_property(fade_overlay, "color:a", 1.0, 0.5)
-	fade_tween.finished.connect(func():
-		cutscene_completed.emit()
-		_switch_to_next_scene()
-	)
+	fade_tween.finished.connect(_on_cutscene_fade_finished)
 
 func _on_skip_pressed() -> void:
 	if current_state == State.TRANSITION:
 		return
 	current_state = State.TRANSITION
+	is_typing = false
 
 	if bgm_player: bgm_player.stop()
 	if ringtone_player: ringtone_player.stop()
@@ -596,14 +609,17 @@ func _on_skip_pressed() -> void:
 	fade_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	var fade_tween := create_tween()
 	fade_tween.tween_property(fade_overlay, "color:a", 1.0, 0.3)
-	fade_tween.finished.connect(func():
-		cutscene_completed.emit()
-		_switch_to_next_scene()
-	)
+	fade_tween.finished.connect(_on_cutscene_fade_finished)
+
+func _on_cutscene_fade_finished() -> void:
+	cutscene_completed.emit()
+	_switch_to_next_scene()
 
 func _switch_to_next_scene() -> void:
-	# Change scene to Scene 2 (Tutorial)
-	if ResourceLoader.exists(SCENE_02_TUTORIAL_PATH):
+	# Change scene to Scene 2 (Tutorial) via SceneRouter
+	if has_node("/root/SceneRouter"):
+		SceneRouter.goto_scene_2_tutorial()
+	elif ResourceLoader.exists(SCENE_02_TUTORIAL_PATH):
 		get_tree().change_scene_to_file(SCENE_02_TUTORIAL_PATH)
 	elif ResourceLoader.exists(SCENE_02_TUTORIAL_ALT_PATH):
 		get_tree().change_scene_to_file(SCENE_02_TUTORIAL_ALT_PATH)
