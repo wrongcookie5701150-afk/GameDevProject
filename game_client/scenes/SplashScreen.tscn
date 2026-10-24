@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dxsvek4iljeud"]
 
 [ext_resource type="Script" path="res://Scripts/splash_screen.gd" id="1_script"]
-[ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_press_start_2p"]
-[ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
 
 [node name="SplashScreen" type="Control"]
 layout_mode = 3

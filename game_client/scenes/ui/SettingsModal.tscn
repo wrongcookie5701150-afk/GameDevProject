@@ -1,11 +1,11 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://Scripts/ui/settings_modal.gd" id="1_script"]
-[ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
-[ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
-[ext_resource type="FontFile" uid="uid://ummpjpqbcvkn" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="6_noto_sans_thai_medium"]
-[ext_resource type="Texture2D" uid="uid://ih7vvdxqm38" path="res://assets/images/ui/slider_grabber.png" id="7_slider_grabber"]
-[ext_resource type="Texture2D" uid="uid://bron6pibwy66l" path="res://assets/images/ui/slider_grabber_hl.png" id="8_slider_grabber_hl"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://but7ctdme0p66" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="6_noto_sans_thai_medium"]
+[ext_resource type="Texture2D" uid="uid://dhhr5ssocq8lp" path="res://assets/images/ui/slider_grabber.png" id="7_slider_grabber"]
+[ext_resource type="Texture2D" uid="uid://duywormvatx4d" path="res://assets/images/ui/slider_grabber_hl.png" id="8_slider_grabber_hl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_active"]
 content_margin_left = 10.0

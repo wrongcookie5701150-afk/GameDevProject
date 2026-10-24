@@ -43,11 +43,11 @@ func _connect_signals() -> void:
 		settings_modal.language_changed.connect(_on_language_changed)
 
 func _on_start_button_pressed() -> void:
-	# Reset game session state and launch Scene 1 Cutscene
-	if ResourceLoader.exists(INTRO_SCENE_PATH):
-		var change_result: Error = get_tree().change_scene_to_file(INTRO_SCENE_PATH)
-		if change_result != OK:
-			push_error("Failed to load scene: %s (code %d)" % [INTRO_SCENE_PATH, change_result])
+	# Reset game session state and launch Scene 1 Cutscene via SceneRouter
+	if has_node("/root/SceneRouter"):
+		SceneRouter.goto_scene_1_intro()
+	elif ResourceLoader.exists(INTRO_SCENE_PATH):
+		get_tree().change_scene_to_file(INTRO_SCENE_PATH)
 	else:
 		push_error("Scene not found: %s" % INTRO_SCENE_PATH)
 

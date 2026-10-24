@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/investigation_screen.gd" id="1_scene_script"]
+[ext_resource type="PackedScene" path="res://Scenes/Initial/desktop_screen.tscn" id="2_desktop"]
+
+[node name="InvestigationScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_scene_script")
+
+[node name="Desktop" parent="." instance=ExtResource("2_desktop")]
+layout_mode = 1
