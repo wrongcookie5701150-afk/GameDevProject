@@ -84,6 +84,9 @@ var is_typing: bool = false
 var typewriter_tween: Tween
 
 func _ready() -> void:
+	# ตั้งค่าให้ Scene นี้หยุดทำงานได้เมื่อติด Pause
+	process_mode = Node.PROCESS_MODE_PAUSABLE
+	
 	_setup_audio_players()
 	_setup_may_on_bed()
 	_setup_ui()
@@ -92,24 +95,32 @@ func _ready() -> void:
 func _setup_audio_players() -> void:
 	bgm_player = AudioStreamPlayer.new()
 	bgm_player.name = "BgmPlayer"
+	bgm_player.bus = "BGM"
 	bgm_player.volume_db = -12.0
+	bgm_player.process_mode = Node.PROCESS_MODE_PAUSABLE # 👈 เพิ่มบรรทัดนี้
 	bgm_player.stream = _generate_lofi_bgm_stream()
 	add_child(bgm_player)
 
 	ringtone_player = AudioStreamPlayer.new()
 	ringtone_player.name = "RingtonePlayer"
+	ringtone_player.bus = "SFX"
 	ringtone_player.volume_db = -8.0
+	ringtone_player.process_mode = Node.PROCESS_MODE_PAUSABLE # 👈 เพิ่มบรรทัดนี้
 	ringtone_player.stream = _generate_ringtone_stream()
 	add_child(ringtone_player)
 
 	sfx_player = AudioStreamPlayer.new()
 	sfx_player.name = "SfxPlayer"
+	sfx_player.bus = "SFX"
 	sfx_player.volume_db = -6.0
+	sfx_player.process_mode = Node.PROCESS_MODE_PAUSABLE # 👈 เพิ่มบรรทัดนี้
 	add_child(sfx_player)
 
 	typewriter_player = AudioStreamPlayer.new()
 	typewriter_player.name = "TypewriterPlayer"
+	typewriter_player.bus = "SFX"
 	typewriter_player.volume_db = -18.0
+	typewriter_player.process_mode = Node.PROCESS_MODE_PAUSABLE # 👈 เพิ่มบรรทัดนี้
 	typewriter_player.stream = _generate_typewriter_click()
 	add_child(typewriter_player)
 
@@ -390,14 +401,16 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ESCAPE:
+		# เปลี่ยนปุ่ม Skip ฉากคัตซีนจาก ESC เป็น TAB เพื่อไม่ให้ชนกับ Pause Menu
+		if event.keycode == KEY_TAB:
 			_on_skip_pressed()
 			return
+			
 		if event.keycode in [KEY_SPACE, KEY_ENTER]:
 			_handle_advance_input()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_handle_advance_input()
-
+		
 func _handle_advance_input() -> void:
 	match current_state:
 		State.INTRO_CHILL:
@@ -539,7 +552,9 @@ func _show_dialogue_line(index: int) -> void:
 		var duration: float = clampf(float(text_content.length()) * 0.04, 0.3, 2.0)
 		if typewriter_tween and typewriter_tween.is_valid():
 			typewriter_tween.kill()
-		typewriter_tween = create_tween()
+		
+		# สร้าง Tween และตั้งค่าให้หยุดเมื่อติด Pause
+		typewriter_tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_STOP) # 👈 เพิ่ม set_pause_mode
 		typewriter_tween.tween_property(dialogue_text_label, "visible_ratio", 1.0, duration)
 		typewriter_tween.finished.connect(_on_typing_finished)
 
@@ -550,8 +565,9 @@ func _show_dialogue_line(index: int) -> void:
 func _play_typewriter_sound_loop(total_chars: int, duration: float) -> void:
 	var step: float = duration / maxf(1.0, float(total_chars))
 	for i in range(mini(total_chars, 30)):
-		get_tree().create_timer(i * step).timeout.connect(func():
-			if is_typing and typewriter_player:
+		# กำหนดให้ SceneTreeTimer หยุดทำงานเมื่อติด Pause ( process_always = false )
+		get_tree().create_timer(i * step, false).timeout.connect(func(): # 👈 ใส่ false หลังเวลา
+			if is_typing and typewriter_player and not get_tree().paused:
 				typewriter_player.play()
 		)
 

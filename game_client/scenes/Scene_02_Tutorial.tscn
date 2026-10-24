@@ -1,25 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cs1b8nq4y7fcd"]
 
-[node name="Scene_02_Tutorial" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="Script" uid="uid://bn6mqmgu3qxrj" path="res://Scripts/scene_02_tutorial.gd" id="1_1q0gu"]
+[ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://Scenes/Initial/playground.tscn" id="2_sk0ib"]
+[ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://Scenes/ui/FloatMenu.tscn" id="3_wm6kr"]
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -20.0
-offset_right = 150.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Scene 02: Tutorial & Typing Game"
-horizontal_alignment = 1
+[node name="Scene_02_Tutorial" type="Node2D" unique_id=234259875]
+script = ExtResource("1_1q0gu")
+
+[node name="Playground" parent="." unique_id=1245398925 instance=ExtResource("2_sk0ib")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=26857388]
+
+[node name="FloatMenu" parent="CanvasLayer" unique_id=953935821 instance=ExtResource("3_wm6kr")]
+visible = false

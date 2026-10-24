@@ -2,6 +2,8 @@
 .venv/
 .godot/
 *.import_cache
+addons/
+.mcp
 
 # Build outputs
 *.exe

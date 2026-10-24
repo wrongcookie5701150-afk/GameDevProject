@@ -1,65 +1,15 @@
 [gd_scene format=3 uid="uid://bhu4n5dxydmxy"]
 
 [ext_resource type="Script" uid="uid://jgh2tap132ml" path="res://Scripts/ui/Main_menu.gd" id="1_ibf7x"]
-[ext_resource type="Texture2D" uid="uid://byi314ldbvsme" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
-[ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
-[ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
-[ext_resource type="FontFile" uid="uid://dberc7svvrmgp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
-[ext_resource type="PackedScene" uid="uid://cj7duttg68mas" path="res://Scenes/ui/ContinueModal.tscn" id="6_continue_modal"]
-[ext_resource type="PackedScene" uid="uid://rfcu2i8mplrx" path="res://Scenes/ui/SettingsModal.tscn" id="7_settings_modal"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
-content_margin_left = 6.0
-content_margin_top = 2.0
-content_margin_right = 6.0
-content_margin_bottom = 2.0
-bg_color = Color(0.0784314, 0.117647, 0.211765, 0.823529)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.28, 0.62, 0.88, 0.75)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color(0, 0, 0, 0.35)
-shadow_size = 2
-shadow_offset = Vector2(0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
-content_margin_left = 6.0
-content_margin_top = 2.0
-content_margin_right = 6.0
-content_margin_bottom = 2.0
-bg_color = Color(0.0470588, 0.0784314, 0.14902, 0.95)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.2, 0.9, 1, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
-content_margin_left = 6.0
-content_margin_top = 2.0
-content_margin_right = 6.0
-content_margin_bottom = 2.0
-bg_color = Color(0.12549, 0.207843, 0.364706, 0.921569)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.44, 0.84, 1, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color(0.44, 0.84, 1, 0.3)
-shadow_size = 2
+[ext_resource type="Texture2D" uid="uid://21abcox6x2d3" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_noto_sans_thai_bold"]
+[ext_resource type="StyleBox" uid="uid://c7b3ux31bkqmb" path="res://assets/styles/MenuButton.tres" id="6_0yq4x"]
+[ext_resource type="PackedScene" uid="uid://dpvmce3c7uwld" path="res://Scenes/ui/ContinueModal.tscn" id="6_continue_modal"]
+[ext_resource type="StyleBox" uid="uid://mlxcqkgybf6e" path="res://assets/styles/PressMenuButton.tres" id="7_25jfe"]
+[ext_resource type="PackedScene" uid="uid://b4iowcsvrbg6e" path="res://Scenes/ui/SettingsModal.tscn" id="7_settings_modal"]
+[ext_resource type="StyleBox" uid="uid://bahbpwcveelqy" path="res://assets/styles/HoverMenuButton.tres" id="8_13upj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_focus"]
 content_margin_left = 6.0
@@ -157,8 +107,8 @@ theme_override_constants/separation = 1
 
 [node name="TitleLocked" type="Label" parent="RightMenuContainer/TitleSection" unique_id=260745526]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.2, 0.25, 1)
-theme_override_colors/font_shadow_color = Color(0.2, 0, 0.05, 0.9)
+theme_override_colors/font_color = Color(1, 0.2, 0.2509804, 1)
+theme_override_colors/font_shadow_color = Color(0.2, 0, 0.050980393, 0.9019608)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("4_press_start_2p")
@@ -201,10 +151,10 @@ theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
 theme_override_font_sizes/font_size = 11
-theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
+theme_override_styles/normal = ExtResource("6_0yq4x")
+theme_override_styles/pressed = ExtResource("7_25jfe")
+theme_override_styles/hover = ExtResource("8_13upj")
+theme_override_styles/focus = ExtResource("8_13upj")
 text = "New Game"
 
 [node name="ContinueButton" type="Button" parent="RightMenuContainer/MenuButtons" unique_id=489689798]
@@ -218,9 +168,9 @@ theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
 theme_override_font_sizes/font_size = 11
-theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/normal = ExtResource("6_0yq4x")
+theme_override_styles/pressed = ExtResource("7_25jfe")
+theme_override_styles/hover = ExtResource("8_13upj")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Continue"
 
@@ -235,9 +185,9 @@ theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
 theme_override_font_sizes/font_size = 11
-theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/normal = ExtResource("6_0yq4x")
+theme_override_styles/pressed = ExtResource("7_25jfe")
+theme_override_styles/hover = ExtResource("8_13upj")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Settings"
 
@@ -252,9 +202,9 @@ theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.44, 0.84, 1, 1)
 theme_override_fonts/font = ExtResource("5_noto_sans_thai_bold")
 theme_override_font_sizes/font_size = 11
-theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/normal = ExtResource("6_0yq4x")
+theme_override_styles/pressed = ExtResource("7_25jfe")
+theme_override_styles/hover = ExtResource("8_13upj")
 theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Exit"
 

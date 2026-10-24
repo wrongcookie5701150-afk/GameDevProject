@@ -1,4 +1,4 @@
-class_name Player extends CharacterBody2D
+class_name Player extends BasePlayer
 
 # กำหนดความเร็วการเคลื่อนที่
 @export var speed: float = 125.0

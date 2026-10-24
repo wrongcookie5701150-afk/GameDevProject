@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c63rev56wdgew"
-path="res://.godot/imported/floorswalls_LRK.png-3e5c675553a9e83a517481772db8202a.ctex"
+path="res://.godot/imported/floorswalls_LRK.png-032eae9fe45a29ca2b5aaa8d0e872cd7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/house/floorswalls_LRK.png"
-dest_files=["res://.godot/imported/floorswalls_LRK.png-3e5c675553a9e83a517481772db8202a.ctex"]
+source_file="res://assets/House/floorswalls_LRK.png"
+dest_files=["res://.godot/imported/floorswalls_LRK.png-032eae9fe45a29ca2b5aaa8d0e872cd7.ctex"]
 
 [params]
 

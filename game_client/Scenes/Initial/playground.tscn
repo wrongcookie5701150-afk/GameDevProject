@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/Initial/room.tscn" id="1_hccr6"]
 [ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://Scenes/Initial/player.tscn" id="2_cplki"]
-[ext_resource type="Script" uid="uid://qm5co3e547if" path="res://Scripts/Player.gd" id="3_isu03"]
 [ext_resource type="FontFile" uid="uid://g6hovebpvdx7" path="res://assets/fonts/ARMBOX MOON Night Demo Version 1.0.0/Demo Version 1.0.0/MOON Night DEMO Mac.otf" id="4_cplki"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_isu03"]
 
@@ -24,10 +23,10 @@ metadata/_edit_group_ = true
 
 [node name="Player" parent="." unique_id=1657159317 instance=ExtResource("2_cplki")]
 position = Vector2(98, 169)
-script = ExtResource("3_isu03")
 metadata/_edit_group_ = true
 
 [node name="Textbox" type="CanvasLayer" parent="." unique_id=1621444230]
+visible = false
 
 [node name="MarginContainer" type="MarginContainer" parent="Textbox" unique_id=50589375]
 anchors_preset = 12
@@ -87,7 +86,6 @@ theme_override_fonts/font = ExtResource("4_cplki")
 theme_override_font_sizes/font_size = 20
 text = "สัสดีจ้า ฉันชื่อ.........."
 horizontal_alignment = 3
-autowrap_mode = 2
 justification_flags = 129
 clip_text = true
 text_overrun_behavior = 1

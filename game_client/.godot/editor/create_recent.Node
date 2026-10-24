@@ -1,6 +1,15 @@
+Node2D
+CanvasLayer
+VBoxContainer
+Label
+Button
+PanelContainer
+CenterContainer
+Control
+ColorRect
+TextureRect
 CollisionShape2D
 AnimatedSprite2D
 CharacterBody2D
 TileMap
 TileMapLayer
-Node2D

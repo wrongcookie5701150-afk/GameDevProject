@@ -116,6 +116,54 @@ pytest tests/test_analytics_contract.py -v
 
 ---
 
+## 🎮 P1 Playable Vertical Slice — Scope Checklist
+
+**Milestone goal:** launch Scene 02, control May in a small tutorial space, interact with one tutorial objective, and reach a clear completion state. Keep existing `res://` paths stable; add base scripts without relocating the existing player files.
+
+### In scope
+
+- [ ] Add `game_client/Scripts/BasePlayer.gd` as the shared `CharacterBody2D` contract.
+- [ ] Change `game_client/Scripts/Player.gd` to extend `BasePlayer`; preserve its existing movement and animation behavior.
+- [ ] Keep `game_client/Scenes/Initial/player.tscn` and its current resource paths; verify it still attaches the derived `Player` script and its animations/collision work.
+- [ ] Add `game_client/Scripts/BaseWorldScene.gd` as the shared `Node2D` world contract.
+- [ ] Replace the label-only root in `game_client/Scenes/Scene_02_Tutorial.tscn` with a `Node2D` world, attach `BaseWorldScene.gd` (or a small `TutorialWorld.gd` subclass), and instance the existing player scene.
+- [ ] Implement the tutorial loop: movement instructions, movement inside the tutorial space, one interaction objective, and visible completion/next-step feedback.
+- [ ] Verify the current intro-to-tutorial route still resolves `res://Scenes/Scene_02_Tutorial.tscn`; remove or correct the stale alternate tutorial path in `cutscene_01_intro.gd`.
+- [ ] Smoke-test loading Scene 02 directly and through Scene 01; verify movement, animation, collision/bounds, interaction, and completion.
+
+### Out of scope for P1
+
+- [ ] `BasePuzzle.gd` and puzzle inheritance/subclasses; do not build a generic puzzle framework before a puzzle is selected and specified.
+- [ ] Implementing any of the five placeholder puzzle scenes: `Puzzle_Typing_Game`, `Puzzle_Event_Log`, `Puzzle_Drive_History`, `Puzzle_Hash_Verify`, and `Puzzle_321_Backup`.
+- [ ] The remaining planned puzzles, world scenes, incident/recovery route, phone/chat/dialogue/checklist/K-S-A overlays, OS base class, and broad directory migration.
+- [ ] Telemetry DTO hierarchy, backend configuration changes, save/continue, adaptive gameplay, and analytics dashboards.
+
+### Minimal base contracts
+
+```text
+CharacterBody2D
+└── BasePlayer.gd                  # New shared contract
+    └── Player.gd                  # Existing movement/animation implementation
+        └── Initial/player.tscn    # Existing scene with Player.gd attached
+
+Node2D
+└── BaseWorldScene.gd              # New shared world contract
+    └── Scene_02_Tutorial.tscn     # Tutorial root; instances Initial/player.tscn
+```
+
+- `BasePlayer.gd`: expose `movement_enabled`, `set_movement_enabled(enabled: bool)`, an `interaction_requested(player: BasePlayer)` signal, and `interact()`. Do not move the current movement or animation code into the base during P1. `Player.gd` checks the movement gate and calls `interact()` from the chosen input action.
+- `BaseWorldScene.gd`: expose `player: BasePlayer`, a `tutorial_completed` signal, `setup_scene()`, `trigger_event(event_id: StringName)`, and `_on_player_interacted(player: BasePlayer)`. `setup_scene()` resolves the player child and connects its interaction signal; the tutorial subclass handles its one objective and emits completion. Keep event handling limited to this tutorial rather than adding a general event system.
+- `Scene_02_Tutorial.tscn`: use a `Node2D` root to match the world contract, instance the existing player scene as a child, and add only the minimal tutorial UI/objective nodes needed for this milestone.
+
+### Completion gate
+
+- [ ] P1 can be played from the existing intro route without missing-resource or script errors.
+- [ ] Existing player movement and directional animation remain intact.
+- [ ] The player can complete the tutorial objective and receives an unambiguous completion state.
+- [ ] All added/updated scene and script references resolve after a Godot filesystem rescan; no unrelated `res://` paths were changed.
+
+---
+
 ## 📚 เอกสารประกอบและการร่วมพัฒนา (Documentation & Guidelines)
 
 สำหรับสมาชิกในทีม กรุณาศึกษาแนวทางการทำงานและรายละเอียดงานจากเอกสารดังต่อไปนี้:

@@ -1,19 +1,25 @@
 [gd_scene format=3 uid="uid://qeaqjyqbxvas"]
 
-[ext_resource type="Script" path="res://Scripts/cutscene_01_intro.gd" id="1_cutscene_script"]
+[ext_resource type="Script" uid="uid://bd5hpm3281ib7" path="res://Scripts/cutscene_01_intro.gd" id="1_cutscene_script"]
 [ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/Initial/room.tscn" id="2_room_scene"]
 [ext_resource type="Texture2D" uid="uid://hk2xdj1oek23" path="res://assets/sprite/may_bed_lying.png" id="3_may_lying"]
+[ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://Scenes/ui/FloatMenu.tscn" id="4_ym6r6"]
 
 [node name="Scene_01_Intro" type="Node2D" unique_id=1461647612]
 script = ExtResource("1_cutscene_script")
 
 [node name="Map" parent="." unique_id=1668373968 instance=ExtResource("2_room_scene")]
 
-[node name="MayOnBed" type="Node2D" parent="."]
-position = Vector2(58, 142)
+[node name="MayOnBed" type="Node2D" parent="." unique_id=1747289514]
 z_index = 5
+position = Vector2(58, 142)
 
-[node name="Sprite" type="Sprite2D" parent="MayOnBed"]
+[node name="Sprite" type="Sprite2D" parent="MayOnBed" unique_id=289736010]
 texture_filter = 1
 texture = ExtResource("3_may_lying")
 hframes = 5
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1287935402]
+
+[node name="FloatMenu" parent="CanvasLayer" unique_id=953935821 instance=ExtResource("4_ym6r6")]
+visible = false
