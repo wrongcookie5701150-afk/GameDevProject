@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://5fibvbiun4qk"]
 
+[ext_resource type="Texture2D" uid="uid://l1ro63bgen8x" path="res://assets/images/backgrounds/tortoise_bg.jpg" id="1_nyaww"]
+
 [node name="NotebookScreen" type="Control" unique_id=627981291]
 layout_mode = 3
 anchors_preset = 15
@@ -13,5 +15,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("1_nyaww")
+expand_mode = 2

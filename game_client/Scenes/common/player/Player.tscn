@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://w6s304hiwcqb" path="res://assets/sprite/RUN/run_up.png" id="8_gymyn"]
 [ext_resource type="Script" uid="uid://qm5co3e547if" path="res://scenes/common/player/Player.gd" id="9_qyfof"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jyw5n"]
+bg_color = Color(0, 0, 0, 0.18431373)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
 atlas = ExtResource("1_vgqql")
 region = Rect2(23, 19, 47, 47)
@@ -502,17 +505,36 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7ldla"]
-radius = 8.675
-height = 17.35
+radius = 11.0
+height = 24.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
-radius = 20.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jexof"]
+radius = 13.0
+height = 55.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1657159317]
-script = ExtResource("9_qyfof")
 light_mask = 16
 visibility_layer = 16
 z_index = 2
+script = ExtResource("9_qyfof")
+
+[node name="ObjectDatail" type="Label" parent="." unique_id=1175389875]
+z_index = 5
+custom_minimum_size = Vector2(150, 20)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -70.0
+offset_top = -49.0
+offset_right = 80.0
+offset_bottom = -29.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_jyw5n")
+text = "Place inspect object detals here."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=141561010]
 visibility_layer = 3
@@ -522,13 +544,12 @@ animation = &"Idle_Left"
 frame_progress = 0.5063973
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=533212913]
-position = Vector2(2, 12)
+position = Vector2(0, 14)
 shape = SubResource("CapsuleShape2D_7ldla")
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=936145106]
-collision_layer = 1
 collision_mask = 2
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-shape = SubResource("CircleShape2D_interaction")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=531260548]
+shape = SubResource("CapsuleShape2D_jexof")

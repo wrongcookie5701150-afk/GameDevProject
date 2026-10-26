@@ -1,7 +1,8 @@
-[gd_scene format=3 uid="uid://do6uapettx1t"]
+[gd_scene format=3 uid="uid://cndju26jqlgo2"]
 
 [ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="1_h4pq0"]
 [ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="1_knait"]
+[ext_resource type="Script" uid="uid://cwxxhmrowhlrq" path="res://scenes/common/interact_object/interact_object.gd" id="1_yxsak"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_knait"]
 render_priority = 0
@@ -14,10 +15,33 @@ shader_parameter/glowAngle = 1.57
 shader_parameter/glowSharpness = 1.0
 shader_parameter/alphaThreshold = 0.2
 
-[node name="Lamp" type="Node2D" unique_id=2088639793]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o5vd4"]
+size = Vector2(18, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ftuxk"]
+radius = 24.0
+
+[node name="LampOn" type="StaticBody2D" unique_id=905537924]
+script = ExtResource("1_yxsak")
+metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1964538242]
 material = SubResource("ShaderMaterial_knait")
 texture = ExtResource("1_h4pq0")
+flip_h = true
+hframes = 2
+frame = 1
 region_enabled = true
-region_rect = Rect2(435.29837, 75.611, 20.348, 26.928)
+region_rect = Rect2(417.77917, 76.62417, 95.25366, 24.901657)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=449897262]
+shape = SubResource("RectangleShape2D_o5vd4")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=1182678320]
+position = Vector2(0, -2)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=1457497429]
+position = Vector2(6, 9)
+shape = SubResource("CircleShape2D_ftuxk")

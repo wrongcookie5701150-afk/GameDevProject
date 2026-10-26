@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dw720aqqiwu1w"]
 
+[ext_resource type="Script" uid="uid://cwxxhmrowhlrq" path="res://scenes/common/interact_object/interact_object.gd" id="1_4u2t5"]
 [ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="1_m06js"]
 [ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="2_4u2t5"]
 
@@ -14,10 +15,29 @@ shader_parameter/glowAngle = 1.57
 shader_parameter/glowSharpness = 1.0
 shader_parameter/alphaThreshold = 0.2
 
-[node name="Speaker" type="Node2D" unique_id=566620505]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n5gmq"]
+size = Vector2(18, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5abw8"]
+radius = 24.0
+
+[node name="Speaker" type="StaticBody2D" unique_id=509146231]
+script = ExtResource("1_4u2t5")
+metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1904584403]
 material = SubResource("ShaderMaterial_y162i")
 texture = ExtResource("2_4u2t5")
 region_enabled = true
 region_rect = Rect2(277.57208, 78.534706, 14.950409, 24.256294)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1471949300]
+shape = SubResource("RectangleShape2D_n5gmq")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=145115510]
+position = Vector2(0, -2)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=1975213127]
+shape = SubResource("CircleShape2D_5abw8")

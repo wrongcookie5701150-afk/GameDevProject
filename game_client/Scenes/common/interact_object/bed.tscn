@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://coj4mwdlc20ib"]
 
 [ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="1_lnuh1"]
+[ext_resource type="Script" uid="uid://cwxxhmrowhlrq" path="res://scenes/common/interact_object/interact_object.gd" id="1_smwsw"]
 [ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="2_smwsw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fy1a6"]
@@ -14,10 +15,15 @@ shader_parameter/glowAngle = 1.57
 shader_parameter/glowSharpness = 1.0
 shader_parameter/alphaThreshold = 0.2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d37hm"]
-size = Vector2(69, 101)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rvvu3"]
+size = Vector2(69, 100)
 
-[node name="Bed" type="Node2D" unique_id=314752313]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_76smk"]
+size = Vector2(84, 124)
+
+[node name="Bed" type="StaticBody2D" unique_id=763071598]
+script = ExtResource("1_smwsw")
+metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1007948463]
 material = SubResource("ShaderMaterial_fy1a6")
@@ -25,6 +31,15 @@ texture = ExtResource("2_smwsw")
 region_enabled = true
 region_rect = Rect2(153.55463, 8.168793, 77.87976, 107.95213)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=856443934]
-position = Vector2(-0.5, -0.5)
-shape = SubResource("RectangleShape2D_d37hm")
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=717961349]
+position = Vector2(-0.5, -1)
+shape = SubResource("RectangleShape2D_rvvu3")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=838210753]
+position = Vector2(0, -2)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=651758322]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_76smk")

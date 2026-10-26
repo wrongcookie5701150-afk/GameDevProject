@@ -15,7 +15,7 @@ signal dialogue_line_completed(index: int)
 signal dialogue_finished
 signal cutscene_completed
 
-const SCENE_02_TUTORIAL_PATH: String = "res://scenes/world_scenes/scene_02_tutorial/Scene_02_Tutorial.tscn"
+const SCENE_02_TUTORIAL_PATH: String = "res://scenes/world_scenes/scene_02_tutorial/Scene_02_Tutorial.tscn" 
 
 const DIALOGUE_SEQUENCE: Array[Dictionary] = [
 	{

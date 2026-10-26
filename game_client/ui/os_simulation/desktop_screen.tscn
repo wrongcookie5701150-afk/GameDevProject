@@ -101,22 +101,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_screen_script")
 
-[node name="WindowContainer_DiscordWindow_VBox_ContentArea#DiscordContent" type="HBoxContainer" parent="." unique_id=243176421]
-layout_mode = 0
-theme_override_constants/separation = 4
-
-[node name="WindowContainer_FilesWindow_VBox_ContentArea#FilesContent" type="VBoxContainer" parent="." unique_id=1490243152]
-layout_mode = 0
-theme_override_constants/separation = 2
-
-[node name="WindowContainer_MSWordWindow_VBox_ContentArea#WordContent" type="VBoxContainer" parent="." unique_id=1637327865]
-layout_mode = 0
-theme_override_constants/separation = 2
-
-[node name="WindowContainer_GGDiskWindow_VBox_ContentArea#GGDiskContent" type="VBoxContainer" parent="." unique_id=1776907245]
-layout_mode = 0
-theme_override_constants/separation = 3
-
 [node name="Wallpaper" type="TextureRect" parent="." unique_id=1575137379]
 layout_mode = 1
 anchors_preset = 15
@@ -219,7 +203,6 @@ visible = false
 layout_mode = 1
 
 [node name="MsWord" parent="WindowContainer" unique_id=908828390 instance=ExtResource("9_g4coh")]
-visible = false
 layout_mode = 1
 
 [node name="Taskbar" type="PanelContainer" parent="." unique_id=987654321]
@@ -297,7 +280,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 7
-text = "⏻ ออก"
+text = "ออก"
 
 [node name="StartMenuPopup" type="PanelContainer" parent="." unique_id=748291038]
 unique_name_in_owner = true
@@ -470,7 +453,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 6
-text = "✕"
+text = "X"
 flat = true
 
 [node name="HSeparator1" type="HSeparator" parent="WifiPopup/VBox" unique_id=873632675]
@@ -506,7 +489,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 7
-text = "● สัญญาณ Wi-Fi: เปิดใช้งาน"
+text = "สัญญาณ Wi-Fi: เปิดใช้งาน"
 
 [node name="HSeparator2" type="HSeparator" parent="WifiPopup/VBox" unique_id=1240441953]
 layout_mode = 2

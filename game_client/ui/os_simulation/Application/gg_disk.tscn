@@ -2,9 +2,9 @@
 
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="1_0kkuh"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_j2ilb"]
+[ext_resource type="Texture2D" uid="uid://coosxb3trgek0" path="res://assets/Icon32x32/disk_load.png" id="3_86rnu"]
 [ext_resource type="Texture2D" uid="uid://clo5h2mlgrjqg" path="res://assets/Icon32x32/dialogue_page.png" id="3_531y2"]
-[ext_resource type="Texture2D" uid="uid://cl4tb84nafkoi" path="res://assets/Icon32x32/downloads.png" id="3_j2ilb"]
-[ext_resource type="Texture2D" uid="uid://cuny26mim2ruk" path="res://assets/Icon/TickTick.png" id="4_531y2"]
+[ext_resource type="Texture2D" uid="uid://j6skngbod8ch" path="res://assets/Icon32x32/world_disk.png" id="4_1kx8p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqs4c"]
 
@@ -113,8 +113,8 @@ custom_maximum_size = Vector2(-1, 8)
 layout_mode = 2
 size_flags_horizontal = 10
 offset_transform_enabled = true
-texture_normal = ExtResource("3_j2ilb")
-texture_pressed = ExtResource("4_531y2")
+texture_normal = ExtResource("3_86rnu")
+texture_pressed = ExtResource("4_1kx8p")
 stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=374464548]
