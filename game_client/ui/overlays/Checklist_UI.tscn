@@ -1,0 +1,70 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/overlays/checklist_ui.gd" id="1_checklist_script"]
+
+[node name="Checklist_UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_checklist_script")
+scene_id = "Scene_04"
+task_id = &"T05"
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -194.0
+offset_top = -112.0
+offset_right = 194.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "T05: Isolate TaoDam before inspection"
+horizontal_alignment = 1
+
+[node name="WifiCheck" type="CheckBox" parent="Panel/Content"]
+layout_mode = 2
+text = "Wi-Fi is off"
+
+[node name="LanCheck" type="CheckBox" parent="Panel/Content"]
+layout_mode = 2
+text = "LAN cable is unplugged"
+
+[node name="AccountsCheck" type="CheckBox" parent="Panel/Content"]
+layout_mode = 2
+text = "No personal email or account is connected"
+
+[node name="FilesCheck" type="CheckBox" parent="Panel/Content"]
+layout_mode = 2
+text = "No important work files are stored on this laptop"
+
+[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+text = ""
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="SubmitButton" type="Button" parent="Panel/Content"]
+layout_mode = 2
+text = "Confirm isolation"

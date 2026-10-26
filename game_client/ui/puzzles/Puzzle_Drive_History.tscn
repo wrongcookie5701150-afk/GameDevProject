@@ -1,0 +1,56 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/puzzles/drive_history_puzzle.gd" id="1_drive_history_script"]
+
+[node name="Puzzle_Drive_History" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_drive_history_script")
+scene_id = "Scene_04"
+task_id = &"T07"
+puzzle_id = &"P02"
+correct_option_id = &"report_final"
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -205.0
+offset_top = -112.0
+offset_right = 205.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "T07 / P02: Select the suspicious shared file"
+horizontal_alignment = 1
+
+[node name="Entries" type="ItemList" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Compare the sender domain with the expected university domain."
+autowrap_mode = 3
+horizontal_alignment = 1

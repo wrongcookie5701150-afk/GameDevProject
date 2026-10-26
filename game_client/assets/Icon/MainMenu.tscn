@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://cqghwb4w0si16"]
 
-[ext_resource type="Script" uid="uid://jgh2tap132ml" path="res://Scripts/ui/Main_menu.gd" id="1_np3lm"]
+[ext_resource type="Script" uid="uid://jgh2tap132ml" path="res://ui/menus/Main_menu.gd" id="1_np3lm"]
 [ext_resource type="Texture2D" uid="uid://21abcox6x2d3" path="res://assets/images/backgrounds/bg_main_menu.png" id="2_k28kb"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_ln4rl"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_gjorx"]
 [ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_tgkdv"]
-[ext_resource type="PackedScene" path="res://Scenes/ui/ContinueModal.tscn" id="6_itbok"]
-[ext_resource type="PackedScene" path="res://Scenes/ui/SettingsModal.tscn" id="7_nhmqo"]
+[ext_resource type="PackedScene" path="res://ui/menus/ContinueModal.tscn" id="6_itbok"]
+[ext_resource type="PackedScene" path="res://ui/menus/SettingsModal.tscn" id="7_nhmqo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
 content_margin_left = 6.0

@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://cs1b8nq4y7fcd"]
+
+[ext_resource type="Script" uid="uid://bn6mqmgu3qxrj" path="res://scenes/world_scenes/scene_02_tutorial/scene_02_tutorial.gd" id="1_tutorial_script"]
+[ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="2_sk0ib"]
+[ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://ui/menus/FloatMenu.tscn" id="3_wm6kr"]
+[ext_resource type="PackedScene" uid="uid://b6ftkbcxjco0f" path="res://ui/os_simulation/desktop_screen.tscn" id="4_desktop"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Typing_Game.tscn" id="5_typing"]
+[ext_resource type="PackedScene" path="res://scenes/common/interact_object/InteractObject.tscn" id="6_interact_object"]
+
+[node name="Scene_02_Tutorial" type="Node2D" unique_id=234259875]
+script = ExtResource("1_tutorial_script")
+
+[node name="Playground" parent="." unique_id=1245398925 instance=ExtResource("2_sk0ib")]
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1928763368]
+
+[node name="Computer" parent="Interactables" unique_id=1549392896 instance=ExtResource("6_interact_object")]
+position = Vector2(211, 131)
+object_id = "computer"
+prompt_message = "Press Space to use the computer"
+
+[node name="Bookshelf" parent="Interactables" unique_id=1402955892 instance=ExtResource("6_interact_object")]
+position = Vector2(416, 123)
+object_id = "bookshelf"
+prompt_message = "Press Space to inspect the bookshelf"
+
+[node name="Notebook" parent="Interactables" unique_id=1914456075 instance=ExtResource("6_interact_object")]
+position = Vector2(276, 130)
+object_id = "notebook"
+prompt_message = "Press Space to read the notebook"
+
+[node name="Lamp" parent="Interactables" unique_id=1330959167 instance=ExtResource("6_interact_object")]
+position = Vector2(128, 130)
+object_id = "lamp"
+prompt_message = "Press Space to inspect the lamp"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=26857388]
+
+[node name="WorkstationPrompt" type="Label" parent="CanvasLayer" unique_id=1101333047]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 260.0
+offset_bottom = 28.0
+text = "WASD: Move   Space: Interact with room objects"
+
+[node name="PhoneToggleButton" type="Button" parent="CanvasLayer" unique_id=288007815]
+offset_left = 376.0
+offset_top = 8.0
+offset_right = 468.0
+offset_bottom = 32.0
+text = "Phone [P]"
+
+[node name="PhonePanel" type="Panel" parent="CanvasLayer" unique_id=214814506]
+visible = false
+offset_left = 252.0
+offset_top = 38.0
+offset_right = 468.0
+offset_bottom = 178.0
+
+[node name="Content" type="VBoxContainer" parent="CanvasLayer/PhonePanel" unique_id=1606700941]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/PhonePanel/Content" unique_id=800680122]
+layout_mode = 2
+text = "Messages from Mesa"
+
+[node name="MessagesLabel" type="Label" parent="CanvasLayer/PhonePanel/Content" unique_id=350188109]
+layout_mode = 2
+size_flags_vertical = 3
+text = "14:33 | May
+14:33 | What part are you doing?
+17:47 | I finished mine; only the report is left.
+18:48 | Hellooo, anyone there?"
+autowrap_mode = 3
+
+[node name="MessageStatusLabel" type="Label" parent="CanvasLayer/PhonePanel/Content" unique_id=344333512]
+layout_mode = 2
+text = "Unread"
+
+[node name="ReadMessagesButton" type="Button" parent="CanvasLayer/PhonePanel/Content" unique_id=73059370]
+layout_mode = 2
+text = "Mark messages read"
+
+[node name="CompletionPanel" type="Panel" parent="CanvasLayer" unique_id=1890114552]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -42.0
+offset_right = 140.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CompletionLabel" type="Label" parent="CanvasLayer/CompletionPanel" unique_id=1187156061]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 0.55
+grow_horizontal = 2
+grow_vertical = 2
+text = "Scene 2 complete"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueToIncidentButton" type="Button" parent="CanvasLayer/CompletionPanel"]
+anchor_left = 0.5
+anchor_top = 0.65
+anchor_right = 0.5
+anchor_bottom = 0.65
+offset_left = -80.0
+offset_top = -12.0
+offset_right = 80.0
+offset_bottom = 12.0
+text = "Continue"
+
+[node name="InspectionPanel" type="Panel" parent="CanvasLayer" unique_id=1165755047]
+visible = false
+offset_left = 52.0
+offset_top = 80.0
+offset_right = 428.0
+offset_bottom = 142.0
+
+[node name="InspectionLabel" type="Label" parent="CanvasLayer/InspectionPanel" unique_id=1474188444]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+autowrap_mode = 3
+
+[node name="FloatMenu" parent="CanvasLayer" unique_id=953935821 instance=ExtResource("3_wm6kr")]
+visible = false
+
+[node name="DesktopScreen" parent="." unique_id=516922743 instance=ExtResource("4_desktop")]
+visible = false
+
+[node name="TypingPuzzle" parent="." unique_id=2057005388 instance=ExtResource("5_typing")]
+visible = false

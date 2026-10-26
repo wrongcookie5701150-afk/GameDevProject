@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://btuvs7e1pb106"]
+
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="1_vykip"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_lbttl"]
+[ext_resource type="Texture2D" uid="uid://b31w3c7yk83ck" path="res://assets/Icon32x32/disk.png" id="3_obqqg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cejbt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d37hm"]
+bg_color = Color(0.83033526, 0.83033514, 0.830335, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vykip"]
+content_margin_left = 15.0
+content_margin_top = 8.0
+content_margin_right = 15.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+
+[node name="MsWord" type="Control" unique_id=908828390]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=142237650]
+custom_minimum_size = Vector2(300, 180)
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.16700001
+anchor_right = 0.81200004
+anchor_bottom = 0.83300006
+offset_left = 0.23999786
+offset_top = -0.09000397
+offset_right = 0.23999023
+offset_bottom = 0.08998108
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.8819366, 0.88193667, 0.8819363, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect" unique_id=827339407]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/VBoxContainer" unique_id=530711891]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+color = Color(0.0595019, 0.44635677, 0.7725091, 1)
+
+[node name="space" type="MarginContainer" parent="ColorRect/VBoxContainer/ColorRect" unique_id=1299967431]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 13
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space" unique_id=637218431]
+custom_maximum_size = Vector2(-1, 12)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2" unique_id=2001689598]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 6
+text = "(MS Word) งานกลุ่ม/Report.docx"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2" unique_id=1699256276]
+layout_mode = 2
+
+[node name="Hide" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=1131999871]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cejbt")
+text = "-"
+
+[node name="Exit" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=1059981509]
+custom_maximum_size = Vector2(-1, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.87734634, 3.8745256e-06, 1.2513996e-06, 1)
+theme_override_colors/font_hover_color = Color(0.5268136, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_lbttl")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cejbt")
+text = "x"
+icon_alignment = 1
+
+[node name="ToolBar" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=983202123]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+
+[node name="Hbox" type="HBoxContainer" parent="ColorRect/VBoxContainer/ToolBar" unique_id=549877728]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Button" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=1136286031]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/icon_max_width = 10
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/normal = SubResource("StyleBoxFlat_d37hm")
+text = "Save"
+icon = ExtResource("3_obqqg")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=596463150]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextEdit" type="TextEdit" parent="ColorRect/VBoxContainer/MarginContainer" unique_id=1944711564]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 0.6)
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_vykip")
+placeholder_text = "Report Content"
+caret_blink = true

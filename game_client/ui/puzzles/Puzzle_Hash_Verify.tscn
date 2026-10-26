@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/puzzles/hash_verify_puzzle.gd" id="1_hash_script"]
+
+[node name="Puzzle_Hash_Verify" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hash_script")
+scene_id = "Scene_05"
+task_id = &"T08"
+puzzle_id = &"P03"
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -202.0
+offset_top = -114.0
+offset_right = 202.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "T08 / P03: Verify evidence integrity (MD5)"
+horizontal_alignment = 1
+
+[node name="EvidenceList" type="ItemList" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ManifestLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = ""
+autowrap_mode = 3
+
+[node name="HashInput" type="LineEdit" parent="Panel/Content"]
+layout_mode = 2
+placeholder_text = "Enter the MD5 value from the evidence copy"
+
+[node name="VerifyButton" type="Button" parent="Panel/Content"]
+layout_mode = 2
+text = "Verify MD5"
+
+[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Select an evidence file, then compare its manifest value."
+autowrap_mode = 3
+horizontal_alignment = 1

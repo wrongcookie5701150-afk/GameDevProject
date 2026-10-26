@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dxsvek4iljeud"]
+
+[ext_resource type="Script" path="res://scenes/splash/splash_screen.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+
+[node name="SplashScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.051, 0.075, 0.133, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContentContainer" type="VBoxContainer" parent="Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="StudioLabel" type="Label" parent="Center/ContentContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 1)
+theme_override_colors/font_shadow_color = Color(0.8, 0.1, 0.1, 0.4)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("2_press_start_2p")
+theme_override_font_sizes/font_size = 32
+text = "GAME STUDIO"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Center/ContentContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.84, 1, 1)
+theme_override_fonts/font = ExtResource("3_share_tech_mono")
+theme_override_font_sizes/font_size = 16
+text = "INITIALIZING SYSTEM..."
+horizontal_alignment = 1

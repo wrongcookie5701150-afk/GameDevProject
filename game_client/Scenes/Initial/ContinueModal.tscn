@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b13k7pvlaxv7w"]
 
-[ext_resource type="Script" uid="uid://yx775ivdx238" path="res://Scripts/ui/continue_modal.gd" id="1_58bhb"]
+[ext_resource type="Script" uid="uid://yx775ivdx238" path="res://ui/menus/continue_modal.gd" id="1_58bhb"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_00jo6"]
 [ext_resource type="FontFile" uid="uid://but7ctdme0p66" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="3_y2vy2"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="4_xinwu"]

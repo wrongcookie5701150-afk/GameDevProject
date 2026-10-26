@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://coj4mwdlc20ib"]
+
+[ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="1_lnuh1"]
+[ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="2_smwsw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fy1a6"]
+render_priority = 0
+shader = ExtResource("1_lnuh1")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/glowSize = 15.0
+shader_parameter/glowDensity = 3
+shader_parameter/glowRadialCoverage = 4
+shader_parameter/glowAngle = 1.57
+shader_parameter/glowSharpness = 1.0
+shader_parameter/alphaThreshold = 0.2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d37hm"]
+size = Vector2(69, 101)
+
+[node name="Bed" type="Node2D" unique_id=314752313]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1007948463]
+material = SubResource("ShaderMaterial_fy1a6")
+texture = ExtResource("2_smwsw")
+region_enabled = true
+region_rect = Rect2(153.55463, 8.168793, 77.87976, 107.95213)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=856443934]
+position = Vector2(-0.5, -0.5)
+shape = SubResource("RectangleShape2D_d37hm")

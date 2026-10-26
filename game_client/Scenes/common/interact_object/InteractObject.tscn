@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/common/interact_object/interact_object.gd" id="1_interact_script"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_placeholder"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blocker"]
+size = Vector2(18, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
+radius = 24.0
+
+[node name="InteractObject" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_interact_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -10)
+scale = Vector2(0.32, 0.32)
+texture = ExtResource("2_placeholder")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_blocker")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+position = Vector2(0, -2)
+collision_layer = 2
+collision_mask = 0
+monitorable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_interaction")

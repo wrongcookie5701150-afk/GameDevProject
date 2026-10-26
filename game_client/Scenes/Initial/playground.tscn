@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cahpqs4fo3l42"]
 
-[ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://Scenes/Initial/room.tscn" id="1_hccr6"]
-[ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://Scenes/Initial/player.tscn" id="2_cplki"]
+[ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://scenes/initial/room.tscn" id="1_hccr6"]
+[ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://scenes/common/player/Player.tscn" id="2_cplki"]
 [ext_resource type="FontFile" uid="uid://g6hovebpvdx7" path="res://assets/fonts/ARMBOX MOON Night Demo Version 1.0.0/Demo Version 1.0.0/MOON Night DEMO Mac.otf" id="4_cplki"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_isu03"]
 

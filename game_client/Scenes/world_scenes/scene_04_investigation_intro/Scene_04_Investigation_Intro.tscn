@@ -1,0 +1,114 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/world_scenes/scene_04_investigation_intro/scene_04_investigation_intro.gd" id="1_scene_script"]
+[ext_resource type="PackedScene" path="res://scenes/initial/playground.tscn" id="2_playground"]
+[ext_resource type="PackedScene" path="res://scenes/common/interact_object/InteractObject.tscn" id="3_interactable"]
+[ext_resource type="PackedScene" path="res://ui/overlays/Checklist_UI.tscn" id="4_checklist"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Event_Log.tscn" id="5_event_log"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Drive_History.tscn" id="6_drive_history"]
+
+[node name="Scene_04_Investigation_Intro" type="Node2D"]
+script = ExtResource("1_scene_script")
+
+[node name="Playground" parent="." instance=ExtResource("2_playground")]
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="TaoDam" parent="Interactables" instance=ExtResource("3_interactable")]
+position = Vector2(218, 100)
+object_id = "taodam"
+prompt_message = "Press Space to inspect TaoDam"
+
+[node name="Bookshelf" parent="Interactables" instance=ExtResource("3_interactable")]
+position = Vector2(418, 110)
+object_id = "bookshelf"
+prompt_message = "Press Space to inspect the bookshelf"
+
+[node name="EVDrive" parent="Interactables" instance=ExtResource("3_interactable")]
+visible = false
+position = Vector2(398, 130)
+object_id = "ev_drive"
+prompt_message = "Press Space to pick up the EV Drive"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 392.0
+offset_bottom = 42.0
+text = ""
+autowrap_mode = 3
+
+[node name="DialoguePanel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -82.0
+grow_horizontal = 2
+
+[node name="Content" type="VBoxContainer" parent="CanvasLayer/DialoguePanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogueLabel" type="Label" parent="CanvasLayer/DialoguePanel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "21:25 | March: Roblox ป่าวน้อง"
+autowrap_mode = 3
+
+[node name="DialogueButton" type="Button" parent="CanvasLayer/DialoguePanel/Content"]
+layout_mode = 2
+text = "Reply to March"
+
+[node name="Checklist_UI" parent="CanvasLayer" instance=ExtResource("4_checklist")]
+visible = false
+
+[node name="Puzzle_Event_Log" parent="CanvasLayer" instance=ExtResource("5_event_log")]
+visible = false
+
+[node name="Puzzle_Drive_History" parent="CanvasLayer" instance=ExtResource("6_drive_history")]
+visible = false
+
+[node name="EVDrivePanel" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -45.0
+offset_right = 150.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="CanvasLayer/EVDrivePanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/EVDrivePanel/Content"]
+layout_mode = 2
+text = "EV Drive collected. Evidence is ready for Scene 5."
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/EVDrivePanel/Content"]
+layout_mode = 2
+text = "Open evidence drive"

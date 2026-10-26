@@ -1,0 +1,89 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/scene_03_incident/Scene_03_Incident.gd" id="1_incident_script"]
+[ext_resource type="PackedScene" path="res://ui/os_simulation/Folder_View_UI.tscn" id="2_folder_view"]
+[ext_resource type="PackedScene" path="res://ui/os_simulation/Ransom_Note_UI.tscn" id="3_ransom_note"]
+
+[node name="Scene_03_Incident" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_incident_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.13, 0.15, 1)
+
+[node name="NotificationPanel" type="Panel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.15
+anchor_right = 0.5
+anchor_bottom = 0.15
+offset_left = -165.0
+offset_top = -26.0
+offset_right = 165.0
+offset_bottom = 26.0
+grow_horizontal = 2
+
+[node name="NotificationLabel" type="Label" parent="NotificationPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FolderView" parent="." instance=ExtResource("2_folder_view")]
+visible = false
+
+[node name="RansomNote" parent="." instance=ExtResource("3_ransom_note")]
+visible = false
+
+[node name="MarchChatPanel" type="Panel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.8
+anchor_right = 0.5
+anchor_bottom = 0.8
+offset_left = -180.0
+offset_top = -42.0
+offset_right = 180.0
+offset_bottom = 42.0
+grow_horizontal = 2
+
+[node name="Content" type="VBoxContainer" parent="MarchChatPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageLabel" type="Label" parent="MarchChatPanel/Content"]
+layout_mode = 2
+text = "21:25 | M4rchupikchu_inw101: Roblox ป่าวน้อง"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="MarchChatPanel/Content"]
+layout_mode = 2
+text = "Ask March for help"

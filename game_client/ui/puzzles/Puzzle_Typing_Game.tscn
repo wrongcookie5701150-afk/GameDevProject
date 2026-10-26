@@ -1,0 +1,73 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/puzzles/typing_game.gd" id="1_typing_script"]
+
+[node name="Puzzle_Typing_Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_typing_script")
+scene_id = "Scene_02"
+task_id = &"T04"
+puzzle_id = &"P00"
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -120.0
+offset_right = 210.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Typing Minigame (T04 / P00)"
+horizontal_alignment = 1
+
+[node name="InstructionLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Type this short MVP passage accurately."
+horizontal_alignment = 1
+
+[node name="PassageLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+text = ""
+autowrap_mode = 3
+
+[node name="AnswerInput" type="TextEdit" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SubmitButton" type="Button" parent="Panel/Content"]
+layout_mode = 2
+text = "Submit"
+
+[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+
+[node name="CompleteButton" type="Button" parent="Panel/Content"]
+layout_mode = 2
+text = "Finish Scene 2"

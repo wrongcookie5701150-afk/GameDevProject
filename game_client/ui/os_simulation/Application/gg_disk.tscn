@@ -1,0 +1,221 @@
+[gd_scene format=3 uid="uid://r16avtttxb34"]
+
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="1_0kkuh"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_j2ilb"]
+[ext_resource type="Texture2D" uid="uid://clo5h2mlgrjqg" path="res://assets/Icon32x32/dialogue_page.png" id="3_531y2"]
+[ext_resource type="Texture2D" uid="uid://cl4tb84nafkoi" path="res://assets/Icon32x32/downloads.png" id="3_j2ilb"]
+[ext_resource type="Texture2D" uid="uid://cuny26mim2ruk" path="res://assets/Icon/TickTick.png" id="4_531y2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqs4c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqs4c"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 5.0
+bg_color = Color(0.5211406, 0.5211406, 0.5211405, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="GgDisk" type="Control" unique_id=70219291]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=108067510]
+custom_minimum_size = Vector2(300, 180)
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.16700001
+anchor_right = 0.81200004
+anchor_bottom = 0.83300006
+offset_left = 0.23999786
+offset_top = -0.09000397
+offset_right = 0.23999023
+offset_bottom = 0.08998108
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9019608, 0.9019608, 0.9019608, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect" unique_id=65793854]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/VBoxContainer" unique_id=225597413]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+color = Color(0.0595019, 0.44635677, 0.7725091, 1)
+
+[node name="space" type="MarginContainer" parent="ColorRect/VBoxContainer/ColorRect" unique_id=791178274]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 13
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space" unique_id=33138260]
+custom_maximum_size = Vector2(-1, 12)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2" unique_id=1618029864]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("1_0kkuh")
+theme_override_font_sizes/font_size = 6
+text = "(GG Disk) Share with me/Project/CyberSecurity"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2" unique_id=344401753]
+layout_mode = 2
+
+[node name="Hide" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=705609531]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pqs4c")
+text = "-"
+
+[node name="Exit" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=1390024337]
+custom_maximum_size = Vector2(-1, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.87734634, 3.8745256e-06, 1.2513996e-06, 1)
+theme_override_colors/font_hover_color = Color(0.5268136, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_j2ilb")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pqs4c")
+text = "x"
+icon_alignment = 1
+
+[node name="IconBar" type="HBoxContainer" parent="ColorRect/VBoxContainer" unique_id=891064746]
+layout_mode = 2
+
+[node name="Download" type="TextureButton" parent="ColorRect/VBoxContainer/IconBar" unique_id=82076099]
+custom_maximum_size = Vector2(-1, 8)
+layout_mode = 2
+size_flags_horizontal = 10
+offset_transform_enabled = true
+texture_normal = ExtResource("3_j2ilb")
+texture_pressed = ExtResource("4_531y2")
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=374464548]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="GridContainer" type="GridContainer" parent="ColorRect/VBoxContainer/MarginContainer" unique_id=77874050]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=330115153]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer" unique_id=1984870651]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer" unique_id=1306089436]
+layout_mode = 2
+texture = ExtResource("3_531y2")
+expand_mode = 4
+stretch_mode = 4
+flip_h = true
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer" unique_id=848411638]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0kkuh")
+theme_override_font_sizes/font_size = 6
+text = "Report.docx"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PanelContainer2" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=322001438]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2" unique_id=1015249350]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer" unique_id=904151411]
+layout_mode = 2
+texture = ExtResource("3_531y2")
+expand_mode = 4
+stretch_mode = 4
+flip_h = true
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer" unique_id=985765348]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0kkuh")
+theme_override_font_sizes/font_size = 6
+text = "Presentation.ppxt"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PanelContainer3" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=924475718]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3" unique_id=992972487]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer" unique_id=1669256755]
+layout_mode = 2
+texture = ExtResource("3_531y2")
+expand_mode = 4
+stretch_mode = 4
+flip_h = true
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer" unique_id=1628134324]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0kkuh")
+theme_override_font_sizes/font_size = 6
+text = "Network Diagram.png"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PanelContainer4" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=1024253312]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer4" unique_id=1631147613]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer4/VBoxContainer" unique_id=1865045655]
+layout_mode = 2
+texture = ExtResource("3_531y2")
+expand_mode = 4
+stretch_mode = 4
+flip_h = true
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer4/VBoxContainer" unique_id=1345311444]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0kkuh")
+theme_override_font_sizes/font_size = 6
+text = "Network Diagram.png"
+horizontal_alignment = 1
+autowrap_mode = 3
