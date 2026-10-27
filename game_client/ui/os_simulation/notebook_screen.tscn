@@ -156,6 +156,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="InspectorApp" parent="WindowContainer" unique_id=563994437 instance=ExtResource("4_yxdcl")]
+visible = false
 layout_mode = 1
 offset_left = 239.0
 offset_top = 102.0

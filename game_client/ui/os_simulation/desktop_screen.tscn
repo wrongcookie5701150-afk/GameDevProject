@@ -10,11 +10,13 @@
 [ext_resource type="PackedScene" uid="uid://btuvs7e1pb106" path="res://ui/os_simulation/Application/ms_word.tscn" id="9_g4coh"]
 [ext_resource type="Texture2D" uid="uid://cqihxeox1mfnj" path="res://assets/Icon/Discord.png" id="9_icon_discord"]
 [ext_resource type="Texture2D" uid="uid://bt2xaxc0njvyf" path="res://assets/Icon32x32/delete.png" id="10_icon_trash"]
+[ext_resource type="PackedScene" uid="uid://cfch7htxosc21" path="res://ui/os_simulation/Application/downloaded_folder.tscn" id="10_ww8ul"]
 [ext_resource type="Texture2D" uid="uid://dp7xr3xs058rf" path="res://assets/Icon32x32/windows_logo.png" id="11_icon_win"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="12_font_pixel"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="13_font_mono"]
 [ext_resource type="Texture2D" uid="uid://0ldr3xieek12" path="res://assets/Icon32x32/world_enable.png" id="15_icon_wifi_on"]
 [ext_resource type="Texture2D" uid="uid://wpy6at3gcx6k" path="res://assets/Icon/Toggl.png" id="18_icon_power"]
+[ext_resource type="PackedScene" uid="uid://bnk0bp42oat41" path="res://ui/os_simulation/Application/discord_app.tscn" id="19_discord_app"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_up108"]
 content_margin_left = 2.0
@@ -54,14 +56,32 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.15, 0.22, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.65, 0.95, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_size = 4
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_taskbar"]
 content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 4.0
 content_margin_bottom = 2.0
-bg_color = Color(0.06, 0.1, 0.16, 0.96)
+bg_color = Color(0.05882353, 0.101960786, 0.16078432, 0.3764706)
 border_width_top = 1
 border_color = Color(0.28, 0.5, 0.75, 0.85)
+border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_start_btn"]
 content_margin_left = 4.0
@@ -220,25 +240,52 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.0084299, 1)
 mouse_filter = 2
 
 [node name="GgDisk" parent="WindowContainer" unique_id=70219291 instance=ExtResource("8_tajw6")]
 visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 
 [node name="MsWord" parent="WindowContainer" unique_id=908828390 instance=ExtResource("9_g4coh")]
+visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+
+[node name="DownloadedFolder" parent="WindowContainer" unique_id=203498997 instance=ExtResource("10_ww8ul")]
+visible = false
+layout_mode = 1
+script = null
+
+[node name="DiscordApp" parent="WindowContainer" unique_id=1295014397 instance=ExtResource("19_discord_app")]
+visible = false
+layout_mode = 1
+
+[node name="NotificationToast" type="PanelContainer" parent="." unique_id=881234901]
+unique_name_in_owner = true
+z_index = 25
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -191.0
+offset_top = -55.0
+offset_right = -2.0
+offset_bottom = -25.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+
+[node name="ToastLabel" type="Label" parent="NotificationToast" unique_id=881234902]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("13_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "🔔 GG Disk: ดาวน์โหลดโฟลเดอร์สำเร็จ!"
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Taskbar" type="PanelContainer" parent="." unique_id=987654321]
 z_index = 10

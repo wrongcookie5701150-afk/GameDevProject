@@ -2,11 +2,40 @@
 
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="1_vykip"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_lbttl"]
+[ext_resource type="Texture2D" uid="uid://ctlpl0vvtc8r5" path="res://assets/Icon32x32/minimize.png" id="3_ftuyi"]
 [ext_resource type="Texture2D" uid="uid://b31w3c7yk83ck" path="res://assets/Icon32x32/disk.png" id="3_obqqg"]
-[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Typing_Game.tscn" id="4_typing_puzzle"]
-[ext_resource type="Script" path="res://ui/os_simulation/Application/ms_word.gd" id="5_script"]
+[ext_resource type="Texture2D" uid="uid://bdkjwo0pqhji0" path="res://assets/Icon32x32/warning.png" id="4_cejbt"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="4_g0dcb"]
+[ext_resource type="PackedScene" uid="uid://hcbln7di5e7v" path="res://ui/puzzles/Puzzle_Typing_Game.tscn" id="4_typing_puzzle"]
+[ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_8nw4h"]
+[ext_resource type="Script" uid="uid://dnnc0n16qy8uy" path="res://ui/os_simulation/Application/ms_word.gd" id="5_script"]
+[ext_resource type="Texture2D" uid="uid://clf7xpoesnj6d" path="res://assets/Icon32x32/exit (2).png" id="5_tlii3"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cejbt"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48kt2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xil4g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i6dyk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqs4c"]
+bg_color = Color(0.96455234, 0.93005484, 0.8608842, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rr0yd"]
+content_margin_left = 2.0
+content_margin_top = 0.0
+content_margin_right = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.7749587, 0.45640326, 0.35661224, 1)
+border_blend = true
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d37hm"]
 bg_color = Color(0.83033526, 0.83033514, 0.830335, 1)
@@ -14,13 +43,6 @@ corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vykip"]
-content_margin_left = 15.0
-content_margin_top = 8.0
-content_margin_right = 15.0
-content_margin_bottom = 8.0
-bg_color = Color(1, 1, 1, 1)
 
 [node name="MsWord" type="Control" unique_id=908828390]
 layout_mode = 3
@@ -55,73 +77,113 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
 [node name="ColorRect" type="ColorRect" parent="ColorRect/VBoxContainer" unique_id=530711891]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 color = Color(0.0595019, 0.44635677, 0.7725091, 1)
 
-[node name="space" type="MarginContainer" parent="ColorRect/VBoxContainer/ColorRect" unique_id=1299967431]
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer/ColorRect" unique_id=381235621]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = -1.0
-offset_right = 1.0
-offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 13
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space" unique_id=637218431]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/MarginContainer" unique_id=819910125]
 custom_maximum_size = Vector2(-1, 12)
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2" unique_id=2001689598]
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ColorRect/MarginContainer/HBoxContainer2" unique_id=1149577927]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_vykip")
 theme_override_font_sizes/font_size = 6
-text = "(MS Word) งานกลุ่ม/Report.docx"
+text = "(Ms Word) งานกลุ่ม/Report.docx"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2" unique_id=1699256276]
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/MarginContainer/HBoxContainer2" unique_id=381669730]
 layout_mode = 2
 
-[node name="Hide" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=1131999871]
+[node name="Hide" type="Button" parent="ColorRect/VBoxContainer/ColorRect/MarginContainer/HBoxContainer2/HBoxContainer" unique_id=1802444250]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_cejbt")
-text = "-"
+theme_override_constants/icon_max_width = 6
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_48kt2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xil4g")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_i6dyk")
+icon = ExtResource("3_ftuyi")
 
-[node name="Exit" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=1059981509]
-custom_maximum_size = Vector2(-1, 10)
+[node name="Exit" type="Button" parent="ColorRect/VBoxContainer/ColorRect/MarginContainer/HBoxContainer2/HBoxContainer" unique_id=1957775084]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.87734634, 3.8745256e-06, 1.2513996e-06, 1)
 theme_override_colors/font_hover_color = Color(0.5268136, 0, 0, 1)
+theme_override_constants/icon_max_width = 6
 theme_override_fonts/font = ExtResource("2_lbttl")
-theme_override_font_sizes/font_size = 6
-theme_override_styles/normal = SubResource("StyleBoxEmpty_cejbt")
-text = "x"
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_48kt2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xil4g")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_i6dyk")
+icon = ExtResource("5_tlii3")
+icon_alignment = 1
+
+[node name="MacroBanner" type="PanelContainer" parent="ColorRect/VBoxContainer" unique_id=1580017878]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="HBox" type="HBoxContainer" parent="ColorRect/VBoxContainer/MacroBanner" unique_id=191837718]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="TextureRect" parent="ColorRect/VBoxContainer/MacroBanner/HBox" unique_id=1486265677]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("4_cejbt")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="StatusLabel" type="Label" parent="ColorRect/VBoxContainer/MacroBanner/HBox" unique_id=903346844]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2231029, 0.2231029, 0.22310284, 1)
+theme_override_fonts/font = ExtResource("5_8nw4h")
+theme_override_font_sizes/font_size = 4
+text = "Securities:  This document contains macros. Enable content to view."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnableButton" type="Button" parent="ColorRect/VBoxContainer/MacroBanner/HBox" unique_id=1291108573]
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.39688924, 0.39688927, 0.3968891, 1)
+theme_override_fonts/font = ExtResource("4_g0dcb")
+theme_override_font_sizes/font_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_rr0yd")
+text = "Enable"
 icon_alignment = 1
 
 [node name="ToolBar" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=983202123]
 layout_mode = 2
-theme_override_constants/margin_left = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
 
 [node name="Hbox" type="HBoxContainer" parent="ColorRect/VBoxContainer/ToolBar" unique_id=549877728]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
-size_flags_horizontal = 0
 
-[node name="Button" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=1136286031]
+[node name="SaveButton" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=1136286031]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/icon_max_width = 10
 theme_override_fonts/font = ExtResource("1_vykip")
@@ -132,6 +194,13 @@ icon = ExtResource("3_obqqg")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=503894669]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_colors/font_color = Color(0.35, 0.4, 0.5, 1)
+theme_override_font_sizes/font_size = 6
+text = "Report_CyberSecurity_Draft.docx"
+
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=596463150]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
@@ -140,47 +209,5 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="TextEdit" type="TextEdit" parent="ColorRect/VBoxContainer/MarginContainer" unique_id=1944711564]
+[node name="TypingPuzzle" parent="ColorRect/VBoxContainer/MarginContainer" unique_id=1160543254 instance=ExtResource("4_typing_puzzle")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_placeholder_color = Color(0, 0, 0, 0.6)
-theme_override_font_sizes/font_size = 6
-theme_override_styles/normal = SubResource("StyleBoxFlat_vykip")
-placeholder_text = "Report Content"
-caret_blink = true
-
-[node name="MacroBanner" type="PanelContainer" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -140.0
-offset_top = -35.0
-offset_right = 140.0
-offset_bottom = 35.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBox" type="VBoxContainer" parent="MacroBanner"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Label" type="Label" parent="MacroBanner/VBox"]
-layout_mode = 2
-text = "Security Warning: Macros are disabled"
-horizontal_alignment = 1
-
-[node name="StatusLabel" type="Label" parent="MacroBanner/VBox"]
-layout_mode = 2
-text = "This document contains macros. Enable content to view."
-horizontal_alignment = 1
-
-[node name="EnableButton" type="Button" parent="MacroBanner/VBox"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 20)
-text = "Enable Content"
-
-[node name="TypingPuzzle" parent="." unique_id=777777777 instance=ExtResource("4_typing_puzzle")]
-visible = false

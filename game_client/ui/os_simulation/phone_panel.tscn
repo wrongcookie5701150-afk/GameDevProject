@@ -1,0 +1,218 @@
+[gd_scene format=3 uid="uid://difynsjqa3i4t"]
+
+[ext_resource type="Script" uid="uid://dfynsjqa3i4tp" path="res://ui/os_simulation/phone_panel.gd" id="1_phone_script"]
+[ext_resource type="Texture2D" uid="uid://clo5h2mlgrjqg" path="res://assets/Icon32x32/dialogue_page.png" id="1_fu1tn"]
+[ext_resource type="Texture2D" uid="uid://dehg8lv2dqopn" path="res://icon.svg" id="2_yojre"]
+[ext_resource type="Texture2D" uid="uid://hvo8lqp7067a" path="res://assets/Icon32x32/arrow_up.png" id="3_yojre"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwr0p"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 3.0
+expand_margin_top = 8.0
+expand_margin_right = 3.0
+expand_margin_bottom = 8.0
+shadow_color = Color(0.056291588, 0.056291603, 0.056291595, 0.6)
+shadow_size = 2
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqs4c"]
+bg_color = Color(0.1679126, 0.18596059, 0.19988203, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d37hm"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.11489678, 0.11489683, 0.11489671, 1)
+border_width_right = 1
+border_color = Color(0.3553137, 0.35531354, 0.35531357, 0.3529412)
+border_blend = true
+corner_radius_top_left = 5
+expand_margin_right = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v25d1"]
+bg_color = Color(0.2123048, 0.21230483, 0.21230477, 0.28627452)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_pqs4c"]
+color = Color(0.25565878, 0.25565878, 0.25565878, 1)
+grow_begin = -2.0
+grow_end = -2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_up108"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.24115604, 0.24115607, 0.24115595, 1)
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1845q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e1x0l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1x0l"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.32544088, 0.3254409, 0.32544076, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 3
+
+[node name="PhonePanel" type="Panel" unique_id=1501917543]
+offset_left = 321.0
+offset_top = 44.0
+offset_right = 421.0
+offset_bottom = 234.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hwr0p")
+script = ExtResource("1_phone_script")
+
+[node name="InnerBorder" type="Panel" parent="." unique_id=1867997021]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InnerBorder" unique_id=1470656201]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 1
+
+[node name="ChatIcon" type="Panel" parent="InnerBorder/HBoxContainer" unique_id=899635297]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d37hm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InnerBorder/HBoxContainer/ChatIcon" unique_id=1928378883]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+
+[node name="Toggle" type="Button" parent="InnerBorder/HBoxContainer/ChatIcon/VBoxContainer" unique_id=655756105]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_v25d1")
+icon = ExtResource("1_fu1tn")
+icon_alignment = 1
+
+[node name="Seperaror" type="HSeparator" parent="InnerBorder/HBoxContainer/ChatIcon/VBoxContainer" unique_id=1766430569]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_pqs4c")
+
+[node name="MesasIcon" type="Button" parent="InnerBorder/HBoxContainer/ChatIcon/VBoxContainer" unique_id=1717945904]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_v25d1")
+icon = ExtResource("2_yojre")
+icon_alignment = 1
+
+[node name="MarchIcon" type="Button" parent="InnerBorder/HBoxContainer/ChatIcon/VBoxContainer" unique_id=209386220]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_v25d1")
+icon = ExtResource("2_yojre")
+icon_alignment = 1
+
+[node name="ChatContent" type="Panel" parent="InnerBorder/HBoxContainer" unique_id=287897077]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Content" type="VBoxContainer" parent="InnerBorder/HBoxContainer/ChatContent" unique_id=184352090]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChatName" type="Button" parent="InnerBorder/HBoxContainer/ChatContent/Content" unique_id=2102140315]
+layout_mode = 2
+theme_override_constants/icon_max_width = 10
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_up108")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1845q")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_e1x0l")
+text = "Mesa"
+icon = ExtResource("2_yojre")
+alignment = 0
+
+[node name="DateLabel" type="Label" parent="InnerBorder/HBoxContainer/ChatContent/Content" unique_id=98317264]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7019608, 0.7411765, 0.8, 0.7058824)
+theme_override_font_sizes/font_size = 5
+text = "Today"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="InnerBorder/HBoxContainer/ChatContent/Content" unique_id=1284719283]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MessagesLabel" type="Label" parent="InnerBorder/HBoxContainer/ChatContent/Content/ScrollContainer" unique_id=680272332]
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 6
+text = "14:33 | May
+14:33 | What part are you doing?
+17:47 | I finished mine; only the report is left.
+18:48 | Hellooo, anyone there?"
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InnerBorder/HBoxContainer/ChatContent/Content" unique_id=284448519]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="LineEdit" type="LineEdit" parent="InnerBorder/HBoxContainer/ChatContent/Content/HBoxContainer" unique_id=2136752243]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+
+[node name="Button" type="Button" parent="InnerBorder/HBoxContainer/ChatContent/Content/HBoxContainer" unique_id=1192563394]
+layout_mode = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_e1x0l")
+icon = ExtResource("3_yojre")

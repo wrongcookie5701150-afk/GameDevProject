@@ -1,73 +1,84 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://hcbln7di5e7v"]
 
-[ext_resource type="Script" path="res://ui/puzzles/typing_game.gd" id="1_typing_script"]
+[ext_resource type="Script" uid="uid://bnsnhx67sykaw" path="res://ui/puzzles/typing_game.gd" id="1_typing_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_typing_font"]
 
-[node name="Puzzle_Typing_Game" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_typing_paper"]
+content_margin_left = 15.0
+content_margin_top = 10.0
+content_margin_right = 15.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bk5wb"]
+content_margin_left = 15.0
+content_margin_top = 8.0
+content_margin_right = 15.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40qaw"]
+content_margin_left = 15.0
+content_margin_top = 8.0
+content_margin_right = 15.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0)
+
+[node name="Puzzle_Typing_Game" type="Control" unique_id=1160543254]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_typing_script")
 scene_id = "Scene_02"
 task_id = &"T04"
 puzzle_id = &"P00"
 
-[node name="Panel" type="Panel" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -120.0
-offset_right = 210.0
-offset_bottom = 120.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Content" type="VBoxContainer" parent="Panel"]
+[node name="PassageLabel" type="RichTextLabel" parent="." unique_id=1531474539]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = 12.0
-offset_right = -12.0
-offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.55, 0.55, 0.55, 1)
+theme_override_fonts/normal_font = ExtResource("2_typing_font")
+theme_override_font_sizes/normal_font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_typing_paper")
 
-[node name="TitleLabel" type="Label" parent="Panel/Content"]
-layout_mode = 2
-text = "Typing Minigame (T04 / P00)"
-horizontal_alignment = 1
+[node name="ReportPaper" type="Panel" parent="." unique_id=959806716]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bk5wb")
 
-[node name="InstructionLabel" type="Label" parent="Panel/Content"]
-layout_mode = 2
-text = "Type this short MVP passage accurately."
-horizontal_alignment = 1
+[node name="TextEdit" type="TextEdit" parent="." unique_id=1525266629]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 0.6)
+theme_override_fonts/font = ExtResource("2_typing_font")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_40qaw")
+wrap_mode = 3
+virtual_keyboard_show_on_focus = false
+caret_blink = true
 
-[node name="PassageLabel" type="Label" parent="Panel/Content"]
-layout_mode = 2
-size_flags_vertical = 3
-text = ""
-autowrap_mode = 3
-
-[node name="AnswerInput" type="TextEdit" parent="Panel/Content"]
-custom_minimum_size = Vector2(0, 70)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="SubmitButton" type="Button" parent="Panel/Content"]
-layout_mode = 2
-text = "Submit"
-
-[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
-layout_mode = 2
-text = ""
-horizontal_alignment = 1
-
-[node name="CompleteButton" type="Button" parent="Panel/Content"]
-layout_mode = 2
-text = "Finish Scene 2"
+[node name="FeedbackLabel" type="Label" parent="." unique_id=1254346206]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.8, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 6

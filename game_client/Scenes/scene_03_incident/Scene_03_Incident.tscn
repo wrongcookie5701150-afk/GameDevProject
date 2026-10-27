@@ -1,89 +1,142 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://5br0i4uqq8w0"]
 
-[ext_resource type="Script" path="res://scenes/scene_03_incident/Scene_03_Incident.gd" id="1_incident_script"]
-[ext_resource type="PackedScene" path="res://ui/os_simulation/Folder_View_UI.tscn" id="2_folder_view"]
-[ext_resource type="PackedScene" path="res://ui/os_simulation/Ransom_Note_UI.tscn" id="3_ransom_note"]
+[ext_resource type="PackedScene" uid="uid://b6ftkbcxjco0f" path="res://ui/os_simulation/desktop_screen.tscn" id="1_desktop_base"]
+[ext_resource type="Script" uid="uid://dp85fqvvxyipn" path="res://scenes/scene_03_incident/Scene_03_Incident.gd" id="2_incident_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_qar8n"]
 
-[node name="Scene_03_Incident" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ransom_window"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12, 0.05, 0.05, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.15, 0.15, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.7)
+shadow_size = 10
+
+[node name="Scene_03_Incident" instance=ExtResource("1_desktop_base")]
+script = ExtResource("2_incident_script")
+
+[node name="RansomNote" type="PanelContainer" parent="." index="5" unique_id=884719283]
+unique_name_in_owner = true
+visible = false
+z_index = 35
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -80.0
+offset_right = 140.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_incident_script")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ransom_window")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="VBox" type="VBoxContainer" parent="RansomNote" unique_id=1847291823]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBar" type="ColorRect" parent="RansomNote/VBox" unique_id=1847291824]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+color = Color(0.75, 0.1, 0.1, 1)
+
+[node name="Margin" type="MarginContainer" parent="RansomNote/VBox/TitleBar" unique_id=1847291825]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12, 0.13, 0.15, 1)
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
 
-[node name="NotificationPanel" type="Panel" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.15
-anchor_right = 0.5
-anchor_bottom = 0.15
-offset_left = -165.0
-offset_top = -26.0
-offset_right = 165.0
-offset_bottom = 26.0
-grow_horizontal = 2
-
-[node name="NotificationLabel" type="Label" parent="NotificationPanel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 6.0
-offset_right = -8.0
-offset_bottom = -6.0
-grow_horizontal = 2
-grow_vertical = 2
-autowrap_mode = 3
-horizontal_alignment = 1
+[node name="Title" type="Label" parent="RansomNote/VBox/TitleBar/Margin" unique_id=1847291826]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_qar8n")
+theme_override_font_sizes/font_size = 6
+text = "README_TO_RECOVER_FILES.txt - Notepad"
 vertical_alignment = 1
 
-[node name="FolderView" parent="." instance=ExtResource("2_folder_view")]
-visible = false
+[node name="Body" type="MarginContainer" parent="RansomNote/VBox" unique_id=1847291827]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="RansomNote" parent="." instance=ExtResource("3_ransom_note")]
-visible = false
+[node name="ContentVBox" type="VBoxContainer" parent="RansomNote/VBox/Body" unique_id=1847291828]
+layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="MarchChatPanel" type="Panel" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.8
-anchor_right = 0.5
-anchor_bottom = 0.8
-offset_left = -180.0
-offset_top = -42.0
-offset_right = 180.0
-offset_bottom = 42.0
-grow_horizontal = 2
+[node name="HeaderLabel" type="Label" parent="RansomNote/VBox/Body/ContentVBox" unique_id=1847291829]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
+theme_override_fonts/font = ExtResource("3_qar8n")
+theme_override_font_sizes/font_size = 7
+text = "⚠️ YOUR FILES HAVE BEEN ENCRYPTED! ⚠️"
+horizontal_alignment = 1
 
-[node name="Content" type="VBoxContainer" parent="MarchChatPanel"]
+[node name="MessageText" type="Label" parent="RansomNote/VBox/Body/ContentVBox" unique_id=1847291830]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("3_qar8n")
+theme_override_font_sizes/font_size = 5
+text = "All project files, reports, and diagrams have been locked using military-grade encryption.
+
+DO NOT modify, rename, or delete files, as it will lead to PERMANENT DATA CORRUPTION.
+
+Wait for further instructions."
+autowrap_mode = 2
+
+[node name="ContinueButton" type="Button" parent="RansomNote/VBox/Body/ContentVBox" unique_id=1847291831]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 10
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("3_qar8n")
+theme_override_font_sizes/font_size = 6
+text = "What happened to my files?! (ปิดหน้าต่าง)"
+
+[node name="GlitchOverlay" type="ColorRect" parent="." index="6" unique_id=773819284]
+unique_name_in_owner = true
+visible = false
+z_index = 38
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 6.0
-offset_right = -8.0
-offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+color = Color(0.85, 0.1, 0.1, 0.4)
 
-[node name="MessageLabel" type="Label" parent="MarchChatPanel/Content"]
-layout_mode = 2
-text = "21:25 | M4rchupikchu_inw101: Roblox ป่าวน้อง"
-horizontal_alignment = 1
-
-[node name="ContinueButton" type="Button" parent="MarchChatPanel/Content"]
-layout_mode = 2
-text = "Ask March for help"
+[node name="SkipCutsceneButton" type="Button" parent="." index="7" unique_id=663819285]
+unique_name_in_owner = true
+z_index = 28
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -90.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = 18.0
+grow_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_qar8n")
+theme_override_font_sizes/font_size = 6
+text = "⏩ Skip Cutscene"

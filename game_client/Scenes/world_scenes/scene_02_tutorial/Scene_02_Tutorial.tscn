@@ -2,18 +2,19 @@
 
 [ext_resource type="Script" uid="uid://bn6mqmgu3qxrj" path="res://scenes/world_scenes/scene_02_tutorial/scene_02_tutorial.gd" id="1_tutorial_script"]
 [ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="2_sk0ib"]
+[ext_resource type="PackedScene" uid="uid://difynsjqa3i4t" path="res://ui/os_simulation/phone_panel.tscn" id="3_1s2k8"]
 [ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://ui/menus/FloatMenu.tscn" id="3_wm6kr"]
 [ext_resource type="PackedScene" uid="uid://b6ftkbcxjco0f" path="res://ui/os_simulation/desktop_screen.tscn" id="4_desktop"]
 
 [sub_resource type="Gradient" id="Gradient_p20se"]
 colors = PackedColorArray(0, 0, 0, 0.1254902, 0.21176471, 0.21176471, 0.21176471, 0.6627451)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_48tac"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jexof"]
 gradient = SubResource("Gradient_p20se")
 fill_to = Vector2(1, 0.0042735045)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1s2k8"]
-texture = SubResource("GradientTexture2D_48tac")
+texture = SubResource("GradientTexture2D_jexof")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmxv5"]
 bg_color = Color(0, 0, 0, 0.18431373)
@@ -27,14 +28,15 @@ script = ExtResource("1_tutorial_script")
 
 [node name="TaskObjective" type="Label" parent="CanvasLayer" unique_id=2104842558]
 offset_left = 321.0
-offset_top = 16.0
+offset_top = -1.0
 offset_right = 480.0
-offset_bottom = 59.0
+offset_bottom = 42.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxTexture_1s2k8")
 text = "     Task 01 ไปที่คอมพิวเตอร์
            - กด [W] [A] [S] [D] เพื่อเคลื่อนที่"
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="PhoneToggleButton" type="Button" parent="CanvasLayer" unique_id=288007815]
 offset_left = 415.0
@@ -44,6 +46,7 @@ offset_bottom = 190.0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_fmxv5")
 text = "- กด [P] เพื่อใช้มือถือ"
+metadata/_edit_use_anchors_ = true
 
 [node name="InspectHint" type="Button" parent="CanvasLayer" unique_id=1999719714]
 offset_left = 415.0
@@ -53,50 +56,14 @@ offset_bottom = 209.0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_fmxv5")
 text = "- กด [spacebar] inspect"
+metadata/_edit_use_anchors_ = true
 
-[node name="PhonePanel" type="Panel" parent="CanvasLayer" unique_id=214814506]
-visible = false
-offset_left = 203.0
-offset_top = 75.0
-offset_right = 419.0
-offset_bottom = 215.0
-
-[node name="Content" type="VBoxContainer" parent="CanvasLayer/PhonePanel" unique_id=1606700941]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TitleLabel" type="Label" parent="CanvasLayer/PhonePanel/Content" unique_id=800680122]
-layout_mode = 2
-theme_override_font_sizes/font_size = 6
-text = "Messages from Mesa"
-
-[node name="MessagesLabel" type="Label" parent="CanvasLayer/PhonePanel/Content" unique_id=350188109]
-custom_minimum_size = Vector2(50, 20)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 6
-text = "14:33 | May
-14:33 | What part are you doing?
-17:47 | I finished mine; only the report is left.
-18:48 | Hellooo, anyone there?"
-autowrap_mode = 3
-
-[node name="MessageStatusLabel" type="Label" parent="CanvasLayer/PhonePanel/Content" unique_id=344333512]
-layout_mode = 2
-theme_override_font_sizes/font_size = 6
-text = "Unread"
-
-[node name="ReadMessagesButton" type="Button" parent="CanvasLayer/PhonePanel/Content" unique_id=73059370]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Mark messages read"
+[node name="PhonePanel" parent="CanvasLayer" unique_id=1501917543 instance=ExtResource("3_1s2k8")]
+offset_left = 269.0
+offset_top = 46.0
+offset_right = 390.0
+offset_bottom = 261.0
+script = null
 
 [node name="FloatMenu" parent="CanvasLayer" unique_id=953935821 instance=ExtResource("3_wm6kr")]
 visible = false

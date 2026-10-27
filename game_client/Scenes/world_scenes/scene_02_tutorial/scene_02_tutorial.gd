@@ -36,6 +36,10 @@ func _ready() -> void:
 	
 	if phone_panel:
 		phone_panel.hide()
+		if phone_panel.has_signal("messages_read"):
+			phone_panel.messages_read.connect(_on_phone_messages_read)
+		if phone_panel.has_signal("closed"):
+			phone_panel.closed.connect(_on_phone_closed)
 	if task_objective:
 		task_objective.show()
 	if inspect_hint:
@@ -139,7 +143,20 @@ func _on_interactable_requested(interact_object: InteractObject) -> void:
 
 func _toggle_phone() -> void:
 	if phone_panel:
-		phone_panel.visible = not phone_panel.visible
+		if phone_panel.has_method("toggle_phone"):
+			phone_panel.toggle_phone()
+		else:
+			phone_panel.visible = not phone_panel.visible
+		if phone_panel.visible and not _messages_read:
+			_on_read_messages_pressed()
+
+func _on_phone_messages_read(contact: String) -> void:
+	if contact == "mesa":
+		_on_read_messages_pressed()
+
+func _on_phone_closed() -> void:
+	if not _messages_read:
+		_on_read_messages_pressed()
 
 func _on_read_messages_pressed() -> void:
 	if not _messages_read:
@@ -158,6 +175,10 @@ func _on_read_messages_pressed() -> void:
 		)
 	if phone_panel:
 		phone_panel.hide()
+		if phone_panel.has_signal("messages_read"):
+			phone_panel.messages_read.connect(_on_phone_messages_read)
+		if phone_panel.has_signal("closed"):
+			phone_panel.closed.connect(_on_phone_closed)
 
 func _on_wifi_toggled(is_connected: bool) -> void:
 	# Track when user disconnects Wi-Fi from the desktop

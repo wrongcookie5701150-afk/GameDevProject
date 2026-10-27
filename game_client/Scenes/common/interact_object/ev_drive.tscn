@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://chb85o5brcdvu"]
 
-[ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="1_6ixe4"]
-[ext_resource type="Script" uid="uid://cwxxhmrowhlrq" path="res://scenes/common/interact_object/interact_object.gd" id="1_6ugf3"]
-[ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="1_fnkfi"]
+[ext_resource type="Script" uid="uid://cwxxhmrowhlrq" path="res://scenes/common/interact_object/interact_object.gd" id="1_gs2k8"]
+[ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="2_grqlt"]
+[ext_resource type="Texture2D" uid="uid://ejolrsqjgfok" path="res://assets/House/Room.png" id="3_n2b6p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fnkfi"]
 render_priority = 0
-shader = ExtResource("1_fnkfi")
+shader = ExtResource("2_grqlt")
 shader_parameter/line_color = Color(1, 1, 1, 1)
 shader_parameter/glowSize = 15.0
 shader_parameter/glowDensity = 3
@@ -21,13 +21,13 @@ size = Vector2(41, 48)
 [sub_resource type="CircleShape2D" id="CircleShape2D_vs6mv"]
 radius = 24.0
 
-[node name="FlashDrive" type="StaticBody2D" unique_id=798022656]
-script = ExtResource("1_6ugf3")
+[node name="EVDrive" type="StaticBody2D" unique_id=798022656]
+script = ExtResource("1_gs2k8")
 metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=227203200]
 material = SubResource("ShaderMaterial_fnkfi")
-texture = ExtResource("1_6ixe4")
+texture = ExtResource("3_n2b6p")
 region_enabled = true
 region_rect = Rect2(433.50974, 29.953894, 19.034332, 25.46261)
 

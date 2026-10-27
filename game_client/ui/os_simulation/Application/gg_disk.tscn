@@ -1,19 +1,67 @@
 [gd_scene format=3 uid="uid://r16avtttxb34"]
 
+[ext_resource type="Script" path="res://ui/os_simulation/Application/gg_disk.gd" id="1_script"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="1_0kkuh"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_j2ilb"]
-[ext_resource type="Texture2D" uid="uid://coosxb3trgek0" path="res://assets/Icon32x32/disk_load.png" id="3_86rnu"]
-[ext_resource type="Texture2D" uid="uid://clo5h2mlgrjqg" path="res://assets/Icon32x32/dialogue_page.png" id="3_531y2"]
-[ext_resource type="Texture2D" uid="uid://j6skngbod8ch" path="res://assets/Icon32x32/world_disk.png" id="4_1kx8p"]
+[ext_resource type="Texture2D" uid="uid://ctlpl0vvtc8r5" path="res://assets/Icon32x32/minimize.png" id="2_qomtg"]
+[ext_resource type="Texture2D" uid="uid://fqubpvutsqvq" path="res://assets/Icon32x32/downloads16px.png" id="3_h7y2x"]
+[ext_resource type="Texture2D" uid="uid://clf7xpoesnj6d" path="res://assets/Icon32x32/exit (2).png" id="4_g0s3u"]
+[ext_resource type="Texture2D" uid="uid://bdcqy5upchkn1" path="res://assets/Icon32x32/info.png" id="4_m1mle"]
+[ext_resource type="Texture2D" uid="uid://bs3hhdtg0ioct" path="res://assets/Icon/Microsoft Word.png" id="5_jiilq"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="6_h7y2x"]
+[ext_resource type="Texture2D" uid="uid://w2lgalvouu1a" path="res://assets/Icon/Microsoft PowerPoint.png" id="8_m1mle"]
+[ext_resource type="Texture2D" uid="uid://cp7mi3ri2htss" path="res://assets/Icon32x32/transparency.png" id="9_h7y2x"]
+[ext_resource type="Texture2D" uid="uid://nl56swi2cqn1" path="res://assets/Icon32x32/page_edit.png" id="9_kqeh7"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqs4c"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m1mle"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g0s3u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qomtg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rr0yd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7y2x"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.6789437, 0.6789437, 0.6789436, 0.5411765)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1845q"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.82605994, 0.82606006, 0.8260599, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6419339, 0.64193404, 0.64193374, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqs4c"]
 content_margin_left = 3.0
 content_margin_top = 3.0
 content_margin_right = 3.0
 content_margin_bottom = 5.0
-bg_color = Color(0.5211406, 0.5211406, 0.5211405, 1)
+bg_color = Color(0.88804215, 0.90502113, 0.9348505, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -26,6 +74,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=108067510]
 custom_minimum_size = Vector2(300, 180)
@@ -42,7 +91,6 @@ offset_right = 0.23999023
 offset_bottom = 0.08998108
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.9019608, 0.9019608, 0.9019608, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect" unique_id=65793854]
 layout_mode = 1
@@ -74,7 +122,6 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 13
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/VBoxContainer/ColorRect/space" unique_id=33138260]
-custom_maximum_size = Vector2(-1, 12)
 layout_mode = 2
 alignment = 1
 
@@ -91,65 +138,103 @@ layout_mode = 2
 
 [node name="Hide" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=705609531]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_pqs4c")
-text = "-"
+theme_override_constants/icon_max_width = 6
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_m1mle")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_g0s3u")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qomtg")
+icon = ExtResource("2_qomtg")
 
 [node name="Exit" type="Button" parent="ColorRect/VBoxContainer/ColorRect/space/HBoxContainer2/HBoxContainer" unique_id=1390024337]
-custom_maximum_size = Vector2(-1, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.87734634, 3.8745256e-06, 1.2513996e-06, 1)
 theme_override_colors/font_hover_color = Color(0.5268136, 0, 0, 1)
+theme_override_constants/icon_max_width = 6
 theme_override_fonts/font = ExtResource("2_j2ilb")
-theme_override_font_sizes/font_size = 6
-theme_override_styles/normal = SubResource("StyleBoxEmpty_pqs4c")
-text = "x"
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_m1mle")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_g0s3u")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qomtg")
+icon = ExtResource("4_g0s3u")
 icon_alignment = 1
 
-[node name="IconBar" type="HBoxContainer" parent="ColorRect/VBoxContainer" unique_id=891064746]
+[node name="Utility" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=1529094208]
 layout_mode = 2
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 1
 
-[node name="Download" type="TextureButton" parent="ColorRect/VBoxContainer/IconBar" unique_id=82076099]
-custom_maximum_size = Vector2(-1, 8)
+[node name="IconBar" type="HBoxContainer" parent="ColorRect/VBoxContainer/Utility" unique_id=891064746]
 layout_mode = 2
-size_flags_horizontal = 10
-offset_transform_enabled = true
-texture_normal = ExtResource("3_86rnu")
-texture_pressed = ExtResource("4_1kx8p")
-stretch_mode = 5
+alignment = 2
+
+[node name="Download" type="Button" parent="ColorRect/VBoxContainer/Utility/IconBar" unique_id=1405034945]
+layout_mode = 2
+size_flags_horizontal = 9
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rr0yd")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_h7y2x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1845q")
+icon = ExtResource("3_h7y2x")
+icon_alignment = 1
+
+[node name="History" type="Button" parent="ColorRect/VBoxContainer/Utility/IconBar" unique_id=1781427596]
+layout_mode = 2
+size_flags_horizontal = 9
+theme_override_constants/icon_max_width = 4
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rr0yd")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_h7y2x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1845q")
+icon = ExtResource("4_m1mle")
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=374464548]
 layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="GridContainer" type="GridContainer" parent="ColorRect/VBoxContainer/MarginContainer" unique_id=77874050]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 columns = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=330115153]
 layout_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer" unique_id=1984870651]
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer" unique_id=1334864600]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="WordIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=2131539249]
+custom_maximum_size = Vector2(-1, 9)
+layout_mode = 2
+texture = ExtResource("5_jiilq")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=848411638]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26293245, 0.26293248, 0.26293233, 1)
+theme_override_constants/line_spacing = -2
+theme_override_fonts/font = ExtResource("6_h7y2x")
+theme_override_font_sizes/font_size = 4
+text = "Report.docx"
+autowrap_mode = 3
+
 [node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer" unique_id=1306089436]
 layout_mode = 2
-texture = ExtResource("3_531y2")
+texture = ExtResource("9_kqeh7")
 expand_mode = 4
 stretch_mode = 4
 flip_h = true
-
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer/VBoxContainer" unique_id=848411638]
-custom_minimum_size = Vector2(45, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_0kkuh")
-theme_override_font_sizes/font_size = 6
-text = "Report.docx"
-horizontal_alignment = 1
-autowrap_mode = 3
 
 [node name="PanelContainer2" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=322001438]
 layout_mode = 2
@@ -158,21 +243,33 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2" unique_id=1015249350]
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer" unique_id=1905484825]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=346004655]
+custom_maximum_size = Vector2(-1, 9)
+layout_mode = 2
+texture = ExtResource("8_m1mle")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=985765348]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26293245, 0.26293248, 0.26293233, 1)
+theme_override_constants/line_spacing = -2
+theme_override_fonts/font = ExtResource("6_h7y2x")
+theme_override_font_sizes/font_size = 4
+text = "Presentation.ppxt"
+autowrap_mode = 3
+
 [node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer" unique_id=904151411]
 layout_mode = 2
-texture = ExtResource("3_531y2")
+texture = ExtResource("9_kqeh7")
 expand_mode = 4
 stretch_mode = 4
 flip_h = true
-
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer2/VBoxContainer" unique_id=985765348]
-custom_minimum_size = Vector2(45, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_0kkuh")
-theme_override_font_sizes/font_size = 6
-text = "Presentation.ppxt"
-horizontal_alignment = 1
-autowrap_mode = 3
 
 [node name="PanelContainer3" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=924475718]
 layout_mode = 2
@@ -181,41 +278,30 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3" unique_id=992972487]
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer" unique_id=1721646301]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer/HBoxContainer" unique_id=1836664935]
+custom_maximum_size = Vector2(-1, 9)
+layout_mode = 2
+texture = ExtResource("9_h7y2x")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer/HBoxContainer" unique_id=984423770]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26293245, 0.26293248, 0.26293233, 1)
+theme_override_constants/line_spacing = -2
+theme_override_fonts/font = ExtResource("6_h7y2x")
+theme_override_font_sizes/font_size = 4
+text = "Network Diagram.ppxt"
+autowrap_mode = 3
+
 [node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer" unique_id=1669256755]
 layout_mode = 2
-texture = ExtResource("3_531y2")
+texture = ExtResource("9_kqeh7")
 expand_mode = 4
 stretch_mode = 4
 flip_h = true
-
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer3/VBoxContainer" unique_id=1628134324]
-custom_minimum_size = Vector2(45, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_0kkuh")
-theme_override_font_sizes/font_size = 6
-text = "Network Diagram.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="PanelContainer4" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer" unique_id=1024253312]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pqs4c")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer4" unique_id=1631147613]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer4/VBoxContainer" unique_id=1865045655]
-layout_mode = 2
-texture = ExtResource("3_531y2")
-expand_mode = 4
-stretch_mode = 4
-flip_h = true
-
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/GridContainer/PanelContainer4/VBoxContainer" unique_id=1345311444]
-custom_minimum_size = Vector2(45, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_0kkuh")
-theme_override_font_sizes/font_size = 6
-text = "Network Diagram.png"
-horizontal_alignment = 1
-autowrap_mode = 3
