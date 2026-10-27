@@ -12,6 +12,7 @@ var current_player_cluster: String = "Beginner"
 var is_adaptive_hint_enabled: bool = false
 var current_difficulty_multiplier: float = 1.0
 var active_timers: Dictionary = {}
+var puzzle_submission_history: Array[Dictionary] = []
 
 var _network_adapter: TelemetryNetworkAdapter
 
@@ -61,6 +62,8 @@ func track_quick_event(scene_id: String, event_type: String, metrics: Dictionary
 	track_event(scene_id, "", event_type, 0.0, null, 1, false, metrics)
 
 func track_param(param: BaseTelemetryParam) -> void:
+	if param.event_type == "puzzle_submitted":
+		puzzle_submission_history.append(param.to_dictionary())
 	track_event(
 		param.scene_id,
 		param.task_id,
@@ -71,6 +74,39 @@ func track_param(param: BaseTelemetryParam) -> void:
 		param.hint_used,
 		param.metrics
 	)
+
+func get_assessment_summary() -> Dictionary:
+	var attempted_tasks: Dictionary = {}
+	var completed_tasks: Dictionary = {}
+	var attempt_count: int = puzzle_submission_history.size()
+	var hints_used: int = 0
+	for submission: Dictionary in puzzle_submission_history:
+		var task_id: String = str(submission.get("task_id", ""))
+		if not task_id.is_empty():
+			attempted_tasks[task_id] = true
+			if bool(submission.get("is_correct", false)):
+				completed_tasks[task_id] = true
+		if bool(submission.get("hint_used", false)):
+			hints_used += 1
+	var task_count: int = attempted_tasks.size()
+	var completed_count: int = completed_tasks.size()
+	var knowledge_score: int = 0
+	if task_count > 0:
+		knowledge_score = roundi(100.0 * float(completed_count) / float(task_count))
+	var extra_attempts: int = maxi(0, attempt_count - task_count)
+	var skills_score: int = clampi(100 - extra_attempts * 8 - hints_used * 12, 0, 100)
+	var attitude_score: int = 100
+	if not completed_tasks.has("T13") or not completed_tasks.has("T14"):
+		attitude_score = 0
+	return {
+		"attempted_task_count": task_count,
+		"completed_task_count": completed_count,
+		"attempt_count": attempt_count,
+		"hints_used": hints_used,
+		"knowledge_score": knowledge_score,
+		"skills_score": skills_score,
+		"attitude_score": attitude_score
+	}
 
 func _on_request_completed(response_code: int, response_data: Dictionary, payload: Dictionary) -> void:
 	if response_code < 200 or response_code >= 300:

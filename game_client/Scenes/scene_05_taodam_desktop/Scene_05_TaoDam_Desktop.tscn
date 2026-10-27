@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://cj5k1xqpwq0dh"]
 
 [ext_resource type="Script" uid="uid://bnsmilucj5m7e" path="res://scenes/scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.gd" id="1_scene_script"]
-[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Hash_Verify.tscn" id="2_hash"]
+[ext_resource type="PackedScene" uid="uid://lncg5kind7nq" path="res://ui/puzzles/Puzzle_Hash_Verify.tscn" id="2_hash"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_File_Structure.tscn" id="3_macro"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Decoder.tscn" id="4_decoder"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Persistence_Order.tscn" id="5_sequence"]
+[ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="6_playground"]
+[ext_resource type="PackedScene" uid="uid://bwx5msj6rxark" path="res://scenes/common/interact_object/InteractObject.tscn" id="7_interactable"]
+[ext_resource type="PackedScene" uid="uid://5fibvbiun4qk" path="res://ui/os_simulation/notebook_screen.tscn" id="8_notebook"]
 
 [node name="Scene_05_TaoDam_Desktop" type="Control" unique_id=900208353]
 layout_mode = 3
@@ -15,7 +18,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_scene_script")
 
+[node name="Playground" parent="." unique_id=437886555 instance=ExtResource("6_playground")]
+
+[node name="Interactables" type="Node2D" parent="." unique_id=951746927]
+
+[node name="TaoDam" parent="Interactables" unique_id=1007082937 instance=ExtResource("7_interactable")]
+position = Vector2(275, 115)
+object_id = "taodam"
+prompt_message = "Press Space to inspect TaoDam"
+
 [node name="DesktopPanel" type="Panel" parent="." unique_id=56213719]
+visible = false
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -93,18 +106,131 @@ text = "Scene 5 complete. Ready for recovery."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Puzzle_Hash_Verify" parent="." unique_id=435520462 instance=ExtResource("2_hash")]
-visible = false
-layout_mode = 1
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=824008680]
 
-[node name="Puzzle_File_Structure" parent="." unique_id=1244306094 instance=ExtResource("3_macro")]
-visible = false
-layout_mode = 1
+[node name="TaskObjective" type="Label" parent="CanvasLayer" unique_id=485016014]
+custom_minimum_size = Vector2(50, 0)
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 320.0
+offset_bottom = 34.0
+text = "Walk to TaoDam and press Space to inspect the laptop."
+autowrap_mode = 3
 
-[node name="Puzzle_Decoder" parent="." unique_id=609842910 instance=ExtResource("4_decoder")]
+[node name="NotebookScreen" parent="CanvasLayer" unique_id=924819562 instance=ExtResource("8_notebook")]
 visible = false
-layout_mode = 1
 
-[node name="Puzzle_Persistence_Order" parent="." unique_id=2072237714 instance=ExtResource("5_sequence")]
+[node name="ForensicToolbar" type="Panel" parent="CanvasLayer" unique_id=1477407617]
 visible = false
-layout_mode = 1
+custom_minimum_size = Vector2(0, 72)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -80.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+
+[node name="Content" type="VBoxContainer" parent="CanvasLayer/ForensicToolbar" unique_id=1092253721]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tools" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content" unique_id=984259392]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="HashButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=1265059381]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "FTK | T08"
+
+[node name="MacroButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=1636719054]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "olevba | T09"
+
+[node name="DecoderButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=1001472613]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Decoder | T10-T11"
+
+[node name="InspectorButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=1095660396]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inspector"
+
+[node name="PersistenceButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=171925860]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Persistence | T12"
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/ForensicToolbar/Content" unique_id=1377146577]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="CloseNotebookButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content" unique_id=1872677718]
+custom_minimum_size = Vector2(120, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Close TaoDam"
+
+[node name="CompletionPanel" type="Panel" parent="CanvasLayer" unique_id=124842586]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -46.0
+offset_right = 170.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CompletionLabel" type="Label" parent="CanvasLayer/CompletionPanel" unique_id=249904453]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Scene 5 complete. Ready for recovery."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RecoveryButton" type="Button" parent="CanvasLayer/CompletionPanel" unique_id=1379503261]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = -27.0
+offset_right = 74.0
+offset_bottom = -3.0
+grow_horizontal = 2
+text = "Continue to recovery"
+
+[node name="Puzzle_Hash_Verify" parent="CanvasLayer" unique_id=435520462 instance=ExtResource("2_hash")]
+visible = false
+
+[node name="Puzzle_File_Structure" parent="CanvasLayer" unique_id=1244306094 instance=ExtResource("3_macro")]
+visible = false
+
+[node name="Puzzle_Decoder" parent="CanvasLayer" unique_id=609842910 instance=ExtResource("4_decoder")]
+visible = false
+
+[node name="Puzzle_Persistence_Order" parent="CanvasLayer" unique_id=2072237714 instance=ExtResource("5_sequence")]
+visible = false

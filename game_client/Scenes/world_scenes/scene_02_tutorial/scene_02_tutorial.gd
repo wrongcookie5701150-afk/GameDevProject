@@ -6,6 +6,7 @@ var float_menu: Control
 var phone_panel: Panel
 var message_status_label: Label
 var task_objective: Label
+var inspect_hint: Button
 var object_detail: Label
 var desktop_ui: Control
 var ms_word_window: Control
@@ -26,6 +27,7 @@ func _ready() -> void:
 	phone_panel = get_node_or_null("CanvasLayer/PhonePanel")
 	message_status_label = get_node_or_null("CanvasLayer/PhonePanel/Content/MessageStatusLabel")
 	task_objective = get_node_or_null("CanvasLayer/TaskObjective")
+	inspect_hint = get_node_or_null("CanvasLayer/InspectHint")
 	object_detail = get_node_or_null("Playground/Player/ObjectDatail")
 	desktop_ui = get_node_or_null("CanvasLayer/DesktopScreen")
 	ms_word_window = get_node_or_null("CanvasLayer/DesktopScreen/WindowContainer/MsWord")
@@ -36,7 +38,12 @@ func _ready() -> void:
 		phone_panel.hide()
 	if task_objective:
 		task_objective.show()
+	if inspect_hint:
+		inspect_hint.hide()
 	if object_detail:
+		object_detail.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		object_detail.position = Vector2(-70.0, -49.0)
+		object_detail.size = Vector2(150.0, 20.0)
 		object_detail.hide()
 		print("DEBUG: ObjectDatail found at runtime")
 	else:
@@ -69,6 +76,9 @@ func _connect_interact_objects(node: Node) -> void:
 	# Recursively find all InteractObject nodes in the scene tree
 	for child in node.get_children():
 		if child is InteractObject:
+			if child.object_id == "object" and child.name == "Desktop":
+				child.object_id = "computer"
+				child.prompt_message = "Press Space to use the computer"
 			if not child.player_approached.is_connected(_on_interactable_approached):
 				child.player_approached.connect(_on_interactable_approached)
 			if not child.player_left.is_connected(_on_interactable_left):
@@ -87,17 +97,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_P:
 			_toggle_phone()
 			get_viewport().set_input_as_handled()
-		if event.keycode == KEY_SPACE and _nearby_object:
-			_nearby_object.interact()
-			get_viewport().set_input_as_handled()
 
 func _on_interactable_approached(interact_object: InteractObject, _player: Node2D) -> void:
 	_nearby_object = interact_object
 	var object_name = interact_object.name if interact_object.name else "Unknown Object"
 	print("DEBUG: Approached object: ", object_name, " object_id: ", interact_object.object_id)
 	
-	if task_objective:
-		task_objective.text = interact_object.prompt_message if interact_object.prompt_message else "Press Space to interact"
+	if inspect_hint:
+		inspect_hint.show()
 	
 	if object_detail:
 		match interact_object.object_id:
@@ -117,8 +124,8 @@ func _on_interactable_approached(interact_object: InteractObject, _player: Node2
 func _on_interactable_left(interact_object: InteractObject, _player: Node2D) -> void:
 	if _nearby_object == interact_object:
 		_nearby_object = null
-		if task_objective:
-			task_objective.text = "     Task 01 ไปที่คอมพิวเตอร์\n           - กด [W] [A] [S] [D] เพื่อเคลื่อนที่"
+		if inspect_hint:
+			inspect_hint.hide()
 		if object_detail:
 			object_detail.hide()
 

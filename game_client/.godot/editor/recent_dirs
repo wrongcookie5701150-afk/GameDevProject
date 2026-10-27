@@ -1,10 +1,10 @@
-res://scenes/common/interact_object/
 res://ui/os_simulation/Application/
 res://ui/os_simulation/
+res://assets/styles/
+res://scenes/common/interact_object/
 res://Scenes/common/interact_object/
 res://Scenes/common/
 res://ui/puzzles/
-res://assets/styles/
 res://Scenes/
 res://assets/sprite/RUN/
 res://assets/sprite/IDLE/

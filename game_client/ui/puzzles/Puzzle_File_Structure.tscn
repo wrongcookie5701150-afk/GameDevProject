@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bd0d5me4ok8dy"]
 
-[ext_resource type="Script" path="res://ui/puzzles/macro_structure_puzzle.gd" id="1_macro_script"]
+[ext_resource type="Script" uid="uid://v6lnh0awf26r" path="res://ui/puzzles/macro_structure_puzzle.gd" id="1_macro_script"]
 
-[node name="Puzzle_File_Structure" type="Control"]
+[node name="Puzzle_File_Structure" type="Control" unique_id=1953494715]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,13 +10,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_macro_script")
+correct_option_id = &"vba_project"
 scene_id = "Scene_05"
 task_id = &"T09"
 puzzle_id = &"P04"
-correct_option_id = &"vba_project"
 
-[node name="Panel" type="Panel" parent="."]
-anchors_preset = 8
+[node name="Panel" type="Panel" parent="." unique_id=1548360601]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -28,8 +28,8 @@ offset_bottom = 105.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Content" type="VBoxContainer" parent="Panel"]
-anchors_preset = 15
+[node name="Content" type="VBoxContainer" parent="Panel" unique_id=626911966]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
@@ -39,27 +39,28 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="Panel/Content"]
+[node name="TitleLabel" type="Label" parent="Panel/Content" unique_id=1748763410]
 layout_mode = 2
 text = "T09 / P04: Inspect Report_Final.docx structure"
 horizontal_alignment = 1
 
-[node name="StructureLabel" type="Label" parent="Panel/Content"]
+[node name="StructureLabel" type="Label" parent="Panel/Content" unique_id=1919903371]
 layout_mode = 2
 text = "Final_Report_Revision_v4.docx contains:"
 horizontal_alignment = 1
 
-[node name="Components" type="ItemList" parent="Panel/Content"]
+[node name="Components" type="ItemList" parent="Panel/Content" unique_id=563598370]
 layout_mode = 2
 size_flags_vertical = 3
 allow_reselect = true
 
-[node name="HintButton" type="Button" parent="Panel/Content"]
+[node name="HintButton" type="Button" parent="Panel/Content" unique_id=1209560670]
 layout_mode = 2
 text = "Hint"
 
-[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
+[node name="FeedbackLabel" type="Label" parent="Panel/Content" unique_id=114225917]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 text = "Select the component that identifies the embedded macro."
-autowrap_mode = 3
 horizontal_alignment = 1
+autowrap_mode = 3

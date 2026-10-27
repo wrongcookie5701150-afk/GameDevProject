@@ -29,6 +29,10 @@ func _ready() -> void:
 	if exit_button:
 		exit_button.pressed.connect(_on_exit_pressed)
 
+func open_document() -> void:
+	if not _is_macro_enabled:
+		_on_enable_content_pressed()
+
 func _on_enable_content_pressed() -> void:
 	_is_macro_enabled = true
 	if macro_banner:

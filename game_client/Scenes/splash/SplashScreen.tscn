@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dxsvek4iljeud"]
 
-[ext_resource type="Script" path="res://scenes/splash/splash_screen.gd" id="1_script"]
-[ext_resource type="FontFile" uid="uid://d2veyhwfl7ihr" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_press_start_2p"]
-[ext_resource type="FontFile" uid="uid://u0r18anqgxp2" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
+[ext_resource type="Script" uid="uid://cvtln2mmtpt34" path="res://scenes/splash/splash_screen.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_press_start_2p"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_share_tech_mono"]
 
-[node name="SplashScreen" type="Control"]
+[node name="SplashScreen" type="Control" unique_id=973120367]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=782614709]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.051, 0.075, 0.133, 1)
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=1729566475]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,13 +30,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ContentContainer" type="VBoxContainer" parent="Center"]
+[node name="ContentContainer" type="VBoxContainer" parent="Center" unique_id=1950643826]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 22
 alignment = 1
 
-[node name="StudioLabel" type="Label" parent="Center/ContentContainer"]
+[node name="StudioLabel" type="Label" parent="Center/ContentContainer" unique_id=2125661878]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.266667, 0.266667, 1)
@@ -49,7 +49,7 @@ theme_override_font_sizes/font_size = 32
 text = "GAME STUDIO"
 horizontal_alignment = 1
 
-[node name="StatusLabel" type="Label" parent="Center/ContentContainer"]
+[node name="StatusLabel" type="Label" parent="Center/ContentContainer" unique_id=1060278314]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.44, 0.84, 1, 1)

@@ -1,3 +1,4 @@
+class_name DecoderPuzzle
 extends BaseDecoderPuzzle
 
 signal all_decoding_complete
@@ -14,7 +15,7 @@ const MODE_BASE64: String = "RklMRV9XSVBF"
 @onready var hint_button: Button = $Panel/Content/HintButton
 @onready var feedback_label: Label = $Panel/Content/FeedbackLabel
 
-var _decode_stage: int = 0
+var decode_stage: int = 0
 var _decoded_output: String = ""
 var _decoded_mode: String = ""
 
@@ -26,12 +27,12 @@ func _ready() -> void:
 
 func validate_answer(answer: Variant) -> bool:
 	var submitted_value: String = str(answer).strip_edges()
-	if _decode_stage == 0:
+	if decode_stage == 0:
 		return submitted_value.to_lower() == "office_update_helper"
 	return submitted_value.to_upper() == "FILE_WIPE"
 
 func get_submission_metrics() -> Dictionary:
-	if _decode_stage == 0:
+	if decode_stage == 0:
 		return {
 			"decoded_output": _decoded_output,
 			"encoded_value": HELPER_BASE64,
@@ -45,11 +46,22 @@ func get_submission_metrics() -> Dictionary:
 		"encoding": "Hex then Base64"
 	}
 
+func resume_at_task(resume_task_id: String) -> void:
+	if resume_task_id == "T11":
+		decode_stage = 1
+		task_id = &"T11"
+		puzzle_id = &"P06"
+	else:
+		decode_stage = 0
+		task_id = &"T10"
+		puzzle_id = &"P05"
+	_refresh_stage()
+
 func on_solve_success() -> void:
-	if _decode_stage == 0:
+	if decode_stage == 0:
 		_decoded_output = "Office_Update_Helper"
 		feedback_label.text = "Decoded: %s. The helper file was created after active content was enabled." % _decoded_output
-		_decode_stage = 1
+		decode_stage = 1
 		is_resolved = false
 		attempt_count = 0
 		hint_used = false
@@ -71,7 +83,7 @@ func on_solve_failed() -> void:
 	feedback_label.text = "That decoded value does not match the expected tool output. Try again."
 
 func _on_submit_pressed() -> void:
-	if _decode_stage == 0:
+	if decode_stage == 0:
 		_decoded_output = answer_input.text.strip_edges()
 	else:
 		_decoded_mode = answer_input.text.strip_edges().to_upper()
@@ -80,14 +92,14 @@ func _on_submit_pressed() -> void:
 
 func _on_hint_pressed() -> void:
 	hint_used = true
-	if _decode_stage == 0:
+	if decode_stage == 0:
 		feedback_label.text = "Hint: Base64 often uses letters, digits, and trailing '=' padding."
 	else:
 		feedback_label.text = "Hint: Hex decodes to a Base64 string; decode that result too."
 
 func _refresh_stage() -> void:
 	answer_input.clear()
-	if _decode_stage == 0:
+	if decode_stage == 0:
 		title_label.text = "T10 / P05: Decode the helper name"
 		instruction_label.text = "Decode this Base64 value."
 		encoded_label.text = HELPER_BASE64

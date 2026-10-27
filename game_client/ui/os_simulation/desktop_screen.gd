@@ -219,6 +219,8 @@ func _on_app_activated(app_id: String) -> void:
 			_open_app_window(gg_disk_window, "GG Disk", Vector2(120, 42))
 		"ms_word":
 			_open_app_window(ms_word_window, "MS Word", Vector2(125, 45))
+			if ms_word_window and ms_word_window.has_method("open_document"):
+				ms_word_window.call("open_document")
 		"files":
 			print("[Desktop] Files app not implemented yet")
 		"discord":

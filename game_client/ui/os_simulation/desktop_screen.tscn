@@ -17,22 +17,42 @@
 [ext_resource type="Texture2D" uid="uid://wpy6at3gcx6k" path="res://assets/Icon/Toggl.png" id="18_icon_power"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_up108"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ww8ul"]
-bg_color = Color(0, 0, 0, 0.6666667)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4coh"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.85490197, 0.85490197, 0.85490197, 0.3137255)
+border_width_left = 1
+border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+border_color = Color(0.9137255, 0.9137255, 0.9137255, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uoyyy"]
-bg_color = Color(0, 0, 0, 0.49019608)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ww8ul"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.85490197, 0.85490197, 0.85490197, 0.11372549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9122889, 0.9122889, 0.9122887, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_taskbar"]
 content_margin_left = 3.0
@@ -111,15 +131,20 @@ grow_vertical = 2
 texture = ExtResource("2_bg")
 expand_mode = 2
 
-[node name="IconsContainer" type="HBoxContainer" parent="." unique_id=81870696]
+[node name="IconsContainer" type="MarginContainer" parent="." unique_id=2125430336]
 unique_name_in_owner = true
 layout_mode = 1
-offset_left = 1.0
-offset_top = 9.0
-offset_right = 41.0
-offset_bottom = 247.0
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 31.0
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="IconsContainer" unique_id=1677137973]
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 theme_override_constants/separation = 3
 
@@ -133,8 +158,8 @@ theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 6
 theme_override_icons/icon = ExtResource("5_icon_drive")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_up108")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ww8ul")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uoyyy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_g4coh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ww8ul")
 text = "GG Disk"
 icon_alignment = 1
 vertical_icon_alignment = 0
@@ -149,8 +174,8 @@ theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 6
 theme_override_icons/icon = ExtResource("6_icon_word")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_up108")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ww8ul")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uoyyy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_g4coh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ww8ul")
 text = "MS Word"
 icon_alignment = 1
 vertical_icon_alignment = 0
@@ -165,8 +190,8 @@ theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 6
 theme_override_icons/icon = ExtResource("9_icon_discord")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_up108")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ww8ul")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uoyyy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_g4coh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ww8ul")
 text = "Discord"
 icon_alignment = 1
 vertical_icon_alignment = 0
@@ -181,8 +206,8 @@ theme_override_fonts/font = ExtResource("13_font_mono")
 theme_override_font_sizes/font_size = 6
 theme_override_icons/icon = ExtResource("7_icon_folder")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_up108")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ww8ul")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uoyyy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_g4coh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ww8ul")
 text = "งานกลุ่ม"
 icon_alignment = 1
 vertical_icon_alignment = 0
@@ -201,9 +226,19 @@ mouse_filter = 2
 [node name="GgDisk" parent="WindowContainer" unique_id=70219291 instance=ExtResource("8_tajw6")]
 visible = false
 layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 
 [node name="MsWord" parent="WindowContainer" unique_id=908828390 instance=ExtResource("9_g4coh")]
 layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 
 [node name="Taskbar" type="PanelContainer" parent="." unique_id=987654321]
 z_index = 10

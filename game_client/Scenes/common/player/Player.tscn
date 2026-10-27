@@ -520,6 +520,7 @@ script = ExtResource("9_qyfof")
 
 [node name="ObjectDatail" type="Label" parent="." unique_id=1175389875]
 z_index = 5
+z_as_relative = false
 custom_minimum_size = Vector2(150, 20)
 anchors_preset = 1
 anchor_left = 1.0
@@ -531,7 +532,7 @@ offset_bottom = -29.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_jyw5n")
-text = "Place inspect object detals here."
+text = "Place inspect object details here."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -543,13 +544,13 @@ sprite_frames = SubResource("SpriteFrames_d37hm")
 animation = &"Idle_Left"
 frame_progress = 0.5063973
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=533212913]
+[node name="CollisionArea" type="CollisionShape2D" parent="." unique_id=533212913]
 position = Vector2(0, 14)
 shape = SubResource("CapsuleShape2D_7ldla")
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=936145106]
+collision_layer = 1
 collision_mask = 2
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=531260548]
 shape = SubResource("CapsuleShape2D_jexof")

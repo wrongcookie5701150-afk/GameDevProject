@@ -12,9 +12,11 @@ signal player_left(object: InteractObject, player: Node2D)
 @onready var interaction_area: Area2D = $InteractionArea
 
 var _is_player_nearby: bool = false
+var _nearby_players: Dictionary = {}
 
 func _ready() -> void:
 	# Connect both body and area detection for maximum compatibility
+	interaction_area.set_collision_mask_value(1, true)
 	interaction_area.body_entered.connect(_on_body_entered)
 	interaction_area.body_exited.connect(_on_body_exited)
 	interaction_area.area_entered.connect(_on_area_entered)
@@ -31,39 +33,43 @@ func interact() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is BasePlayer or body is CharacterBody2D:
-		if not _is_player_nearby:
-			_is_player_nearby = true
-			if debug_mode:
-				print("[InteractObject] Player approached %s (body detection)" % object_id)
-			player_approached.emit(self, body)
+		_update_player_presence(body, "body", true)
 
 func _on_body_exited(body: Node2D) -> void:
 	if body is BasePlayer or body is CharacterBody2D:
-		if _is_player_nearby:
-			_is_player_nearby = false
-			if debug_mode:
-				print("[InteractObject] Player left %s (body detection)" % object_id)
-			player_left.emit(self, body)
+		_update_player_presence(body, "body", false)
 
 func _on_area_entered(area: Area2D) -> void:
 	# Check if this area belongs to a player (Player's InteractionArea)
 	var owner_node = area.get_parent()
 	if owner_node and (owner_node is BasePlayer or owner_node is CharacterBody2D):
-		if not _is_player_nearby:
-			_is_player_nearby = true
-			if debug_mode:
-				print("[InteractObject] Player approached %s (area detection)" % object_id)
-			player_approached.emit(self, owner_node)
+		_update_player_presence(owner_node, "area", true)
 
 func _on_area_exited(area: Area2D) -> void:
 	# Check if this area belongs to a player
 	var owner_node = area.get_parent()
 	if owner_node and (owner_node is BasePlayer or owner_node is CharacterBody2D):
-		if _is_player_nearby:
-			_is_player_nearby = false
-			if debug_mode:
-				print("[InteractObject] Player left %s (area detection)" % object_id)
-			player_left.emit(self, owner_node)
+		_update_player_presence(owner_node, "area", false)
+
+func _update_player_presence(player: Node2D, detector: String, is_present: bool) -> void:
+	var player_id: int = player.get_instance_id()
+	var detectors: Dictionary = _nearby_players.get(player_id, {"body": false, "area": false})
+	var was_any_player_nearby: bool = not _nearby_players.is_empty()
+	detectors[detector] = is_present
+	var is_nearby: bool = bool(detectors.get("body", false)) or bool(detectors.get("area", false))
+	if is_nearby:
+		_nearby_players[player_id] = detectors
+	else:
+		_nearby_players.erase(player_id)
+	_is_player_nearby = not _nearby_players.is_empty()
+	if not was_any_player_nearby and _is_player_nearby:
+		if debug_mode:
+			print("[InteractObject] Player approached %s" % object_id)
+		player_approached.emit(self, player)
+	elif was_any_player_nearby and not _is_player_nearby:
+		if debug_mode:
+			print("[InteractObject] Player left %s" % object_id)
+		player_left.emit(self, player)
 
 func _update_placeholder_color() -> void:
 	var colors: Dictionary = {

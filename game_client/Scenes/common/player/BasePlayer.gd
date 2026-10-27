@@ -38,15 +38,19 @@ func interact() -> void:
 	if not is_instance_valid(_interaction_area):
 		return
 
+	var interacted_targets: Array[Node] = []
+
 	# Check for overlapping interactable objects (Area2D from InteractObject)
 	for target: Area2D in _interaction_area.get_overlapping_areas():
-		var owner = target.get_parent()
-		if owner and owner.has_method("interact"):
-			owner.interact()
+		var owner: Node = target.get_parent()
+		if owner and owner.has_method("interact") and not interacted_targets.has(owner):
+			interacted_targets.append(owner)
+			owner.call("interact")
 			interacted_with.emit(owner)
 
 	# Also check for overlapping bodies (fallback)
 	for target: Node2D in _interaction_area.get_overlapping_bodies():
-		if target.has_method("interact"):
-			target.interact()
+		if target.has_method("interact") and not interacted_targets.has(target):
+			interacted_targets.append(target)
+			target.call("interact")
 			interacted_with.emit(target)

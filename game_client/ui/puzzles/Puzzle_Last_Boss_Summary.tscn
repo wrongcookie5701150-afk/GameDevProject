@@ -1,0 +1,73 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/puzzles/incident_report_puzzle.gd" id="1_script"]
+
+[node name="Puzzle_Last_Boss_Summary" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+scene_id = "Scene_06"
+task_id = &"T14"
+puzzle_id = &"P09"
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 28.0
+offset_right = -20.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "T14 / P09: Complete the incident report"
+horizontal_alignment = 1
+
+[node name="EntryLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Entry point:"
+
+[node name="EntrySelector" type="OptionButton" parent="Panel/Content"]
+layout_mode = 2
+
+[node name="PayloadLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Payload:"
+
+[node name="PayloadSelector" type="OptionButton" parent="Panel/Content"]
+layout_mode = 2
+
+[node name="MitigationLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = "Mitigation:"
+
+[node name="MitigationSelector" type="OptionButton" parent="Panel/Content"]
+layout_mode = 2
+
+[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SubmitButton" type="Button" parent="Panel/Content"]
+layout_mode = 2
+text = "Submit incident report"

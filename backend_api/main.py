@@ -35,6 +35,16 @@ class DynamicGameplayResponse(BaseModel):
 
 # 2. Validation Logic สำหรับตรวจสอบพารามิเตอร์ของแต่ละ Task
 REQUIRED_TASK_METRICS = {
+    "T04": ["wpm", "accuracy"],
+    "T06": ["selected_timestamp"],
+    "T07": ["selected_email", "domain_checked"],
+    "T08": ["hash_algorithm", "match_status"],
+    "T10": ["decoded_output"],
+    "T11": ["decoded_target", "decoded_mode"],
+    "T12": ["sequence_steps"],
+    "T13": ["recovery_point", "isolated_sync"],
+    "T14": ["conclusions_score"],
+    "T15": ["knowledge_score", "skills_score", "attitude_score"],
     "Task_04": ["wpm", "accuracy"],                   # Scene 2: มินิเกมพิมพ์งาน
     "Task_06": ["selected_timestamp"],                # Scene 4: Windows Event Log Timeline
     "Task_07": ["selected_email", "domain_checked"],   # Scene 4: Drive History (Typosquatting)
