@@ -6,7 +6,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_typing_paper"]
 content_margin_left = 15.0
 content_margin_top = 10.0
-content_margin_right = 15.0
+content_margin_right = 22.0
 content_margin_bottom = 8.0
 bg_color = Color(1, 1, 1, 1)
 
@@ -46,6 +46,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.55, 0.55, 0.55, 1)
+theme_override_constants/line_separation = 4
 theme_override_fonts/normal_font = ExtResource("2_typing_font")
 theme_override_font_sizes/normal_font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_typing_paper")
@@ -67,8 +68,7 @@ theme_override_colors/font_placeholder_color = Color(0, 0, 0, 0.6)
 theme_override_fonts/font = ExtResource("2_typing_font")
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_40qaw")
-wrap_mode = 3
-virtual_keyboard_show_on_focus = false
+wrap_mode = 1
 caret_blink = true
 
 [node name="FeedbackLabel" type="Label" parent="." unique_id=1254346206]

@@ -22,7 +22,7 @@ corner_radius_bottom_left = 3
 shadow_color = Color(0, 0, 0, 0.7)
 shadow_size = 10
 
-[node name="Scene_03_Incident" instance=ExtResource("1_desktop_base")]
+[node name="Scene_03_Incident" unique_id=588632451 instance=ExtResource("1_desktop_base")]
 script = ExtResource("2_incident_script")
 
 [node name="RansomNote" type="PanelContainer" parent="." index="5" unique_id=884719283]
@@ -43,16 +43,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ransom_window")
 
-[node name="VBox" type="VBoxContainer" parent="RansomNote" unique_id=1847291823]
+[node name="VBox" type="VBoxContainer" parent="RansomNote" index="0" unique_id=1847291823]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TitleBar" type="ColorRect" parent="RansomNote/VBox" unique_id=1847291824]
+[node name="TitleBar" type="ColorRect" parent="RansomNote/VBox" index="0" unique_id=1847291824]
 custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 color = Color(0.75, 0.1, 0.1, 1)
 
-[node name="Margin" type="MarginContainer" parent="RansomNote/VBox/TitleBar" unique_id=1847291825]
+[node name="Margin" type="MarginContainer" parent="RansomNote/VBox/TitleBar" index="0" unique_id=1847291825]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,14 +62,14 @@ grow_vertical = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_right = 6
 
-[node name="Title" type="Label" parent="RansomNote/VBox/TitleBar/Margin" unique_id=1847291826]
+[node name="Title" type="Label" parent="RansomNote/VBox/TitleBar/Margin" index="0" unique_id=1847291826]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_qar8n")
 theme_override_font_sizes/font_size = 6
 text = "README_TO_RECOVER_FILES.txt - Notepad"
 vertical_alignment = 1
 
-[node name="Body" type="MarginContainer" parent="RansomNote/VBox" unique_id=1847291827]
+[node name="Body" type="MarginContainer" parent="RansomNote/VBox" index="1" unique_id=1847291827]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 8
@@ -77,11 +77,11 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="ContentVBox" type="VBoxContainer" parent="RansomNote/VBox/Body" unique_id=1847291828]
+[node name="ContentVBox" type="VBoxContainer" parent="RansomNote/VBox/Body" index="0" unique_id=1847291828]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="HeaderLabel" type="Label" parent="RansomNote/VBox/Body/ContentVBox" unique_id=1847291829]
+[node name="HeaderLabel" type="Label" parent="RansomNote/VBox/Body/ContentVBox" index="0" unique_id=1847291829]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
 theme_override_fonts/font = ExtResource("3_qar8n")
@@ -89,7 +89,7 @@ theme_override_font_sizes/font_size = 7
 text = "⚠️ YOUR FILES HAVE BEEN ENCRYPTED! ⚠️"
 horizontal_alignment = 1
 
-[node name="MessageText" type="Label" parent="RansomNote/VBox/Body/ContentVBox" unique_id=1847291830]
+[node name="MessageText" type="Label" parent="RansomNote/VBox/Body/ContentVBox" index="1" unique_id=1847291830]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.9, 0.9, 1)
 theme_override_fonts/font = ExtResource("3_qar8n")
@@ -101,7 +101,7 @@ DO NOT modify, rename, or delete files, as it will lead to PERMANENT DATA CORRUP
 Wait for further instructions."
 autowrap_mode = 2
 
-[node name="ContinueButton" type="Button" parent="RansomNote/VBox/Body/ContentVBox" unique_id=1847291831]
+[node name="ContinueButton" type="Button" parent="RansomNote/VBox/Body/ContentVBox" index="2" unique_id=1847291831]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 size_flags_vertical = 10

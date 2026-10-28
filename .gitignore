@@ -1,11 +1,69 @@
-.obsidian/
-.venv/
+# ==========================================
+# Godot 4+ ignores
+# ==========================================
 .godot/
 *.import_cache
-addons/
-.mcp
+*.translation
+*.tmp
+*.tmp*
+*.tscn*.tmp*
 
-# Build outputs
+# Godot export / build outputs
 *.exe
 *.apk
 *.aab
+*.tpk
+*.zip
+*.tar.gz
+*.pck
+/android/
+build/
+bin/
+
+# ==========================================
+# Python & Virtual Environments
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+env/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ==========================================
+# IDE & Editors
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.obsidian/
+
+# ==========================================
+# Operating System Junk
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Local Tooling & Temporary Files
+# ==========================================
+*.log
+addons/
+.mcp
+.skills/

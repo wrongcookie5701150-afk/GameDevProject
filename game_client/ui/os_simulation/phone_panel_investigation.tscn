@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dg08a3teibug1"]
 
 [ext_resource type="PackedScene" uid="uid://difynsjqa3i4t" path="res://ui/os_simulation/phone_panel.tscn" id="1_base_phone"]
-[ext_resource type="Script" uid="uid://bv83investscript" path="res://ui/os_simulation/phone_panel_investigation.gd" id="2_investigation_script"]
+[ext_resource type="Script" uid="uid://thblrmpn0bff" path="res://ui/os_simulation/phone_panel_investigation.gd" id="2_investigation_script"]
 
-[node name="PhonePanelInvestigation" instance=ExtResource("1_base_phone")]
+[node name="PhonePanelInvestigation" unique_id=486130693 instance=ExtResource("1_base_phone")]
 script = ExtResource("2_investigation_script")

@@ -2,7 +2,6 @@ extends BaseWorldScene
 
 const SCENE_03_PATH: String = "res://scenes/scene_03_incident/Scene_03_Incident.tscn"
 
-var float_menu: Control
 var phone_panel: Panel
 var message_status_label: Label
 var task_objective: Label
@@ -21,14 +20,25 @@ func _ready() -> void:
 	
 	# Resolve all nodes with null checks
 	playground = get_node_or_null("Playground")
-	room_map = get_node_or_null("Playground/Map")
+	room_map = get_node_or_null("Playground/Room")
+	if not room_map:
+		room_map = get_node_or_null("Playground/Map")
 	player_node = get_node_or_null("Playground/Player")
-	float_menu = get_node_or_null("CanvasLayer/FloatMenu")
+	if not player_node:
+		player_node = find_child("Player", true, false) as BasePlayer
+	
 	phone_panel = get_node_or_null("CanvasLayer/PhonePanel")
 	message_status_label = get_node_or_null("CanvasLayer/PhonePanel/Content/MessageStatusLabel")
 	task_objective = get_node_or_null("CanvasLayer/TaskObjective")
 	inspect_hint = get_node_or_null("CanvasLayer/InspectHint")
-	object_detail = get_node_or_null("Playground/Player/ObjectDatail")
+	
+	if player_node:
+		object_detail = player_node.get_node_or_null("ObjectDatail")
+	if not object_detail:
+		object_detail = get_node_or_null("Playground/Player/ObjectDatail")
+	if not object_detail:
+		object_detail = find_child("ObjectDatail", true, false) as Label
+	
 	desktop_ui = get_node_or_null("CanvasLayer/DesktopScreen")
 	ms_word_window = get_node_or_null("CanvasLayer/DesktopScreen/WindowContainer/MsWord")
 	
@@ -44,6 +54,9 @@ func _ready() -> void:
 		task_objective.show()
 	if inspect_hint:
 		inspect_hint.hide()
+		inspect_hint.focus_mode = Control.FOCUS_NONE
+		if not inspect_hint.pressed.is_connected(_on_inspect_hint_pressed):
+			inspect_hint.pressed.connect(_on_inspect_hint_pressed)
 	if object_detail:
 		object_detail.set_anchors_preset(Control.PRESET_TOP_LEFT)
 		object_detail.position = Vector2(-70.0, -49.0)
@@ -54,13 +67,21 @@ func _ready() -> void:
 		print("DEBUG: ObjectDatail NOT found - check path: Playground/Player/ObjectDatail")
 	if desktop_ui:
 		desktop_ui.hide()
+		if desktop_ui.has_signal("closed"):
+			desktop_ui.closed.connect(_on_desktop_closed)
+		desktop_ui.visibility_changed.connect(func():
+			if not desktop_ui.visible and player_node:
+				player_node.set_movement_enabled(true)
+		)
 	
 	# Connect UI buttons
-	var phone_toggle_btn = get_node_or_null("CanvasLayer/PhoneToggleButton")
-	if phone_toggle_btn and not phone_toggle_btn.pressed.is_connected(_toggle_phone):
-		phone_toggle_btn.pressed.connect(_toggle_phone)
+	var phone_toggle_btn = get_node_or_null("CanvasLayer/PhoneToggleButton") as Button
+	if phone_toggle_btn:
+		phone_toggle_btn.focus_mode = Control.FOCUS_NONE
+		if not phone_toggle_btn.pressed.is_connected(_toggle_phone):
+			phone_toggle_btn.pressed.connect(_toggle_phone)
 	
-	var read_msg_btn = get_node_or_null("CanvasLayer/PhonePanel/Content/ReadMessagesButton")
+	var read_msg_btn = get_node_or_null("CanvasLayer/PhonePanel/Content/ReadMessagesButton") as Button
 	if read_msg_btn and not read_msg_btn.pressed.is_connected(_on_read_messages_pressed):
 		read_msg_btn.pressed.connect(_on_read_messages_pressed)
 	
@@ -72,35 +93,57 @@ func _ready() -> void:
 	if ms_word_window and ms_word_window.has_signal("typing_completed"):
 		ms_word_window.typing_completed.connect(_on_typing_completed)
 	
-	# Find and connect interact objects inside the room map
-	if room_map:
-		_connect_interact_objects(room_map)
+	# Find and connect all interact objects reliably
+	_connect_all_interact_objects()
 
-func _connect_interact_objects(node: Node) -> void:
-	# Recursively find all InteractObject nodes in the scene tree
-	for child in node.get_children():
-		if child is InteractObject:
-			if child.object_id == "object" and child.name == "Desktop":
-				child.object_id = "computer"
-				child.prompt_message = "Press Space to use the computer"
-			if not child.player_approached.is_connected(_on_interactable_approached):
-				child.player_approached.connect(_on_interactable_approached)
-			if not child.player_left.is_connected(_on_interactable_left):
-				child.player_left.connect(_on_interactable_left)
-			if not child.interaction_requested.is_connected(_on_interactable_requested):
-				child.interaction_requested.connect(_on_interactable_requested)
-		# Recursively check children
-		_connect_interact_objects(child)
+func _connect_all_interact_objects() -> void:
+	# Search entire scene tree for InteractObject nodes
+	var objects = find_children("*", "InteractObject", true, false)
+	for node in objects:
+		var child = node as InteractObject
+		if not child:
+			continue
+		if child.object_id == "object" and child.name == "Desktop":
+			child.object_id = "computer"
+			child.prompt_message = "Press Space to use the computer"
+		if not child.player_approached.is_connected(_on_interactable_approached):
+			child.player_approached.connect(_on_interactable_approached)
+		if not child.player_left.is_connected(_on_interactable_left):
+			child.player_left.connect(_on_interactable_left)
+		if not child.interaction_requested.is_connected(_on_interactable_requested):
+			child.interaction_requested.connect(_on_interactable_requested)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ESCAPE:
-			_toggle_pause_menu()
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
+		if desktop_ui and desktop_ui.visible:
+			_on_desktop_closed()
 			get_viewport().set_input_as_handled()
 			return
+		if phone_panel and phone_panel.visible:
+			_toggle_phone()
+			get_viewport().set_input_as_handled()
+			return
+		if note_board_ui and note_board_ui.visible:
+			if note_board_ui.has_method("close_board"):
+				note_board_ui.close_board()
+			else:
+				note_board_ui.hide()
+			get_viewport().set_input_as_handled()
+			return
+
+	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_P:
 			_toggle_phone()
 			get_viewport().set_input_as_handled()
+			return
+
+func _on_player_interacted(_player: BasePlayer) -> void:
+	if _nearby_object:
+		_on_interactable_requested(_nearby_object)
+
+func _on_inspect_hint_pressed() -> void:
+	if _nearby_object:
+		_on_interactable_requested(_nearby_object)
 
 func _on_interactable_approached(interact_object: InteractObject, _player: Node2D) -> void:
 	_nearby_object = interact_object
@@ -112,12 +155,22 @@ func _on_interactable_approached(interact_object: InteractObject, _player: Node2
 	
 	if object_detail:
 		match interact_object.object_id:
-			"computer":
+			"computer", "desktop":
 				object_detail.text = object_name + ": Computer workstation for research"
-			"notebook":
+			"notebook", "taodam":
 				object_detail.text = object_name + ": Record important times and evidence as you investigate."
+			"note_board":
+				object_detail.text = object_name + ": Board with pinned investigation notes and clues."
 			"lamp":
 				object_detail.text = object_name + ": A quiet study corner for May's unfinished report."
+			"bookshelf":
+				object_detail.text = object_name + ": Bookshelf with textbooks and research notes."
+			"bed":
+				object_detail.text = object_name + ": May's cozy bed."
+			"speaker":
+				object_detail.text = object_name + ": Desktop audio speakers."
+			"ev_drive":
+				object_detail.text = object_name + ": Flash drive containing important evidence."
 			_:
 				object_detail.text = object_name + ": There is nothing to inspect here."
 		object_detail.show()
@@ -134,12 +187,50 @@ func _on_interactable_left(interact_object: InteractObject, _player: Node2D) -> 
 			object_detail.hide()
 
 func _on_interactable_requested(interact_object: InteractObject) -> void:
+	if not interact_object:
+		return
+	print("DEBUG: Interaction requested for: ", interact_object.object_id)
 	match interact_object.object_id:
-		"computer":
+		"computer", "desktop":
 			if desktop_ui:
 				desktop_ui.show()
+				if player_node:
+					player_node.set_movement_enabled(false)
+		"note_board":
+			open_note_board()
+		"notebook", "taodam":
+			if object_detail:
+				object_detail.text = "TaoDam: Notebook for later investigation."
+				object_detail.show()
+		"lamp":
+			if object_detail:
+				object_detail.text = "Lamp: Cozy desk lamp for late night studying."
+				object_detail.show()
+		"speaker":
+			if object_detail:
+				object_detail.text = "Speaker: Playing quiet lo-fi background music."
+				object_detail.show()
+		"bed":
+			if object_detail:
+				object_detail.text = "Bed: No time to sleep yet, finish the assignment first!"
+				object_detail.show()
+		"bookshelf":
+			if object_detail:
+				object_detail.text = "Bookshelf: Cybersecurity and networking textbooks."
+				object_detail.show()
+		"ev_drive":
+			if object_detail:
+				object_detail.text = "Flash Drive: Evidence drive."
+				object_detail.show()
 		_:
-			pass
+			if object_detail:
+				object_detail.show()
+
+func _on_desktop_closed() -> void:
+	if desktop_ui:
+		desktop_ui.hide()
+	if player_node:
+		player_node.set_movement_enabled(true)
 
 func _toggle_phone() -> void:
 	if phone_panel:
@@ -175,10 +266,6 @@ func _on_read_messages_pressed() -> void:
 		)
 	if phone_panel:
 		phone_panel.hide()
-		if phone_panel.has_signal("messages_read"):
-			phone_panel.messages_read.connect(_on_phone_messages_read)
-		if phone_panel.has_signal("closed"):
-			phone_panel.closed.connect(_on_phone_closed)
 
 func _on_wifi_toggled(is_connected: bool) -> void:
 	# Track when user disconnects Wi-Fi from the desktop
@@ -193,12 +280,5 @@ func _on_typing_completed() -> void:
 		push_error("Unable to load Scene 3: %s (error %d)" % [SCENE_03_PATH, result])
 
 func _toggle_pause_menu() -> void:
-	if float_menu:
-		var new_pause_state: bool = not get_tree().paused
-		get_tree().paused = new_pause_state
-		float_menu.visible = new_pause_state
-
-		if new_pause_state and float_menu.has_node("%Resume"):
-			float_menu.get_node("%Resume").grab_focus()
-	else:
-		push_warning("[Tutorial] ไม่พบโหนด FloatMenu ใน Scene 2")
+	if has_node("/root/FloatMenu"):
+		FloatMenu.toggle_pause()

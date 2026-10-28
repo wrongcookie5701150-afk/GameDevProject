@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bn6mqmgu3qxrj" path="res://scenes/world_scenes/scene_02_tutorial/scene_02_tutorial.gd" id="1_tutorial_script"]
 [ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="2_sk0ib"]
 [ext_resource type="PackedScene" uid="uid://difynsjqa3i4t" path="res://ui/os_simulation/phone_panel.tscn" id="3_1s2k8"]
-[ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://ui/menus/FloatMenu.tscn" id="3_wm6kr"]
 [ext_resource type="PackedScene" uid="uid://b6ftkbcxjco0f" path="res://ui/os_simulation/desktop_screen.tscn" id="4_desktop"]
 
 [sub_resource type="Gradient" id="Gradient_p20se"]
@@ -43,6 +42,7 @@ offset_left = 415.0
 offset_top = 172.0
 offset_right = 479.0
 offset_bottom = 190.0
+focus_mode = 0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_fmxv5")
 text = "- กด [P] เพื่อใช้มือถือ"
@@ -53,21 +53,20 @@ offset_left = 415.0
 offset_top = 191.0
 offset_right = 479.0
 offset_bottom = 209.0
+focus_mode = 0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_fmxv5")
 text = "- กด [spacebar] inspect"
 metadata/_edit_use_anchors_ = true
 
 [node name="PhonePanel" parent="CanvasLayer" unique_id=1501917543 instance=ExtResource("3_1s2k8")]
+visible = false
 offset_left = 269.0
 offset_top = 46.0
 offset_right = 390.0
 offset_bottom = 261.0
 script = null
 
-[node name="FloatMenu" parent="CanvasLayer" unique_id=953935821 instance=ExtResource("3_wm6kr")]
-visible = false
-
 [node name="DesktopScreen" parent="CanvasLayer" unique_id=516922743 instance=ExtResource("4_desktop")]
 visible = false
-z_index = 1
+z_index = 2

@@ -471,7 +471,7 @@ func _on_settings_save_pressed() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
-	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE):
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
 		if confirm_modal and confirm_modal.visible:
 			_close_confirm_modal()
 			get_viewport().set_input_as_handled()

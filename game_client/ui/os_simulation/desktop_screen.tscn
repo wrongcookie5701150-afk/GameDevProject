@@ -253,7 +253,6 @@ layout_mode = 1
 [node name="DownloadedFolder" parent="WindowContainer" unique_id=203498997 instance=ExtResource("10_ww8ul")]
 visible = false
 layout_mode = 1
-script = null
 
 [node name="DiscordApp" parent="WindowContainer" unique_id=1295014397 instance=ExtResource("19_discord_app")]
 visible = false

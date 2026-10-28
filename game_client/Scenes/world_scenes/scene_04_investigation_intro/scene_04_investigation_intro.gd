@@ -11,9 +11,10 @@ const SCENE_05_PATH: String = "res://scenes/scene_05_taodam_desktop/Scene_05_Tao
 @onready var checklist: BasePuzzleUI = $CanvasLayer/Checklist_UI
 @onready var event_log_puzzle: BaseClickSelectPuzzle = $CanvasLayer/Puzzle_Event_Log
 @onready var drive_history_puzzle: BaseClickSelectPuzzle = $CanvasLayer/Puzzle_Drive_History
-@onready var tao_dam_object: InteractObject = $Interactables/TaoDam
-@onready var bookshelf_object: InteractObject = $Interactables/Bookshelf
-@onready var ev_drive_object: InteractObject = $Interactables/EVDrive
+@onready var playground: Node = $Playground
+@onready var tao_dam_object: InteractObject = $Playground.get_interact_object("taodam") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/Notebook")
+@onready var bookshelf_object: InteractObject = $Playground.get_interact_object("bookshelf") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/BookShelf")
+@onready var ev_drive_object: InteractObject = $Playground.get_interact_object("ev_drive") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/EVDrive")
 @onready var ev_drive_panel: Panel = $CanvasLayer/EVDrivePanel
 @onready var notebook_screen: Control = get_node_or_null("CanvasLayer2/NotebookScreen")
 
@@ -67,6 +68,13 @@ func _ready() -> void:
 	if ev_close_btn:
 		ev_close_btn.pressed.connect(_on_open_evidence_pressed)
 	
+	if not tao_dam_object and playground and playground.has_method("get_interact_object"):
+		tao_dam_object = playground.get_interact_object("taodam")
+	if not bookshelf_object and playground and playground.has_method("get_interact_object"):
+		bookshelf_object = playground.get_interact_object("bookshelf")
+	if not ev_drive_object and playground and playground.has_method("get_interact_object"):
+		ev_drive_object = playground.get_interact_object("ev_drive")
+	
 	for interact_object: InteractObject in [tao_dam_object, bookshelf_object, ev_drive_object]:
 		if interact_object:
 			interact_object.interaction_requested.connect(_on_interactable_requested)
@@ -78,10 +86,52 @@ func _ready() -> void:
 		player.set_movement_enabled(true)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
+		if _close_active_overlay():
+			get_viewport().set_input_as_handled()
+			return
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_P:
 			_toggle_phone()
 			get_viewport().set_input_as_handled()
+
+func _close_active_overlay() -> bool:
+	if note_board_ui and note_board_ui.visible:
+		if note_board_ui.has_method("close_board"):
+			note_board_ui.close_board()
+		else:
+			note_board_ui.hide()
+		return true
+	if phone_panel and phone_panel.visible:
+		_toggle_phone()
+		return true
+	if notebook_screen and notebook_screen.visible:
+		notebook_screen.hide()
+		if player:
+			player.set_movement_enabled(true)
+		return true
+	if ev_drive_panel and ev_drive_panel.visible:
+		ev_drive_panel.hide()
+		if player:
+			player.set_movement_enabled(true)
+		return true
+	if checklist and checklist.visible:
+		checklist.hide()
+		if player:
+			player.set_movement_enabled(true)
+		return true
+	if event_log_puzzle and event_log_puzzle.visible:
+		event_log_puzzle.hide()
+		if player:
+			player.set_movement_enabled(true)
+		return true
+	if drive_history_puzzle and drive_history_puzzle.visible:
+		drive_history_puzzle.hide()
+		if player:
+			player.set_movement_enabled(true)
+		return true
+	return false
 
 func _toggle_phone() -> void:
 	if not phone_panel:
@@ -163,6 +213,8 @@ func _on_interactable_requested(interact_object: InteractObject) -> void:
 			else:
 				if status_label:
 					status_label.text = "     คำเตือน: ต้องตรวจวิเคราะห์ให้เสร็จก่อนเก็บ EV Drive"
+		"note_board":
+			open_note_board()
 
 func _on_checklist_completed() -> void:
 	_checklist_complete = true

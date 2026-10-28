@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://cahpqs4fo3l42"]
 
 [ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://scenes/initial/room.tscn" id="1_hccr6"]
+[ext_resource type="Script" uid="uid://cfooc2b3ivmb7" path="res://scenes/initial/playground.gd" id="1_playground_script"]
 [ext_resource type="PackedScene" uid="uid://kcrnqw2c0ic0" path="res://scenes/common/player/Player.tscn" id="2_cplki"]
 [ext_resource type="FontFile" uid="uid://g6hovebpvdx7" path="res://assets/fonts/ARMBOX MOON Night Demo Version 1.0.0/Demo Version 1.0.0/MOON Night DEMO Mac.otf" id="4_cplki"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_isu03"]
+[ext_resource type="PackedScene" uid="uid://b1nv3nt0rybar" path="res://ui/overlays/inventory_bar.tscn" id="6_c3x6t"]
+[ext_resource type="PackedScene" uid="uid://don7kdjxkwybq" path="res://scenes/initial/note_board.tscn" id="7_c3x6t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isu03"]
 bg_color = Color(0, 0, 0, 0.8)
@@ -14,8 +17,9 @@ border_width_bottom = 2
 border_color = Color(0.9359631, 0.7605945, 0.6346329, 1)
 
 [node name="Playground" type="Node2D" unique_id=1245398925]
+script = ExtResource("1_playground_script")
 
-[node name="Map" parent="." unique_id=1668373968 instance=ExtResource("1_hccr6")]
+[node name="Room" parent="." unique_id=1668373968 instance=ExtResource("1_hccr6")]
 metadata/_edit_group_ = true
 
 [node name="Player" parent="." unique_id=1657159317 instance=ExtResource("2_cplki")]
@@ -86,3 +90,8 @@ theme_override_fonts/font = ExtResource("4_isu03")
 theme_override_font_sizes/font_size = 10
 text = "V"
 vertical_alignment = 2
+
+[node name="InventoryBar" parent="Textbox" unique_id=1325166405 instance=ExtResource("6_c3x6t")]
+
+[node name="NoteBoard" parent="Textbox" unique_id=27522720 instance=ExtResource("7_c3x6t")]
+visible = false

@@ -11,6 +11,7 @@ const FONT_MONO: FontFile = preload("res://assets/fonts/Share_Tech_Mono/ShareTec
 const FONT_PIXEL: FontFile = preload("res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf")
 
 signal wifi_toggled(is_connected: bool)
+signal closed()
 
 # Desktop & window containers
 var icons_container: MarginContainer
@@ -80,6 +81,17 @@ func _ready() -> void:
 		folder_btn.visible = false
 	if menu_files:
 		menu_files.visible = false
+	
+	visibility_changed.connect(_on_self_visibility_changed)
+	_on_self_visibility_changed()
+
+func _on_self_visibility_changed() -> void:
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv:
+		if visible:
+			inv.hide_inventory()
+		else:
+			inv.show_inventory()
 
 # Safe node lookup
 func _find_node_safe(node_name: String, search_root: Node = null) -> Node:
@@ -261,6 +273,12 @@ func _on_file_opened_from_folder(file_name: String) -> void:
 		_open_app_window(ms_word_window, "MS Word")
 		if ms_word_window and ms_word_window.has_method("open_document"):
 			ms_word_window.call("open_document")
+	elif file_name.to_lower().contains("presentation"):
+		_show_toast("Presentation.ppxt: สไลด์พรีเซนต์งานกลุ่ม")
+	elif file_name.to_lower().contains("network") or file_name.to_lower().contains("png"):
+		_show_toast("Network Diagram.png: แผนผังระบบเครือข่าย")
+	elif file_name.to_lower().contains("readme"):
+		_show_toast("ReadMe: ไฟล์บันทึกข้อมูลการกู้คืน")
 
 func _show_toast(message: String) -> void:
 	if not notification_toast or not toast_label:
@@ -467,4 +485,18 @@ func _update_wifi_ui() -> void:
 
 func _on_leave_pc_pressed() -> void:
 	print("[Desktop] Leaving PC, returning to bedroom...")
-	get_tree().change_scene_to_file(BEDROOM_SCENE_PATH)
+	closed.emit()
+	if get_parent() is CanvasLayer:
+		hide()
+	else:
+		get_tree().change_scene_to_file(BEDROOM_SCENE_PATH)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
+		var focused: Control = get_viewport().gui_get_focus_owner()
+		if focused and (focused is LineEdit or focused is TextEdit):
+			return
+		_on_leave_pc_pressed()
+		get_viewport().set_input_as_handled()

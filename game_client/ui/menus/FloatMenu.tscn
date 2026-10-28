@@ -7,19 +7,21 @@
 [ext_resource type="StyleBox" uid="uid://mlxcqkgybf6e" path="res://assets/styles/PressMenuButton.tres" id="3_4w5up"]
 [ext_resource type="StyleBox" uid="uid://bahbpwcveelqy" path="res://assets/styles/HoverMenuButton.tres" id="4_bdymc"]
 [ext_resource type="PackedScene" uid="uid://b4iowcsvrbg6e" path="res://ui/menus/SettingsModal.tscn" id="7_4mjtd"]
-[ext_resource type="PackedScene" uid="uid://bhu4n5dxydmxy" path="res://ui/menus/MainMenu.tscn" id="8_ny30w"]
 
-[node name="FloatMenu" type="Control" unique_id=953935821]
+[node name="FloatMenu" type="CanvasLayer" unique_id=953935821]
 process_mode = 3
+layer = 100
+script = ExtResource("1_4w5up")
+
+[node name="MenuRoot" type="Control" parent="." unique_id=953935822]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_4w5up")
 
-[node name="Overlay" type="ColorRect" parent="." unique_id=680728601]
+[node name="Overlay" type="ColorRect" parent="MenuRoot" unique_id=680728601]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,7 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.050980393, 0.07450981, 0.13333334, 0.7490196)
 
-[node name="Center" type="CenterContainer" parent="." unique_id=215110812]
+[node name="Center" type="CenterContainer" parent="MenuRoot" unique_id=215110812]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,12 +40,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Center" unique_id=44671022]
+[node name="Center#VBoxContainer" type="VBoxContainer" parent="MenuRoot/Center" unique_id=44671022]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="Center/VBoxContainer" unique_id=113139459]
+[node name="GameStudioLogo" type="Label" parent="MenuRoot/Center/Center#VBoxContainer" unique_id=113139459]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.2, 0.2509804, 1)
 theme_override_colors/font_shadow_color = Color(0.2, 0, 0.050980393, 0.9019608)
@@ -51,12 +53,12 @@ theme_override_fonts/font = ExtResource("1_fkaik")
 text = "Game Studio"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Center/VBoxContainer" unique_id=238603172]
+[node name="MenuBox" type="VBoxContainer" parent="MenuRoot/Center/Center#VBoxContainer" unique_id=238603172]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Resume" type="Button" parent="Center/VBoxContainer/VBoxContainer" unique_id=1395327606]
+[node name="ResumeButton" type="Button" parent="MenuRoot/Center/Center#VBoxContainer/MenuBox" unique_id=1395327606]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_4w5up")
@@ -67,7 +69,7 @@ theme_override_styles/hover = ExtResource("4_bdymc")
 theme_override_styles/focus = ExtResource("4_bdymc")
 text = "Resume"
 
-[node name="Settings" type="Button" parent="Center/VBoxContainer/VBoxContainer" unique_id=412327821]
+[node name="SettingsButton" type="Button" parent="MenuRoot/Center/Center#VBoxContainer/MenuBox" unique_id=412327821]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_4w5up")
@@ -79,7 +81,7 @@ theme_override_styles/focus = ExtResource("4_bdymc")
 text = "Settings
 "
 
-[node name="MainManu" type="Button" parent="Center/VBoxContainer/VBoxContainer" unique_id=495678852]
+[node name="MainMenuButton" type="Button" parent="MenuRoot/Center/Center#VBoxContainer/MenuBox" unique_id=495678852]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_4w5up")
@@ -91,7 +93,7 @@ theme_override_styles/focus = ExtResource("4_bdymc")
 text = "Main Menu
 "
 
-[node name="QuitGame" type="Button" parent="Center/VBoxContainer/VBoxContainer" unique_id=1600067953]
+[node name="QuitButton" type="Button" parent="MenuRoot/Center/Center#VBoxContainer/MenuBox" unique_id=1600067953]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_4w5up")
@@ -104,8 +106,3 @@ text = "Save & Quit"
 
 [node name="SettingsModal" parent="." unique_id=1182195436 instance=ExtResource("7_4mjtd")]
 visible = false
-layout_mode = 1
-
-[node name="MainMenu" parent="." unique_id=83028110 instance=ExtResource("8_ny30w")]
-visible = false
-layout_mode = 1

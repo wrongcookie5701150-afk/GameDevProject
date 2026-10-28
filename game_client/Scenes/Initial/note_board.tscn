@@ -1,0 +1,231 @@
+[gd_scene format=3 uid="uid://don7kdjxkwybq"]
+
+[ext_resource type="Script" path="res://scenes/initial/note_board.gd" id="1_nb_script"]
+[ext_resource type="FontFile" uid="uid://but7ctdme0p66" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="2_thai_font"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="3_pixel_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rr0yd"]
+bg_color = Color(0.6509804, 0.5921569, 0.4862745, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.45672458, 0.33005944, 0.20585573, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qjawj"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.9984663, 0.92787766, 0.64429426, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.06879827, 0.06879828, 0.06879828, 0.4)
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_btn"]
+bg_color = Color(0.75, 0.2, 0.2, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="NoteBoard" type="Control" unique_id=27522720]
+z_index = 20
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nb_script")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=98712345]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="BoardArea" type="Panel" parent="." unique_id=2013846580]
+custom_minimum_size = Vector2(360, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -100.0
+offset_right = 180.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rr0yd")
+
+[node name="TitleLabel" type="Label" parent="BoardArea" unique_id=55112233]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 8.0
+offset_bottom = 22.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 8
+theme_override_colors/font_color = Color(0.2, 0.12, 0.05, 1)
+text = "📌 กระดานเบาะแส & คำตอบปริศนา (Investigation Clues)"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="BoardArea" unique_id=44332211]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -70.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = 20.0
+grow_horizontal = 0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_close_btn")
+text = "[X] ปิด (Q)"
+
+[node name="NoteArea" type="GridContainer" parent="BoardArea" unique_id=281999136]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -68.0
+offset_right = 170.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 4
+
+[node name="Panel" type="Panel" parent="BoardArea/NoteArea" unique_id=1809945344]
+custom_minimum_size = Vector2(80, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qjawj")
+
+[node name="Label" type="Label" parent="BoardArea/NoteArea/Panel" unique_id=800241390]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.12, 0.08, 0.04, 1)
+text = "🕒 ไทม์ไลน์เวลาเกิดเหตุ
+18:58: ไฟล์เข้า Folder
+19:02:10: เปิด Word
+19:03:16: Enable Content
+21:21:50: Helper เริ่มรัน"
+autowrap_mode = 3
+
+[node name="Panel2" type="Panel" parent="BoardArea/NoteArea" unique_id=256812172]
+custom_minimum_size = Vector2(80, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qjawj")
+
+[node name="Label" type="Label" parent="BoardArea/NoteArea/Panel2" unique_id=1481216309]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.12, 0.08, 0.04, 1)
+text = "📁 ไฟล์ตัวปัญหา
+ชื่อ: Report_Final.docx
+ประเภท: Macro Document
+แชร์มาจาก: Google Drive
+(มีโค้ดมัลแวร์แฝงอยู่!)"
+autowrap_mode = 3
+
+[node name="Panel3" type="Panel" parent="BoardArea/NoteArea" unique_id=2061093781]
+custom_minimum_size = Vector2(80, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qjawj")
+
+[node name="Label" type="Label" parent="BoardArea/NoteArea/Panel3" unique_id=757241188]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.12, 0.08, 0.04, 1)
+text = "📧 อีเมลคนร้าย (ปลอม)
+mesasohot.sukj@
+universcity.example
+*สังเกตตัว 'c' เกิน!
+ของจริง: @university.example"
+autowrap_mode = 3
+
+[node name="Panel4" type="Panel" parent="BoardArea/NoteArea" unique_id=1247850582]
+custom_minimum_size = Vector2(80, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qjawj")
+
+[node name="Label" type="Label" parent="BoardArea/NoteArea/Panel4" unique_id=233375685]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.12, 0.08, 0.04, 1)
+text = "🔍 มัลแวร์ที่ฝังตัว
+Helper:
+Office_Update_Helper
+โหมดรัน: FILE_WIPE
+เป้าหมาย: ลบไฟล์งานและ Report"
+autowrap_mode = 3
+
+[node name="Panel5" type="Panel" parent="BoardArea/NoteArea" unique_id=976912200]
+custom_minimum_size = Vector2(80, 70)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qjawj")
+
+[node name="Label" type="Label" parent="BoardArea/NoteArea/Panel5" unique_id=1539097428]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_thai_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.12, 0.08, 0.04, 1)
+text = "🛡️ การสืบสวน & กู้คืน
+- เต่าดำ: โน้ตบุ๊กออฟไลน์
+- EV Drive: แฟลชไดรฟ์หลักฐาน
+- Backup: กฎ 3-2-1
+- Hash: MD5 ยืนยันไฟล์"
+autowrap_mode = 3

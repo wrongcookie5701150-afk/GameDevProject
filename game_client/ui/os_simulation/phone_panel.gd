@@ -51,6 +51,16 @@ func _ready() -> void:
 	# Initial view
 	switch_to_contact(current_contact)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
+		var focused: Control = get_viewport().gui_get_focus_owner()
+		if focused is LineEdit or focused is TextEdit:
+			return
+		close_phone()
+		get_viewport().set_input_as_handled()
+
 func switch_to_contact(contact: String) -> void:
 	current_contact = contact
 	if contact == "mesa":

@@ -32,7 +32,7 @@ func _setup_cyber_scrollbar() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
-	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE):
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
 		close()
 		get_viewport().set_input_as_handled()
 
@@ -60,8 +60,8 @@ func apply_language(idx: int) -> void:
 	if idx == 0:
 		if continue_subtitle: continue_subtitle.text = "Select a saved puzzle to continue"
 		if continue_back_button: continue_back_button.text = "← Back"
-		if continue_esc_hint: continue_esc_hint.text = "Press ESC to close"
+		if continue_esc_hint: continue_esc_hint.text = "Press Q to close"
 	else:
 		if continue_subtitle: continue_subtitle.text = "เลือกปริศนาที่บันทึกไว้เพื่อเล่นต่อ"
 		if continue_back_button: continue_back_button.text = "← ย้อนกลับ"
-		if continue_esc_hint: continue_esc_hint.text = "กด ESC เพื่อปิด"
+		if continue_esc_hint: continue_esc_hint.text = "กด Q เพื่อปิด"

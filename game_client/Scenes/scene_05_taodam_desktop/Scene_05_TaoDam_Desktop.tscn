@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Decoder.tscn" id="4_decoder"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Persistence_Order.tscn" id="5_sequence"]
 [ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="6_playground"]
-[ext_resource type="PackedScene" uid="uid://bwx5msj6rxark" path="res://scenes/common/interact_object/InteractObject.tscn" id="7_interactable"]
 [ext_resource type="PackedScene" uid="uid://5fibvbiun4qk" path="res://ui/os_simulation/notebook_screen.tscn" id="8_notebook"]
 
 [node name="Scene_05_TaoDam_Desktop" type="Control" unique_id=900208353]
@@ -19,13 +18,6 @@ grow_vertical = 2
 script = ExtResource("1_scene_script")
 
 [node name="Playground" parent="." unique_id=437886555 instance=ExtResource("6_playground")]
-
-[node name="Interactables" type="Node2D" parent="." unique_id=951746927]
-
-[node name="TaoDam" parent="Interactables" unique_id=1007082937 instance=ExtResource("7_interactable")]
-position = Vector2(275, 115)
-object_id = "taodam"
-prompt_message = "Press Space to inspect TaoDam"
 
 [node name="DesktopPanel" type="Panel" parent="." unique_id=56213719]
 visible = false

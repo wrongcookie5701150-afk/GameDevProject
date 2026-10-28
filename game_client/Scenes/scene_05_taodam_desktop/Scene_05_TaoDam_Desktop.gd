@@ -1,7 +1,7 @@
 extends Control
 
 @onready var player: BasePlayer = $Playground/Player
-@onready var tao_dam: InteractObject = $Interactables/TaoDam
+@onready var tao_dam: InteractObject = ($Playground.get_interact_object("taodam") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/Notebook"))
 @onready var task_objective: Label = $CanvasLayer/TaskObjective
 @onready var notebook_screen: Control = $CanvasLayer/NotebookScreen
 @onready var forensic_toolbar: Panel = $CanvasLayer/ForensicToolbar
@@ -30,8 +30,11 @@ func _ready() -> void:
 	_hide_puzzles()
 	completion_panel.hide()
 	task_objective.text = "Walk to TaoDam and press Space to inspect the laptop."
-	tao_dam.player_approached.connect(_on_tao_dam_approached)
-	tao_dam.player_left.connect(_on_tao_dam_left)
+	if not tao_dam and $Playground and $Playground.has_method("get_interact_object"):
+		tao_dam = $Playground.get_interact_object("taodam")
+	if tao_dam:
+		tao_dam.player_approached.connect(_on_tao_dam_approached)
+		tao_dam.player_left.connect(_on_tao_dam_left)
 	player.interacted_with.connect(_on_player_interacted)
 	close_notebook_button.pressed.connect(_on_close_notebook_pressed)
 	recovery_button.pressed.connect(_on_recovery_pressed)
@@ -45,6 +48,17 @@ func _ready() -> void:
 	decoder_puzzle.all_decoding_complete.connect(_on_decoding_complete)
 	persistence_puzzle.puzzle_resolved.connect(_on_persistence_stopped)
 	_refresh_tool_availability()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
+		if hash_puzzle.visible or macro_puzzle.visible or decoder_puzzle.visible or persistence_puzzle.visible:
+			_hide_puzzles()
+			get_viewport().set_input_as_handled()
+			return
+		if notebook_screen.visible:
+			_on_close_notebook_pressed()
+			get_viewport().set_input_as_handled()
+			return
 
 func _on_tao_dam_approached(_object: InteractObject, _approaching_player: Node2D) -> void:
 	task_objective.text = "Press Space to inspect TaoDam."

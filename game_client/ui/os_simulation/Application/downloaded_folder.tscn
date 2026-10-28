@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cfch7htxosc21"]
 
-[ext_resource type="Script" path="res://ui/os_simulation/Application/downloaded_folder.gd" id="1_script"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="1_m3mv8"]
+[ext_resource type="Script" uid="uid://c5bx7vew6molb" path="res://ui/os_simulation/Application/downloaded_folder.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://ctlpl0vvtc8r5" path="res://assets/Icon32x32/minimize.png" id="2_2mbbl"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="3_o1vug"]
 [ext_resource type="Texture2D" uid="uid://clf7xpoesnj6d" path="res://assets/Icon32x32/exit (2).png" id="4_7h0xq"]
@@ -10,7 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://bs3hhdtg0ioct" path="res://assets/Icon/Microsoft Word.png" id="7_3e0ob"]
 [ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="8_1gcpk"]
 [ext_resource type="Texture2D" uid="uid://w2lgalvouu1a" path="res://assets/Icon/Microsoft PowerPoint.png" id="9_jm6nt"]
-[ext_resource type="Texture2D" uid="uid://cp7mi3ri2htss" path="res://assets/Icon32x32/transparency.png" id="10_h3461"]
+[ext_resource type="Texture2D" uid="uid://bf1ug4256ubr2" path="res://assets/Icon32x32/png_smooth_32x32.png" id="11_o1vug"]
+[ext_resource type="Texture2D" uid="uid://b6e471r8k13pt" path="res://assets/Icon32x32/text_eye.png" id="12_7h0xq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u2tgf"]
 
@@ -202,28 +203,27 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=1475563523]
+[node name="MSWordReport" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=1475563523]
 layout_mode = 2
-mouse_filter = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_km0cw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer" unique_id=977415043]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/MSWordReport" unique_id=977415043]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer/VBoxContainer" unique_id=880618078]
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/MSWordReport/VBoxContainer" unique_id=880618078]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="WordIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer/VBoxContainer/HBoxContainer" unique_id=622858114]
+[node name="WordIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/MSWordReport/VBoxContainer/HBoxContainer" unique_id=622858114]
 layout_mode = 2
 size_flags_vertical = 5
 texture = ExtResource("7_3e0ob")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1034711714]
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/MSWordReport/VBoxContainer/HBoxContainer" unique_id=1034711714]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 size_flags_vertical = 5
@@ -234,26 +234,26 @@ theme_override_font_sizes/font_size = 4
 text = "Report.docx"
 autowrap_mode = 3
 
-[node name="PanelContainer2" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=140437915]
+[node name="PPPresentation" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=140437915]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_km0cw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer2" unique_id=491020612]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PPPresentation" unique_id=491020612]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer2/VBoxContainer" unique_id=2117144403]
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PPPresentation/VBoxContainer" unique_id=2117144403]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=1873981275]
+[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PPPresentation/VBoxContainer/HBoxContainer" unique_id=1873981275]
 layout_mode = 2
 size_flags_vertical = 5
 texture = ExtResource("9_jm6nt")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=1337408647]
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PPPresentation/VBoxContainer/HBoxContainer" unique_id=1337408647]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 size_flags_vertical = 5
@@ -264,26 +264,26 @@ theme_override_font_sizes/font_size = 4
 text = "Presentation.ppxt"
 autowrap_mode = 3
 
-[node name="PanelContainer3" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=1991053640]
+[node name="PNGNetworkDiagram" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=1991053640]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_km0cw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer3" unique_id=1456010216]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PNGNetworkDiagram" unique_id=1456010216]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer3/VBoxContainer" unique_id=1165440474]
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PNGNetworkDiagram/VBoxContainer" unique_id=1165440474]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer3/VBoxContainer/HBoxContainer" unique_id=4055717]
+[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PNGNetworkDiagram/VBoxContainer/HBoxContainer" unique_id=4055717]
 layout_mode = 2
 size_flags_vertical = 5
-texture = ExtResource("10_h3461")
+texture = ExtResource("11_o1vug")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PanelContainer3/VBoxContainer/HBoxContainer" unique_id=1709099267]
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/PNGNetworkDiagram/VBoxContainer/HBoxContainer" unique_id=1709099267]
 custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 size_flags_vertical = 5
@@ -292,4 +292,35 @@ theme_override_constants/line_spacing = -2
 theme_override_fonts/font = ExtResource("8_1gcpk")
 theme_override_font_sizes/font_size = 4
 text = "Network Diagram.png"
+autowrap_mode = 3
+
+[node name="AlertFile" type="PanelContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList" unique_id=408324768]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_km0cw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/AlertFile" unique_id=2016066273]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/AlertFile/VBoxContainer" unique_id=1937408663]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="PPIcon" type="TextureRect" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/AlertFile/VBoxContainer/HBoxContainer" unique_id=603217589]
+layout_mode = 2
+size_flags_vertical = 5
+texture = ExtResource("12_7h0xq")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="FileName" type="Label" parent="ColorRect/VBoxContainer/MarginContainer/FilesList/AlertFile/VBoxContainer/HBoxContainer" unique_id=56509078]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_colors/font_color = Color(0.26293245, 0.26293248, 0.26293233, 1)
+theme_override_constants/line_spacing = -2
+theme_override_fonts/font = ExtResource("8_1gcpk")
+theme_override_font_sizes/font_size = 4
+text = "ReadMe_to_recovery.txt"
 autowrap_mode = 3

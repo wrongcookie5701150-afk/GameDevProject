@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bd5hpm3281ib7" path="res://scenes/scene_01_intro/cutscene_01_intro.gd" id="1_cutscene_script"]
 [ext_resource type="PackedScene" uid="uid://bfsifnqbykj0p" path="res://scenes/initial/room.tscn" id="2_room_scene"]
 [ext_resource type="Texture2D" uid="uid://hk2xdj1oek23" path="res://assets/sprite/may_bed_lying.png" id="3_may_lying"]
-[ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://ui/menus/FloatMenu.tscn" id="4_ym6r6"]
 
 [node name="Scene_01_Intro" type="Node2D" unique_id=1461647612]
 script = ExtResource("1_cutscene_script")
@@ -35,5 +34,3 @@ offset_top = 190.0
 offset_right = 466.0
 offset_bottom = 262.0
 
-[node name="FloatMenu" parent="CanvasLayer" unique_id=953935821 instance=ExtResource("4_ym6r6")]
-visible = false

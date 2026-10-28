@@ -2,11 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cj3ukrsiiqucy" path="res://scenes/world_scenes/scene_04_investigation_intro/scene_04_investigation_intro.gd" id="1_scene_script"]
 [ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="2_playground"]
-[ext_resource type="PackedScene" uid="uid://bwx5msj6rxark" path="res://scenes/common/interact_object/InteractObject.tscn" id="3_interactable"]
 [ext_resource type="PackedScene" path="res://ui/overlays/Checklist_UI.tscn" id="4_checklist"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Event_Log.tscn" id="5_event_log"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Drive_History.tscn" id="6_drive_history"]
-[ext_resource type="PackedScene" uid="uid://dfm36gnkvt1nw" path="res://ui/menus/FloatMenu.tscn" id="7_8vgr5"]
 [ext_resource type="PackedScene" uid="uid://5fibvbiun4qk" path="res://ui/os_simulation/notebook_screen.tscn" id="8_notebook_screen"]
 [ext_resource type="PackedScene" uid="uid://dg08a3teibug1" path="res://ui/os_simulation/phone_panel_investigation.tscn" id="9_phone_panel"]
 
@@ -26,25 +24,7 @@ bg_color = Color(0, 0, 0, 0.18431373)
 [node name="Scene_04_Investigation_Intro" type="Node2D" unique_id=869697032]
 script = ExtResource("1_scene_script")
 
-[node name="Playground" parent="." unique_id=158555211 instance=ExtResource("2_playground")]
-
-[node name="Interactables" type="Node2D" parent="." unique_id=1602718721]
-
-[node name="TaoDam" parent="Interactables" unique_id=1626728770 instance=ExtResource("3_interactable")]
-position = Vector2(250, 187)
-object_id = "taodam"
-prompt_message = "Press Space to inspect TaoDam"
-
-[node name="Bookshelf" parent="Interactables" unique_id=885083859 instance=ExtResource("3_interactable")]
-position = Vector2(416, 130)
-object_id = "bookshelf"
-prompt_message = "Press Space to inspect the bookshelf"
-
-[node name="EVDrive" parent="Interactables" unique_id=1091085975 instance=ExtResource("3_interactable")]
-visible = false
-position = Vector2(398, 130)
-object_id = "ev_drive"
-prompt_message = "Press Space to pick up the EV Drive"
+[node name="Playground" parent="." unique_id=1245398925 instance=ExtResource("2_playground")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=88576246]
 
@@ -83,6 +63,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/EVDrivePanel/Content" unique_id=1993949197]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 text = "EV Drive collected. Evidence is ready for Scene 5."
 horizontal_alignment = 1
@@ -133,8 +114,6 @@ offset_top = 46.0
 offset_right = 408.0
 offset_bottom = 261.0
 
-[node name="FloatMenu" parent="CanvasLayer2" unique_id=953935821 instance=ExtResource("7_8vgr5")]
-visible = false
 
 [node name="NotebookScreen" parent="CanvasLayer2" unique_id=1608793853 instance=ExtResource("8_notebook_screen")]
 visible = false
