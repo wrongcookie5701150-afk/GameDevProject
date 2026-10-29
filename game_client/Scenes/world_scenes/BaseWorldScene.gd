@@ -21,6 +21,8 @@ func setup_scene() -> void:
 
 func open_note_board() -> void:
 	if not note_board_ui:
+		note_board_ui = find_child("NoteBoard", true, false) as Control
+	if not note_board_ui:
 		var nb_scene = load("res://scenes/initial/note_board.tscn")
 		if nb_scene:
 			note_board_ui = nb_scene.instantiate() as Control
@@ -32,9 +34,9 @@ func open_note_board() -> void:
 				new_canvas.name = "NoteBoardCanvas"
 				add_child(new_canvas)
 				new_canvas.add_child(note_board_ui)
-			if note_board_ui.has_signal("closed") and not note_board_ui.closed.is_connected(_on_note_board_closed):
-				note_board_ui.closed.connect(_on_note_board_closed)
 	if note_board_ui:
+		if note_board_ui.has_signal("closed") and not note_board_ui.closed.is_connected(_on_note_board_closed):
+			note_board_ui.closed.connect(_on_note_board_closed)
 		var inv = get_node_or_null("/root/InventoryManager")
 		if inv:
 			inv.hide_inventory()

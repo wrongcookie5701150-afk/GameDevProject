@@ -1,0 +1,217 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.gd" id="1_scene_script"]
+[ext_resource type="PackedScene" uid="uid://lncg5kind7nq" path="res://ui/puzzles/Puzzle_Hash_Verify.tscn" id="2_hash"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Event_Log.tscn" id="3_event_log"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Drive_History.tscn" id="4_drive_history"]
+[ext_resource type="PackedScene" uid="uid://bd0d5me4ok8dy" path="res://ui/puzzles/Puzzle_File_Structure.tscn" id="5_macro"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Decoder.tscn" id="6_decoder"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Persistence_Order.tscn" id="7_sequence"]
+[ext_resource type="PackedScene" uid="uid://5fibvbiun4qk" path="res://ui/os_simulation/notebook_screen.tscn" id="8_notebook"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="9_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="10_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toolbar"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.06, 0.09, 0.14, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.65, 0.9, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09, 0.12, 0.18, 0.98)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.85, 0.55, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
+
+[node name="Scene_06_TaoDam_Investigation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_scene_script")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="NotebookScreen" parent="CanvasLayer" instance=ExtResource("8_notebook")]
+
+[node name="ForensicToolbar" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -66.0
+offset_right = -6.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_toolbar")
+
+[node name="Content" type="VBoxContainer" parent="CanvasLayer/ForensicToolbar"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Tools" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 3
+
+[node name="HashButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "1.Hash(T08)"
+
+[node name="EventLogButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "2.EventLog(T06)"
+
+[node name="DriveHistoryButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "3.DriveLog(T07)"
+
+[node name="MacroButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "4.Macro(T09)"
+
+[node name="DecoderButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "5.Decode(T10-11)"
+
+[node name="PersistenceButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "6.StopTask(T12)"
+
+[node name="BottomRow" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/ForensicToolbar/Content/BottomRow"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("10_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "⚡ เสียบ EV-DRIVE (E:) แล้ว: เริ่มจากกด [1.Hash(T08)] เพื่อเทียบค่า MD5 ของหลักฐาน"
+autowrap_mode = 3
+
+[node name="InspectorButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Inspector"
+
+[node name="ClosePuzzleButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "พับหน้าต่าง [Q]"
+
+[node name="Puzzle_Hash_Verify" parent="CanvasLayer" instance=ExtResource("2_hash")]
+visible = false
+
+[node name="Puzzle_Event_Log" parent="CanvasLayer" instance=ExtResource("3_event_log")]
+visible = false
+
+[node name="Puzzle_Drive_History" parent="CanvasLayer" instance=ExtResource("4_drive_history")]
+visible = false
+
+[node name="Puzzle_File_Structure" parent="CanvasLayer" instance=ExtResource("5_macro")]
+visible = false
+
+[node name="Puzzle_Decoder" parent="CanvasLayer" instance=ExtResource("6_decoder")]
+visible = false
+
+[node name="Puzzle_Persistence_Order" parent="CanvasLayer" instance=ExtResource("7_sequence")]
+visible = false
+
+[node name="CompletionPanel" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+z_index = 35
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -68.0
+offset_right = 180.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/CompletionPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/CompletionPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.95, 0.55, 1)
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "FORENSIC INVESTIGATION COMPLETE"
+horizontal_alignment = 1
+
+[node name="CompletionLabel" type="Label" parent="CanvasLayer/CompletionPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("10_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "✅ สืบสวนหลักฐานบนเต่าดำครบถ้วนแล้ว!
+• เวลาเกิดเหตุ: 19:02:10 (ก่อนเกิดเหตุคือ 18:55)
+• ต้นตอ: อีเมลปลอม (@universcity.example) แนบไฟล์ Macro (vbaProject.bin)
+• มัลแวร์: Office_Update_Helper โหมด FILE_WIPE (ทำลายไฟล์) และปิดกั้น Persistence แล้ว"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RecoveryButton" type="Button" parent="CanvasLayer/CompletionPanel/VBox"]
+custom_minimum_size = Vector2(220, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("10_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "กลับไปที่เครื่อง PC ของเมย์เพื่อกู้คืน Backup และทำรายงาน ➔"

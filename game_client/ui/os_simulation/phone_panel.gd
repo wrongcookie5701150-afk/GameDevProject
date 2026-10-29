@@ -48,6 +48,8 @@ func _ready() -> void:
 	if line_edit and not line_edit.text_submitted.is_connected(_on_text_submitted):
 		line_edit.text_submitted.connect(_on_text_submitted)
 	
+	_setup_scrollbar()
+	
 	# Initial view
 	switch_to_contact(current_contact)
 
@@ -161,3 +163,56 @@ func _scroll_to_bottom() -> void:
 		await get_tree().process_frame
 		if is_instance_valid(scroll_container):
 			scroll_container.scroll_vertical = int(scroll_container.get_v_scroll_bar().max_value)
+
+func _setup_scrollbar() -> void:
+	if not scroll_container:
+		return
+	var vsb: VScrollBar = scroll_container.get_v_scroll_bar()
+	if not vsb:
+		return
+	vsb.custom_minimum_size = Vector2(3, 0)
+	
+	if not vsb.has_theme_stylebox_override("scroll"):
+		var track_box: StyleBoxFlat = StyleBoxFlat.new()
+		track_box.bg_color = Color(0.366595, 0.366594, 0.366594, 1.0)
+		track_box.corner_radius_top_left = 1
+		track_box.corner_radius_top_right = 1
+		track_box.corner_radius_bottom_right = 1
+		track_box.corner_radius_bottom_left = 1
+		track_box.content_margin_left = 1.0
+		track_box.content_margin_right = 2.0
+		vsb.add_theme_stylebox_override("scroll", track_box)
+		vsb.add_theme_stylebox_override("scroll_focus", track_box)
+	
+	if not vsb.has_theme_stylebox_override("grabber"):
+		var grabber_box: StyleBoxFlat = StyleBoxFlat.new()
+		grabber_box.bg_color = Color(0.65, 0.70, 0.85, 0.85)
+		grabber_box.corner_radius_top_left = 1
+		grabber_box.corner_radius_top_right = 1
+		grabber_box.corner_radius_bottom_right = 1
+		grabber_box.corner_radius_bottom_left = 1
+		grabber_box.content_margin_left = 1.0
+		grabber_box.content_margin_right = 2.0
+		vsb.add_theme_stylebox_override("grabber", grabber_box)
+	
+	if not vsb.has_theme_stylebox_override("grabber_highlight"):
+		var hl_box: StyleBoxFlat = StyleBoxFlat.new()
+		hl_box.bg_color = Color(0.85, 0.90, 1.0, 1.0)
+		hl_box.corner_radius_top_left = 1
+		hl_box.corner_radius_top_right = 1
+		hl_box.corner_radius_bottom_right = 1
+		hl_box.corner_radius_bottom_left = 1
+		hl_box.content_margin_left = 1.0
+		hl_box.content_margin_right = 2.0
+		vsb.add_theme_stylebox_override("grabber_highlight", hl_box)
+
+	if not vsb.has_theme_stylebox_override("grabber_pressed"):
+		var pr_box: StyleBoxFlat = StyleBoxFlat.new()
+		pr_box.bg_color = Color(1.0, 1.0, 1.0, 1.0)
+		pr_box.corner_radius_top_left = 1
+		pr_box.corner_radius_top_right = 1
+		pr_box.corner_radius_bottom_right = 1
+		pr_box.corner_radius_bottom_left = 1
+		pr_box.content_margin_left = 1.0
+		pr_box.content_margin_right = 2.0
+		vsb.add_theme_stylebox_override("grabber_pressed", pr_box)

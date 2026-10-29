@@ -2,10 +2,10 @@ extends CanvasLayer
 
 ## FloatMenu Controller: Global Pause Menu & Settings Modal Launcher
 
-@onready var resume_button: Button = %Resume
-@onready var settings_button: Button = %Settings
-@onready var main_menu_button: Button = %MainManu
-@onready var quit_button: Button = %QuitGame
+@onready var resume_button: Button = (get_node_or_null("%Resume") if get_node_or_null("%Resume") else get_node_or_null("%ResumeButton")) as Button
+@onready var settings_button: Button = (get_node_or_null("%Settings") if get_node_or_null("%Settings") else get_node_or_null("%SettingsButton")) as Button
+@onready var main_menu_button: Button = (get_node_or_null("%MainMenu") if get_node_or_null("%MainMenu") else get_node_or_null("%MainManu")) as Button
+@onready var quit_button: Button = (get_node_or_null("%QuitGame") if get_node_or_null("%QuitGame") else get_node_or_null("%QuitGameButton")) as Button
 @onready var menu_root: Control = $MenuRoot
 @onready var settings_modal: Control = get_node_or_null("SettingsModal")
 

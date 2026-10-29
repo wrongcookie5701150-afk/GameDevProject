@@ -1,15 +1,70 @@
 extends BasePuzzleUI
 
-@onready var wifi_check: CheckBox = $Panel/Content/WifiCheck
-@onready var lan_check: CheckBox = $Panel/Content/LanCheck
-@onready var accounts_check: CheckBox = $Panel/Content/AccountsCheck
-@onready var files_check: CheckBox = $Panel/Content/FilesCheck
-@onready var submit_button: Button = $Panel/Content/SubmitButton
-@onready var feedback_label: Label = $Panel/Content/FeedbackLabel
+@onready var wifi_check: CheckBox = find_child("WifiCheck", true, false) as CheckBox
+@onready var lan_check: CheckBox = find_child("LanCheck", true, false) as CheckBox
+@onready var accounts_check: CheckBox = find_child("AccountsCheck", true, false) as CheckBox
+@onready var files_check: CheckBox = find_child("FilesCheck", true, false) as CheckBox
+@onready var submit_button: Button = find_child("SubmitButton", true, false) as Button
+@onready var feedback_label: Label = find_child("FeedbackLabel", true, false) as Label
 
 func _ready() -> void:
 	super._ready()
-	submit_button.pressed.connect(_on_submit_pressed)
+	_resolve_nodes()
+	_setup_automated_checks()
+	if submit_button:
+		submit_button.pressed.connect(_on_submit_pressed)
+
+func _resolve_nodes() -> void:
+	if not wifi_check:
+		wifi_check = find_child("WifiCheck", true, false) as CheckBox
+	if not lan_check:
+		lan_check = find_child("LanCheck", true, false) as CheckBox
+	if not accounts_check:
+		accounts_check = find_child("AccountsCheck", true, false) as CheckBox
+	if not files_check:
+		files_check = find_child("FilesCheck", true, false) as CheckBox
+	if not submit_button:
+		submit_button = find_child("SubmitButton", true, false) as Button
+	if not feedback_label:
+		feedback_label = find_child("FeedbackLabel", true, false) as Label
+
+func _setup_automated_checks() -> void:
+	for cb: CheckBox in [wifi_check, lan_check, accounts_check, files_check]:
+		if cb:
+			# Automated: read-only to player mouse clicks, toggled by game system detection
+			cb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			cb.focus_mode = Control.FOCUS_NONE
+
+func start_puzzle() -> void:
+	super.start_puzzle()
+	_resolve_nodes()
+	_setup_automated_checks()
+
+func update_condition(condition_key: String, value: bool) -> void:
+	_resolve_nodes()
+	match condition_key:
+		"wifi_disabled":
+			if wifi_check:
+				wifi_check.button_pressed = value
+		"lan_unplugged":
+			if lan_check:
+				lan_check.button_pressed = value
+		"personal_accounts_unlinked":
+			if accounts_check:
+				accounts_check.button_pressed = value
+		"no_important_files":
+			if files_check:
+				files_check.button_pressed = value
+	
+	if is_all_conditions_met() and not is_resolved:
+		submit_puzzle(_checklist_values())
+
+func is_all_conditions_met() -> bool:
+	var vals: Dictionary = _checklist_values()
+	return bool(vals.get("wifi_disabled", false)) \
+		and bool(vals.get("lan_unplugged", false)) \
+		and bool(vals.get("personal_accounts_unlinked", false)) \
+		and bool(vals.get("no_important_files", false))
 
 func validate_answer(answer: Variant) -> bool:
 	if not answer is Dictionary:
@@ -43,26 +98,34 @@ func _build_telemetry_param(
 	return param
 
 func on_solve_success() -> void:
-	feedback_label.text = "TaoDam is isolated and ready for evidence review."
+	if feedback_label:
+		feedback_label.text = "TaoDam is isolated and ready for evidence review."
 	_set_checklist_enabled(false)
-	submit_button.hide()
+	if submit_button:
+		submit_button.hide()
 
 func on_solve_failed() -> void:
-	feedback_label.text = "Verify all four isolation conditions before continuing."
+	if feedback_label:
+		feedback_label.text = "Verify all four isolation conditions before continuing."
 
 func _on_submit_pressed() -> void:
 	submit_puzzle(_checklist_values())
 
 func _checklist_values() -> Dictionary:
+	_resolve_nodes()
 	return {
-		"wifi_disabled": wifi_check.button_pressed,
-		"lan_unplugged": lan_check.button_pressed,
-		"personal_accounts_unlinked": accounts_check.button_pressed,
-		"no_important_files": files_check.button_pressed
+		"wifi_disabled": wifi_check.button_pressed if wifi_check else false,
+		"lan_unplugged": lan_check.button_pressed if lan_check else false,
+		"personal_accounts_unlinked": accounts_check.button_pressed if accounts_check else false,
+		"no_important_files": files_check.button_pressed if files_check else false
 	}
 
 func _set_checklist_enabled(enabled: bool) -> void:
-	wifi_check.disabled = not enabled
-	lan_check.disabled = not enabled
-	accounts_check.disabled = not enabled
-	files_check.disabled = not enabled
+	if wifi_check:
+		wifi_check.disabled = not enabled
+	if lan_check:
+		lan_check.disabled = not enabled
+	if accounts_check:
+		accounts_check.disabled = not enabled
+	if files_check:
+		files_check.disabled = not enabled

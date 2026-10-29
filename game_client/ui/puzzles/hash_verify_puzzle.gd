@@ -52,6 +52,8 @@ func _on_evidence_selected(index: int) -> void:
 	_selected_file = str(evidence_list.get_item_metadata(index))
 	_expected_hash = _calculate_md5(str(EVIDENCE_CONTENTS[_selected_file]))
 	manifest_label.text = "Evidence_Manifest.txt | %s | MD5: %s" % [_selected_file, _expected_hash]
+	hash_input.text = _expected_hash
+	feedback_label.text = "คำนวณค่า MD5 ของไฟล์ %s แล้ว กด Verify MD5 เพื่อเทียบกับ Manifest" % _selected_file
 
 func _on_verify_pressed() -> void:
 	submit_puzzle(hash_input.text)

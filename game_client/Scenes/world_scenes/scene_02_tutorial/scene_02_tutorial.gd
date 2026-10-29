@@ -2,13 +2,11 @@ extends BaseWorldScene
 
 const SCENE_03_PATH: String = "res://scenes/scene_03_incident/Scene_03_Incident.tscn"
 
-var phone_panel: Panel
+var phone_panel: Control
 var message_status_label: Label
 var task_objective: Label
 var inspect_hint: Button
 var object_detail: Label
-var desktop_ui: Control
-var ms_word_window: Control
 var playground: Node2D
 var room_map: Node2D
 
@@ -39,9 +37,6 @@ func _ready() -> void:
 	if not object_detail:
 		object_detail = find_child("ObjectDatail", true, false) as Label
 	
-	desktop_ui = get_node_or_null("CanvasLayer/DesktopScreen")
-	ms_word_window = get_node_or_null("CanvasLayer/DesktopScreen/WindowContainer/MsWord")
-	
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	
 	if phone_panel:
@@ -51,6 +46,7 @@ func _ready() -> void:
 		if phone_panel.has_signal("closed"):
 			phone_panel.closed.connect(_on_phone_closed)
 	if task_objective:
+		task_objective.text = "     ภารกิจ: กด [P] เพื่อเช็คแชทเมษา\n           - จากนั้นไปที่คอมพิวเตอร์ [Spacebar]"
 		task_objective.show()
 	if inspect_hint:
 		inspect_hint.hide()
@@ -62,17 +58,6 @@ func _ready() -> void:
 		object_detail.position = Vector2(-70.0, -49.0)
 		object_detail.size = Vector2(150.0, 20.0)
 		object_detail.hide()
-		print("DEBUG: ObjectDatail found at runtime")
-	else:
-		print("DEBUG: ObjectDatail NOT found - check path: Playground/Player/ObjectDatail")
-	if desktop_ui:
-		desktop_ui.hide()
-		if desktop_ui.has_signal("closed"):
-			desktop_ui.closed.connect(_on_desktop_closed)
-		desktop_ui.visibility_changed.connect(func():
-			if not desktop_ui.visible and player_node:
-				player_node.set_movement_enabled(true)
-		)
 	
 	# Connect UI buttons
 	var phone_toggle_btn = get_node_or_null("CanvasLayer/PhoneToggleButton") as Button
@@ -85,19 +70,10 @@ func _ready() -> void:
 	if read_msg_btn and not read_msg_btn.pressed.is_connected(_on_read_messages_pressed):
 		read_msg_btn.pressed.connect(_on_read_messages_pressed)
 	
-	# Connect to desktop screen signals if available
-	if desktop_ui and desktop_ui.has_signal("wifi_toggled"):
-		desktop_ui.wifi_toggled.connect(_on_wifi_toggled)
-	
-	# Connect MS Word typing completion signal
-	if ms_word_window and ms_word_window.has_signal("typing_completed"):
-		ms_word_window.typing_completed.connect(_on_typing_completed)
-	
 	# Find and connect all interact objects reliably
 	_connect_all_interact_objects()
 
 func _connect_all_interact_objects() -> void:
-	# Search entire scene tree for InteractObject nodes
 	var objects = find_children("*", "InteractObject", true, false)
 	for node in objects:
 		var child = node as InteractObject
@@ -106,6 +82,10 @@ func _connect_all_interact_objects() -> void:
 		if child.object_id == "object" and child.name == "Desktop":
 			child.object_id = "computer"
 			child.prompt_message = "Press Space to use the computer"
+		# Hide EV-DRIVE during tutorial scene
+		if child.object_id.to_lower() == "ev_drive" or child.name.to_lower() == "evdrive":
+			child.hide()
+			continue
 		if not child.player_approached.is_connected(_on_interactable_approached):
 			child.player_approached.connect(_on_interactable_approached)
 		if not child.player_left.is_connected(_on_interactable_left):
@@ -115,10 +95,6 @@ func _connect_all_interact_objects() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
-		if desktop_ui and desktop_ui.visible:
-			_on_desktop_closed()
-			get_viewport().set_input_as_handled()
-			return
 		if phone_panel and phone_panel.visible:
 			_toggle_phone()
 			get_viewport().set_input_as_handled()
@@ -148,7 +124,6 @@ func _on_inspect_hint_pressed() -> void:
 func _on_interactable_approached(interact_object: InteractObject, _player: Node2D) -> void:
 	_nearby_object = interact_object
 	var object_name = interact_object.name if interact_object.name else "Unknown Object"
-	print("DEBUG: Approached object: ", object_name, " object_id: ", interact_object.object_id)
 	
 	if inspect_hint:
 		inspect_hint.show()
@@ -156,27 +131,22 @@ func _on_interactable_approached(interact_object: InteractObject, _player: Node2
 	if object_detail:
 		match interact_object.object_id:
 			"computer", "desktop":
-				object_detail.text = object_name + ": Computer workstation for research"
+				object_detail.text = "Computer: กด [Spacebar] เพื่อเปิดคอมทำงานกลุ่ม"
 			"notebook", "taodam":
-				object_detail.text = object_name + ": Record important times and evidence as you investigate."
+				object_detail.text = "TaoDam: โน้ตบุ๊กเครื่องสำรอง (ยังไม่ได้ใช้ตอนนี้)"
 			"note_board":
-				object_detail.text = object_name + ": Board with pinned investigation notes and clues."
+				object_detail.text = "NoteBoard: กระดานบันทึกเบาะแส"
 			"lamp":
-				object_detail.text = object_name + ": A quiet study corner for May's unfinished report."
+				object_detail.text = "Lamp: โคมไฟอ่านหนังสือของเมย์"
 			"bookshelf":
-				object_detail.text = object_name + ": Bookshelf with textbooks and research notes."
+				object_detail.text = "Bookshelf: ชั้นหนังสือเรียนวิชา Cybersecurity"
 			"bed":
-				object_detail.text = object_name + ": May's cozy bed."
+				object_detail.text = "Bed: เตียงนอนของเมย์ ต้องรีบปั่นงานก่อนนอน!"
 			"speaker":
-				object_detail.text = object_name + ": Desktop audio speakers."
-			"ev_drive":
-				object_detail.text = object_name + ": Flash drive containing important evidence."
+				object_detail.text = "Speaker: ลำโพงตั้งโต๊ะ"
 			_:
-				object_detail.text = object_name + ": There is nothing to inspect here."
+				object_detail.text = object_name
 		object_detail.show()
-		print("DEBUG: ObjectDetail text set to: ", object_detail.text)
-	else:
-		print("DEBUG: ObjectDetail is null!")
 
 func _on_interactable_left(interact_object: InteractObject, _player: Node2D) -> void:
 	if _nearby_object == interact_object:
@@ -189,92 +159,74 @@ func _on_interactable_left(interact_object: InteractObject, _player: Node2D) -> 
 func _on_interactable_requested(interact_object: InteractObject) -> void:
 	if not interact_object:
 		return
-	print("DEBUG: Interaction requested for: ", interact_object.object_id)
 	match interact_object.object_id:
 		"computer", "desktop":
-			if desktop_ui:
-				desktop_ui.show()
-				if player_node:
-					player_node.set_movement_enabled(false)
+			if not _messages_read:
+				if task_objective:
+					task_objective.text = "     ภารกิจ: กด [P] เพื่อเปิดมือถืออ่านแชทเมษาก่อน!"
+				if object_detail:
+					object_detail.text = "เมย์: ลองกด [P] เปิดมือถือดูข้อความที่เมษาส่งมาก่อนดีกว่า"
+					object_detail.show()
+				return
+			_enter_pc_scene()
 		"note_board":
 			open_note_board()
 		"notebook", "taodam":
 			if object_detail:
-				object_detail.text = "TaoDam: Notebook for later investigation."
-				object_detail.show()
-		"lamp":
-			if object_detail:
-				object_detail.text = "Lamp: Cozy desk lamp for late night studying."
-				object_detail.show()
-		"speaker":
-			if object_detail:
-				object_detail.text = "Speaker: Playing quiet lo-fi background music."
-				object_detail.show()
-		"bed":
-			if object_detail:
-				object_detail.text = "Bed: No time to sleep yet, finish the assignment first!"
-				object_detail.show()
-		"bookshelf":
-			if object_detail:
-				object_detail.text = "Bookshelf: Cybersecurity and networking textbooks."
-				object_detail.show()
-		"ev_drive":
-			if object_detail:
-				object_detail.text = "Flash Drive: Evidence drive."
+				object_detail.text = "TaoDam: ตอนนี้ไปใช้เครื่อง PC หลักพิมพ์รายงานก่อนดีกว่า"
 				object_detail.show()
 		_:
 			if object_detail:
 				object_detail.show()
 
-func _on_desktop_closed() -> void:
-	if desktop_ui:
-		desktop_ui.hide()
-	if player_node:
-		player_node.set_movement_enabled(true)
-
 func _toggle_phone() -> void:
-	if phone_panel:
-		if phone_panel.has_method("toggle_phone"):
-			phone_panel.toggle_phone()
-		else:
-			phone_panel.visible = not phone_panel.visible
-		if phone_panel.visible and not _messages_read:
-			_on_read_messages_pressed()
+	if not phone_panel:
+		return
+	if phone_panel.has_method("toggle_phone"):
+		phone_panel.toggle_phone()
+	else:
+		phone_panel.visible = not phone_panel.visible
+	if phone_panel.visible and not _messages_read:
+		_mark_messages_read()
 
 func _on_phone_messages_read(contact: String) -> void:
 	if contact == "mesa":
-		_on_read_messages_pressed()
+		_mark_messages_read()
 
 func _on_phone_closed() -> void:
 	if not _messages_read:
-		_on_read_messages_pressed()
+		_mark_messages_read()
+	if player_node:
+		player_node.set_movement_enabled(true)
 
 func _on_read_messages_pressed() -> void:
-	if not _messages_read:
-		_messages_read = true
-		if message_status_label:
-			message_status_label.text = "Messages read"
-		TelemetryManager.track_event(
-			"Scene_02",
-			"T01",
-			"messages_read",
-			0.0,
-			true,
-			1,
-			false,
-			{"message_count": 4}
-		)
+	_mark_messages_read()
 	if phone_panel:
-		phone_panel.hide()
+		if phone_panel.has_method("close_phone"):
+			phone_panel.close_phone()
+		else:
+			phone_panel.hide()
 
-func _on_wifi_toggled(is_connected: bool) -> void:
-	# Track when user disconnects Wi-Fi from the desktop
-	if not is_connected:
-		TelemetryManager.track_event("Scene_02", "T03", "wifi_disconnected", 0.0, true)
+func _mark_messages_read() -> void:
+	if _messages_read:
+		return
+	_messages_read = true
+	if message_status_label:
+		message_status_label.text = "Messages read"
+	if task_objective:
+		task_objective.text = "     ภารกิจ: เดินไปที่คอมพิวเตอร์ (PC)\n           - กด [Spacebar] เพื่อดาวน์โหลดและพิมพ์รายงาน"
+	TelemetryManager.track_event(
+		"Scene_02",
+		"T01",
+		"messages_read",
+		0.0,
+		true,
+		1,
+		false,
+		{"message_count": 4}
+	)
 
-func _on_typing_completed() -> void:
-	if desktop_ui:
-		desktop_ui.hide()
+func _enter_pc_scene() -> void:
 	var result: Error = get_tree().change_scene_to_file(SCENE_03_PATH)
 	if result != OK:
 		push_error("Unable to load Scene 3: %s (error %d)" % [SCENE_03_PATH, result])

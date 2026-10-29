@@ -1,6 +1,25 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://ui/puzzles/ksa_evaluation.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="3_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ksa_win"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.12, 0.19, 0.98)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.9, 0.6, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
 
 [node name="KSA_Evaluation_UI" type="Control"]
 layout_mode = 3
@@ -9,6 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_script")
 scene_id = "Scene_06"
 task_id = &"T15"
@@ -20,36 +40,46 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -108.0
-offset_right = 210.0
-offset_bottom = 108.0
+offset_left = -195.0
+offset_top = -100.0
+offset_right = 195.0
+offset_bottom = 90.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ksa_win")
 
 [node name="Content" type="VBoxContainer" parent="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 12.0
-offset_top = 10.0
+offset_top = 8.0
 offset_right = -12.0
-offset_bottom = -10.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 6
 
 [node name="TitleLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "T15: Knowledge, Skills, Attitude"
+theme_override_colors/font_color = Color(0.4, 0.95, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "KSA Cybersecurity Assessment Summary (T15)"
 horizontal_alignment = 1
 
 [node name="ResultsLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AcknowledgeButton" type="Button" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-text = "Acknowledge and finish"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "จบภารกิจและกลับสู่หน้าเมนูหลัก (Finish & Return to Main Menu)"

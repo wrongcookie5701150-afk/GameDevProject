@@ -1,6 +1,25 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://ui/puzzles/backup_recovery_puzzle.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="3_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pc_win"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09, 0.13, 0.2, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.75, 1, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
 
 [node name="Puzzle_321_Backup" type="Control"]
 layout_mode = 3
@@ -9,65 +28,95 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_script")
 scene_id = "Scene_06"
 task_id = &"T13"
 puzzle_id = &"P08"
 
 [node name="Panel" type="Panel" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 28.0
-offset_right = -20.0
-offset_bottom = -8.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -105.0
+offset_right = 195.0
+offset_bottom = 95.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pc_win")
 
 [node name="Content" type="VBoxContainer" parent="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 6.0
-offset_right = -8.0
-offset_bottom = -6.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 3
 
 [node name="TitleLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "T13 / P08: Configure safe recovery"
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "3-2-1 Backup Recovery Manager (T13)"
 horizontal_alignment = 1
 
 [node name="VersionLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "Choose a version-history point:"
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "1. เลือกช่วงเวลา Backup ที่ปลอดภัย (ก่อนเกิดเหตุ 19:02):"
 
 [node name="VersionSelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="DestinationLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "Choose a restoration destination:"
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "2. เลือกปลายทางสำหรับกู้คืนข้อมูล (Restoration Destination):"
 
 [node name="DestinationSelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="SyncLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "Cloud sync during restoration:"
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "3. ตั้งค่า Cloud Sync ระหว่างกู้คืนข้อมูล:"
 
 [node name="SyncSelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="FeedbackLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = ""
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "ตั้งค่าการกู้คืนข้อมูลตามหลัก 3-2-1 Backup ให้ปลอดภัยก่อนเริ่มเขียนรายงาน"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="SubmitButton" type="Button" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-text = "Validate recovery plan"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "ยืนยันการกู้คืนข้อมูล Backup (Restore Clean Files)"

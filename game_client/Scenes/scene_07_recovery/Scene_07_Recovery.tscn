@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/scene_07_recovery/Scene_07_Recovery.gd" id="1_scene"]
+[ext_resource type="PackedScene" uid="uid://b6ftkbcxjco0f" path="res://ui/os_simulation/desktop_screen.tscn" id="2_desktop"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_321_Backup.tscn" id="3_backup"]
+[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Last_Boss_Summary.tscn" id="4_report"]
+[ext_resource type="PackedScene" path="res://ui/overlays/KSA_Evaluation_UI.tscn" id="5_evaluation"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="6_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stage_bar"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(0.06, 0.1, 0.16, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.75, 1, 0.85)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Scene_07_Recovery" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_scene")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DesktopScreen" parent="CanvasLayer" instance=ExtResource("2_desktop")]
+
+[node name="StageBanner" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -210.0
+offset_top = 6.0
+offset_right = 210.0
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_stage_bar")
+
+[node name="StageLabel" type="Label" parent="CanvasLayer/StageBanner"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("6_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "💻 เครื่อง PC ของเมย์: ขั้นตอนที่ 1/2 - กู้คืนข้อมูลจาก 3-2-1 Backup ให้ถูกเวลา"
+horizontal_alignment = 1
+
+[node name="Puzzle_321_Backup" parent="CanvasLayer" instance=ExtResource("3_backup")]
+layout_mode = 1
+
+[node name="Puzzle_Last_Boss_Summary" parent="CanvasLayer" instance=ExtResource("4_report")]
+visible = false
+layout_mode = 1
+
+[node name="KSA_Evaluation_UI" parent="CanvasLayer" instance=ExtResource("5_evaluation")]
+visible = false
+layout_mode = 1

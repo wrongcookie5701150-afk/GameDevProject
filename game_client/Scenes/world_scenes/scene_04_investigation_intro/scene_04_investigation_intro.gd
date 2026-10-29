@@ -3,47 +3,52 @@ extends BaseWorldScene
 const SCENE_05_PATH: String = "res://scenes/scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.tscn"
 
 @onready var player: BasePlayer = $Playground/Player
-@onready var status_label: Label = $CanvasLayer2/TaskObjective
-@onready var phone_toggle_button: Button = $CanvasLayer2/PhoneToggleButton
-@onready var inspect_hint: Button = $CanvasLayer2/InspectHint
-@onready var phone_panel: Control = $CanvasLayer2/PhonePanel
-
-@onready var checklist: BasePuzzleUI = $CanvasLayer/Checklist_UI
-@onready var event_log_puzzle: BaseClickSelectPuzzle = $CanvasLayer/Puzzle_Event_Log
-@onready var drive_history_puzzle: BaseClickSelectPuzzle = $CanvasLayer/Puzzle_Drive_History
+@onready var status_label: Label = find_child("TaskObjective", true, false) as Label
+@onready var phone_toggle_button: Button = find_child("PhoneToggleButton", true, false) as Button
+@onready var inspect_hint: Button = find_child("InspectHint", true, false) as Button
+@onready var phone_panel: Control = find_child("PhonePanel", true, false) as Control
 @onready var playground: Node = $Playground
-@onready var tao_dam_object: InteractObject = $Playground.get_interact_object("taodam") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/Notebook")
-@onready var bookshelf_object: InteractObject = $Playground.get_interact_object("bookshelf") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/BookShelf")
-@onready var ev_drive_object: InteractObject = $Playground.get_interact_object("ev_drive") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/EVDrive")
-@onready var ev_drive_panel: Panel = $CanvasLayer/EVDrivePanel
-@onready var notebook_screen: Control = get_node_or_null("CanvasLayer2/NotebookScreen")
+@onready var ev_drive_panel: Panel = find_child("EVDrivePanel", true, false) as Panel
+@onready var ev_drive_label: Label = get_node_or_null("CanvasLayer/EVDrivePanel/Content/Label") as Label
+
+var tao_dam_object: InteractObject
+var bookshelf_object: InteractObject
+var ev_drive_object: InteractObject
+var computer_object: InteractObject
+var object_detail: Label
+var _nearby_object: InteractObject
 
 var _chat_with_march_completed: bool = false
-var _checklist_complete: bool = false
-var _event_log_complete: bool = false
-var _drive_history_complete: bool = false
+var _taodam_ready_on_desk: bool = false
 var _ev_drive_collected: bool = false
+var _forensic_image_created: bool = false
 
 func _ready() -> void:
 	super._ready()
+	player_node = player
 	
-	if checklist:
-		checklist.hide()
-	if event_log_puzzle:
-		event_log_puzzle.hide()
-	if drive_history_puzzle:
-		drive_history_puzzle.hide()
-	if ev_drive_object:
-		ev_drive_object.hide()
+	if player:
+		object_detail = player.get_node_or_null("ObjectDatail")
+	if not object_detail:
+		object_detail = find_child("ObjectDatail", true, false) as Label
+	if object_detail:
+		object_detail.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		object_detail.position = Vector2(-70.0, -49.0)
+		object_detail.size = Vector2(160.0, 20.0)
+		object_detail.hide()
+
 	if ev_drive_panel:
 		ev_drive_panel.hide()
 	if inspect_hint:
 		inspect_hint.hide()
-	if notebook_screen:
-		notebook_screen.hide()
+		inspect_hint.focus_mode = Control.FOCUS_NONE
+		inspect_hint.pressed.connect(func() -> void:
+			if _nearby_object:
+				_on_interactable_requested(_nearby_object)
+		)
 	
 	if status_label:
-		status_label.text = "     ภารกิจ: กด [P] เพื่อเปิดมือถือ\n           - คุยกับพี่มาร์ช (March)"
+		status_label.text = "     ภารกิจ: กด [P] เพื่อเปิดมือถือ\n           - คุยขอคำปรึกษาจากพี่มาร์ช (March)"
 	
 	if phone_panel:
 		phone_panel.hide()
@@ -55,35 +60,52 @@ func _ready() -> void:
 			phone_panel.closed.connect(_on_phone_closed)
 	
 	if phone_toggle_button:
+		phone_toggle_button.focus_mode = Control.FOCUS_NONE
 		phone_toggle_button.pressed.connect(_toggle_phone)
 	
-	if checklist:
-		checklist.puzzle_resolved.connect(_on_checklist_completed)
-	if event_log_puzzle:
-		event_log_puzzle.puzzle_resolved.connect(_on_event_log_completed)
-	if drive_history_puzzle:
-		drive_history_puzzle.puzzle_resolved.connect(_on_drive_history_completed)
-	
-	var ev_close_btn = get_node_or_null("CanvasLayer/EVDrivePanel/Content/CloseButton")
+	var ev_close_btn: Button = get_node_or_null("CanvasLayer/EVDrivePanel/Content/CloseButton") as Button
 	if ev_close_btn:
-		ev_close_btn.pressed.connect(_on_open_evidence_pressed)
+		ev_close_btn.pressed.connect(_on_ev_panel_close_pressed)
 	
-	if not tao_dam_object and playground and playground.has_method("get_interact_object"):
-		tao_dam_object = playground.get_interact_object("taodam")
-	if not bookshelf_object and playground and playground.has_method("get_interact_object"):
-		bookshelf_object = playground.get_interact_object("bookshelf")
-	if not ev_drive_object and playground and playground.has_method("get_interact_object"):
-		ev_drive_object = playground.get_interact_object("ev_drive")
+	_connect_all_interact_objects()
 	
-	for interact_object: InteractObject in [tao_dam_object, bookshelf_object, ev_drive_object]:
-		if interact_object:
-			interact_object.interaction_requested.connect(_on_interactable_requested)
-			interact_object.player_approached.connect(_on_interactable_approached)
-			interact_object.player_left.connect(_on_interactable_left)
-	
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("has_item") and inv.has_item("ev_drive"):
+		_ev_drive_collected = true
+		if ev_drive_object:
+			ev_drive_object.hide()
+	elif ev_drive_object:
+		ev_drive_object.show()
+
 	if player:
-		player.interacted_with.connect(_on_player_interacted_with)
 		player.set_movement_enabled(true)
+
+func _connect_all_interact_objects() -> void:
+	var objects = find_children("*", "InteractObject", true, false)
+	for node in objects:
+		var child := node as InteractObject
+		if not child:
+			continue
+		if child.object_id == "object" and child.name == "Desktop":
+			child.object_id = "computer"
+			child.prompt_message = "- กด [Spacebar] ใช้คอมพิวเตอร์"
+		var oid := child.object_id.to_lower()
+		if oid == "taodam" or oid == "notebook":
+			tao_dam_object = child
+		elif oid == "bookshelf":
+			bookshelf_object = child
+		elif oid == "ev_drive" or child.name.to_lower() == "evdrive":
+			child.object_id = "ev_drive"
+			ev_drive_object = child
+		elif oid == "computer" or oid == "desktop":
+			computer_object = child
+		
+		if not child.interaction_requested.is_connected(_on_interactable_requested):
+			child.interaction_requested.connect(_on_interactable_requested)
+		if not child.player_approached.is_connected(_on_interactable_approached):
+			child.player_approached.connect(_on_interactable_approached)
+		if not child.player_left.is_connected(_on_interactable_left):
+			child.player_left.connect(_on_interactable_left)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
@@ -106,28 +128,8 @@ func _close_active_overlay() -> bool:
 	if phone_panel and phone_panel.visible:
 		_toggle_phone()
 		return true
-	if notebook_screen and notebook_screen.visible:
-		notebook_screen.hide()
-		if player:
-			player.set_movement_enabled(true)
-		return true
 	if ev_drive_panel and ev_drive_panel.visible:
 		ev_drive_panel.hide()
-		if player:
-			player.set_movement_enabled(true)
-		return true
-	if checklist and checklist.visible:
-		checklist.hide()
-		if player:
-			player.set_movement_enabled(true)
-		return true
-	if event_log_puzzle and event_log_puzzle.visible:
-		event_log_puzzle.hide()
-		if player:
-			player.set_movement_enabled(true)
-		return true
-	if drive_history_puzzle and drive_history_puzzle.visible:
-		drive_history_puzzle.hide()
 		if player:
 			player.set_movement_enabled(true)
 		return true
@@ -156,89 +158,176 @@ func _toggle_phone() -> void:
 
 func _on_march_chat_completed() -> void:
 	_chat_with_march_completed = true
-	if is_instance_valid(status_label):
-		status_label.text = "     ภารกิจ: ไปที่โน้ตบุ๊ก 'เต่าดำ' (TaoDam)\n           - กด [Spacebar] เพื่อเริ่มตรวจสอบ"
 	if is_instance_valid(player):
 		player.set_movement_enabled(true)
+	_refresh_objective_text()
 
 func _on_phone_closed() -> void:
 	if is_instance_valid(player):
 		player.set_movement_enabled(true)
 
-func _on_interactable_approached(_object: InteractObject, _player: Node2D) -> void:
+func _on_player_interacted(_p: BasePlayer) -> void:
+	if _nearby_object:
+		_on_interactable_requested(_nearby_object)
+
+func _on_interactable_approached(object: InteractObject, _p: Node2D) -> void:
+	_nearby_object = object
 	if inspect_hint:
+		if object and not object.prompt_message.is_empty():
+			inspect_hint.text = object.prompt_message
+		else:
+			inspect_hint.text = "- กด [Spacebar] เพื่อสำรวจ"
 		inspect_hint.show()
+	
+	if object_detail and object:
+		match object.object_id.to_lower():
+			"taodam", "notebook":
+				if not _taodam_ready_on_desk:
+					object_detail.text = "TaoDam: กด [Spacebar] เพื่อจัดวางเต่าดำบนโต๊ะ"
+				elif not _forensic_image_created:
+					object_detail.text = "TaoDam: วางพร้อมแล้ว! ไปทำ Image ใส่แฟลชไดรฟ์ที่ PC ก่อน"
+				else:
+					object_detail.text = "TaoDam: กด [Spacebar] เพื่อเปิดเครื่องเต่าดำ"
+			"bookshelf", "ev_drive":
+				if not _ev_drive_collected:
+					object_detail.text = "Flashdrive (EV-DRIVE): กด [Spacebar] เพื่อหยิบแฟลชไดรฟ์"
+				else:
+					object_detail.text = "Bookshelf: เก็บแฟลชไดรฟ์ EV-DRIVE มาแล้ว"
+			"computer", "desktop":
+				if not _ev_drive_collected:
+					object_detail.text = "PC ของเมย์: ไปหยิบแฟลชไดรฟ์จากชั้นหนังสือมาเสียบทำ Image"
+				elif not _forensic_image_created:
+					object_detail.text = "PC ของเมย์: กด [Spacebar] เพื่อทำ Forensic Image ลงแฟลชไดรฟ์"
+				else:
+					object_detail.text = "PC ของเมย์: ทำ Forensic Image เสร็จแล้ว ไปที่เต่าดำได้เลย"
+			"note_board":
+				object_detail.text = "NoteBoard: กระดานสรุปเบาะแส"
+			_:
+				object_detail.text = object.name
+		object_detail.show()
 
-func _on_interactable_left(_object: InteractObject, _player: Node2D) -> void:
-	if inspect_hint:
-		inspect_hint.hide()
-
-func _on_player_interacted_with(target: Node) -> void:
-	var interact_object: InteractObject = target as InteractObject
-	if interact_object:
-		interact_object.interact()
+func _on_interactable_left(object: InteractObject, _p: Node2D) -> void:
+	if _nearby_object == object:
+		_nearby_object = null
+		if inspect_hint:
+			inspect_hint.hide()
+		if object_detail:
+			object_detail.hide()
 
 func _on_interactable_requested(interact_object: InteractObject) -> void:
-	match interact_object.object_id:
-		"taodam":
-			if not _chat_with_march_completed:
-				if status_label:
-					status_label.text = "     ภารกิจ: กด [P] เพื่อคุยกับพี่มาร์ชก่อน!"
-				return
-			
-			if not _checklist_complete:
-				checklist.show()
-				checklist.start_puzzle()
+	if not interact_object:
+		return
+	var obj_id: String = interact_object.object_id.to_lower()
+	if obj_id == "object" and (interact_object.name.to_lower() == "evdrive" or interact_object.name.to_lower() == "ev_drive"):
+		obj_id = "ev_drive"
+	elif obj_id == "object" and interact_object.name.to_lower() == "desktop":
+		obj_id = "computer"
+
+	if obj_id == "note_board":
+		open_note_board()
+		return
+
+	if not _chat_with_march_completed:
+		if status_label:
+			status_label.text = "     ภารกิจ: กด [P] เพื่อคุยกับพี่มาร์ชในมือถือก่อน!"
+		if object_detail:
+			object_detail.text = "เมย์: ต้องกด [P] ปรึกษาพี่มาร์ชในมือถือก่อนว่าควรทำยังไง!"
+			object_detail.show()
+		return
+
+	match obj_id:
+		"taodam", "notebook":
+			if not _taodam_ready_on_desk:
+				_taodam_ready_on_desk = true
+				if object_detail:
+					object_detail.text = "เมย์: หยิบโน้ตบุ๊ก 'เต่าดำ' มาวางเตรียมไว้บนโต๊ะเรียบร้อย!"
+					object_detail.show()
+				_refresh_objective_text()
+				if _forensic_image_created:
+					_enter_taodam_isolation_scene()
 			else:
-				if status_label:
-					status_label.text = "เต่าดำถูกตัดเน็ตแล้ว ตรวจสอบ Event Log และ Drive History"
-		"bookshelf":
-			if _drive_history_complete and not _ev_drive_collected:
-				ev_drive_object.show()
-				if status_label:
-					status_label.text = "     ภารกิจ: EV Drive ปรากฏข้างชั้นหนังสือ\n           - กด [Spacebar] เพื่อเก็บแฟลชไดรฟ์"
-			elif not _drive_history_complete:
-				if status_label:
-					status_label.text = "     คำเตือน: ต้องตรวจวิเคราะห์หลักฐานบนเต่าดำให้เสร็จก่อน"
+				if not _ev_drive_collected:
+					if object_detail:
+						object_detail.text = "เมย์: ต้องไปหยิบ Flashdrive ที่ชั้นหนังสือมาทำ Image ก่อน!"
+						object_detail.show()
+				elif not _forensic_image_created:
+					if object_detail:
+						object_detail.text = "เมย์: เอา Flashdrive ไปเสียบเครื่อง PC เพื่อทำ Forensic Image ก่อน!"
+						object_detail.show()
+				else:
+					_enter_taodam_isolation_scene()
+
+		"bookshelf", "ev_drive":
+			if not _ev_drive_collected:
+				_collect_ev_drive()
 			else:
-				if status_label:
-					status_label.text = "     ภารกิจ: เก็บ EV Drive แล้ว"
-		"ev_drive":
-			if _drive_history_complete:
-				_ev_drive_collected = true
-				ev_drive_object.hide()
-				ev_drive_panel.show()
-				if status_label:
-					status_label.text = "     ภารกิจ: เก็บ EV Drive แล้ว\n           - เปิดไดรฟ์เพื่อเริ่มการวิเคราะห์เชิงลึก"
+				if object_detail:
+					object_detail.text = "เมย์: เก็บ Flashdrive (EV-DRIVE) เข้ากระเป๋าแล้ว"
+					object_detail.show()
+
+		"computer", "desktop":
+			if not _ev_drive_collected:
+				if object_detail:
+					object_detail.text = "เมย์: ต้องไปหยิบ Flashdrive จากชั้นหนังสือมาก่อน!"
+					object_detail.show()
+				_refresh_objective_text()
+			elif not _forensic_image_created:
+				_create_forensic_image_on_pc()
 			else:
-				if status_label:
-					status_label.text = "     คำเตือน: ต้องตรวจวิเคราะห์ให้เสร็จก่อนเก็บ EV Drive"
-		"note_board":
-			open_note_board()
+				if object_detail:
+					object_detail.text = "เมย์: คัดลอก Forensic Image ลง Flashdrive แล้ว ไปเปิดเต่าดำได้เลย!"
+					object_detail.show()
 
-func _on_checklist_completed() -> void:
-	_checklist_complete = true
-	checklist.hide()
-	if status_label:
-		status_label.text = "     ภารกิจ: ยืนยันการตัดเน็ตแล้ว\n           - ตรวจสอบ Timeline ใน Event Log"
-	event_log_puzzle.show()
-	event_log_puzzle.start_puzzle()
+func _collect_ev_drive() -> void:
+	_ev_drive_collected = true
+	if ev_drive_object:
+		ev_drive_object.hide()
+	if inspect_hint:
+		inspect_hint.hide()
+	
+	var inv_manager = get_node_or_null("/root/InventoryManager")
+	if inv_manager and inv_manager.has_method("add_item"):
+		inv_manager.add_item("ev_drive", "EV-DRIVE", load("res://assets/Icon32x32/disk.png"), "EV-DRIVE (E:) - แฟลชไดรฟ์สำหรับเก็บ Forensic Image")
+	
+	if object_detail:
+		object_detail.text = "เมย์: ได้แฟลชไดรฟ์ EV-DRIVE แล้ว! นำไปทำ Image ที่เครื่อง PC กัน"
+		object_detail.show()
+	_refresh_objective_text()
 
-func _on_event_log_completed() -> void:
-	_event_log_complete = true
-	event_log_puzzle.hide()
-	if status_label:
-		status_label.text = "     ภารกิจ: บันทึก Timeline แล้ว\n           - ตรวจสอบ GG Disk Drive History หาผู้ส่งปลอม"
-	drive_history_puzzle.show()
-	drive_history_puzzle.start_puzzle()
+func _create_forensic_image_on_pc() -> void:
+	_forensic_image_created = true
+	_taodam_ready_on_desk = true
+	if player:
+		player.set_movement_enabled(false)
+	if ev_drive_label:
+		ev_drive_label.text = "สร้าง Forensic Image ลงแฟลชไดรฟ์ EV-DRIVE (E:) สำเร็จ!\nคัดลอก Report_Final.docx, Windows_Event_Log.txt, Drive_Activity.log\nและไฟล์ Evidence_Manifest.txt พร้อมนำไปตรวจบน 'เต่าดำ'"
+	if ev_drive_panel:
+		ev_drive_panel.show()
+	_refresh_objective_text()
 
-func _on_drive_history_completed() -> void:
-	_drive_history_complete = true
-	drive_history_puzzle.hide()
-	if status_label:
-		status_label.text = "     ภารกิจ: พบผู้ส่งปลอมแปลงแล้ว\n           - เดินไปที่ชั้นหนังสือเพื่อเก็บ EV Drive"
+func _on_ev_panel_close_pressed() -> void:
+	if ev_drive_panel:
+		ev_drive_panel.hide()
+	if player:
+		player.set_movement_enabled(true)
+	_refresh_objective_text()
 
-func _on_open_evidence_pressed() -> void:
+func _refresh_objective_text() -> void:
+	if not status_label:
+		return
+	if not _chat_with_march_completed:
+		status_label.text = "     ภารกิจ: กด [P] เพื่อเปิดมือถือ\n           - คุยขอคำปรึกษาจากพี่มาร์ช (March)"
+	elif not _ev_drive_collected:
+		if not _taodam_ready_on_desk:
+			status_label.text = "     ภารกิจ: ไปวาง 'เต่าดำ' บนโต๊ะ และหยิบ\n           - Flashdrive ที่ชั้นหนังสือ [Spacebar]"
+		else:
+			status_label.text = "     ภารกิจ: เดินไปที่ชั้นหนังสือ\n           - กด [Spacebar] หยิบ Flashdrive (EV-DRIVE)"
+	elif not _forensic_image_created:
+		status_label.text = "     ภารกิจ: นำ Flashdrive ไปที่เครื่อง PC ของเมย์\n           - กด [Spacebar] เพื่อทำ Forensic Image"
+	else:
+		status_label.text = "     ภารกิจ: ไปที่โน้ตบุ๊ก 'เต่าดำ' บนโต๊ะ\n           - กด [Spacebar] เพื่อตรวจเช็คการ Isolate"
+
+func _enter_taodam_isolation_scene() -> void:
 	var result: Error = get_tree().change_scene_to_file(SCENE_05_PATH)
 	if result != OK:
 		push_error("Unable to load Scene 5: %s (error %d)" % [SCENE_05_PATH, result])

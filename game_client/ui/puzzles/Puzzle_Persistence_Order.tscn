@@ -1,6 +1,25 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://ui/puzzles/persistence_order_puzzle.gd" id="1_sequence_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="3_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_forensic_win"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.08, 0.11, 0.17, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.7, 0.95, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
 
 [node name="Puzzle_Persistence_Order" type="Control"]
 layout_mode = 3
@@ -9,6 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_sequence_script")
 scene_id = "Scene_05"
 task_id = &"T12"
@@ -20,50 +40,71 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -212.0
-offset_top = -122.0
-offset_right = 212.0
-offset_bottom = 122.0
+offset_left = -205.0
+offset_top = -126.0
+offset_right = 205.0
+offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_forensic_win")
 
 [node name="Content" type="VBoxContainer" parent="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
-offset_top = 10.0
+offset_top = 5.0
 offset_right = -10.0
-offset_bottom = -10.0
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 2
 
 [node name="TitleLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "T12 / P07: Stop persistence safely"
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "[6/6] Containment & Persistence Removal Plan (T12)"
 horizontal_alignment = 1
 
 [node name="StepSelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="AddButton" type="Button" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
-text = "Add selected step"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "+ เพิ่มขั้นตอนที่เลือก (Add Step)"
 
 [node name="SequenceList" type="ItemList" parent="Panel/Content"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="RemoveButton" type="Button" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
-text = "Remove last step"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "- ลบขั้นตอนล่าสุด (Remove Last)"
 
 [node name="SubmitButton" type="Button" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 17)
 layout_mode = 2
-text = "Submit seven-step sequence"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "ยืนยันลำดับการหยุด Persistence ทั้ง 7 ขั้นตอน (Submit)"
 
 [node name="FeedbackLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = ""
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "เรียงลำดับขั้นตอนการหยุด Scheduled Task และกักกันไฟล์อย่างปลอดภัย"
 autowrap_mode = 3
 horizontal_alignment = 1

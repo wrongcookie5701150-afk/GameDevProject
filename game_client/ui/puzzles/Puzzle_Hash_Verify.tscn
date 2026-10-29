@@ -1,6 +1,25 @@
 [gd_scene format=3 uid="uid://lncg5kind7nq"]
 
 [ext_resource type="Script" uid="uid://cmwb2xxtxqkyj" path="res://ui/puzzles/hash_verify_puzzle.gd" id="1_hash_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="3_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_forensic_win"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.08, 0.11, 0.17, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.7, 0.95, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
 
 [node name="Puzzle_Hash_Verify" type="Control" unique_id=1221632316]
 layout_mode = 3
@@ -9,6 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_hash_script")
 scene_id = "Scene_05"
 task_id = &"T08"
@@ -20,47 +40,65 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -202.0
-offset_top = -114.0
-offset_right = 202.0
-offset_bottom = 114.0
+offset_left = -195.0
+offset_top = -124.0
+offset_right = 195.0
+offset_bottom = 62.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_forensic_win")
 
 [node name="Content" type="VBoxContainer" parent="Panel" unique_id=1949369758]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
-offset_top = 10.0
+offset_top = 6.0
 offset_right = -10.0
-offset_bottom = -10.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 3
 
 [node name="TitleLabel" type="Label" parent="Panel/Content" unique_id=416846416]
 layout_mode = 2
-text = "T08 / P03: Verify evidence integrity (MD5)"
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "[1/6] FTK Imager - Verify Evidence MD5 Hash (T08)"
 horizontal_alignment = 1
 
 [node name="EvidenceList" type="ItemList" parent="Panel/Content" unique_id=1498561746]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
 
 [node name="ManifestLabel" type="Label" parent="Panel/Content" unique_id=924481668]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 autowrap_mode = 3
 
 [node name="HashInput" type="LineEdit" parent="Panel/Content" unique_id=323736826]
 layout_mode = 2
-placeholder_text = "Enter the MD5 value from the evidence copy"
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+placeholder_text = "คลิกเลือกไฟล์ด้านบนเพื่อคำนวณค่า MD5 อัตโนมัติ"
 
 [node name="VerifyButton" type="Button" parent="Panel/Content" unique_id=347121846]
+custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
-text = "Verify MD5"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "Verify MD5 (ยืนยันความถูกต้องของไฟล์หลักฐาน)"
 
 [node name="FeedbackLabel" type="Label" parent="Panel/Content" unique_id=1832197453]
 layout_mode = 2
-text = "Select an evidence file, then compare its manifest value."
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "เลือกไฟล์ใน EV-DRIVE เพื่อคำนวณค่า MD5 และเทียบกับ Evidence_Manifest.txt"
 horizontal_alignment = 1
 autowrap_mode = 3

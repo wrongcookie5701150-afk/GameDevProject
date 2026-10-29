@@ -22,7 +22,7 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE):
 		interact()
 
 func set_movement_enabled(enabled: bool) -> void:
@@ -42,11 +42,11 @@ func interact() -> void:
 
 	# Check for overlapping interactable objects (Area2D from InteractObject)
 	for target: Area2D in _interaction_area.get_overlapping_areas():
-		var owner: Node = target.get_parent()
-		if owner and owner.has_method("interact") and not interacted_targets.has(owner):
-			interacted_targets.append(owner)
-			owner.call("interact")
-			interacted_with.emit(owner)
+		var parent_node: Node = target.get_parent()
+		if parent_node and parent_node.has_method("interact") and not interacted_targets.has(parent_node):
+			interacted_targets.append(parent_node)
+			parent_node.call("interact")
+			interacted_with.emit(parent_node)
 
 	# Also check for overlapping bodies (fallback)
 	for target: Node2D in _interaction_area.get_overlapping_bodies():

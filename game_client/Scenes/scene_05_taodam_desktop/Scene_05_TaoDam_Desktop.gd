@@ -1,163 +1,182 @@
 extends Control
 
-@onready var player: BasePlayer = $Playground/Player
-@onready var tao_dam: InteractObject = ($Playground.get_interact_object("taodam") if $Playground and $Playground.has_method("get_interact_object") else get_node_or_null("Playground/Map/InteractObject/Notebook"))
-@onready var task_objective: Label = $CanvasLayer/TaskObjective
+const SCENE_06_INVESTIGATION_PATH: String = "res://scenes/scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.tscn"
+
 @onready var notebook_screen: Control = $CanvasLayer/NotebookScreen
-@onready var forensic_toolbar: Panel = $CanvasLayer/ForensicToolbar
-@onready var close_notebook_button: Button = $CanvasLayer/ForensicToolbar/Content/CloseNotebookButton
-@onready var status_label: Label = $CanvasLayer/ForensicToolbar/Content/StatusLabel
-@onready var hash_puzzle: BaseDecoderPuzzle = $CanvasLayer/Puzzle_Hash_Verify
-@onready var macro_puzzle: BaseClickSelectPuzzle = $CanvasLayer/Puzzle_File_Structure
-@onready var decoder_puzzle: DecoderPuzzle = $CanvasLayer/Puzzle_Decoder
-@onready var persistence_puzzle: BaseSequencePuzzle = $CanvasLayer/Puzzle_Persistence_Order
-@onready var completion_panel: Panel = $CanvasLayer/CompletionPanel
-@onready var recovery_button: Button = $CanvasLayer/CompletionPanel/RecoveryButton
+@onready var checklist: BasePuzzleUI = $CanvasLayer/NotebookScreen/Checklist_UI
+@onready var app_login_window: Control = $CanvasLayer/NotebookScreen/AppLoginWindow
+@onready var file_explorer_window: Control = $CanvasLayer/NotebookScreen/FileExplorerWindow
+@onready var guide_label: Label = $CanvasLayer/NotebookScreen/GuideBanner/GuideLabel
+@onready var completion_panel: Control = $CanvasLayer/CompletionPanel
+@onready var continue_button: Button = $CanvasLayer/CompletionPanel/VBox/ContinueButton
 
-@onready var hash_button: Button = $CanvasLayer/ForensicToolbar/Content/Tools/HashButton
-@onready var macro_button: Button = $CanvasLayer/ForensicToolbar/Content/Tools/MacroButton
-@onready var decoder_button: Button = $CanvasLayer/ForensicToolbar/Content/Tools/DecoderButton
-@onready var inspector_button: Button = $CanvasLayer/ForensicToolbar/Content/Tools/InspectorButton
-@onready var persistence_button: Button = $CanvasLayer/ForensicToolbar/Content/Tools/PersistenceButton
-
-var _hash_verified: bool = false
-var _macro_inspected: bool = false
-var _decoding_complete: bool = false
+var _wifi_disconnected: bool = false
 
 func _ready() -> void:
-	notebook_screen.hide()
-	forensic_toolbar.hide()
-	_hide_puzzles()
-	completion_panel.hide()
-	task_objective.text = "Walk to TaoDam and press Space to inspect the laptop."
-	if not tao_dam and $Playground and $Playground.has_method("get_interact_object"):
-		tao_dam = $Playground.get_interact_object("taodam")
-	if tao_dam:
-		tao_dam.player_approached.connect(_on_tao_dam_approached)
-		tao_dam.player_left.connect(_on_tao_dam_left)
-	player.interacted_with.connect(_on_player_interacted)
-	close_notebook_button.pressed.connect(_on_close_notebook_pressed)
-	recovery_button.pressed.connect(_on_recovery_pressed)
-	hash_button.pressed.connect(_on_hash_pressed)
-	macro_button.pressed.connect(_on_macro_pressed)
-	decoder_button.pressed.connect(_on_decoder_pressed)
-	inspector_button.pressed.connect(_on_inspector_pressed)
-	persistence_button.pressed.connect(_on_persistence_pressed)
-	hash_puzzle.puzzle_resolved.connect(_on_hash_verified)
-	macro_puzzle.puzzle_resolved.connect(_on_macro_inspected)
-	decoder_puzzle.all_decoding_complete.connect(_on_decoding_complete)
-	persistence_puzzle.puzzle_resolved.connect(_on_persistence_stopped)
-	_refresh_tool_availability()
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("hide_inventory"):
+		inv.hide_inventory()
+	
+	if app_login_window:
+		app_login_window.hide()
+	if file_explorer_window:
+		file_explorer_window.hide()
+	if completion_panel:
+		completion_panel.hide()
+	
+	if checklist:
+		checklist.show()
+		if checklist.has_method("start_puzzle"):
+			checklist.start_puzzle()
+		if not checklist.puzzle_resolved.is_connected(_on_checklist_completed):
+			checklist.puzzle_resolved.connect(_on_checklist_completed)
+	
+	if continue_button and not continue_button.pressed.is_connected(_on_continue_to_investigation):
+		continue_button.pressed.connect(_on_continue_to_investigation)
+	
+	_setup_taodam_isolation_hooks()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
-		if hash_puzzle.visible or macro_puzzle.visible or decoder_puzzle.visible or persistence_puzzle.visible:
-			_hide_puzzles()
-			get_viewport().set_input_as_handled()
-			return
-		if notebook_screen.visible:
-			_on_close_notebook_pressed()
-			get_viewport().set_input_as_handled()
-			return
-
-func _on_tao_dam_approached(_object: InteractObject, _approaching_player: Node2D) -> void:
-	task_objective.text = "Press Space to inspect TaoDam."
-
-func _on_tao_dam_left(_object: InteractObject, _leaving_player: Node2D) -> void:
-	if not notebook_screen.visible:
-		task_objective.text = "Walk to TaoDam and press Space to inspect the laptop."
-
-func _on_player_interacted(target: Node) -> void:
-	var interact_object: InteractObject = target as InteractObject
-	if not interact_object or interact_object != tao_dam:
+func _setup_taodam_isolation_hooks() -> void:
+	if not notebook_screen:
 		return
-	_open_notebook_overlay()
+	
+	# Hide internal TaskObjective inside locked notebook_screen.tscn
+	var nb_task_obj: Control = notebook_screen.get_node_or_null("TaskObjective") as Control
+	if nb_task_obj:
+		nb_task_obj.hide()
+	
+	# Hide EV-01 flashdrive icon until Scene 6 (after isolation is complete)
+	var evfile_icon: Button = notebook_screen.find_child("EvfileIcon", true, false) as Button
+	if evfile_icon:
+		evfile_icon.hide()
+	
+	var wifi_tray_btn: Button = notebook_screen.find_child("WifiTrayButton", true, false) as Button
+	var wifi_popup: Control = notebook_screen.find_child("WifiPopup", true, false) as Control
+	var wifi_close_btn: Button = notebook_screen.find_child("WifiCloseBtn", true, false) as Button
+	var wifi_toggle_btn: Button = notebook_screen.find_child("WifiToggleBtn", true, false) as Button
+	var wifi_status_lbl: Label = notebook_screen.find_child("WifiStatusLabel", true, false) as Label
+	var ssid_lbl: Label = notebook_screen.find_child("SSIDLabel", true, false) as Label
+	var wifi_sync_lbl: Label = notebook_screen.find_child("WifiCloudSyncLabel", true, false) as Label
 
-func _open_notebook_overlay() -> void:
-	# Keep NotebookScreen exactly as authored; forensic tools are layered over it here.
-	notebook_screen.show()
-	forensic_toolbar.show()
-	task_objective.text = "TaoDam ready. Select a forensic tool from the overlay."
+	var start_btn: Button = notebook_screen.find_child("StartButton", true, false) as Button
+	var start_popup: Control = notebook_screen.find_child("StartMenuPopup", true, false) as Control
+	var start_leave_btn: Button = notebook_screen.find_child("StartMenuLeaveBtn", true, false) as Button
+	var menu_discord: Button = notebook_screen.find_child("MenuDiscord", true, false) as Button
+	var menu_ggdisk: Button = notebook_screen.find_child("MenuGGDisk", true, false) as Button
+	var menu_files: Button = notebook_screen.find_child("MenuFiles", true, false) as Button
+	var menu_word: Button = notebook_screen.find_child("MenuWord", true, false) as Button
 
-func _on_close_notebook_pressed() -> void:
-	notebook_screen.hide()
-	forensic_toolbar.hide()
-	task_objective.text = "Walk to TaoDam and press Space to inspect the laptop."
+	var app_close_btn: Button = notebook_screen.find_child("AppLoginCloseBtn", true, false) as Button
+	var app_action_btn: Button = notebook_screen.find_child("AppLoginActionBtn", true, false) as Button
+	var file_close_btn: Button = notebook_screen.find_child("FileExplorerCloseBtn", true, false) as Button
 
-func _on_hash_pressed() -> void:
-	_launch_puzzle("T08", hash_puzzle)
+	if start_btn and start_popup:
+		start_btn.pressed.connect(func() -> void:
+			start_popup.visible = !start_popup.visible
+			if wifi_popup:
+				wifi_popup.hide()
+		)
 
-func _on_macro_pressed() -> void:
-	if not _hash_verified:
-		status_label.text = "Verify the evidence copy with FTK Imager first."
-		return
-	_launch_puzzle("T09", macro_puzzle)
+	if start_leave_btn:
+		start_leave_btn.pressed.connect(func() -> void:
+			if start_popup:
+				start_popup.hide()
+			if guide_label:
+				guide_label.text = "⚠️ กรุณาตรวจสอบเงื่อนไขการ Isolate เต่าดำให้ครบทั้ง 4 ข้อก่อนเริ่มสืบสวน!"
+		)
 
-func _on_decoder_pressed() -> void:
-	if not _macro_inspected:
-		status_label.text = "Inspect the document macro structure first."
-		return
-	var task_to_launch: String = "T11" if decoder_puzzle.decode_stage == 1 else "T10"
-	_launch_puzzle(task_to_launch, decoder_puzzle)
+	# 1. Network Disconnect (Wi-Fi & LAN)
+	var perform_disconnect := func() -> void:
+		_wifi_disconnected = true
+		if wifi_tray_btn:
+			wifi_tray_btn.icon = preload("res://assets/Icon32x32/world_disable.png")
+			wifi_tray_btn.text = "No Net"
+		if wifi_status_lbl:
+			wifi_status_lbl.text = "สถานะ: ตัดการเชื่อมต่อแล้ว (Disconnected)"
+			wifi_status_lbl.add_theme_color_override("font_color", Color(0.95, 0.35, 0.35, 1.0))
+		if ssid_lbl:
+			ssid_lbl.text = "สาย LAN: ไม่ได้เชื่อมต่อ (Unplugged)"
+		if wifi_toggle_btn:
+			wifi_toggle_btn.text = "สัญญาณ Wi-Fi: ปิดใช้งาน (Disabled)"
+		if wifi_sync_lbl:
+			wifi_sync_lbl.text = "CloudSync: ปิดการทำงาน (Offline)"
+		if checklist and checklist.has_method("update_condition"):
+			checklist.update_condition("wifi_disabled", true)
+			checklist.update_condition("lan_unplugged", true)
 
-func _on_inspector_pressed() -> void:
-	if not _decoding_complete:
-		status_label.text = "Decode the helper name and mode before inspecting it."
-		return
-	status_label.text = "Office_Update_Helper.dat: logon/idle trigger; action modifies project files."
+	if wifi_tray_btn and wifi_popup:
+		wifi_tray_btn.pressed.connect(func() -> void:
+			wifi_popup.visible = !wifi_popup.visible
+			if start_popup:
+				start_popup.hide()
+			perform_disconnect.call()
+		)
 
-func _on_persistence_pressed() -> void:
-	if not _decoding_complete:
-		status_label.text = "Decode and inspect the helper before stopping persistence."
-		return
-	_launch_puzzle("T12", persistence_puzzle)
+	if wifi_toggle_btn:
+		wifi_toggle_btn.pressed.connect(func() -> void:
+			perform_disconnect.call()
+		)
 
-func _launch_puzzle(puzzle_id: String, puzzle: BasePuzzleUI) -> void:
-	_hide_puzzles()
-	puzzle.show()
-	puzzle.start_puzzle()
-	status_label.text = "%s ready." % puzzle_id
+	if wifi_close_btn and wifi_popup:
+		wifi_close_btn.pressed.connect(func() -> void:
+			wifi_popup.hide()
+		)
 
-func _on_hash_verified() -> void:
-	_hash_verified = true
-	_hide_puzzles()
-	status_label.text = "T08 complete: evidence hash matches Evidence_Manifest.txt."
-	_refresh_tool_availability()
+	# 2. Check Personal / Cloud Accounts Not Logged In
+	var open_login_check := func() -> void:
+		if start_popup:
+			start_popup.hide()
+		if app_login_window:
+			app_login_window.show()
+		if checklist and checklist.has_method("update_condition"):
+			checklist.update_condition("personal_accounts_unlinked", true)
 
-func _on_macro_inspected() -> void:
-	_macro_inspected = true
-	_hide_puzzles()
-	status_label.text = "T09 complete: vbaProject.bin contains the macro project."
-	_refresh_tool_availability()
+	if menu_discord:
+		menu_discord.pressed.connect(open_login_check)
+	if menu_ggdisk:
+		menu_ggdisk.pressed.connect(open_login_check)
+	if menu_word:
+		menu_word.pressed.connect(open_login_check)
 
-func _on_decoding_complete() -> void:
-	_decoding_complete = true
-	_hide_puzzles()
-	status_label.text = "T10/T11 complete: helper name and Wiper Mode identified."
-	_refresh_tool_availability()
+	if app_close_btn and app_login_window:
+		app_close_btn.pressed.connect(func() -> void:
+			app_login_window.hide()
+		)
+	if app_action_btn and app_login_window:
+		app_action_btn.pressed.connect(func() -> void:
+			app_login_window.hide()
+			if checklist and checklist.has_method("update_condition"):
+				checklist.update_condition("personal_accounts_unlinked", true)
+		)
 
-func _on_persistence_stopped() -> void:
-	_hide_puzzles()
-	notebook_screen.hide()
-	forensic_toolbar.hide()
-	completion_panel.show()
-	status_label.text = "Scene 5 complete. Persistence is stopped; recovery is next."
+	# 3. Check File Explorer (No Important Local Files)
+	var open_file_check := func() -> void:
+		if start_popup:
+			start_popup.hide()
+		if file_explorer_window:
+			file_explorer_window.show()
+		if checklist and checklist.has_method("update_condition"):
+			checklist.update_condition("no_important_files", true)
 
-func _on_recovery_pressed() -> void:
-	var result: Error = get_tree().change_scene_to_file(
-		"res://scenes/scene_06_recovery/Scene_06_Recovery.tscn"
-	)
+	if menu_files:
+		menu_files.pressed.connect(open_file_check)
+
+	if file_close_btn and file_explorer_window:
+		file_close_btn.pressed.connect(func() -> void:
+			file_explorer_window.hide()
+		)
+
+func _on_checklist_completed() -> void:
+	if app_login_window:
+		app_login_window.hide()
+	if file_explorer_window:
+		file_explorer_window.hide()
+	if guide_label:
+		guide_label.text = "✅ ยืนยันการ Isolate เต่าดำครบถ้วนแล้ว! กดปุ่มเพื่อเสียบแฟลชไดรฟ์เริ่มสืบสวน"
+	if completion_panel:
+		completion_panel.show()
+
+func _on_continue_to_investigation() -> void:
+	var result: Error = get_tree().change_scene_to_file(SCENE_06_INVESTIGATION_PATH)
 	if result != OK:
-		push_error("Unable to load Scene 6 recovery: %s" % result)
-
-func _refresh_tool_availability() -> void:
-	macro_button.disabled = not _hash_verified
-	decoder_button.disabled = not _macro_inspected
-	inspector_button.disabled = not _decoding_complete
-	persistence_button.disabled = not _decoding_complete
-
-func _hide_puzzles() -> void:
-	hash_puzzle.hide()
-	macro_puzzle.hide()
-	decoder_puzzle.hide()
-	persistence_puzzle.hide()
+		push_error("Unable to load Scene 6 Investigation: %s (error %d)" % [SCENE_06_INVESTIGATION_PATH, result])
