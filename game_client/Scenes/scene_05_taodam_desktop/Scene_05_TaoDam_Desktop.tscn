@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bnsmilucj5m7e" path="res://scenes/scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.gd" id="1_scene_script"]
 [ext_resource type="PackedScene" uid="uid://lncg5kind7nq" path="res://ui/puzzles/Puzzle_Hash_Verify.tscn" id="2_hash"]
-[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_File_Structure.tscn" id="3_macro"]
+[ext_resource type="PackedScene" uid="uid://bd0d5me4ok8dy" path="res://ui/puzzles/Puzzle_File_Structure.tscn" id="3_macro"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Decoder.tscn" id="4_decoder"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Persistence_Order.tscn" id="5_sequence"]
 [ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="6_playground"]
@@ -104,7 +104,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(50, 0)
 offset_left = 12.0
 offset_top = 8.0
-offset_right = 320.0
+offset_right = 470.0
 offset_bottom = 34.0
 text = "Walk to TaoDam and press Space to inspect the laptop."
 autowrap_mode = 3

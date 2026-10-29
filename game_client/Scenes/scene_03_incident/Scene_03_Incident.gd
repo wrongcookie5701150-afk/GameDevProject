@@ -35,9 +35,7 @@ var _is_waiting_for_save: bool = false
 var _is_ransomware_triggered: bool = false
 var _can_exit_pc: bool = false
 
-var _report_editor: TextEdit
 var _passage_label: RichTextLabel
-var _feedback_label: Label
 
 const FULL_REPORT_TEXT: String = """=== Cybersecurity Group Assignment: Incident Analysis & Recovery ===
 Author: May (CS Year 2) | Group 8
@@ -122,22 +120,36 @@ func _init_ui_state() -> void:
 		if macro_banner and macro_banner is CanvasItem:
 			macro_banner.hide()
 		
+		# Ensure TypingPuzzle is shown so PassageLabel is visible
 		var typing_puzzle: Node = ms_word.find_child("TypingPuzzle", true, false)
 		if typing_puzzle and typing_puzzle is CanvasItem:
 			typing_puzzle.show()
+			var feedback_lbl: Node = typing_puzzle.find_child("FeedbackLabel", true, false)
+			if feedback_lbl and feedback_lbl is CanvasItem:
+				feedback_lbl.hide()
+		
+		# Find PassageLabel for cutscene text streaming
+		_passage_label = ms_word.find_child("PassageLabel", true, false) as RichTextLabel
+		if not _passage_label and typing_puzzle:
 			_passage_label = typing_puzzle.find_child("PassageLabel", true, false) as RichTextLabel
-			if _passage_label:
-				_passage_label.text = ""
-			
-			_report_editor = typing_puzzle.find_child("TextEdit", true, false) as TextEdit
-			if _report_editor:
-				_report_editor.text = ""
-				_report_editor.editable = false
-			
-			_feedback_label = typing_puzzle.find_child("FeedbackLabel", true, false) as Label
-			if _feedback_label:
-				_feedback_label.text = "⏩ TIME LAPSE: 19:15 - 21:23 | May writing cybersecurity report..."
-				_feedback_label.add_theme_color_override("font_color", Color(0.2, 0.65, 1.0, 1.0))
+		if not _passage_label:
+			_passage_label = find_child("PassageLabel", true, false) as RichTextLabel
+		
+		if _passage_label:
+			_passage_label.show()
+			_passage_label.bbcode_enabled = true
+			_passage_label.scroll_following = false
+			_passage_label.scroll_active = false
+			_passage_label.text = ""
+		
+		# Disable player input on TextEdit during cutscene
+		var editor_input: TextEdit = ms_word.find_child("TextEdit", true, false) as TextEdit
+		if editor_input:
+			editor_input.text = ""
+			editor_input.editable = false
+		
+		if ms_word.has_method("scroll_to_top"):
+			ms_word.call("scroll_to_top")
 
 	if clock_label:
 		clock_label.text = "19:15"
@@ -146,25 +158,9 @@ func _setup_taskbar() -> void:
 	if not taskbar_tabs:
 		return
 	
-	# Active MS Word tab
-	var tab_word: Button = Button.new()
-	tab_word.name = "Tab_MsWord"
-	tab_word.text = " MS Word"
-	tab_word.custom_minimum_size = Vector2(65, 16)
-	tab_word.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	tab_word.add_theme_font_override("font", preload("res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf"))
-	tab_word.add_theme_font_size_override("font_size", 7)
-	
-	var style_active: StyleBoxFlat = StyleBoxFlat.new()
-	style_active.bg_color = Color(0.18, 0.28, 0.44, 0.95)
-	style_active.border_width_bottom = 2
-	style_active.border_color = Color(0.35, 0.75, 1.0, 1.0)
-	style_active.content_margin_left = 5.0
-	style_active.content_margin_right = 5.0
-	style_active.corner_radius_top_left = 2
-	style_active.corner_radius_top_right = 2
-	tab_word.add_theme_stylebox_override("normal", style_active)
-	taskbar_tabs.add_child(tab_word)
+	var tab_word: Button = taskbar_tabs.find_child("Tab_MsWord", true, false) as Button
+	if tab_word:
+		tab_word.show()
 
 func _connect_signals() -> void:
 	if skip_button:
@@ -217,21 +213,23 @@ func _run_timelapse_sequence() -> void:
 	_ready_for_save_event()
 
 func _stream_text(text: String) -> void:
-	if not _report_editor:
+	if not _passage_label:
 		return
 	
-	var chunk_size: int = 14
+	var chunk_size: int = 5
 	var index: int = 0
 	while index < text.length():
 		if _is_skipped:
 			break
 		
 		var chunk: String = text.substr(index, chunk_size)
-		_report_editor.text += chunk
-		_report_editor.set_caret_line(_report_editor.get_line_count())
-		_report_editor.scroll_vertical = _report_editor.get_line_count()
-		index += chunk_size
+		_passage_label.text += chunk
 		
+		# Auto-scroll to follow text smoothly without overshooting
+		if ms_word and ms_word.has_method("scroll_following_content"):
+			ms_word.scroll_following_content()
+		
+		index += chunk_size
 		await get_tree().create_timer(0.04).timeout
 
 func _show_toast(message: String) -> void:
@@ -260,17 +258,14 @@ func _ready_for_save_event() -> void:
 	if skip_button:
 		skip_button.hide()
 	
-	if _report_editor:
-		_report_editor.text = FULL_REPORT_TEXT
-		_report_editor.set_caret_line(_report_editor.get_line_count())
-		_report_editor.scroll_vertical = _report_editor.get_line_count()
+	if _passage_label:
+		_passage_label.text = FULL_REPORT_TEXT
+	
+	if ms_word and ms_word.has_method("scroll_to_bottom"):
+		ms_word.scroll_to_bottom()
 	
 	if clock_label:
 		clock_label.text = "21:23"
-	
-	if _feedback_label:
-		_feedback_label.text = "💾 การพิมพ์เสร็จสมบูรณ์! กรุณากดปุ่ม 'Save' ที่แถบเครื่องมือด้านบนเพื่อบันทึกไฟล์ (Click 'Save')"
-		_feedback_label.add_theme_color_override("font_color", Color(0.1, 0.85, 0.3, 1.0))
 	
 	if ms_word and ms_word.has_method("highlight_save_button"):
 		ms_word.call("highlight_save_button")
@@ -284,10 +279,6 @@ func _on_save_clicked() -> void:
 	_is_ransomware_triggered = true
 	
 	_hide_toast()
-	if _feedback_label:
-		_feedback_label.text = "💾 บันทึกไฟล์ Report_Final.docx เรียบร้อย... กำลังซิงค์ข้อมูล..."
-		_feedback_label.add_theme_color_override("font_color", Color(0.2, 0.65, 1.0, 1.0))
-	
 	_show_toast("☁️ CloudSync: ซิงค์ Report_Final.docx ขึ้น Cloud อัตโนมัติ...")
 	await get_tree().create_timer(1.2).timeout
 	_hide_toast()

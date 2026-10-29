@@ -88,6 +88,16 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="Gradient" id="Gradient_0nxfn"]
+colors = PackedColorArray(0, 0, 0, 0.1254902, 0.21176471, 0.21176471, 0.21176471, 0.6627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jexof"]
+gradient = SubResource("Gradient_0nxfn")
+fill_to = Vector2(1, 0.0042735045)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x0tj6"]
+texture = SubResource("GradientTexture2D_jexof")
+
 [node name="NotebookScreen" type="Control" unique_id=627981291]
 layout_mode = 3
 anchors_preset = 15
@@ -460,3 +470,18 @@ theme_override_fonts/font = ExtResource("9_x0tj6")
 theme_override_font_sizes/font_size = 7
 text = "CloudSync: ซิงค์อัตโนมัติเปิดใช้งาน"
 autowrap_mode = 2
+
+[node name="TaskObjective" type="Label" parent="." unique_id=1968158186]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.033333335
+offset_left = 321.0
+offset_top = -1.0
+offset_right = 480.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_x0tj6")
+text = "     Task 01 ไปที่คอมพิวเตอร์
+           - กด [W] [A] [S] [D] เพื่อเคลื่อนที่"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

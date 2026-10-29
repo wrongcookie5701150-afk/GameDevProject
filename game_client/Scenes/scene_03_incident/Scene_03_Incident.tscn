@@ -4,6 +4,19 @@
 [ext_resource type="Script" uid="uid://dp85fqvvxyipn" path="res://scenes/scene_03_incident/Scene_03_Incident.gd" id="2_incident_script"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_qar8n"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_typing_paper"]
+content_margin_left = 15.0
+content_margin_top = 10.0
+content_margin_right = 22.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ftuyi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tlii3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48kt2"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ransom_window"]
 content_margin_left = 2.0
 content_margin_top = 2.0
@@ -25,7 +38,21 @@ shadow_size = 10
 [node name="Scene_03_Incident" unique_id=588632451 instance=ExtResource("1_desktop_base")]
 script = ExtResource("2_incident_script")
 
-[node name="RansomNote" type="PanelContainer" parent="." index="5" unique_id=884719283]
+[node name="MsWord" parent="WindowContainer" parent_id_path=PackedInt32Array(194827103) index="1" unique_id=908828390]
+visible = true
+
+[node name="PassageLabel" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="0" unique_id=1531474539]
+theme_override_styles/normal = SubResource("StyleBoxFlat_typing_paper")
+
+[node name="TextEdit" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="2" unique_id=1525266629]
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ftuyi")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tlii3")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_48kt2")
+
+[node name="NotificationToast" parent="." index="3" unique_id=881234901]
+visible = false
+
+[node name="RansomNote" type="PanelContainer" parent="." index="4" unique_id=884719283]
 unique_name_in_owner = true
 visible = false
 z_index = 35
@@ -90,6 +117,7 @@ text = "⚠️ YOUR FILES HAVE BEEN ENCRYPTED! ⚠️"
 horizontal_alignment = 1
 
 [node name="MessageText" type="Label" parent="RansomNote/VBox/Body/ContentVBox" index="1" unique_id=1847291830]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.9, 0.9, 1)
 theme_override_fonts/font = ExtResource("3_qar8n")
@@ -111,7 +139,7 @@ theme_override_fonts/font = ExtResource("3_qar8n")
 theme_override_font_sizes/font_size = 6
 text = "What happened to my files?! (ปิดหน้าต่าง)"
 
-[node name="GlitchOverlay" type="ColorRect" parent="." index="6" unique_id=773819284]
+[node name="GlitchOverlay" type="ColorRect" parent="." index="5" unique_id=773819284]
 unique_name_in_owner = true
 visible = false
 z_index = 38
@@ -124,8 +152,9 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.85, 0.1, 0.1, 0.4)
 
-[node name="SkipCutsceneButton" type="Button" parent="." index="7" unique_id=663819285]
+[node name="SkipCutsceneButton" type="Button" parent="." index="6" unique_id=663819285]
 unique_name_in_owner = true
+visible = false
 z_index = 28
 layout_mode = 1
 anchors_preset = 1
@@ -140,3 +169,6 @@ mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("3_qar8n")
 theme_override_font_sizes/font_size = 6
 text = "⏩ Skip Cutscene"
+
+[editable path="WindowContainer/MsWord"]
+[editable path="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle"]
