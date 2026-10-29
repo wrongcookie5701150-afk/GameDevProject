@@ -214,6 +214,7 @@ Incident Code      : TAODAM-SECURITY-BREACH-01
 }
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_setup_controls()
 	_populate_tree()
 	call_deferred("_post_init_scrollbars")

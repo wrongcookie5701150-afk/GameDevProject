@@ -25,6 +25,12 @@ func _ready() -> void:
 	)
 	entries.item_selected.connect(_on_entry_selected)
 
+func start_puzzle() -> void:
+	super.start_puzzle()
+	if not is_resolved and entries:
+		entries.deselect_all()
+		entries.mouse_filter = Control.MOUSE_FILTER_STOP
+
 func _add_entry(label: String, option_id: String, sender_email: String) -> void:
 	var index: int = entries.add_item(label)
 	entries.set_item_metadata(index, {
@@ -38,8 +44,10 @@ func _on_entry_selected(index: int) -> void:
 	submit_selection(StringName(metadata["file_name"]), metadata)
 
 func on_solve_success() -> void:
-	feedback_label.text = "Correct: %s is a spoofed university domain." % SPOOFED_DOMAIN
-	entries.disabled = true
+	feedback_label.text = "✅ ถูกต้อง: พบโดเมนปลอมแปลง %s (สะกดผิดจาก university.example)" % SPOOFED_DOMAIN
+	for i: int in range(entries.item_count):
+		entries.set_item_disabled(i, true)
+	entries.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
-	feedback_label.text = "That file came from the expected sender. Check the report sender closely."
+	feedback_label.text = "❌ ไฟล์นี้มาจากโดเมนจริง (@university.example) ให้คลิกไฟล์ Report_Final.docx ที่มาจาก @universcity.example"

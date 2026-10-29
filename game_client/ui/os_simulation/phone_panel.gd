@@ -50,8 +50,11 @@ func _ready() -> void:
 	
 	_setup_scrollbar()
 	
-	# Initial view
-	switch_to_contact(current_contact)
+	# Initial view (update labels without consuming mesa_read while hidden)
+	_refresh_contact_view(current_contact)
+	if visible and current_contact == "mesa":
+		mesa_read = true
+		messages_read.emit("mesa")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
@@ -63,21 +66,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_phone()
 		get_viewport().set_input_as_handled()
 
-func switch_to_contact(contact: String) -> void:
+func _refresh_contact_view(contact: String) -> void:
 	current_contact = contact
 	if contact == "mesa":
 		if chat_name_btn:
 			chat_name_btn.text = "Mesa"
 		if messages_label:
 			messages_label.text = mesa_messages
-		if not mesa_read:
-			mesa_read = true
-			messages_read.emit("mesa")
 	elif contact == "march":
 		if chat_name_btn:
 			chat_name_btn.text = "March (พี่มาร์ช)"
 		if messages_label:
 			messages_label.text = march_history
+
+func switch_to_contact(contact: String) -> void:
+	_refresh_contact_view(contact)
+	if contact == "mesa":
+		mesa_read = true
+		messages_read.emit("mesa")
 	_scroll_to_bottom()
 
 func _on_mesa_btn_pressed() -> void:
@@ -97,7 +103,7 @@ func toggle_phone() -> void:
 
 func open_phone() -> void:
 	show()
-	if current_contact == "mesa" and not mesa_read:
+	if current_contact == "mesa":
 		mesa_read = true
 		messages_read.emit("mesa")
 	_scroll_to_bottom()

@@ -104,9 +104,9 @@ func _refresh_overlays_cache() -> void:
 	_cached_scene = cur
 	_monitored_overlays.clear()
 	for overlay_name in COMPUTER_AND_OVERLAY_NAMES:
-		var node = cur.find_child(overlay_name, true, false)
-		if node and node is CanvasItem:
-			_monitored_overlays.append(node as CanvasItem)
+		for node in cur.find_children(overlay_name, "Control", true, false):
+			if node is Control:
+				_monitored_overlays.append(node as CanvasItem)
 
 func _is_computer_or_overlay_active() -> bool:
 	var cur = get_tree().current_scene if get_tree() else null
@@ -120,18 +120,18 @@ func _is_computer_or_overlay_active() -> bool:
 		if is_instance_valid(overlay) and overlay.visible:
 			return true
 	
-	# Fallback ตรวจจับโหนดหน้าจอคอมหรือ Overlay ที่ถูก instantiate ขึ้นมาใหม่
-	var note_board = cur.find_child("NoteBoard", true, false)
-	if note_board and is_instance_valid(note_board) and note_board is CanvasItem and (note_board as CanvasItem).visible:
-		return true
+	# Fallback ตรวจจับโหนดหน้าจอคอมหรือ Overlay (เฉพาะ Control เท่านั้น เพื่อไม่ให้ชนกับ StaticBody2D NoteBoard ในฉาก)
+	for nb in cur.find_children("NoteBoard", "Control", true, false):
+		if is_instance_valid(nb) and (nb as Control).visible:
+			return true
 	
-	var desktop = cur.find_child("DesktopScreen", true, false)
-	if desktop and is_instance_valid(desktop) and desktop is CanvasItem and (desktop as CanvasItem).visible:
-		return true
+	for desktop in cur.find_children("DesktopScreen", "Control", true, false):
+		if is_instance_valid(desktop) and (desktop as Control).visible:
+			return true
 	
-	var notebook = cur.find_child("NotebookScreen", true, false)
-	if notebook and is_instance_valid(notebook) and notebook is CanvasItem and (notebook as CanvasItem).visible:
-		return true
+	for notebook in cur.find_children("NotebookScreen", "Control", true, false):
+		if is_instance_valid(notebook) and (notebook as Control).visible:
+			return true
 	
 	return false
 

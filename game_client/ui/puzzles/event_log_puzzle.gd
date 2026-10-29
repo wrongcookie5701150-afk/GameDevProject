@@ -11,6 +11,12 @@ func _ready() -> void:
 	_add_entry("21:21:50 | Office_Update_Helper started", "21:21:50")
 	entries.item_selected.connect(_on_entry_selected)
 
+func start_puzzle() -> void:
+	super.start_puzzle()
+	if not is_resolved and entries:
+		entries.deselect_all()
+		entries.mouse_filter = Control.MOUSE_FILTER_STOP
+
 func _add_entry(label: String, timestamp: String) -> void:
 	var index: int = entries.add_item(label)
 	entries.set_item_metadata(index, {"selected_timestamp": timestamp})
@@ -20,8 +26,10 @@ func _on_entry_selected(index: int) -> void:
 	submit_selection(StringName(metadata["selected_timestamp"]), metadata)
 
 func on_solve_success() -> void:
-	feedback_label.text = "Correct: WINWORD.EXE opened the report at 19:02:10."
-	entries.disabled = true
+	feedback_label.text = "✅ ถูกต้อง: WINWORD.EXE เปิดไฟล์ Report_Final.docx เวลา 19:02:10"
+	for i: int in range(entries.item_count):
+		entries.set_item_disabled(i, true)
+	entries.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
-	feedback_label.text = "That entry is not the document-open event. Check the process and timestamp."
+	feedback_label.text = "❌ ยังไม่ใช่เหตุการณ์เปิดไฟล์ครั้งแรก: ให้คลิกบรรทัดที่ WINWORD.EXE เปิด Report_Final.docx (19:02:10)"

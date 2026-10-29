@@ -137,6 +137,7 @@ var selected_file_data: Dictionary = {}
 var _icon_cache: Dictionary = {}
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_folder_buttons = [folder1_btn, folder2_btn, folder3_btn, folder4_btn]
 	_file_buttons = [file1_btn, file2_btn, file3_btn, file4_btn, file5_btn]
 	

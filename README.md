@@ -2,11 +2,9 @@
 
 ## Project Overview
 
-A 2D, story-driven cybersecurity learning game built in Godot 4. The MVP follows May, a university student whose files are damaged after she enables active content in a suspicious document. With help from March, the player investigates the incident, identifies the malware behavior, stops its persistence and sync, and restores a safe backup.
+A 2D, story-driven cybersecurity learning game built in Godot 4.x (`game_client/`). The story follows May, a university student whose group project files are encrypted/wiped after she enables macros in a suspicious document from a spoofed sender. With guidance from her senior March, the player prepares an isolated forensic laptop ("TaoDam"), creates a forensic image on an external flashdrive (`EV-DRIVE`), verifies hashes, analyzes Windows Event Logs, GG Disk activity logs, and VBA macros, decodes Base64/Hex payloads, stops persistence, restores clean backups using the 3-2-1 rule, and completes the final incident report.
 
-The MVP prioritizes playable mechanics, clear feedback, static typing, and maintainable object-oriented structure. Placeholder controls and visuals (such as `ColorRect`, `Panel`, standard Godot fonts, and buttons) are sufficient; custom art and polish are not prerequisites.
-
-The repository also contains a FastAPI analytics backend and contract tests. The Godot project is at `game_client/` (not `game-client/`).
+The repository also contains a FastAPI analytics backend (`backend_api/`) and contract tests (`tests/test_analytics_contract.py`).
 
 ## Learning Outcomes (K-S-A)
 
@@ -16,161 +14,52 @@ The repository also contains a FastAPI analytics backend and contract tests. The
 | Skills | Inspect sender and file metadata; identify suspicious event-log entries; connect a macro payload to a created helper; decode provided Base64/hex values; isolate a device, preserve evidence, stop persistence/sync, select a clean recovery point, and report findings. |
 | Attitudes | Verify sources before trusting attachments; do not enable unexpected active content; contain incidents before attempting recovery; preserve evidence; choose cautious, verified recovery actions. |
 
-Learning is assessed through puzzle results, attempts, hint usage, and a final case summary. Telemetry records task outcomes and task-specific metrics; it supports evaluation and is not itself a learning outcome.
+## 7-Scene Linear Story & Gameplay Flow
 
-## Story and MVP Flow
+The game alternates cleanly between **Bedroom & Phone (`BaseWorldScene`)**, **May's Desktop PC (`DesktopScreen`)**, and **TaoDam Forensic Notebook (`NotebookScreen`)** across 7 distinct scenes:
 
-| Scene | Story and player flow | Learning/mechanics focus |
-| --- | --- | --- |
-| 1. Intro | At 19:02, Mesa calls May about the overdue assignment. Dialogue ends by loading the tutorial. | Establish characters, deadline, and motivation. |
-| 2. Tutorial and workstation | May reads four messages, moves with WASD, interacts with the workstation, opens the shared report, enables its content, and completes a typing task. | Movement/interact, phone UI, file interaction, and typing feedback. |
-| 3. Incident | A fake update and distracting notifications precede the project files becoming `.locked`; a ransom note appears and May contacts March. | Recognize the incident and communicate its visible impact. |
-| 4. Investigation and triage | May isolates the old laptop, checks its environment, inspects the event log and drive history, and identifies suspicious activity and the spoofed report. | Isolation checklist, timeline analysis, sender/file provenance. |
-| 5. Forensic lab | May works from an evidence copy, inspects the document structure and macro, decodes the helper data, and reasons about persistence and destructive behavior. | Evidence integrity, macro inspection, encoding, event correlation, containment. |
-| 6. Recovery and conclusion | May selects a clean version-history point, a separate destination, and disabled sync, then completes the final report and K-S-A evaluation. | Safe restoration, incident summary, learning assessment. |
+| Scene | Scene File (`res://scenes/...`) | Environment | Story & Player Flow | Tasks / Puzzles |
+| --- | --- | --- | --- | --- |
+| **Scene 1** | `scene_01_intro/Scene_01_Intro.tscn` | Bedroom Cutscene | At 19:02, May receives a phone call from Mesa reminding her to finish the group report. | Narrative Intro |
+| **Scene 2** | `world_scenes/scene_02_tutorial/Scene_02_Tutorial.tscn` | Bedroom & Phone | May walks in the bedroom (`WASD`), presses `[P]` to read Mesa's chat messages on her phone, then walks to her Desktop PC and presses `[Spacebar]`. | `T01` (Read Messages), `T02` (PC Interaction) |
+| **Scene 3** | `scene_03_incident/Scene_03_Incident.tscn` | May's PC (`DesktopScreen`) | **Phase A (Interactive)**: Open `GG Disk`, download `งานกลุ่ม`, open `Report.docx` in `MsWord`, click `Enable` on the Macro banner, and complete `Puzzle_Typing_Game`.<br>**Phase B (Incident Cutscene)**: Timelapse (`19:30` -> `21:23`) streams the report text and notifications, prompts player to click `Save`, triggers the glitch + `.locked` files + `RansomNote`, shows March's Discord toast, and unlocks `ออก (Exit)`. | `T03` (Download & Macro Enable), `T04` / `P00` (`Puzzle_Typing_Game`), Incident Cutscene |
+| **Scene 4** | `world_scenes/scene_04_investigation_intro/Scene_04_Investigation_Intro.tscn` | Bedroom & Phone | Press `[P]` to chat with March for incident response advice -> Place **TaoDam** notebook on the desk & pick up **Flashdrive (`EV-DRIVE`)** from the bookshelf -> Bring `EV-DRIVE` to May's PC to create a **Forensic Image** copy -> Interact with TaoDam on the desk. | March Chat, Collect `EV-DRIVE`, Create Forensic Image |
+| **Scene 5** | `scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.tscn` | TaoDam Notebook (`NotebookScreen`) | Verify TaoDam's **Isolated Environment** before plugging in evidence: (1) Disconnect Wi-Fi & LAN via tray icon, (2) Check `Start > Discord / GG Disk` to confirm no personal accounts are logged in (`AppLoginWindow`), (3) Check `Start > Files` to confirm no important local files exist (`FileExplorerWindow`). | `T05` (`Checklist_UI`) |
+| **Scene 6** | `scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.tscn` | TaoDam Notebook (`NotebookScreen` + `ForensicToolbar`) | Plug in `EV-DRIVE (E:)` and perform the 6-step forensic investigation on TaoDam:<br>1. Verify MD5 Hash (`Puzzle_Hash_Verify`)<br>2. Inspect `Windows_Event_Log.txt` (`Puzzle_Event_Log`)<br>3. Inspect `Drive_Activity.log` typosquatting (`Puzzle_Drive_History`)<br>4. Inspect `.docx` macro structure (`Puzzle_File_Structure`)<br>5. Decode helper name & `FILE_WIPE` mode (`Puzzle_Decoder`)<br>6. Order the 7 persistence containment steps (`Puzzle_Persistence_Order`)<br>*(Also includes interactive `EvFolder`, `InspectorApp`, and `DecoderApp` windows)* | `T08` (`P03`), `T06` (`P01`), `T07` (`P02`), `T09` (`P04`), `T10` (`P05`), `T11` (`P06`), `T12` (`P07`) |
+| **Scene 7** | `scene_07_recovery/Scene_07_Recovery.tscn` | May's PC (`DesktopScreen`) | Return to May's PC to: (1) Configure safe **3-2-1 Backup Recovery** from before `19:02` (`18:55` clean point, separate external drive, cloud sync disabled), (2) Complete the **Final Incident Report**, and (3) Review the **K-S-A Assessment Summary** before returning to `MainMenu.tscn`. | `T13` (`P08` - `Puzzle_321_Backup`), `T14` (`P09` - `Puzzle_Last_Boss_Summary`), `T15` (`P10` - `KSA_Evaluation_UI`) |
 
-The scenes should be linked end to end. Each puzzle submission follows the same flow: user input -> base-class validation -> success/failure feedback -> telemetry event -> next task or scene when appropriate.
+> **Note on `SplashScreen.tscn`**: `res://scenes/splash/SplashScreen.tscn` is intentionally skipped on startup (`run/main_scene` is `res://ui/menus/MainMenu.tscn`) and reserved only for pre-game loading when needed.
 
 ## Canonical Task and Puzzle IDs
 
-This mapping overrides IDs in older story, architecture, scene/function, and telemetry notes. Use these IDs for all new UI and telemetry work.
+*(Note: Telemetry `scene_id` values on puzzle nodes remain aligned with the backend contract in `tests/test_analytics_contract.py`)*
 
-| Task | Puzzle | Scene | Canonical activity |
-| --- | --- | --- | --- |
-| T01 | - | 2 | Read Messages |
-| T02 | - | 2 | PC Interaction |
-| T03 | - | 2 | Open Cloud File |
-| T04 | P00 | 2 | Typing Minigame |
-| T05 | - | 4 | Isolated Environment Checklist |
-| T06 | P01 | 4 | Event Log Timeline Selection |
-| T07 | P02 | 4 | Drive History / Typosquatting |
-| T08 | P03 | 5 | Hash Verification |
-| T09 | P04 | 5 | Macro Structure / File Mapping |
-| T10 | P05 | 5 | Base64 Decode, target `Office_Update_Helper` |
-| T11 | P06 | 5 | Hex Decode, target Wiper Mode |
-| T12 | P07 | 5 | Stop Persistence, 7-step sequence |
-| T13 | P08 | 6 | 3-2-1 Backup and Recovery Configuration |
-| T14 | - | 6 | Final Report Fill-in |
-| T15 | - | 6 | K-S-A Evaluation Dashboard |
+| Task | Puzzle | Active Scene | Telemetry `scene_id` | Canonical Activity |
+| --- | --- | --- | --- | --- |
+| T01 | - | Scene 2 | `Scene_02` | Read Mesa's Messages on Phone |
+| T02 | - | Scene 2 | `Scene_02` | Bedroom PC Interaction |
+| T03 | - | Scene 3 | `Scene_02` | Download Cloud Folder & Enable Macro |
+| T04 | P00 | Scene 3 | `Scene_02` | Typing Minigame (`Puzzle_Typing_Game`) |
+| T05 | - | Scene 5 | `Scene_04` | Isolated Environment Checklist (`Checklist_UI`) |
+| T08 | P03 | Scene 6 | `Scene_05` | MD5 Hash Verification (`Puzzle_Hash_Verify`) |
+| T06 | P01 | Scene 6 | `Scene_04` | Event Log Timeline Selection (`Puzzle_Event_Log`) |
+| T07 | P02 | Scene 6 | `Scene_04` | Drive History / Typosquatting (`Puzzle_Drive_History`) |
+| T09 | P04 | Scene 6 | `Scene_05` | Macro Structure Inspection (`Puzzle_File_Structure`) |
+| T10 | P05 | Scene 6 | `Scene_05` | Base64 Decode (`Office_Update_Helper`) |
+| T11 | P06 | Scene 6 | `Scene_05` | Hex -> Base64 Decode (`FILE_WIPE`) |
+| T12 | P07 | Scene 6 | `Scene_05` | Stop Persistence 7-Step Sequence (`Puzzle_Persistence_Order`) |
+| T13 | P08 | Scene 7 | `Scene_06` | 3-2-1 Backup & Recovery Configuration (`Puzzle_321_Backup`) |
+| T14 | P09 | Scene 7 | `Scene_06` | Final Incident Report (`Puzzle_Last_Boss_Summary`) |
+| T15 | P10 | Scene 7 | `Scene_06` | K-S-A Evaluation Summary (`KSA_Evaluation_UI`) |
 
-## Full OOP Architecture
-
-This is the planned class hierarchy from `docs/Architecture_plan.md`, expressed without implying that every class or scene already exists.
-
-```text
-Node2D (gameplay world and 2D entities)
-|-- BaseWorldScene.gd
-|   |-- Scene_02_Tutorial.tscn [Tasks 1-4]
-|   `-- Scene_04_Investigation_Intro.tscn [investigation world]
-`-- BasePlayer.gd (CharacterBody2D)
-  `-- Player.tscn
-
-Control (user interface)
-|-- BaseOverlayUI.gd
-|   |-- Phone_UI.tscn
-|   |-- Phone_Chat_UI.tscn
-|   |-- Incoming_Call_UI.tscn
-|   |-- Dialogue_Box.tscn
-|   |-- Checklist_UI.tscn
-|   `-- KSA_Evaluation_UI.tscn
-|-- BaseOSWindow.gd
-|   |-- Desktop_Main_PC.tscn
-|   |-- Scene_05_TaoDam_Desktop.tscn
-|   |-- Folder_View_UI.tscn
-|   `-- Ransom_Note_UI.tscn
-`-- BasePuzzleUI.gd
-  |-- BaseClickSelectPuzzle.gd
-  |   |-- Puzzle_Event_Log.tscn
-  |   |-- Puzzle_Drive_History.tscn
-  |   `-- Puzzle_File_Structure.tscn
-  |-- BaseDecoderPuzzle.gd
-  |   |-- Puzzle_Hash_Verify.tscn
-  |   `-- Puzzle_Decoder.tscn
-  |-- BaseSequencePuzzle.gd
-  |   `-- Puzzle_Persistence_Order.tscn
-  |-- BaseFormPuzzle.gd
-  |   |-- Puzzle_321_Backup.tscn
-  |   `-- Puzzle_Last_Boss_Summary.tscn
-  `-- Puzzle_Typing_Game.tscn
-
-Analytics pipeline
-|-- TelemetryManager.gd (Node / Autoload)
-|   `-- TelemetryNetworkAdapter.gd (async HTTP adapter)
-`-- BaseTelemetryParam.gd (RefCounted DTO)
-  |-- PuzzleTelemetryParam.gd
-  |   |-- TypingTelemetryParam.gd
-  |   |-- ForensicAnalysisTelemetryParam.gd
-  |   `-- SequenceTelemetryParam.gd
-  |-- OSTelemetryParam.gd
-  |-- IncidentTelemetryParam.gd
-  |-- GameplayTelemetryParam.gd
-  |-- NarrativeTelemetryParam.gd
-  `-- AssessmentTelemetryParam.gd
-```
-
-Core responsibilities:
-
-- `BasePlayer` owns four-direction movement and an `Area2D`-based interaction contract; world objects respond to interaction rather than embedding scene-specific puzzle rules in the player.
-- `BaseWorldScene` initializes its world, resolves the player, and routes local gameplay events.
-- `BasePuzzleUI` owns task timer, attempt count, hint/resolution state, validation flow, and common submission feedback. Specialized puzzle bases implement reusable input patterns.
-- `TelemetryManager` owns task timers and event dispatch. Typed DTOs serialize scene/task-specific metrics. The network adapter handles asynchronous backend requests.
-- Scene and puzzle subclasses own story-specific content and answer criteria. They should not duplicate shared movement, submission, or telemetry behavior.
-
-## Current Repository Structure
-
-This is the structure observed in the workspace before any scaffolding. Existing paths are case-sensitive in Godot resource references and should not be assumed to match the planned lower-case layout below.
-
-```text
-GameDevProject/
-|-- backend_api/
-|   |-- __init__.py
-|   |-- main.py
-|   `-- requirements.txt
-|-- data_analytics/
-|-- database/
-|-- docs/
-|   |-- Architecture_plan.md
-|   |-- Directory_tree.md
-|   |-- Story Content.md
-|   |-- game_client_improvement_todo.md
-|   |-- Git Tutorial.md
-|   `-- Work_Plan/Scenes&Scripts_list.md
-|-- game_client/
-|   |-- project.godot
-|   |-- addons/godot_mcp_toolkit/
-|   |-- assets/{fonts,House,Icon,Icon32x32,images,sprite,Sprites,styles,Themes}/
-|   |-- Scenes/
-|   |   |-- Initial/{ContinueModal,desktop_screen,player,playground,room}.tscn
-|   |   |-- Notebook/notebook_screen.tscn
-|   |   |-- ui/{ContinueModal,FloatMenu,MainMenu,SettingsModal}.tscn
-|   |   |-- Puzzle_{321_Backup,Drive_History,Event_Log,Hash_Verify,Typing_Game}.tscn
-|   |   |-- Scene_01_Intro.tscn
-|   |   |-- Scene_02_Tutorial.tscn
-|   |   `-- SplashScreen.tscn
-|   `-- Scripts/
-|       |-- Core/{BasePlayer,BaseWorldScene,GlobalSettings}.gd
-|       |-- desktop/{desktop_icon,desktop_screen,desktop_window}.gd
-|       |-- ui/{continue_modal,float_menu,Main_menu,settings_modal}.gd
-|       |-- Player.gd
-|       |-- TelemetryManager.gd
-|       |-- cutscene_01_intro.gd
-|       |-- scene_02_tutorial.gd
-|       `-- splash_screen.gd
-|-- tests/test_analytics_contract.py
-|-- pytest.ini
-`-- README.md
-```
-
-Godot currently registers `TelemetryManager` from `res://Scripts/TelemetryManager.gd`, and its main scene is `res://Scenes/ui/MainMenu.tscn`. Existing base scripts are under `Scripts/Core/`; current project paths and autoload registration must be reconciled deliberately before moving or duplicating them.
-
-## Planned `res://` Directory Structure
-
-The following is the target layout documented in `docs/Directory_tree.md`. It is a plan, not the current on-disk tree. Step 2 will create the requested directories; any relocation or compatibility changes to existing resources must be handled explicitly so current scenes do not break.
+## Current `res://` Directory Structure (`game_client/`)
 
 ```text
 res://
 |-- project.godot
 |-- autoload/
+|   |-- GlobalSettings.gd
+|   |-- InventoryManager.gd
 |   |-- TelemetryManager.gd
 |   `-- TelemetryNetworkAdapter.gd
 |-- analytics/
@@ -181,56 +70,48 @@ res://
 |   |-- SequenceTelemetryParam.gd
 |   |-- OSTelemetryParam.gd
 |   |-- IncidentTelemetryParam.gd
+|   |-- RecoveryTelemetryParam.gd
 |   |-- GameplayTelemetryParam.gd
 |   |-- NarrativeTelemetryParam.gd
 |   `-- AssessmentTelemetryParam.gd
 |-- scenes/
-|   |-- common/player/{BasePlayer.gd,Player.tscn}
+|   |-- splash/SplashScreen.tscn (+ splash_screen.gd)
+|   |-- common/
+|   |   |-- player/{BasePlayer.gd, Player.gd, Player.tscn}
+|   |   `-- interact_object/{interact_object.gd, bed, bookshelf, desktop, ev_drive, lamp, note_board, notebook, plant_pot, speaker}.tscn
+|   |-- initial/{playground.tscn, playground.gd, room.tscn, note_board.tscn, note_board.gd}
+|   |-- scene_01_intro/{Scene_01_Intro.tscn, cutscene_01_intro.gd}
 |   |-- world_scenes/
 |   |   |-- BaseWorldScene.gd
-|   |   |-- scene_02_tutorial/Scene_02_Tutorial.tscn
-|   |   `-- scene_04_investigation_intro/Scene_04_Investigation_Intro.tscn
-|   |-- scene_01_intro/Scene_01_Intro.tscn
-|   |-- scene_03_incident/Scene_03_Incident.tscn
-|   |-- scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.tscn
-|   `-- scene_06_recovery/Scene_06_Recovery.tscn
+|   |   |-- scene_02_tutorial/{Scene_02_Tutorial.tscn, scene_02_tutorial.gd}
+|   |   `-- scene_04_investigation_intro/{Scene_04_Investigation_Intro.tscn, scene_04_investigation_intro.gd}
+|   |-- scene_03_incident/{Scene_03_Incident.tscn, Scene_03_Incident.gd, background.gd}
+|   |-- scene_05_taodam_desktop/{Scene_05_TaoDam_Desktop.tscn, Scene_05_TaoDam_Desktop.gd}
+|   |-- scene_06_taodam_investigation/{Scene_06_TaoDam_Investigation.tscn, Scene_06_TaoDam_Investigation.gd}
+|   `-- scene_07_recovery/{Scene_07_Recovery.tscn, Scene_07_Recovery.gd}
 |-- ui/
-|   |-- base_classes/{BaseOverlayUI.gd,BaseOSWindow.gd,BasePuzzleUI.gd}
-|   |-- overlays/{Incoming_Call_UI,Dialogue_Box,Phone_UI,Phone_Chat_UI,Checklist_UI,KSA_Evaluation_UI}.tscn
-|   |-- os_simulation/{Desktop_Main_PC,Folder_View_UI,Ransom_Note_UI}.tscn
+|   |-- menus/{MainMenu, FloatMenu, SettingsModal, ContinueModal}.tscn (+ .gd)
+|   |-- base_classes/{BaseOverlayUI.gd, BaseOSWindow.gd, BasePuzzleUI.gd}
+|   |-- overlays/{Checklist_UI, KSA_Evaluation_UI, inventory_bar}.tscn (+ .gd)
+|   |-- os_simulation/
+|   |   |-- desktop_screen.tscn (+ desktop_screen.gd, desktop_icon.gd, desktop_window.gd)
+|   |   |-- notebook_screen.tscn [STRICTLY LOCKED]
+|   |   |-- phone_panel.tscn (+ phone_panel.gd)
+|   |   |-- phone_panel_investigation.tscn (+ phone_panel_investigation.gd)
+|   |   `-- Application/{gg_disk, downloaded_folder, ms_word, discord_app, ev_folder, inspector_app, decoder_app}.tscn (+ .gd)
 |   `-- puzzles/
-|       |-- BaseClickSelectPuzzle.gd
-|       |-- BaseDecoderPuzzle.gd
-|       |-- BaseSequencePuzzle.gd
-|       |-- BaseFormPuzzle.gd
-|       |-- Puzzle_Typing_Game.tscn
-|       |-- Puzzle_Event_Log.tscn
-|       |-- Puzzle_Drive_History.tscn
-|       |-- Puzzle_Hash_Verify.tscn
-|       |-- Puzzle_File_Structure.tscn
-|       |-- Puzzle_Decoder.tscn
-|       |-- Puzzle_Persistence_Order.tscn
-|       |-- Puzzle_321_Backup.tscn
-|       `-- Puzzle_Last_Boss_Summary.tscn
-`-- assets/{sprites,audio,fonts}/
+|       |-- {BaseClickSelectPuzzle, BaseDecoderPuzzle, BaseSequencePuzzle, BaseFormPuzzle}.gd
+|       |-- Puzzle_Typing_Game.tscn (+ typing_game.gd)
+|       |-- Puzzle_Hash_Verify.tscn (+ hash_verify_puzzle.gd)
+|       |-- Puzzle_Event_Log.tscn (+ event_log_puzzle.gd)
+|       |-- Puzzle_Drive_History.tscn (+ drive_history_puzzle.gd)
+|       |-- Puzzle_File_Structure.tscn (+ macro_structure_puzzle.gd)
+|       |-- Puzzle_Decoder.tscn (+ decoder_puzzle.gd)
+|       |-- Puzzle_Persistence_Order.tscn (+ persistence_order_puzzle.gd)
+|       |-- Puzzle_321_Backup.tscn (+ backup_recovery_puzzle.gd)
+|       `-- Puzzle_Last_Boss_Summary.tscn (+ incident_report_puzzle.gd)
+`-- assets/
 ```
-
-## Development Milestones
-
-1. **Plan and contract alignment** - Confirm the target layout and whether existing files are moved or retained with compatibility references. Reconcile scene/task identifiers, puzzle names, and acceptance criteria against the story, architecture, and scene/function documents. Agree on the MVP boundary before broad migration.
-2. **Directory and project foundation** - Create the target directories under `game_client/` (`res://`), preserve existing resources, define shared input/action names, and verify project/autoload/main-scene paths.
-3. **Typed core and telemetry** - Implement the player and world base contracts, puzzle submission/validation/timer behavior, telemetry manager and adapter, and typed telemetry DTO subclasses. Verify each shared script parses and can be loaded before building dependent scenes.
-4. **Playable opening (Scenes 1-2)** - Connect intro dialogue to the tutorial; implement movement/interact, phone messages, workstation/file interaction, typing task, and completion transitions.
-5. **Incident and triage (Scenes 3-4)** - Present the ransomware incident, isolation checklist, event timeline, and drive-history investigation. Add feedback and telemetry for each task.
-6. **Forensic investigation (Scene 5)** - Implement evidence/hash checks, document structure and macro inspection, decoder tasks, and persistence/containment sequence using reusable puzzle bases.
-7. **Recovery and assessment (Scene 6)** - Implement safe version-history recovery, final report, K-S-A evaluation, and clear ending state.
-8. **End-to-end verification** - Play the full route; verify resource links, input, puzzle success/failure, transitions, telemetry payload contracts, and backend compatibility. Run Godot import/runtime checks and the existing Python contract tests.
-
-## Specification Notes
-
-- Task numbering and puzzle mapping are canonicalized in the table above; older document IDs are not to be used for new UI or telemetry code. Preserve the source documents as historical design context, but treat this mapping as authoritative.
-- The previous README described a narrower P1 tutorial-only vertical slice and explicitly deferred generic puzzle/telemetry work. This master plan records the requested six-scene MVP; scope must be confirmed before implementing the larger plan.
-- The documented target uses lower-case `scenes/`, `ui/`, `autoload/`, and `analytics/`; the live Godot project is being migrated to that layout with references updated alongside the files.
 
 ## Source Documents
 
@@ -238,4 +119,4 @@ res://
 - [Architecture Plan](docs/Architecture_plan.md)
 - [Directory Tree](docs/Directory_tree.md)
 - [Scene and Script Functions](docs/Work_Plan/Scenes%26Scripts_list.md)
-- [Game Client Improvement TODO](docs/game_client_improvement_todo.md)
+- [Progression Status](game_client/PROGRESSSION.md)

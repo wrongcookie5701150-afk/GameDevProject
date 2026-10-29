@@ -12,6 +12,12 @@ func _ready() -> void:
 	components.item_selected.connect(_on_component_selected)
 	hint_button.pressed.connect(_on_hint_pressed)
 
+func start_puzzle() -> void:
+	super.start_puzzle()
+	if not is_resolved and components:
+		components.deselect_all()
+		components.mouse_filter = Control.MOUSE_FILTER_STOP
+
 func _add_component(label: String, component_id: String) -> void:
 	var index: int = components.add_item(label)
 	components.set_item_metadata(index, {
@@ -44,12 +50,16 @@ func _build_telemetry_param(
 	return param
 
 func on_solve_success() -> void:
-	feedback_label.text = "Macro project found in word/vbaProject.bin."
-	components.disabled = true
+	feedback_label.text = "✅ พบโค้ด Macro ฝังอยู่ใน word/vbaProject.bin!"
+	if hint_button:
+		hint_button.disabled = true
+	for i: int in range(components.item_count):
+		components.set_item_disabled(i, true)
+	components.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
-	feedback_label.text = "That component is part of the document, but not the embedded macro project."
+	feedback_label.text = "❌ ส่วนประกอบนี้เป็นโครงสร้างเอกสารปกติ ให้คลิกเลือก word/vbaProject.bin ที่เป็นโค้ด Macro"
 
 func _on_hint_pressed() -> void:
 	hint_used = true
-	feedback_label.text = "Hint: the macro project is embedded as a binary VBA component."
+	feedback_label.text = "💡 คำใบ้: โค้ดมาโครของ Word จะถูกฝังอยู่ในไฟล์ไบนารีชื่อ word/vbaProject.bin (บรรทัดที่ 2)"

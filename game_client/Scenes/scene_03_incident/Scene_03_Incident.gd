@@ -139,8 +139,11 @@ func _prepare_word_for_cutscene() -> void:
 		macro_banner.hide()
 	
 	var typing_puzzle: Node = ms_word_window.find_child("TypingPuzzle", true, false)
-	if typing_puzzle and typing_puzzle is CanvasItem:
-		typing_puzzle.show()
+	if typing_puzzle:
+		if "is_resolved" in typing_puzzle:
+			typing_puzzle.is_resolved = true
+		if typing_puzzle is CanvasItem:
+			typing_puzzle.show()
 		var feedback_lbl: Node = typing_puzzle.find_child("FeedbackLabel", true, false)
 		if feedback_lbl and feedback_lbl is CanvasItem:
 			feedback_lbl.hide()
@@ -178,9 +181,11 @@ func _start_cutscene() -> void:
 
 func _run_timelapse_sequence() -> void:
 	await get_tree().create_timer(0.4).timeout
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
 	
 	for section: Dictionary in CUTSCENE_SECTIONS:
-		if _is_skipped:
+		if _is_skipped or not is_instance_valid(self) or not is_inside_tree():
 			break
 		
 		if clock_label:
@@ -188,8 +193,12 @@ func _run_timelapse_sequence() -> void:
 		
 		_show_cutscene_toast(section["notification"])
 		await _stream_text(section["text"])
+		if not is_instance_valid(self) or not is_inside_tree():
+			return
 		_hide_toast()
 		await get_tree().create_timer(0.25).timeout
+		if not is_instance_valid(self) or not is_inside_tree():
+			return
 	
 	_ready_for_save_event()
 
@@ -200,7 +209,7 @@ func _stream_text(text: String) -> void:
 	var chunk_size: int = 5
 	var index: int = 0
 	while index < text.length():
-		if _is_skipped:
+		if _is_skipped or not is_instance_valid(self) or not is_inside_tree() or not is_instance_valid(_passage_label):
 			break
 		
 		var chunk: String = text.substr(index, chunk_size)
@@ -215,11 +224,13 @@ func _stream_text(text: String) -> void:
 func _show_cutscene_toast(message: String) -> void:
 	if not notification_toast or not toast_label:
 		return
+	_toast_id += 1
 	toast_label.text = message
 	notification_toast.show()
 	notification_toast.move_to_front()
 
 func _hide_toast() -> void:
+	_toast_id += 1
 	if notification_toast:
 		notification_toast.hide()
 
@@ -253,29 +264,52 @@ func _ready_for_save_event() -> void:
 	_show_cutscene_toast("💡 เมย์: พิมพ์รายงานเสร็จแล้ว! กดปุ่ม 'Save' ด้านบนเพื่อบันทึกงาน")
 
 func _on_save_clicked() -> void:
-	if not _is_waiting_for_save or _is_ransomware_triggered:
+	if _is_ransomware_triggered:
+		return
+	if not _is_waiting_for_save:
+		if ms_word_window and ms_word_window.has_method("is_macro_enabled") and not ms_word_window.call("is_macro_enabled"):
+			_show_toast("💡 เมย์: ต้องกดปุ่ม 'Enable' ที่แถบสีเหลืองด้านบนเพื่อเปิดเนื้อหาและพิมพ์รายงานก่อนบันทึก!")
+		elif _is_cutscene_running:
+			_show_toast("💡 เมย์: รอพิมพ์รายงานให้เสร็จก่อน หรือกด 'Skip Cutscene' มุมขวาบน")
+		else:
+			_show_toast("💡 เมย์: ต้องพิมพ์ข้อความในรายงานให้ครบก่อนถึงจะกด Save ได้!")
 		return
 	_is_waiting_for_save = false
 	_is_ransomware_triggered = true
 	is_ransomware_triggered = true
 	
 	_hide_toast()
-	_show_cutscene_toast("☁️ CloudSync: ซิงค์ Report_Final.docx ขึ้น Cloud อัตโนมัติ...")
-	await get_tree().create_timer(1.2).timeout
+	_show_cutscene_toast("☁️ CloudSync: กำลังบันทึกและซิงค์ Report_Final.docx ขึ้น Cloud อัตโนมัติ...")
+	# รอพักหนึ่ง 2.5 วินาที (2-3 วินาที) ค่อย alert ตามข้อกำหนด
+	await get_tree().create_timer(2.5).timeout
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
 	_hide_toast()
+	
+	# ปิดหน้าต่าง MS Word (หลังจากนี้จะไม่สามารถเปิด Word ได้อีก)
+	if ms_word_window:
+		_close_app_window(ms_word_window)
 	
 	if glitch_overlay:
 		glitch_overlay.show()
 		await get_tree().create_timer(0.18).timeout
+		if not is_instance_valid(self) or not is_inside_tree():
+			return
 		glitch_overlay.hide()
 		await get_tree().create_timer(0.08).timeout
+		if not is_instance_valid(self) or not is_inside_tree():
+			return
 		glitch_overlay.show()
 		await get_tree().create_timer(0.18).timeout
+		if not is_instance_valid(self) or not is_inside_tree():
+			return
 		glitch_overlay.hide()
 	
 	_show_locked_files()
 	
 	await get_tree().create_timer(0.4).timeout
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
 	if ransom_note:
 		ransom_note.show()
 		ransom_note.move_to_front()
@@ -286,24 +320,66 @@ func _show_locked_files() -> void:
 	
 	downloaded_folder_window.show()
 	downloaded_folder_window.move_to_front()
+	_update_taskbar_tab(downloaded_folder_window, "งานกลุ่ม", true)
+	_highlight_active_tab(downloaded_folder_window)
+	
+	# ซ่อน Report_Final.docx ตามคำสั่ง "hide report ไปเลย"
+	var report_panel: Control = downloaded_folder_window.find_child("MSWordReport", true, false) as Control
+	if not report_panel:
+		report_panel = downloaded_folder_window.find_child("PanelContainer", true, false) as Control
+	if report_panel:
+		report_panel.visible = false
+	
+	# แสดง AlertFile (ReadMe_to_recovery.txt)
+	var alert_panel: Control = downloaded_folder_window.find_child("AlertFile", true, false) as Control
+	if alert_panel:
+		alert_panel.visible = true
 	
 	var title_lbl: Label = downloaded_folder_window.find_child("Label", true, false) as Label
 	if title_lbl:
-		title_lbl.text = "งานกลุ่มล้านแปด (4 files - ALL .LOCKED)"
+		title_lbl.text = "งานกลุ่มล้านแปด (ALL .LOCKED)"
 		title_lbl.add_theme_color_override("font_color", Color(1.0, 0.25, 0.25, 1.0))
 	
-	var file_labels: Array[Node] = downloaded_folder_window.find_children("FileName", "Label", true, false)
-	var locked_names: Array[String] = [
-		"Report_Final.docx.locked",
-		"Presentation.pptx.locked",
-		"Network_Diagram.png.locked"
-	]
+	var pp_panel: Control = downloaded_folder_window.find_child("PPPresentation", true, false) as Control
+	if pp_panel:
+		var pp_lbl: Label = pp_panel.find_child("FileName", true, false) as Label
+		if pp_lbl:
+			pp_lbl.text = "Presentation.pptx.locked"
+			pp_lbl.add_theme_color_override("font_color", Color(0.95, 0.2, 0.2, 1.0))
 	
-	for i: int in range(mini(file_labels.size(), locked_names.size())):
-		var lbl: Label = file_labels[i] as Label
-		if lbl:
-			lbl.text = locked_names[i]
-			lbl.add_theme_color_override("font_color", Color(0.95, 0.2, 0.2, 1.0))
+	var png_panel: Control = downloaded_folder_window.find_child("PNGNetworkDiagram", true, false) as Control
+	if png_panel:
+		var png_lbl: Label = png_panel.find_child("FileName", true, false) as Label
+		if png_lbl:
+			png_lbl.text = "Network_Diagram.png.locked"
+			png_lbl.add_theme_color_override("font_color", Color(0.95, 0.2, 0.2, 1.0))
+
+# บล็อกไม่ให้เปิด MS Word อีกเด็ดขาดหลังจาก Ransomware ทำงาน
+func _on_app_activated(app_id: String) -> void:
+	if app_id == "ms_word" and _is_ransomware_triggered:
+		_show_cutscene_toast("⚠️ ไม่สามารถเปิด Microsoft Word ได้: โปรแกรมถูกล็อกและไฟล์เสียหาย (.locked)")
+		return
+	if app_id == "discord" and _is_ransomware_triggered:
+		_show_cutscene_toast("💬 Discord (M4rch): Roblox ป่าวน้อง หรือทำการบ้านอยู่? (ไปคุยต่อในมือถือ)")
+		return
+	super._on_app_activated(app_id)
+
+func _open_app_window(win: Control, tab_title: String) -> void:
+	if win == ms_word_window and _is_ransomware_triggered:
+		_show_cutscene_toast("⚠️ ไม่สามารถเปิด Microsoft Word ได้: โปรแกรมถูกล็อกและไฟล์เสียหาย (.locked)")
+		return
+	super._open_app_window(win, tab_title)
+
+func _on_file_opened_from_folder(file_name: String) -> void:
+	if _is_ransomware_triggered:
+		if file_name.to_lower().contains("readme"):
+			if ransom_note:
+				ransom_note.show()
+				ransom_note.move_to_front()
+			return
+		_show_cutscene_toast("⚠️ ไม่สามารถเปิดไฟล์นี้ได้: ไฟล์ถูกเข้ารหัสโดย Ransomware (.locked)")
+		return
+	super._on_file_opened_from_folder(file_name)
 
 func _on_ransom_dismissed() -> void:
 	if ransom_note:
@@ -311,15 +387,19 @@ func _on_ransom_dismissed() -> void:
 	
 	_can_exit_pc = true
 	
-	_show_cutscene_toast("💬 Discord: M4rchupikchu_inw101: Roblox ป่าวน้อง หรือทำการบ้านอยู่?")
-	
-	await get_tree().create_timer(1.5).timeout
-	
-	_show_cutscene_toast("⚠️ เมย์: ไม่นะ! ไฟล์งานโดนล็อกหมดแล้ว! ต้องออกจากคอมไปคุยกับพี่มาร์ชในมือถือ (กด 'ออก' ที่ Taskbar)")
-	
 	if leave_pc_button:
 		leave_pc_button.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2, 1.0))
 		leave_pc_button.text = "ออก (Exit)"
+	
+	# ข้อความจากพี่มาร์ชในหน้าจอคอมขึ้นแค่อันเดียวคือ Roblox ป่าว
+	_show_cutscene_toast("💬 Discord: M4rchupikchu_inw101: Roblox ป่าวน้อง หรือทำการบ้านอยู่?")
+	
+	await get_tree().create_timer(2.0).timeout
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+	
+	# ชี้แนะให้เมย์ออกจากคอมไปอ่านและคุยต่อในมือถือ
+	_show_cutscene_toast("⚠️ เมย์: ไม่นะ! ไฟล์งานโดนล็อกหมดแล้ว! ต้องออกจากคอมไปคุยกับพี่มาร์ชในมือถือ (กด 'ออก' ที่ Taskbar)")
 
 func _on_leave_pc_pressed() -> void:
 	if not _can_exit_pc:

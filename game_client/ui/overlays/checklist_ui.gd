@@ -8,6 +8,10 @@ extends BasePuzzleUI
 @onready var feedback_label: Label = find_child("FeedbackLabel", true, false) as Label
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var task_obj: Control = find_child("TaskObjective", true, false) as Control
+	if task_obj:
+		task_obj.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	super._ready()
 	_resolve_nodes()
 	_setup_automated_checks()

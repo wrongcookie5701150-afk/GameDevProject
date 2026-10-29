@@ -25,6 +25,7 @@ func _ready() -> void:
 		completion_panel.hide()
 	
 	if checklist:
+		checklist.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		checklist.show()
 		if checklist.has_method("start_puzzle"):
 			checklist.start_puzzle()
@@ -45,10 +46,22 @@ func _setup_taodam_isolation_hooks() -> void:
 	if nb_task_obj:
 		nb_task_obj.hide()
 	
+	# Ensure WindowContainer does not block desktop icons in top-left corner
+	var window_container: Control = notebook_screen.get_node_or_null("WindowContainer") as Control
+	if window_container:
+		window_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	# Hide EV-01 flashdrive icon until Scene 6 (after isolation is complete)
 	var evfile_icon: Button = notebook_screen.find_child("EvfileIcon", true, false) as Button
 	if evfile_icon:
 		evfile_icon.hide()
+	
+	var inspector_icon: Button = notebook_screen.find_child("InspectorIcon", true, false) as Button
+	var decoder_icon: Button = notebook_screen.find_child("DecoderIcon", true, false) as Button
+	var discord_icon: Button = notebook_screen.find_child("Discord", true, false) as Button
+	var ggdisk_icon: Button = notebook_screen.find_child("GGdisk", true, false) as Button
+	var msword_icon: Button = notebook_screen.find_child("MSword", true, false) as Button
+	var folder_icon: Button = notebook_screen.find_child("Folder", true, false) as Button
 	
 	var wifi_tray_btn: Button = notebook_screen.find_child("WifiTrayButton", true, false) as Button
 	var wifi_popup: Control = notebook_screen.find_child("WifiPopup", true, false) as Control
@@ -65,10 +78,13 @@ func _setup_taodam_isolation_hooks() -> void:
 	var menu_ggdisk: Button = notebook_screen.find_child("MenuGGDisk", true, false) as Button
 	var menu_files: Button = notebook_screen.find_child("MenuFiles", true, false) as Button
 	var menu_word: Button = notebook_screen.find_child("MenuWord", true, false) as Button
+	var menu_notepad: Button = notebook_screen.find_child("MenuNotepad", true, false) as Button
+	var menu_recycle: Button = notebook_screen.find_child("MenuRecycleBin", true, false) as Button
 
 	var app_close_btn: Button = notebook_screen.find_child("AppLoginCloseBtn", true, false) as Button
 	var app_action_btn: Button = notebook_screen.find_child("AppLoginActionBtn", true, false) as Button
 	var file_close_btn: Button = notebook_screen.find_child("FileExplorerCloseBtn", true, false) as Button
+	var file_action_btn: Button = notebook_screen.find_child("FileExplorerActionBtn", true, false) as Button
 
 	if start_btn and start_popup:
 		start_btn.pressed.connect(func() -> void:
@@ -126,17 +142,16 @@ func _setup_taodam_isolation_hooks() -> void:
 	var open_login_check := func() -> void:
 		if start_popup:
 			start_popup.hide()
+		if file_explorer_window:
+			file_explorer_window.hide()
 		if app_login_window:
 			app_login_window.show()
 		if checklist and checklist.has_method("update_condition"):
 			checklist.update_condition("personal_accounts_unlinked", true)
 
-	if menu_discord:
-		menu_discord.pressed.connect(open_login_check)
-	if menu_ggdisk:
-		menu_ggdisk.pressed.connect(open_login_check)
-	if menu_word:
-		menu_word.pressed.connect(open_login_check)
+	for btn: Button in [menu_discord, menu_ggdisk, menu_word, discord_icon, ggdisk_icon, msword_icon, decoder_icon]:
+		if btn and not btn.pressed.is_connected(open_login_check):
+			btn.pressed.connect(open_login_check)
 
 	if app_close_btn and app_login_window:
 		app_close_btn.pressed.connect(func() -> void:
@@ -153,17 +168,26 @@ func _setup_taodam_isolation_hooks() -> void:
 	var open_file_check := func() -> void:
 		if start_popup:
 			start_popup.hide()
+		if app_login_window:
+			app_login_window.hide()
 		if file_explorer_window:
 			file_explorer_window.show()
 		if checklist and checklist.has_method("update_condition"):
 			checklist.update_condition("no_important_files", true)
 
-	if menu_files:
-		menu_files.pressed.connect(open_file_check)
+	for btn: Button in [menu_files, menu_notepad, menu_recycle, folder_icon, inspector_icon, evfile_icon]:
+		if btn and not btn.pressed.is_connected(open_file_check):
+			btn.pressed.connect(open_file_check)
 
 	if file_close_btn and file_explorer_window:
 		file_close_btn.pressed.connect(func() -> void:
 			file_explorer_window.hide()
+		)
+	if file_action_btn and file_explorer_window:
+		file_action_btn.pressed.connect(func() -> void:
+			file_explorer_window.hide()
+			if checklist and checklist.has_method("update_condition"):
+				checklist.update_condition("no_important_files", true)
 		)
 
 func _on_checklist_completed() -> void:

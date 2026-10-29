@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c6hvuan4jso0l"]
 
-[ext_resource type="Script" path="res://scenes/scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.gd" id="1_scene_script"]
+[ext_resource type="Script" uid="uid://bv1kw1n806vkt" path="res://scenes/scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.gd" id="1_scene_script"]
 [ext_resource type="PackedScene" uid="uid://lncg5kind7nq" path="res://ui/puzzles/Puzzle_Hash_Verify.tscn" id="2_hash"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Event_Log.tscn" id="3_event_log"]
 [ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Drive_History.tscn" id="4_drive_history"]
@@ -44,7 +44,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 shadow_size = 6
 
-[node name="Scene_06_TaoDam_Investigation" type="Control"]
+[node name="Scene_06_TaoDam_Investigation" type="Control" unique_id=137541241]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,11 +53,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_scene_script")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2035393497]
 
-[node name="NotebookScreen" parent="CanvasLayer" instance=ExtResource("8_notebook")]
+[node name="NotebookScreen" parent="CanvasLayer" unique_id=1187460663 instance=ExtResource("8_notebook")]
 
-[node name="ForensicToolbar" type="PanelContainer" parent="CanvasLayer"]
+[node name="ForensicToolbar" type="PanelContainer" parent="CanvasLayer" unique_id=1231183758]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -70,62 +70,62 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_toolbar")
 
-[node name="Content" type="VBoxContainer" parent="CanvasLayer/ForensicToolbar"]
+[node name="Content" type="VBoxContainer" parent="CanvasLayer/ForensicToolbar" unique_id=1779812975]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="Tools" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content"]
+[node name="Tools" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content" unique_id=407851597]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 3
 
-[node name="HashButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+[node name="HashButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=528949437]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "1.Hash(T08)"
 
-[node name="EventLogButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+[node name="EventLogButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=1427916060]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "2.EventLog(T06)"
 
-[node name="DriveHistoryButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+[node name="DriveHistoryButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=789653556]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "3.DriveLog(T07)"
 
-[node name="MacroButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+[node name="MacroButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=485537213]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "4.Macro(T09)"
 
-[node name="DecoderButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+[node name="DecoderButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=235026751]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "5.Decode(T10-11)"
 
-[node name="PersistenceButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools"]
+[node name="PersistenceButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=330700848]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "6.StopTask(T12)"
 
-[node name="BottomRow" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content"]
+[node name="BottomRow" type="HBoxContainer" parent="CanvasLayer/ForensicToolbar/Content" unique_id=370475086]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="StatusLabel" type="Label" parent="CanvasLayer/ForensicToolbar/Content/BottomRow"]
+[node name="StatusLabel" type="Label" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=361436459]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -135,37 +135,37 @@ theme_override_font_sizes/font_size = 6
 text = "⚡ เสียบ EV-DRIVE (E:) แล้ว: เริ่มจากกด [1.Hash(T08)] เพื่อเทียบค่า MD5 ของหลักฐาน"
 autowrap_mode = 3
 
-[node name="InspectorButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow"]
+[node name="InspectorButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=1779981506]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "Inspector"
 
-[node name="ClosePuzzleButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow"]
+[node name="ClosePuzzleButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=224492934]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("10_font_thai")
 theme_override_font_sizes/font_size = 6
 text = "พับหน้าต่าง [Q]"
 
-[node name="Puzzle_Hash_Verify" parent="CanvasLayer" instance=ExtResource("2_hash")]
+[node name="Puzzle_Hash_Verify" parent="CanvasLayer" unique_id=1232594682 instance=ExtResource("2_hash")]
 visible = false
 
-[node name="Puzzle_Event_Log" parent="CanvasLayer" instance=ExtResource("3_event_log")]
+[node name="Puzzle_Event_Log" parent="CanvasLayer" unique_id=135034402 instance=ExtResource("3_event_log")]
 visible = false
 
-[node name="Puzzle_Drive_History" parent="CanvasLayer" instance=ExtResource("4_drive_history")]
+[node name="Puzzle_Drive_History" parent="CanvasLayer" unique_id=708486238 instance=ExtResource("4_drive_history")]
 visible = false
 
-[node name="Puzzle_File_Structure" parent="CanvasLayer" instance=ExtResource("5_macro")]
+[node name="Puzzle_File_Structure" parent="CanvasLayer" unique_id=1464463749 instance=ExtResource("5_macro")]
 visible = false
 
-[node name="Puzzle_Decoder" parent="CanvasLayer" instance=ExtResource("6_decoder")]
+[node name="Puzzle_Decoder" parent="CanvasLayer" unique_id=1612817432 instance=ExtResource("6_decoder")]
 visible = false
 
-[node name="Puzzle_Persistence_Order" parent="CanvasLayer" instance=ExtResource("7_sequence")]
+[node name="Puzzle_Persistence_Order" parent="CanvasLayer" unique_id=1017190843 instance=ExtResource("7_sequence")]
 visible = false
 
-[node name="CompletionPanel" type="PanelContainer" parent="CanvasLayer"]
+[node name="CompletionPanel" type="PanelContainer" parent="CanvasLayer" unique_id=183166026]
 visible = false
 z_index = 35
 anchors_preset = 8
@@ -181,12 +181,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/CompletionPanel"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/CompletionPanel" unique_id=894690743]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/CompletionPanel/VBox"]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/CompletionPanel/VBox" unique_id=2018368997]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.95, 0.55, 1)
 theme_override_fonts/font = ExtResource("9_font_mono")
@@ -194,7 +194,7 @@ theme_override_font_sizes/font_size = 8
 text = "FORENSIC INVESTIGATION COMPLETE"
 horizontal_alignment = 1
 
-[node name="CompletionLabel" type="Label" parent="CanvasLayer/CompletionPanel/VBox"]
+[node name="CompletionLabel" type="Label" parent="CanvasLayer/CompletionPanel/VBox" unique_id=1441895452]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("10_font_thai")
@@ -207,7 +207,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="RecoveryButton" type="Button" parent="CanvasLayer/CompletionPanel/VBox"]
+[node name="RecoveryButton" type="Button" parent="CanvasLayer/CompletionPanel/VBox" unique_id=1521990250]
 custom_minimum_size = Vector2(220, 22)
 layout_mode = 2
 size_flags_horizontal = 4

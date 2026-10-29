@@ -55,6 +55,7 @@ var folder_btn: Button
 var notification_toast: PanelContainer
 var toast_label: Label
 var _toast_timer: SceneTreeTimer
+var _toast_id: int = 0
 
 # State
 var is_wifi_connected: bool = true
@@ -82,8 +83,14 @@ func _ready() -> void:
 	if menu_files:
 		menu_files.visible = false
 	
-	visibility_changed.connect(_on_self_visibility_changed)
+	if not visibility_changed.is_connected(_on_self_visibility_changed):
+		visibility_changed.connect(_on_self_visibility_changed)
 	_on_self_visibility_changed()
+
+func _exit_tree() -> void:
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("show_inventory"):
+		inv.show_inventory()
 
 func _on_self_visibility_changed() -> void:
 	var inv = get_node_or_null("/root/InventoryManager")
@@ -177,73 +184,113 @@ func _init_taskbar() -> void:
 		notification_toast.visible = false
 	
 	# Connect taskbar buttons
-	if start_button:
+	if start_button and not start_button.pressed.is_connected(_toggle_start_menu):
 		start_button.pressed.connect(_toggle_start_menu)
-	if wifi_tray_btn:
+	if wifi_tray_btn and not wifi_tray_btn.pressed.is_connected(_toggle_wifi_popup):
 		wifi_tray_btn.pressed.connect(_toggle_wifi_popup)
-	if wifi_toggle_btn:
+	if wifi_toggle_btn and not wifi_toggle_btn.pressed.is_connected(_on_wifi_toggle_pressed):
 		wifi_toggle_btn.pressed.connect(_on_wifi_toggle_pressed)
-	if wifi_close_btn:
-		wifi_close_btn.pressed.connect(func() -> void: if wifi_popup: wifi_popup.visible = false)
+	if wifi_close_btn and not wifi_close_btn.pressed.is_connected(_on_wifi_close_pressed):
+		wifi_close_btn.pressed.connect(_on_wifi_close_pressed)
 	
 	# Power button: leave PC and return to bedroom
-	if leave_pc_button:
+	if leave_pc_button and not leave_pc_button.pressed.is_connected(_on_leave_pc_pressed):
 		leave_pc_button.pressed.connect(_on_leave_pc_pressed)
-	if start_menu_leave_btn:
+	if start_menu_leave_btn and not start_menu_leave_btn.pressed.is_connected(_on_leave_pc_pressed):
 		start_menu_leave_btn.pressed.connect(_on_leave_pc_pressed)
 	
 	# Start Menu app launchers
-	if menu_gg_disk:
-		menu_gg_disk.pressed.connect(func() -> void: _on_app_activated("gg_disk"))
-	if menu_word:
-		menu_word.pressed.connect(func() -> void: _on_app_activated("ms_word"))
-	if menu_files:
-		menu_files.pressed.connect(func() -> void: _on_app_activated("files"))
-	if menu_discord:
-		menu_discord.pressed.connect(func() -> void: _on_app_activated("discord"))
+	if menu_gg_disk and not menu_gg_disk.pressed.is_connected(_on_gg_disk_icon_pressed):
+		menu_gg_disk.pressed.connect(_on_gg_disk_icon_pressed)
+	if menu_word and not menu_word.pressed.is_connected(_on_ms_word_icon_pressed):
+		menu_word.pressed.connect(_on_ms_word_icon_pressed)
+	if menu_files and not menu_files.pressed.is_connected(_on_files_icon_pressed):
+		menu_files.pressed.connect(_on_files_icon_pressed)
+	if menu_discord and not menu_discord.pressed.is_connected(_on_discord_icon_pressed):
+		menu_discord.pressed.connect(_on_discord_icon_pressed)
+
+func _on_wifi_close_pressed() -> void:
+	if wifi_popup:
+		wifi_popup.visible = false
+
+func _on_gg_disk_icon_pressed() -> void:
+	_on_app_activated("gg_disk")
+
+func _on_ms_word_icon_pressed() -> void:
+	_on_app_activated("ms_word")
+
+func _on_files_icon_pressed() -> void:
+	_on_app_activated("files")
+
+func _on_discord_icon_pressed() -> void:
+	_on_app_activated("discord")
 
 func _connect_icons() -> void:
-	if ggdisk_btn:
-		ggdisk_btn.pressed.connect(func() -> void: _on_app_activated("gg_disk"))
-	if msword_btn:
-		msword_btn.pressed.connect(func() -> void: _on_app_activated("ms_word"))
-	if discord_btn:
-		discord_btn.pressed.connect(func() -> void: _on_app_activated("discord"))
-	if folder_btn:
-		folder_btn.pressed.connect(func() -> void: _on_app_activated("files"))
+	if ggdisk_btn and not ggdisk_btn.pressed.is_connected(_on_gg_disk_icon_pressed):
+		ggdisk_btn.pressed.connect(_on_gg_disk_icon_pressed)
+	if msword_btn and not msword_btn.pressed.is_connected(_on_ms_word_icon_pressed):
+		msword_btn.pressed.connect(_on_ms_word_icon_pressed)
+	if discord_btn and not discord_btn.pressed.is_connected(_on_discord_icon_pressed):
+		discord_btn.pressed.connect(_on_discord_icon_pressed)
+	if folder_btn and not folder_btn.pressed.is_connected(_on_files_icon_pressed):
+		folder_btn.pressed.connect(_on_files_icon_pressed)
 
 func _connect_window_signals() -> void:
 	# GG Disk window
 	if gg_disk_window:
-		if gg_disk_window.has_signal("folder_downloaded"):
+		if gg_disk_window.has_signal("folder_downloaded") and not gg_disk_window.is_connected("folder_downloaded", Callable(self, "_on_folder_downloaded_from_disk")):
 			gg_disk_window.connect("folder_downloaded", Callable(self, "_on_folder_downloaded_from_disk"))
-		if gg_disk_window.has_signal("minimize_requested"):
-			gg_disk_window.connect("minimize_requested", func() -> void: _minimize_app_window(gg_disk_window))
-		if gg_disk_window.has_signal("close_requested"):
-			gg_disk_window.connect("close_requested", func() -> void: _close_app_window(gg_disk_window))
+		if gg_disk_window.has_signal("minimize_requested") and not gg_disk_window.is_connected("minimize_requested", _on_gg_disk_minimize):
+			gg_disk_window.connect("minimize_requested", _on_gg_disk_minimize)
+		if gg_disk_window.has_signal("close_requested") and not gg_disk_window.is_connected("close_requested", _on_gg_disk_close):
+			gg_disk_window.connect("close_requested", _on_gg_disk_close)
 	
 	# Downloaded folder window
 	if downloaded_folder_window:
-		if downloaded_folder_window.has_signal("file_opened"):
+		if downloaded_folder_window.has_signal("file_opened") and not downloaded_folder_window.is_connected("file_opened", Callable(self, "_on_file_opened_from_folder")):
 			downloaded_folder_window.connect("file_opened", Callable(self, "_on_file_opened_from_folder"))
-		if downloaded_folder_window.has_signal("minimize_requested"):
-			downloaded_folder_window.connect("minimize_requested", func() -> void: _minimize_app_window(downloaded_folder_window))
-		if downloaded_folder_window.has_signal("close_requested"):
-			downloaded_folder_window.connect("close_requested", func() -> void: _close_app_window(downloaded_folder_window))
+		if downloaded_folder_window.has_signal("minimize_requested") and not downloaded_folder_window.is_connected("minimize_requested", _on_folder_minimize):
+			downloaded_folder_window.connect("minimize_requested", _on_folder_minimize)
+		if downloaded_folder_window.has_signal("close_requested") and not downloaded_folder_window.is_connected("close_requested", _on_folder_close):
+			downloaded_folder_window.connect("close_requested", _on_folder_close)
 	
 	# MS Word window
 	if ms_word_window:
-		if ms_word_window.has_signal("minimize_requested"):
-			ms_word_window.connect("minimize_requested", func() -> void: _minimize_app_window(ms_word_window))
-		if ms_word_window.has_signal("close_requested"):
-			ms_word_window.connect("close_requested", func() -> void: _close_app_window(ms_word_window))
+		if ms_word_window.has_signal("minimize_requested") and not ms_word_window.is_connected("minimize_requested", _on_word_minimize):
+			ms_word_window.connect("minimize_requested", _on_word_minimize)
+		if ms_word_window.has_signal("close_requested") and not ms_word_window.is_connected("close_requested", _on_word_close):
+			ms_word_window.connect("close_requested", _on_word_close)
 	
 	# Discord window
 	if discord_window:
-		if discord_window.has_signal("minimize_requested"):
-			discord_window.connect("minimize_requested", func() -> void: _minimize_app_window(discord_window))
-		if discord_window.has_signal("close_requested"):
-			discord_window.connect("close_requested", func() -> void: _close_app_window(discord_window))
+		if discord_window.has_signal("minimize_requested") and not discord_window.is_connected("minimize_requested", _on_discord_minimize):
+			discord_window.connect("minimize_requested", _on_discord_minimize)
+		if discord_window.has_signal("close_requested") and not discord_window.is_connected("close_requested", _on_discord_close):
+			discord_window.connect("close_requested", _on_discord_close)
+
+func _on_gg_disk_minimize() -> void:
+	_minimize_app_window(gg_disk_window)
+
+func _on_gg_disk_close() -> void:
+	_close_app_window(gg_disk_window)
+
+func _on_folder_minimize() -> void:
+	_minimize_app_window(downloaded_folder_window)
+
+func _on_folder_close() -> void:
+	_close_app_window(downloaded_folder_window)
+
+func _on_word_minimize() -> void:
+	_minimize_app_window(ms_word_window)
+
+func _on_word_close() -> void:
+	_close_app_window(ms_word_window)
+
+func _on_discord_minimize() -> void:
+	_minimize_app_window(discord_window)
+
+func _on_discord_close() -> void:
+	_close_app_window(discord_window)
 
 # When download is triggered from GG Disk
 func _on_folder_downloaded_from_disk() -> void:
@@ -283,13 +330,15 @@ func _on_file_opened_from_folder(file_name: String) -> void:
 func _show_toast(message: String) -> void:
 	if not notification_toast or not toast_label:
 		return
+	_toast_id += 1
+	var current_toast_id: int = _toast_id
 	toast_label.text = message
 	notification_toast.show()
 	notification_toast.move_to_front()
 	
 	_toast_timer = get_tree().create_timer(3.5)
 	_toast_timer.timeout.connect(func() -> void:
-		if notification_toast:
+		if is_instance_valid(self) and _toast_id == current_toast_id and notification_toast:
 			notification_toast.hide()
 	)
 

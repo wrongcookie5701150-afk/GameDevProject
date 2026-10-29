@@ -65,6 +65,7 @@ offset_top = -54.0
 offset_right = 310.0
 offset_bottom = -28.0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hint_bar")
 
 [node name="GuideLabel" type="Label" parent="CanvasLayer/NotebookScreen/GuideBanner" unique_id=193847220]
@@ -215,6 +216,15 @@ theme_override_font_sizes/font_size = 6
 text = "ไม่มีไฟล์งานกลุ่ม รายงาน หรือเอกสารสำคัญใดๆ อยู่ในเครื่องเต่าดำ (0 items)"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="FileExplorerActionBtn" type="Button" parent="CanvasLayer/NotebookScreen/FileExplorerWindow/VBox/BodyVBox" unique_id=193847221]
+custom_minimum_size = Vector2(110, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("5_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "ยืนยันว่าไม่มีไฟล์สำคัญ (ปิด)"
 
 [node name="CompletionPanel" type="PanelContainer" parent="CanvasLayer" unique_id=124842586]
 visible = false

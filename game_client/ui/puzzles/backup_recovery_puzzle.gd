@@ -68,11 +68,11 @@ func _build_telemetry_param(
 	return param
 
 func on_solve_success() -> void:
-	feedback_label.text = "Safe recovery configuration confirmed."
+	feedback_label.text = "✅ ตั้งค่าการกู้คืนข้อมูลตามกฎ 3-2-1 Backup ปลอดภัยแล้ว!"
 	_set_controls_disabled(true)
 
 func on_solve_failed() -> void:
-	feedback_label.text = "Unsafe choice. Use a clean point, separate destination, and paused sync."
+	feedback_label.text = "❌ การตั้งค่ายังไม่ปลอดภัย: เลือกเวลา 18:55 (verified clean point), ปลายทาง Separate external recovery drive, และ Disable cloud sync"
 
 func _on_submit_pressed() -> void:
 	submit_puzzle({

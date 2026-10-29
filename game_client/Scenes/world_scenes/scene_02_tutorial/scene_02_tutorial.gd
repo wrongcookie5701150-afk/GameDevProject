@@ -82,9 +82,15 @@ func _connect_all_interact_objects() -> void:
 		if child.object_id == "object" and child.name == "Desktop":
 			child.object_id = "computer"
 			child.prompt_message = "Press Space to use the computer"
-		# Hide EV-DRIVE during tutorial scene
+		# Hide and disable EV-DRIVE during tutorial scene so it cannot be picked up or block movement
 		if child.object_id.to_lower() == "ev_drive" or child.name.to_lower() == "evdrive":
+			child.gives_item = false
 			child.hide()
+			child.collision_layer = 0
+			if child.interaction_area:
+				child.interaction_area.collision_layer = 0
+				child.interaction_area.monitoring = false
+				child.interaction_area.monitorable = false
 			continue
 		if not child.player_approached.is_connected(_on_interactable_approached):
 			child.player_approached.connect(_on_interactable_approached)
@@ -109,9 +115,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_P:
+			var focused: Control = get_viewport().gui_get_focus_owner()
+			if focused is LineEdit or focused is TextEdit:
+				return
 			_toggle_phone()
 			get_viewport().set_input_as_handled()
 			return
+
+var _last_interact_frame: int = -1
+var _last_interact_obj: InteractObject = null
 
 func _on_player_interacted(_player: BasePlayer) -> void:
 	if _nearby_object:
@@ -159,6 +171,11 @@ func _on_interactable_left(interact_object: InteractObject, _player: Node2D) -> 
 func _on_interactable_requested(interact_object: InteractObject) -> void:
 	if not interact_object:
 		return
+	var cur_frame: int = Engine.get_process_frames()
+	if cur_frame == _last_interact_frame and _last_interact_obj == interact_object:
+		return
+	_last_interact_frame = cur_frame
+	_last_interact_obj = interact_object
 	match interact_object.object_id:
 		"computer", "desktop":
 			if not _messages_read:

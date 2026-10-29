@@ -70,14 +70,14 @@ func _build_telemetry_param(
 	return param
 
 func on_solve_success() -> void:
-	feedback_label.text = "Incident report accepted."
+	feedback_label.text = "✅ บันทึกรายงานสรุปเหตุการณ์ถูกต้องครบถ้วน!"
 	entry_selector.disabled = true
 	payload_selector.disabled = true
 	mitigation_selector.disabled = true
 	submit_button.disabled = true
 
 func on_solve_failed() -> void:
-	feedback_label.text = "Review the evidence and containment actions, then try again."
+	feedback_label.text = "❌ ข้อมูลในรายงานยังไม่ตรงกับหลักฐาน: (1) Macro-enabled Word document (2) Ransomware / wiper (3) Isolated the affected network"
 
 func _on_submit_pressed() -> void:
 	submit_puzzle(_current_selections())

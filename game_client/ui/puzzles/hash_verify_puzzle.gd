@@ -6,6 +6,12 @@ const EVIDENCE_CONTENTS: Dictionary = {
 	"Drive_Activity.log": "forensic evidence sample: shared drive activity history"
 }
 
+const MANIFEST_ALT_HASHES: Dictionary = {
+	"Report_Final.docx": "7d4a2b6e1f0c3a8e9d5b7a1c4e2f6a8b",
+	"Windows_Event_Log.txt": "3c9e1a7b4f2d8e0a6c5b9d3f1e4a7b2c",
+	"Drive_Activity.log": "8a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d"
+}
+
 @onready var evidence_list: ItemList = $Panel/Content/EvidenceList
 @onready var manifest_label: Label = $Panel/Content/ManifestLabel
 @onready var hash_input: LineEdit = $Panel/Content/HashInput
@@ -23,11 +29,23 @@ func _ready() -> void:
 		evidence_list.set_item_metadata(item_index, file_name)
 	evidence_list.item_selected.connect(_on_evidence_selected)
 	verify_button.pressed.connect(_on_verify_pressed)
+	hash_input.text_submitted.connect(func(_t: String) -> void: _on_verify_pressed())
 	manifest_label.text = "Select an evidence file to view its manifest MD5."
+	if evidence_list.item_count > 0 and _selected_file.is_empty():
+		evidence_list.select(0)
+		_on_evidence_selected(0)
+
+func start_puzzle() -> void:
+	super.start_puzzle()
+	if not is_resolved and evidence_list and evidence_list.item_count > 0 and _selected_file.is_empty():
+		evidence_list.select(0)
+		_on_evidence_selected(0)
 
 func validate_answer(answer: Variant) -> bool:
+	var clean_ans: String = str(answer).strip_edges().to_lower()
+	var alt_hash: String = str(MANIFEST_ALT_HASHES.get(_selected_file, "")).to_lower()
 	_match_status = not _selected_file.is_empty() \
-		and str(answer).strip_edges().to_lower() == _expected_hash
+		and (clean_ans == _expected_hash or (not alt_hash.is_empty() and clean_ans == alt_hash))
 	return _match_status
 
 func get_submission_metrics() -> Dictionary:
@@ -43,7 +61,9 @@ func on_solve_success() -> void:
 	feedback_label.text = "Evidence integrity verified: MD5 values match the manifest."
 	verify_button.disabled = true
 	hash_input.editable = false
-	evidence_list.disabled = true
+	for i: int in range(evidence_list.item_count):
+		evidence_list.set_item_disabled(i, true)
+	evidence_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
 	feedback_label.text = "Hash mismatch. Check the selected file and manifest value."

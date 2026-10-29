@@ -14,7 +14,6 @@ var _last_accuracy: float = 0.0
 var _last_wpm: float = 0.0
 
 func _ready() -> void:
-	super._ready()
 	if not passage_label:
 		passage_label = find_child("PassageLabel", true, false) as RichTextLabel
 	if not feedback_label:
@@ -24,6 +23,8 @@ func _ready() -> void:
 	if passage_label:
 		passage_label.bbcode_enabled = true
 		_update_passage_display("")
+	if is_visible_in_tree():
+		start_puzzle()
 
 func configure_input(input: TextEdit) -> void:
 	answer_input = input
@@ -32,8 +33,7 @@ func configure_input(input: TextEdit) -> void:
 
 func start_puzzle() -> void:
 	super.start_puzzle()
-	if _started_at_msec == 0:
-		_started_at_msec = Time.get_ticks_msec()
+	_started_at_msec = Time.get_ticks_msec()
 	if passage_label:
 		passage_label.bbcode_enabled = true
 		_update_passage_display("")
@@ -45,7 +45,13 @@ func start_puzzle() -> void:
 func validate_answer(answer: Variant) -> bool:
 	if not answer is String:
 		return false
-	return _normalize_text(answer) == _normalize_text(TARGET_TEXT) and _last_accuracy >= 90.0
+	var ans_str: String = answer as String
+	_calculate_metrics(ans_str)
+	if _normalize_text(ans_str) == _normalize_text(TARGET_TEXT) and _last_accuracy >= 90.0:
+		return true
+	if ans_str.strip_edges().length() >= TARGET_TEXT.length() - 1 and _last_accuracy >= 90.0:
+		return true
+	return false
 
 func get_submission_metrics() -> Dictionary:
 	var text: String = answer_input.text if answer_input else TARGET_TEXT
@@ -73,13 +79,22 @@ func _on_answer_changed() -> void:
 		return
 
 	var typed_text: String = answer_input.text if answer_input else ""
+	if "\n" in typed_text or "\r" in typed_text:
+		typed_text = typed_text.replace("\r", "").replace("\n", "")
+		if answer_input:
+			answer_input.text = typed_text
+			answer_input.set_caret_line(0)
+			answer_input.set_caret_column(typed_text.length())
+
 	_calculate_metrics(typed_text)
 	_update_passage_display(typed_text)
 	
 	if feedback_label:
 		feedback_label.text = ""
 
-	if _first_mismatch_index(typed_text) == -1 and typed_text.length() == TARGET_TEXT.length():
+	if (_first_mismatch_index(typed_text) == -1 and typed_text.length() == TARGET_TEXT.length()) or \
+	   (_normalize_text(typed_text) == _normalize_text(TARGET_TEXT) and _last_accuracy >= 90.0) or \
+	   (typed_text.strip_edges().length() >= TARGET_TEXT.length() and _last_accuracy >= 90.0):
 		submit_puzzle(typed_text)
 
 func _update_passage_display(typed_text: String) -> void:

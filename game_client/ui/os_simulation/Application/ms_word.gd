@@ -103,7 +103,7 @@ func _update_scrollbar_range() -> void:
 			if ch > 0.0:
 				content_h = maxf(content_h, ch + 18.0)
 		
-		var raw_text: String = passage_label.text
+		var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
 		if not raw_text.is_empty():
 			var lines: PackedStringArray = raw_text.split("\n")
 			var total_lines: int = 0
@@ -165,7 +165,7 @@ func scroll_following_content(step_speed: float = -1.0) -> void:
 	# Determine effective line count accurately and monotonically
 	var total_lines: int = 0
 	if passage_label:
-		var raw_text: String = passage_label.text
+		var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
 		if not raw_text.is_empty():
 			var lines: PackedStringArray = raw_text.split("\n")
 			for l: String in lines:

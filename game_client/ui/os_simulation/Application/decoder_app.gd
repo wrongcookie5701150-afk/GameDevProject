@@ -65,6 +65,7 @@ const MORSE_TO_CHAR: Dictionary = {
 var _char_to_morse: Dictionary = {}
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for code in MORSE_TO_CHAR:
 		_char_to_morse[MORSE_TO_CHAR[code]] = code
 	_char_to_morse[" "] = "/"

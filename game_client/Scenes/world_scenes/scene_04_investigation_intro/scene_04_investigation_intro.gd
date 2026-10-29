@@ -22,6 +22,9 @@ var _chat_with_march_completed: bool = false
 var _taodam_ready_on_desk: bool = false
 var _ev_drive_collected: bool = false
 var _forensic_image_created: bool = false
+var _last_interact_frame: int = -1
+var _last_interact_obj: InteractObject = null
+var _ev_panel_opened_frame: int = -1
 
 func _ready() -> void:
 	super._ready()
@@ -74,6 +77,9 @@ func _ready() -> void:
 		_ev_drive_collected = true
 		if ev_drive_object:
 			ev_drive_object.hide()
+			ev_drive_object.collision_layer = 0
+			if ev_drive_object.interaction_area:
+				ev_drive_object.interaction_area.collision_layer = 0
 	elif ev_drive_object:
 		ev_drive_object.show()
 
@@ -96,6 +102,7 @@ func _connect_all_interact_objects() -> void:
 			bookshelf_object = child
 		elif oid == "ev_drive" or child.name.to_lower() == "evdrive":
 			child.object_id = "ev_drive"
+			child.gives_item = false
 			ev_drive_object = child
 		elif oid == "computer" or oid == "desktop":
 			computer_object = child
@@ -113,8 +120,17 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 
+	if ev_drive_panel and ev_drive_panel.visible and Engine.get_process_frames() != _ev_panel_opened_frame:
+		if event is InputEventKey and event.pressed and not event.echo and (event.keycode == KEY_SPACE or event.keycode == KEY_ENTER):
+			_on_ev_panel_close_pressed()
+			get_viewport().set_input_as_handled()
+			return
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_P:
+			var focused: Control = get_viewport().gui_get_focus_owner()
+			if focused is LineEdit or focused is TextEdit:
+				return
 			_toggle_phone()
 			get_viewport().set_input_as_handled()
 
@@ -163,6 +179,8 @@ func _on_march_chat_completed() -> void:
 	_refresh_objective_text()
 
 func _on_phone_closed() -> void:
+	if not _chat_with_march_completed:
+		_on_march_chat_completed()
 	if is_instance_valid(player):
 		player.set_movement_enabled(true)
 
@@ -217,6 +235,11 @@ func _on_interactable_left(object: InteractObject, _p: Node2D) -> void:
 func _on_interactable_requested(interact_object: InteractObject) -> void:
 	if not interact_object:
 		return
+	var cur_frame: int = Engine.get_process_frames()
+	if cur_frame == _last_interact_frame and _last_interact_obj == interact_object:
+		return
+	_last_interact_frame = cur_frame
+	_last_interact_obj = interact_object
 	var obj_id: String = interact_object.object_id.to_lower()
 	if obj_id == "object" and (interact_object.name.to_lower() == "evdrive" or interact_object.name.to_lower() == "ev_drive"):
 		obj_id = "ev_drive"
@@ -282,6 +305,9 @@ func _collect_ev_drive() -> void:
 	_ev_drive_collected = true
 	if ev_drive_object:
 		ev_drive_object.hide()
+		ev_drive_object.collision_layer = 0
+		if ev_drive_object.interaction_area:
+			ev_drive_object.interaction_area.collision_layer = 0
 	if inspect_hint:
 		inspect_hint.hide()
 	
@@ -297,6 +323,7 @@ func _collect_ev_drive() -> void:
 func _create_forensic_image_on_pc() -> void:
 	_forensic_image_created = true
 	_taodam_ready_on_desk = true
+	_ev_panel_opened_frame = Engine.get_process_frames()
 	if player:
 		player.set_movement_enabled(false)
 	if ev_drive_label:

@@ -51,29 +51,64 @@ func validate_answer(answer: Variant) -> bool:
 	return true
 
 func on_solve_success() -> void:
-	feedback_label.text = "Persistence is stopped. Keep sync paused until clean recovery is ready."
+	feedback_label.text = "✅ หยุดการทำงานของ Persistence และกักกันมัลแวร์ครบทั้ง 7 ขั้นตอนเรียบร้อย!"
 	step_selector.disabled = true
 	add_button.disabled = true
 	remove_button.disabled = true
 	submit_button.hide()
 
 func on_solve_failed() -> void:
+	if submitted_steps.size() < CORRECT_SEQUENCE.size():
+		var next_idx: int = submitted_steps.size()
+		var expected_label: String = str(STEP_LABELS.get(CORRECT_SEQUENCE[next_idx], ""))
+		feedback_label.text = "⚠️ กรุณาเพิ่มให้ครบทั้ง 7 ขั้นตอน (ตอนนี้มี %d/7 | ขั้นตอนที่ %d ควรเป็น: %s)" % [
+			submitted_steps.size(), next_idx + 1, expected_label
+		]
+		return
+	for idx: int in range(CORRECT_SEQUENCE.size()):
+		if str(submitted_steps[idx]) != CORRECT_SEQUENCE[idx]:
+			var expected_step: String = str(STEP_LABELS.get(CORRECT_SEQUENCE[idx], ""))
+			feedback_label.text = "❌ ขั้นตอนที่ %d ยังไม่ถูกต้อง: ควรเป็น '%s' (กดปุ่มลบขั้นตอนเพื่อแก้ไข)" % [
+				idx + 1, expected_step
+			]
+			return
 	feedback_label.text = "Sequence is unsafe. Contain the helper before restoring files."
+
+func _advance_selector_to_next_unused() -> void:
+	for idx: int in range(step_selector.item_count):
+		var step_id: String = str(step_selector.get_item_metadata(idx))
+		if not submitted_steps.has(step_id):
+			step_selector.select(idx)
+			return
 
 func _on_add_pressed() -> void:
 	if submitted_steps.size() >= CORRECT_SEQUENCE.size():
+		feedback_label.text = "เพิ่มครบ 7 ขั้นตอนแล้ว กดปุ่ม Submit ด้านล่างเพื่อยืนยัน"
 		return
 	var step_id: String = str(step_selector.get_item_metadata(step_selector.selected))
 	if submitted_steps.has(step_id):
-		return
+		_advance_selector_to_next_unused()
+		step_id = str(step_selector.get_item_metadata(step_selector.selected))
+		if submitted_steps.has(step_id):
+			return
 	submitted_steps.append(step_id)
 	sequence_list.add_item("%d. %s" % [submitted_steps.size(), STEP_LABELS[step_id]])
+	_advance_selector_to_next_unused()
+	if submitted_steps.size() == CORRECT_SEQUENCE.size():
+		feedback_label.text = "ครบทั้ง 7 ขั้นตอนแล้ว กดปุ่ม Submit เพื่อตรวจสอบความถูกต้อง"
+	else:
+		feedback_label.text = "เพิ่มขั้นตอนที่ %d/7 แล้ว" % submitted_steps.size()
 
 func _on_remove_pressed() -> void:
 	if submitted_steps.is_empty():
 		return
-	submitted_steps.pop_back()
+	var removed_id: String = submitted_steps.pop_back()
 	sequence_list.remove_item(sequence_list.item_count - 1)
+	for idx: int in range(step_selector.item_count):
+		if str(step_selector.get_item_metadata(idx)) == removed_id:
+			step_selector.select(idx)
+			break
+	feedback_label.text = "ลบขั้นตอนล่าสุดแล้ว (เหลือ %d/7 ขั้นตอน)" % submitted_steps.size()
 
 func _on_submit_pressed() -> void:
 	submit_sequence(submitted_steps)

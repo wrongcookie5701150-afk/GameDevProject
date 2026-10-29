@@ -14,11 +14,26 @@ func _ready() -> void:
 		inv.hide_inventory()
 
 	if desktop_screen:
+		desktop_screen.set_process_unhandled_input(false)
+		desktop_screen.set_process_input(false)
 		if desktop_screen.has_method("set_wifi_connected"):
 			desktop_screen.call("set_wifi_connected", false)
 		var clock_lbl: Label = desktop_screen.find_child("ClockLabel", true, false) as Label
 		if clock_lbl:
 			clock_lbl.text = "22:15"
+		var leave_btn: Button = desktop_screen.find_child("LeavePCButton", true, false) as Button
+		if leave_btn:
+			leave_btn.hide()
+		var start_leave_btn: Button = desktop_screen.find_child("StartMenuLeaveBtn", true, false) as Button
+		if start_leave_btn:
+			start_leave_btn.hide()
+		var icons_box: Control = desktop_screen.find_child("IconsContainer", true, false) as Control
+		if icons_box:
+			icons_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			for child in icons_box.find_children("*", "Button", true, false):
+				if child is Button:
+					(child as Button).disabled = true
+					(child as Button).mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	report_puzzle.hide()
 	evaluation_ui.hide()

@@ -343,11 +343,7 @@ offset_bottom = 580.0
 grow_vertical = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ftuyi")
 
-[node name="ReportPaper" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="1" unique_id=959806716]
-visible = false
-theme_override_styles/panel = SubResource("StyleBoxFlat_bk5wb")
-
-[node name="TextEdit" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="2" unique_id=1525266629]
+[node name="TextEdit" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="1" unique_id=1525266629]
 custom_minimum_size = Vector2(225, 0)
 anchors_preset = 5
 anchor_left = 0.5

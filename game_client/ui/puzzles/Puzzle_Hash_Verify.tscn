@@ -85,7 +85,7 @@ autowrap_mode = 3
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font_mono")
 theme_override_font_sizes/font_size = 7
-placeholder_text = "คลิกเลือกไฟล์ด้านบนเพื่อคำนวณค่า MD5 อัตโนมัติ"
+placeholder_text = "ระบุค่า MD5 Hash ของไฟล์..."
 
 [node name="VerifyButton" type="Button" parent="Panel/Content" unique_id=347121846]
 custom_minimum_size = Vector2(0, 18)

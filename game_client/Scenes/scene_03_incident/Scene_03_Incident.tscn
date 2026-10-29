@@ -44,7 +44,7 @@ visible = false
 [node name="PassageLabel" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="0" unique_id=1531474539]
 theme_override_styles/normal = SubResource("StyleBoxFlat_typing_paper")
 
-[node name="TextEdit" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="2" unique_id=1525266629]
+[node name="TextEdit" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="1" unique_id=1525266629]
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ftuyi")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tlii3")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_48kt2")

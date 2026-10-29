@@ -89,7 +89,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font_mono")
 theme_override_font_sizes/font_size = 7
-placeholder_text = "พิมพ์ผลลัพธ์ที่ถอดรหัสได้ (เช่น Office_Update_Helper หรือ FILE_WIPE)"
+placeholder_text = "พิมพ์ผลลัพธ์ที่ถอดรหัสได้..."
 
 [node name="SubmitButton" type="Button" parent="Panel/Content"]
 custom_minimum_size = Vector2(0, 18)

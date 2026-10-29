@@ -78,10 +78,29 @@ func _setup_isolated_notebook_state() -> void:
 	var nb_task_obj: Control = notebook_screen.get_node_or_null("TaskObjective") as Control
 	if nb_task_obj:
 		nb_task_obj.hide()
+	var window_container: Control = notebook_screen.get_node_or_null("WindowContainer") as Control
+	if window_container:
+		window_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		window_container.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		window_container.position = Vector2.ZERO
+		window_container.size = Vector2(480, 204)
 	var wifi_tray_btn: Button = notebook_screen.find_child("WifiTrayButton", true, false) as Button
 	if wifi_tray_btn:
 		wifi_tray_btn.icon = preload("res://assets/Icon32x32/world_disable.png")
 		wifi_tray_btn.text = "No Net"
+	var wifi_status_lbl: Label = notebook_screen.find_child("WifiStatusLabel", true, false) as Label
+	if wifi_status_lbl:
+		wifi_status_lbl.text = "สถานะ: ตัดการเชื่อมต่อแล้ว (Disconnected)"
+		wifi_status_lbl.add_theme_color_override("font_color", Color(0.95, 0.35, 0.35, 1.0))
+	var ssid_lbl: Label = notebook_screen.find_child("SSIDLabel", true, false) as Label
+	if ssid_lbl:
+		ssid_lbl.text = "สาย LAN: ไม่ได้เชื่อมต่อ (Unplugged)"
+	var wifi_toggle_btn: Button = notebook_screen.find_child("WifiToggleBtn", true, false) as Button
+	if wifi_toggle_btn:
+		wifi_toggle_btn.text = "สัญญาณ Wi-Fi: ปิดใช้งาน (Disabled)"
+	var wifi_sync_lbl: Label = notebook_screen.find_child("WifiCloudSyncLabel", true, false) as Label
+	if wifi_sync_lbl:
+		wifi_sync_lbl.text = "CloudSync: ปิดการทำงาน (Offline)"
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
@@ -195,6 +214,13 @@ func _hide_puzzles() -> void:
 		decoder_app.hide()
 	if ev_folder_app:
 		ev_folder_app.hide()
+	if notebook_screen:
+		var start_popup := notebook_screen.find_child("StartMenuPopup", true, false) as Control
+		if start_popup:
+			start_popup.hide()
+		var wifi_popup := notebook_screen.find_child("WifiPopup", true, false) as Control
+		if wifi_popup:
+			wifi_popup.hide()
 
 func _on_inspector_pressed() -> void:
 	if not inspector_app:
@@ -214,6 +240,12 @@ func _on_decoder_app_icon_pressed() -> void:
 	else:
 		_hide_puzzles()
 		decoder_app.show()
+		if _macro_inspected and decoder_puzzle and "input_edit" in decoder_app and decoder_app.input_edit:
+			if decoder_app.input_edit.text.strip_edges().is_empty():
+				if decoder_puzzle.decode_stage == 0:
+					decoder_app.input_edit.text = DecoderPuzzle.HELPER_BASE64
+				else:
+					decoder_app.input_edit.text = DecoderPuzzle.MODE_HEX
 		status_label.text = "Decoder App: เครื่องมือช่วยถอดรหัส Base64 / Hex และคำนวณ MD5"
 
 func _on_ev_file_icon_pressed() -> void:
@@ -236,6 +268,16 @@ func _on_ev_file_inspect_requested(file_id: String) -> void:
 			inspector_app.select_file(file_id)
 		status_label.text = "Inspector: กำลังตรวจไฟล์ %s" % file_id
 
+func _center_app_window(app_node: Control) -> void:
+	if not app_node:
+		return
+	app_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	app_node.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	app_node.offset_left = 0.0
+	app_node.offset_top = 0.0
+	app_node.offset_right = 0.0
+	app_node.offset_bottom = 0.0
+
 func _connect_app_icons() -> void:
 	if not notebook_screen:
 		return
@@ -244,10 +286,13 @@ func _connect_app_icons() -> void:
 	ev_folder_app = notebook_screen.find_child("EvFolder", true, false) as Control
 
 	if inspector_app:
+		_center_app_window(inspector_app)
 		inspector_app.hide()
 	if decoder_app:
+		_center_app_window(decoder_app)
 		decoder_app.hide()
 	if ev_folder_app:
+		_center_app_window(ev_folder_app)
 		ev_folder_app.hide()
 		if ev_folder_app.has_signal("file_inspect_requested") and not ev_folder_app.file_inspect_requested.is_connected(_on_ev_file_inspect_requested):
 			ev_folder_app.file_inspect_requested.connect(_on_ev_file_inspect_requested)
@@ -268,13 +313,43 @@ func _connect_app_icons() -> void:
 
 	var start_btn := notebook_screen.find_child("StartButton", true, false) as Button
 	var start_popup := notebook_screen.find_child("StartMenuPopup", true, false) as Control
+	var wifi_tray_btn := notebook_screen.find_child("WifiTrayButton", true, false) as Button
+	var wifi_popup := notebook_screen.find_child("WifiPopup", true, false) as Control
+	var wifi_close_btn := notebook_screen.find_child("WifiCloseBtn", true, false) as Button
 	if start_btn and start_popup:
 		start_btn.pressed.connect(func() -> void:
 			start_popup.visible = !start_popup.visible
+			if wifi_popup:
+				wifi_popup.hide()
+		)
+	if wifi_tray_btn and wifi_popup:
+		wifi_tray_btn.pressed.connect(func() -> void:
+			wifi_popup.visible = !wifi_popup.visible
+			if start_popup:
+				start_popup.hide()
+		)
+	if wifi_close_btn and wifi_popup:
+		wifi_close_btn.pressed.connect(func() -> void:
+			wifi_popup.hide()
 		)
 	var menu_files := notebook_screen.find_child("MenuFiles", true, false) as Button
-	if menu_files and not menu_files.pressed.is_connected(_on_ev_file_icon_pressed):
-		menu_files.pressed.connect(_on_ev_file_icon_pressed)
+	var menu_notepad := notebook_screen.find_child("MenuNotepad", true, false) as Button
+	var menu_recycle := notebook_screen.find_child("MenuRecycleBin", true, false) as Button
+	for btn: Button in [menu_files, menu_notepad, menu_recycle]:
+		if btn and not btn.pressed.is_connected(_on_ev_file_icon_pressed):
+			btn.pressed.connect(_on_ev_file_icon_pressed)
 	var menu_word := notebook_screen.find_child("MenuWord", true, false) as Button
 	if menu_word and not menu_word.pressed.is_connected(_on_inspector_pressed):
 		menu_word.pressed.connect(_on_inspector_pressed)
+	var menu_discord := notebook_screen.find_child("MenuDiscord", true, false) as Button
+	var menu_ggdisk := notebook_screen.find_child("MenuGGDisk", true, false) as Button
+	for btn: Button in [menu_discord, menu_ggdisk]:
+		if btn and not btn.pressed.is_connected(_on_decoder_app_icon_pressed):
+			btn.pressed.connect(_on_decoder_app_icon_pressed)
+	var start_leave_btn := notebook_screen.find_child("StartMenuLeaveBtn", true, false) as Button
+	if start_leave_btn:
+		start_leave_btn.pressed.connect(func() -> void:
+			if start_popup:
+				start_popup.hide()
+			status_label.text = "⚠️ กรุณาสืบสวนหลักฐานใน EV-DRIVE ให้ครบทั้ง 6 ขั้นตอนก่อนออกจากเครื่องเต่าดำ!"
+		)
