@@ -2544,6 +2544,7 @@ position = Vector2(48, 142)
 position = Vector2(120, 111)
 
 [node name="Notebook" parent="InteractObject" unique_id=145409650 instance=ExtResource("7_4fqf6")]
+visible = false
 position = Vector2(245, 106)
 scale = Vector2(0.7, 0.7)
 

@@ -76,14 +76,16 @@ func _ready() -> void:
 func _connect_all_interact_objects() -> void:
 	var objects = find_children("*", "InteractObject", true, false)
 	for node in objects:
-		var child = node as InteractObject
+		var child: InteractObject = node as InteractObject
 		if not child:
 			continue
 		if child.object_id == "object" and child.name == "Desktop":
 			child.object_id = "computer"
 			child.prompt_message = "Press Space to use the computer"
-		# Hide and disable EV-DRIVE during tutorial scene so it cannot be picked up or block movement
-		if child.object_id.to_lower() == "ev_drive" or child.name.to_lower() == "evdrive":
+		# Hide and disable EV-DRIVE and Notebook/TaoDam during tutorial scene
+		var oid: String = child.object_id.to_lower()
+		var cname: String = String(child.name).to_lower()
+		if oid == "ev_drive" or cname == "evdrive" or oid == "taodam" or oid == "notebook" or cname == "notebook":
 			child.gives_item = false
 			child.hide()
 			child.collision_layer = 0

@@ -7,6 +7,9 @@ const SPOOFED_DOMAIN: String = "universcity.example"
 @onready var feedback_label: Label = $Panel/Content/FeedbackLabel
 
 func _ready() -> void:
+	hint_tier_1 = "สังเกตชื่อผู้ส่งและชื่อโดเมนของแต่ละไฟล์ใน Drive ว่ามีตัวสะกดใดผิดปกติ"
+	hint_tier_2 = "ระวังเทคนิค Typosquatting ที่สะกดคำว่า 'university' ผิด หรืออีเมลที่ไม่ใช่ของมหาวิทยาลัยจริง"
+	hint_tier_3 = "คลิกเลือกบรรทัด Report_Final.docx ที่ส่งมาจาก mesasohot.sukj@universcity.example (สะกด universcity มีตัว c เกินมา)"
 	super._ready()
 	_add_entry(
 		"18:54 | Network_Diagram.png | mesa.sukj@university.example | Normal",
@@ -40,6 +43,7 @@ func _add_entry(label: String, option_id: String, sender_email: String) -> void:
 	})
 
 func _on_entry_selected(index: int) -> void:
+	mark_decision_started()
 	var metadata: Dictionary = entries.get_item_metadata(index)
 	submit_selection(StringName(metadata["file_name"]), metadata)
 
@@ -50,4 +54,4 @@ func on_solve_success() -> void:
 	entries.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
-	feedback_label.text = "❌ ไฟล์นี้มาจากโดเมนจริง (@university.example) ให้คลิกไฟล์ Report_Final.docx ที่มาจาก @universcity.example"
+	feedback_label.text = "❌ ไฟล์นี้มาจากโดเมนจริง (@university.example) สังเกตตัวสะกดโดเมนที่ต่างออกไป (กด [H] เพื่อดูคำใบ้)"

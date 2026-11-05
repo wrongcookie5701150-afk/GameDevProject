@@ -14,6 +14,9 @@ const CORRECT_SELECTIONS: Dictionary = {
 @onready var feedback_label: Label = $Panel/Content/FeedbackLabel
 
 func _ready() -> void:
+	hint_tier_1 = "ทบทวนตั้งแต่จุดเริ่มต้นที่ดาวน์โหลดไฟล์ Word ที่มี Macro, พฤติกรรมทำลายไฟล์, และการตัดเน็ต"
+	hint_tier_2 = "ช่องทางเข้า (Initial Access) มาจากเอกสาร Word ที่เปิดใช้งาน Macro, พฤติกรรมหลักคือ Ransomware / wiper, และการตอบสนองที่ถูกต้องคือการ Isolate Network"
+	hint_tier_3 = "เลือก: Entry = Macro-enabled Word document, Payload = Ransomware / wiper, Mitigation = Isolated the affected network"
 	super._ready()
 	_add_options(entry_selector, [
 		["Macro-enabled Word document", "macro_document"],
@@ -31,6 +34,9 @@ func _ready() -> void:
 		["Deleted the evidence immediately", "deleted_evidence"]
 	])
 	submit_button.pressed.connect(_on_submit_pressed)
+	entry_selector.item_selected.connect(func(_idx: int) -> void: mark_decision_started())
+	payload_selector.item_selected.connect(func(_idx: int) -> void: mark_decision_started())
+	mitigation_selector.item_selected.connect(func(_idx: int) -> void: mark_decision_started())
 
 func validate_answer(answer: Variant) -> bool:
 	if not answer is Dictionary:
@@ -70,16 +76,17 @@ func _build_telemetry_param(
 	return param
 
 func on_solve_success() -> void:
-	feedback_label.text = "✅ บันทึกรายงานสรุปเหตุการณ์ถูกต้องครบถ้วน!"
+	feedback_label.text = "✅ บันทึกรายงานสรุปเหตุการณ์ถูกต้องครบถ้วนตามหลักนิติวิทยาศาสตร์ไซเบอร์!"
 	entry_selector.disabled = true
 	payload_selector.disabled = true
 	mitigation_selector.disabled = true
 	submit_button.disabled = true
 
 func on_solve_failed() -> void:
-	feedback_label.text = "❌ ข้อมูลในรายงานยังไม่ตรงกับหลักฐาน: (1) Macro-enabled Word document (2) Ransomware / wiper (3) Isolated the affected network"
+	feedback_label.text = "❌ ข้อมูลในรายงานยังไม่ตรงกับหลักฐาน: ตรวจสอบช่องทางเข้า, ชนิดมัลแวร์, และการตัดเน็ต (กด [H] เพื่อดูคำใบ้)"
 
 func _on_submit_pressed() -> void:
+	mark_decision_started()
 	submit_puzzle(_current_selections())
 
 func _current_selections() -> Dictionary:

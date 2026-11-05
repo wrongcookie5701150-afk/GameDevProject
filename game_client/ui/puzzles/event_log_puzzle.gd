@@ -4,6 +4,9 @@ extends BaseClickSelectPuzzle
 @onready var feedback_label: Label = $Panel/Content/FeedbackLabel
 
 func _ready() -> void:
+	hint_tier_1 = "สังเกตเวลาที่ไฟล์รายงานปรากฏในระบบเทียบกับเวลาที่โปรเซส Word เริ่มทำงาน"
+	hint_tier_2 = "ค้นหาบรรทัดที่ WINWORD.EXE ถูกเรียกเปิดไฟล์ Report_Final.docx โดยตรง"
+	hint_tier_3 = "คลิกเลือกบรรทัดเวลา 19:02:10 | WINWORD.EXE opened Report_Final.docx"
 	super._ready()
 	_add_entry("18:58:07 | Report_Final.docx appeared in shared folder", "18:58:07")
 	_add_entry("19:02:10 | WINWORD.EXE opened Report_Final.docx", "19:02:10")
@@ -22,6 +25,7 @@ func _add_entry(label: String, timestamp: String) -> void:
 	entries.set_item_metadata(index, {"selected_timestamp": timestamp})
 
 func _on_entry_selected(index: int) -> void:
+	mark_decision_started()
 	var metadata: Dictionary = entries.get_item_metadata(index)
 	submit_selection(StringName(metadata["selected_timestamp"]), metadata)
 
@@ -32,4 +36,4 @@ func on_solve_success() -> void:
 	entries.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
-	feedback_label.text = "❌ ยังไม่ใช่เหตุการณ์เปิดไฟล์ครั้งแรก: ให้คลิกบรรทัดที่ WINWORD.EXE เปิด Report_Final.docx (19:02:10)"
+	feedback_label.text = "❌ ยังไม่ใช่เหตุการณ์เปิดไฟล์ครั้งแรก: สังเกตเวลาที่ WINWORD.EXE เริ่มทำงาน (กด [H] เพื่อดูคำใบ้)"

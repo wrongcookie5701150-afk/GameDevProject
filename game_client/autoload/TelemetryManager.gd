@@ -6,6 +6,33 @@ signal adaptive_gameplay_updated(cluster_name: String, hint_enabled: bool, diffi
 
 const BACKEND_URL: String = "http://127.0.0.1:8000/api/v1/telemetry/event"
 
+const SCENARIO_MAPPING: Dictionary = {
+	"T01": "Scenario_1",
+	"T02": "Scenario_1",
+	"T03": "Scenario_1",
+	"T04": "Scenario_1",
+	"T05": "Scenario_1",
+	"T06": "Scenario_2",
+	"T07": "Scenario_2",
+	"T08": "Scenario_2",
+	"T09": "Scenario_2",
+	"T10": "Scenario_2",
+	"T11": "Scenario_2",
+	"T12": "Scenario_3",
+	"T13": "Scenario_3",
+	"T14": "Scenario_4",
+	"T15": "Scenario_4",
+	"Task_04": "Scenario_1",
+	"Task_06": "Scenario_2",
+	"Task_07": "Scenario_2",
+	"Task_08": "Scenario_2",
+	"Task_11": "Scenario_2",
+	"Task_13": "Scenario_2",
+	"Task_14": "Scenario_3",
+	"Task_15": "Scenario_3",
+	"Task_16": "Scenario_4"
+}
+
 var player_id: String = "player_test_01"
 var session_id: String = ""
 var current_player_cluster: String = "Beginner"
@@ -33,6 +60,9 @@ func stop_task_timer(task_id: String) -> float:
 	active_timers.erase(task_id)
 	return float(Time.get_ticks_msec() - start_time) / 1000.0
 
+func get_scenario_for_task(task_id: String) -> String:
+	return SCENARIO_MAPPING.get(task_id, "Scenario_Unknown")
+
 func track_event(
 	scene_id: String,
 	task_id: String,
@@ -43,6 +73,9 @@ func track_event(
 	hint_used: bool = false,
 	metrics: Dictionary = {}
 ) -> void:
+	if not metrics.has("scenario_id") and not task_id.is_empty():
+		metrics["scenario_id"] = get_scenario_for_task(task_id)
+
 	var payload: Dictionary = {
 		"session_id": session_id,
 		"player_id": player_id,
@@ -56,7 +89,43 @@ func track_event(
 		"hint_used": hint_used,
 		"metrics": metrics
 	}
+	_save_local_log(payload)
 	_network_adapter.send_event(BACKEND_URL, payload)
+
+func _save_local_log(payload: Dictionary) -> void:
+	# 1. Append JSON Line to user://scenario_game_logs.json
+	var json_file := FileAccess.open("user://scenario_game_logs.json", FileAccess.READ_WRITE if FileAccess.file_exists("user://scenario_game_logs.json") else FileAccess.WRITE)
+	if json_file:
+		json_file.seek_end()
+		json_file.store_line(JSON.stringify(payload))
+		json_file.close()
+
+	# 2. Append CSV line to user://scenario_game_summary.csv
+	var csv_exists := FileAccess.file_exists("user://scenario_game_summary.csv")
+	var csv_file := FileAccess.open("user://scenario_game_summary.csv", FileAccess.READ_WRITE if csv_exists else FileAccess.WRITE)
+	if csv_file:
+		if not csv_exists:
+			csv_file.store_line("timestamp,session_id,player_id,scenario_id,task_id,attempt_count,hint_used,analysis_time_seconds,decision_time_seconds,total_duration_seconds,is_correct")
+		csv_file.seek_end()
+		var metrics: Dictionary = payload.get("metrics", {})
+		var analysis_sec: float = float(metrics.get("analysis_time_seconds", 0.0))
+		var decision_sec: float = float(metrics.get("decision_time_seconds", float(payload.get("duration_seconds", 0.0))))
+		var total_sec: float = float(payload.get("duration_seconds", 0.0))
+		var row: String = "%s,%s,%s,%s,%s,%d,%s,%.2f,%.2f,%.2f,%s" % [
+			str(payload.get("timestamp", "")),
+			str(payload.get("session_id", "")),
+			str(payload.get("player_id", "")),
+			str(metrics.get("scenario_id", get_scenario_for_task(str(payload.get("task_id", ""))))),
+			str(payload.get("task_id", "")),
+			int(payload.get("attempt_count", 1)),
+			str(payload.get("hint_used", false)),
+			analysis_sec,
+			decision_sec,
+			total_sec,
+			str(payload.get("is_correct", ""))
+		]
+		csv_file.store_line(row)
+		csv_file.close()
 
 func track_quick_event(scene_id: String, event_type: String, metrics: Dictionary = {}) -> void:
 	track_event(scene_id, "", event_type, 0.0, null, 1, false, metrics)
@@ -98,6 +167,39 @@ func get_assessment_summary() -> Dictionary:
 	var attitude_score: int = 100
 	if not completed_tasks.has("T13") or not completed_tasks.has("T14"):
 		attitude_score = 0
+
+	# สมรรถนะ 3 ด้านตรงตามบทคัดย่องานวิจัย (Abstract Competencies)
+	var cause_tasks: Array[String] = ["T04", "T05", "T06", "T07", "T08", "T09", "T10", "T11"]
+	var problem_tasks: Array[String] = ["T12", "T13"]
+	var prevention_tasks: Array[String] = ["T14", "T15"]
+
+	var cause_completed: int = 0
+	var cause_total: int = 0
+	for t: String in cause_tasks:
+		if attempted_tasks.has(t):
+			cause_total += 1
+			if completed_tasks.has(t):
+				cause_completed += 1
+	var cause_analysis_score: int = roundi(100.0 * float(cause_completed) / float(maxi(1, cause_total))) if cause_total > 0 else knowledge_score
+
+	var prob_completed: int = 0
+	var prob_total: int = 0
+	for t: String in problem_tasks:
+		if attempted_tasks.has(t):
+			prob_total += 1
+			if completed_tasks.has(t):
+				prob_completed += 1
+	var problem_solving_score: int = roundi(100.0 * float(prob_completed) / float(maxi(1, prob_total))) if prob_total > 0 else skills_score
+
+	var prev_completed: int = 0
+	var prev_total: int = 0
+	for t: String in prevention_tasks:
+		if attempted_tasks.has(t):
+			prev_total += 1
+			if completed_tasks.has(t):
+				prev_completed += 1
+	var prevention_score: int = roundi(100.0 * float(prev_completed) / float(maxi(1, prev_total))) if prev_total > 0 else attitude_score
+
 	return {
 		"attempted_task_count": task_count,
 		"completed_task_count": completed_count,
@@ -105,7 +207,10 @@ func get_assessment_summary() -> Dictionary:
 		"hints_used": hints_used,
 		"knowledge_score": knowledge_score,
 		"skills_score": skills_score,
-		"attitude_score": attitude_score
+		"attitude_score": attitude_score,
+		"cause_analysis_score": cause_analysis_score,
+		"problem_solving_score": problem_solving_score,
+		"prevention_score": prevention_score
 	}
 
 func _on_request_completed(response_code: int, response_data: Dictionary, payload: Dictionary) -> void:

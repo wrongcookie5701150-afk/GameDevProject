@@ -142,6 +142,8 @@ func _prepare_word_for_cutscene() -> void:
 	if typing_puzzle:
 		if "is_resolved" in typing_puzzle:
 			typing_puzzle.is_resolved = true
+		if typing_puzzle.has_method("prepare_for_cutscene"):
+			typing_puzzle.call("prepare_for_cutscene")
 		if typing_puzzle is CanvasItem:
 			typing_puzzle.show()
 		var feedback_lbl: Node = typing_puzzle.find_child("FeedbackLabel", true, false)

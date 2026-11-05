@@ -21,7 +21,12 @@ var _decoded_mode: String = ""
 
 func _ready() -> void:
 	super._ready()
-	_refresh_stage()
+	var gs = get_node_or_null("/root/GlobalSettings")
+	if gs and "pending_decoder_task" in gs and not str(gs.pending_decoder_task).is_empty():
+		resume_at_task(str(gs.pending_decoder_task))
+		gs.pending_decoder_task = ""
+	else:
+		_refresh_stage()
 	submit_button.pressed.connect(_on_submit_pressed)
 	hint_button.pressed.connect(_on_hint_pressed)
 	answer_input.text_submitted.connect(func(_t: String) -> void: _on_submit_pressed())

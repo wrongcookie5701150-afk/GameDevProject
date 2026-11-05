@@ -20,6 +20,7 @@ var _nearby_object: InteractObject
 
 var _chat_with_march_completed: bool = false
 var _taodam_ready_on_desk: bool = false
+var _bookshelf_inspected: bool = false
 var _ev_drive_collected: bool = false
 var _forensic_image_created: bool = false
 var _last_interact_frame: int = -1
@@ -75,13 +76,31 @@ func _ready() -> void:
 	var inv = get_node_or_null("/root/InventoryManager")
 	if inv and inv.has_method("has_item") and inv.has_item("ev_drive"):
 		_ev_drive_collected = true
+		_bookshelf_inspected = true
+		_taodam_ready_on_desk = true
 		if ev_drive_object:
 			ev_drive_object.hide()
 			ev_drive_object.collision_layer = 0
 			if ev_drive_object.interaction_area:
 				ev_drive_object.interaction_area.collision_layer = 0
-	elif ev_drive_object:
-		ev_drive_object.show()
+		if tao_dam_object:
+			tao_dam_object.show()
+			tao_dam_object.collision_layer = 1
+			if tao_dam_object.interaction_area:
+				tao_dam_object.interaction_area.collision_layer = 2
+				tao_dam_object.interaction_area.monitoring = true
+				tao_dam_object.interaction_area.monitorable = true
+	else:
+		if ev_drive_object:
+			ev_drive_object.show()
+		# Hide tao_dam_object until bookshelf is inspected
+		if tao_dam_object:
+			tao_dam_object.hide()
+			tao_dam_object.collision_layer = 0
+			if tao_dam_object.interaction_area:
+				tao_dam_object.interaction_area.collision_layer = 0
+				tao_dam_object.interaction_area.monitoring = false
+				tao_dam_object.interaction_area.monitorable = false
 
 	if player:
 		player.set_movement_enabled(true)
@@ -89,13 +108,13 @@ func _ready() -> void:
 func _connect_all_interact_objects() -> void:
 	var objects = find_children("*", "InteractObject", true, false)
 	for node in objects:
-		var child := node as InteractObject
+		var child: InteractObject = node as InteractObject
 		if not child:
 			continue
 		if child.object_id == "object" and child.name == "Desktop":
 			child.object_id = "computer"
 			child.prompt_message = "- กด [Spacebar] ใช้คอมพิวเตอร์"
-		var oid := child.object_id.to_lower()
+		var oid: String = child.object_id.to_lower()
 		if oid == "taodam" or oid == "notebook":
 			tao_dam_object = child
 		elif oid == "bookshelf":
@@ -200,20 +219,23 @@ func _on_interactable_approached(object: InteractObject, _p: Node2D) -> void:
 	if object_detail and object:
 		match object.object_id.to_lower():
 			"taodam", "notebook":
-				if not _taodam_ready_on_desk:
-					object_detail.text = "TaoDam: กด [Spacebar] เพื่อจัดวางเต่าดำบนโต๊ะ"
-				elif not _forensic_image_created:
+				if not _forensic_image_created:
 					object_detail.text = "TaoDam: วางพร้อมแล้ว! ไปทำ Image ใส่แฟลชไดรฟ์ที่ PC ก่อน"
 				else:
 					object_detail.text = "TaoDam: กด [Spacebar] เพื่อเปิดเครื่องเต่าดำ"
-			"bookshelf", "ev_drive":
+			"bookshelf":
+				if not _bookshelf_inspected:
+					object_detail.text = "Bookshelf: กด [Spacebar] เพื่อค้นหาเต่าดำและ Flashdrive"
+				else:
+					object_detail.text = "Bookshelf: หยิบเต่าดำและ Flashdrive (EV-DRIVE) มาแล้ว"
+			"ev_drive":
 				if not _ev_drive_collected:
 					object_detail.text = "Flashdrive (EV-DRIVE): กด [Spacebar] เพื่อหยิบแฟลชไดรฟ์"
 				else:
 					object_detail.text = "Bookshelf: เก็บแฟลชไดรฟ์ EV-DRIVE มาแล้ว"
 			"computer", "desktop":
-				if not _ev_drive_collected:
-					object_detail.text = "PC ของเมย์: ไปหยิบแฟลชไดรฟ์จากชั้นหนังสือมาเสียบทำ Image"
+				if not _bookshelf_inspected or not _ev_drive_collected:
+					object_detail.text = "PC ของเมย์: ไปหยิบเต่าดำและแฟลชไดรฟ์จากชั้นหนังสือมาก่อน"
 				elif not _forensic_image_created:
 					object_detail.text = "PC ของเมย์: กด [Spacebar] เพื่อทำ Forensic Image ลงแฟลชไดรฟ์"
 				else:
@@ -260,38 +282,25 @@ func _on_interactable_requested(interact_object: InteractObject) -> void:
 
 	match obj_id:
 		"taodam", "notebook":
-			if not _taodam_ready_on_desk:
-				_taodam_ready_on_desk = true
+			if not _forensic_image_created:
 				if object_detail:
-					object_detail.text = "เมย์: หยิบโน้ตบุ๊ก 'เต่าดำ' มาวางเตรียมไว้บนโต๊ะเรียบร้อย!"
+					object_detail.text = "เมย์: ต้องเอา Flashdrive ไปเสียบเครื่อง PC เพื่อทำ Forensic Image ก่อน!"
 					object_detail.show()
-				_refresh_objective_text()
-				if _forensic_image_created:
-					_enter_taodam_isolation_scene()
 			else:
-				if not _ev_drive_collected:
-					if object_detail:
-						object_detail.text = "เมย์: ต้องไปหยิบ Flashdrive ที่ชั้นหนังสือมาทำ Image ก่อน!"
-						object_detail.show()
-				elif not _forensic_image_created:
-					if object_detail:
-						object_detail.text = "เมย์: เอา Flashdrive ไปเสียบเครื่อง PC เพื่อทำ Forensic Image ก่อน!"
-						object_detail.show()
-				else:
-					_enter_taodam_isolation_scene()
+				_enter_taodam_isolation_scene()
 
 		"bookshelf", "ev_drive":
-			if not _ev_drive_collected:
-				_collect_ev_drive()
+			if not _bookshelf_inspected or not _ev_drive_collected:
+				_inspect_bookshelf()
 			else:
 				if object_detail:
-					object_detail.text = "เมย์: เก็บ Flashdrive (EV-DRIVE) เข้ากระเป๋าแล้ว"
+					object_detail.text = "เมย์: เก็บเต่าดำและ Flashdrive (EV-DRIVE) ออกมาเรียบร้อยแล้ว"
 					object_detail.show()
 
 		"computer", "desktop":
-			if not _ev_drive_collected:
+			if not _bookshelf_inspected or not _ev_drive_collected:
 				if object_detail:
-					object_detail.text = "เมย์: ต้องไปหยิบ Flashdrive จากชั้นหนังสือมาก่อน!"
+					object_detail.text = "เมย์: ต้องไปหยิบเต่าดำและ Flashdrive จากชั้นหนังสือมาก่อน!"
 					object_detail.show()
 				_refresh_objective_text()
 			elif not _forensic_image_created:
@@ -300,6 +309,24 @@ func _on_interactable_requested(interact_object: InteractObject) -> void:
 				if object_detail:
 					object_detail.text = "เมย์: คัดลอก Forensic Image ลง Flashdrive แล้ว ไปเปิดเต่าดำได้เลย!"
 					object_detail.show()
+
+func _inspect_bookshelf() -> void:
+	_bookshelf_inspected = true
+	_taodam_ready_on_desk = true
+	if tao_dam_object:
+		tao_dam_object.show()
+		tao_dam_object.collision_layer = 1
+		if tao_dam_object.interaction_area:
+			tao_dam_object.interaction_area.collision_layer = 2
+			tao_dam_object.interaction_area.monitoring = true
+			tao_dam_object.interaction_area.monitorable = true
+	
+	_collect_ev_drive()
+	
+	if object_detail:
+		object_detail.text = "เมย์: พบโน้ตบุ๊ก 'เต่าดำ' และ Flashdrive ที่ชั้นหนังสือ! นำเต่าดำมาวางบนโต๊ะแล้ว"
+		object_detail.show()
+	_refresh_objective_text()
 
 func _collect_ev_drive() -> void:
 	_ev_drive_collected = true
@@ -315,9 +342,6 @@ func _collect_ev_drive() -> void:
 	if inv_manager and inv_manager.has_method("add_item"):
 		inv_manager.add_item("ev_drive", "EV-DRIVE", load("res://assets/Icon32x32/disk.png"), "EV-DRIVE (E:) - แฟลชไดรฟ์สำหรับเก็บ Forensic Image")
 	
-	if object_detail:
-		object_detail.text = "เมย์: ได้แฟลชไดรฟ์ EV-DRIVE แล้ว! นำไปทำ Image ที่เครื่อง PC กัน"
-		object_detail.show()
 	_refresh_objective_text()
 
 func _create_forensic_image_on_pc() -> void:
@@ -344,11 +368,8 @@ func _refresh_objective_text() -> void:
 		return
 	if not _chat_with_march_completed:
 		status_label.text = "     ภารกิจ: กด [P] เพื่อเปิดมือถือ\n           - คุยขอคำปรึกษาจากพี่มาร์ช (March)"
-	elif not _ev_drive_collected:
-		if not _taodam_ready_on_desk:
-			status_label.text = "     ภารกิจ: ไปวาง 'เต่าดำ' บนโต๊ะ และหยิบ\n           - Flashdrive ที่ชั้นหนังสือ [Spacebar]"
-		else:
-			status_label.text = "     ภารกิจ: เดินไปที่ชั้นหนังสือ\n           - กด [Spacebar] หยิบ Flashdrive (EV-DRIVE)"
+	elif not _bookshelf_inspected or not _ev_drive_collected:
+		status_label.text = "     ภารกิจ: เดินไปที่ชั้นหนังสือ (Bookshelf)\n           - กด [Spacebar] หาเต่าดำและ Flashdrive"
 	elif not _forensic_image_created:
 		status_label.text = "     ภารกิจ: นำ Flashdrive ไปที่เครื่อง PC ของเมย์\n           - กด [Spacebar] เพื่อทำ Forensic Image"
 	else:

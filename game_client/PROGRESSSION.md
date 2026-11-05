@@ -6,6 +6,8 @@
 - **Genre:** 2D Top-Down Story-Driven Educational Cybersecurity Game
 - **Architecture:** 7-Scene Linear Flow alternating between Bedroom/Phone (`BaseWorldScene`), May's PC (`DesktopScreenController`), and TaoDam Forensic Laptop (`NotebookScreen`), powered by reusable `BasePuzzleUI` subclasses and `TelemetryManager`.
 
+add docs information 
+
 ## 2. Current 7-Scene Structure & Status
 
 - **✅ Scene 1 (`res://scenes/scene_01_intro/Scene_01_Intro.tscn`) — Intro Cutscene**
@@ -15,7 +17,7 @@
   - Player reads Mesa's chat messages (`[P]`, `T01`) and walks to May's Desktop PC (`[Spacebar]`, `T02`) to transition directly to Scene 3.
 - **✅ Scene 3 (`res://scenes/scene_03_incident/Scene_03_Incident.tscn`) — May's PC: Typing Game & Incident Cutscene**
   - `Scene_03_Incident.gd` now extends `DesktopScreenController` (`desktop_screen.gd`).
-  - **Phase A (Interactive)**: Player opens `GG Disk`, downloads `งานกลุ่ม`, opens `Report.docx` in `MsWord`, enables Macro content (`T03`), and completes `Puzzle_Typing_Game` (`T04`).
+  - **Phase A (Interactive)**: Player opens `GG Disk`, downloads `งานกลุ่ม`, opens `Report.docx` in `MsWord`, enables0nt (`T03`), and completes `Puzzle_Typing_Game` (`T04`).
   - **Phase B (Cutscene)**: Automatically runs the timelapse sequence (`19:30` -> `21:23`), prompts player to click `Save`, plays the red glitch flash, locks files (`.locked`), displays `RansomNote`, shows March's Discord notification toast, and enables `ออก (Exit)` to transition to Scene 4.
 - **✅ Scene 4 (`res://scenes/world_scenes/scene_04_investigation_intro/Scene_04_Investigation_Intro.tscn`) — Bedroom & Phone: Prep TaoDam & Forensic Image**
   - Dedicated Bedroom & Phone scene (`PhonePanelInvestigation`).

