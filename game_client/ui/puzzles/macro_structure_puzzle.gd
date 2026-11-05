@@ -5,6 +5,9 @@ extends BaseClickSelectPuzzle
 @onready var hint_button: Button = $Panel/Content/HintButton
 
 func _ready() -> void:
+	hint_tier_1 = "เอกสาร docx แท้จริงแล้วเป็นไฟล์ ZIP ที่บีบอัดไฟล์ XML และ Binary ไว้ด้านใน"
+	hint_tier_2 = "โค้ดมาโครที่ประสงค์ร้ายไม่ได้อยู่ใน document.xml แต่ถูกคอมไพล์เป็นโมดูล vba"
+	hint_tier_3 = "คลิกเลือก 'word/vbaProject.bin' ซึ่งเป็นส่วนเก็บชุดคำสั่ง VBA Macro"
 	super._ready()
 	_add_component("word/document.xml", "document_xml")
 	_add_component("word/vbaProject.bin", "vba_project")
@@ -27,6 +30,7 @@ func _add_component(label: String, component_id: String) -> void:
 	})
 
 func _on_component_selected(index: int) -> void:
+	mark_decision_started()
 	var metadata: Dictionary = components.get_item_metadata(index)
 	submit_selection(StringName(metadata["component_id"]), metadata)
 
@@ -61,5 +65,5 @@ func on_solve_failed() -> void:
 	feedback_label.text = "❌ ส่วนประกอบนี้เป็นโครงสร้างเอกสารปกติ ให้คลิกเลือก word/vbaProject.bin ที่เป็นโค้ด Macro"
 
 func _on_hint_pressed() -> void:
-	hint_used = true
-	feedback_label.text = "💡 คำใบ้: โค้ดมาโครของ Word จะถูกฝังอยู่ในไฟล์ไบนารีชื่อ word/vbaProject.bin (บรรทัดที่ 2)"
+	var hint_msg: String = request_scaffolding_hint()
+	feedback_label.text = "💡 คำใบ้ [ระดับ %d]: %s" % [current_hint_tier, hint_msg]

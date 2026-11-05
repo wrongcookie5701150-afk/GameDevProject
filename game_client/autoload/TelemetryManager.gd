@@ -40,6 +40,9 @@ var is_adaptive_hint_enabled: bool = false
 var current_difficulty_multiplier: float = 1.0
 var active_timers: Dictionary = {}
 var puzzle_submission_history: Array[Dictionary] = []
+var pretest_score: int = -1
+var posttest_score: int = -1
+var session_task_records: Dictionary = {}
 
 var _network_adapter: TelemetryNetworkAdapter
 
@@ -89,6 +92,29 @@ func track_event(
 		"hint_used": hint_used,
 		"metrics": metrics
 	}
+	if not task_id.is_empty():
+		session_task_records[task_id] = payload
+
+	if metrics.has("pretest_score"):
+		pretest_score = int(metrics.get("pretest_score", -1))
+		if pretest_score >= 0:
+			if pretest_score < 7:
+				current_player_cluster = "Beginner"
+				is_adaptive_hint_enabled = true
+				current_difficulty_multiplier = 0.8
+			else:
+				current_player_cluster = "Expert"
+				is_adaptive_hint_enabled = false
+				current_difficulty_multiplier = 1.0
+			adaptive_gameplay_updated.emit(
+				current_player_cluster,
+				is_adaptive_hint_enabled,
+				current_difficulty_multiplier
+			)
+
+	if metrics.has("posttest_score"):
+		posttest_score = int(metrics.get("posttest_score", -1))
+
 	_save_local_log(payload)
 	_network_adapter.send_event(BACKEND_URL, payload)
 
@@ -200,6 +226,10 @@ func get_assessment_summary() -> Dictionary:
 				prev_completed += 1
 	var prevention_score: int = roundi(100.0 * float(prev_completed) / float(maxi(1, prev_total))) if prev_total > 0 else attitude_score
 
+	var valid_pre: int = maxi(0, pretest_score)
+	var valid_post: int = maxi(0, posttest_score)
+	var learning_gain: int = (posttest_score - pretest_score) if (pretest_score >= 0 and posttest_score >= 0) else 0
+
 	return {
 		"attempted_task_count": task_count,
 		"completed_task_count": completed_count,
@@ -210,7 +240,10 @@ func get_assessment_summary() -> Dictionary:
 		"attitude_score": attitude_score,
 		"cause_analysis_score": cause_analysis_score,
 		"problem_solving_score": problem_solving_score,
-		"prevention_score": prevention_score
+		"prevention_score": prevention_score,
+		"pretest_score": valid_pre,
+		"posttest_score": valid_post,
+		"learning_gain": learning_gain
 	}
 
 func _on_request_completed(response_code: int, response_data: Dictionary, payload: Dictionary) -> void:

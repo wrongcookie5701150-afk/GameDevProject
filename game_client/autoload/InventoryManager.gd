@@ -15,6 +15,45 @@ signal visibility_changed(is_visible: bool)
 
 const MAX_SLOTS: int = 3
 
+## One-way investigation progression phase
+## 0 = Before TaoDam (Scene 4 initial)
+## 1 = Investigating on TaoDam (Scene 5 & 6)
+## 2 = TaoDam investigation done (Returned to bedroom in Scene 4 to pin notes and go to PC)
+## 3 = Recovery & Post-test in Scene 7
+var investigation_phase: int = 0
+var pinned_notes: Array[String] = []
+
+const KNOWLEDGE_NOTES: Dictionary = {
+	"note_forensic_prep": {
+		"name": "📝 โน้ต #1: การเก็บสำเนาหลักฐาน",
+		"short_title": "Forensic Image",
+		"description": "บันทึกการทำ Forensic Image แบบ Read-only ลงแฟลชไดรฟ์แยก (นำไปแปะที่ NoteBoard เพื่ออ่านสรุป)"
+	},
+	"note_isolation_logs": {
+		"name": "📝 โน้ต #2: การแยกเครื่อง & ตรวจ Log",
+		"short_title": "Isolation & Logs",
+		"description": "บันทึกการ Isolate เต่าดำ, MD5 Hash, Event Log และ Typosquatting (นำไปแปะที่ NoteBoard เพื่ออ่านสรุป)"
+	},
+	"note_malware_payload": {
+		"name": "📝 โน้ต #3: โครงสร้างมาโคร & เพย์โหลด",
+		"short_title": "Macro & Payload",
+		"description": "บันทึกโค้ด vbaProject.bin และการถอดรหัส Base64/Hex (นำไปแปะที่ NoteBoard เพื่ออ่านสรุป)"
+	},
+	"note_persistence_stop": {
+		"name": "📝 โน้ต #4: การตัดวงจรฝังตัว",
+		"short_title": "Persistence Stop",
+		"description": "บันทึกขั้นตอนหยุด Persistence 7 ขั้นตอนใน Safe Mode (นำไปแปะที่ NoteBoard เพื่ออ่านสรุป)"
+	},
+	"note_backup_recovery": {
+		"name": "📝 โน้ต #5: กฎสำรองข้อมูล 3-2-1",
+		"short_title": "3-2-1 Backup",
+		"description": "บันทึกกฎสำรองข้อมูล 3-2-1 และการปิด Cloud Sync (นำไปแปะที่ NoteBoard เพื่ออ่านสรุป)"
+	}
+}
+
+var _pencil_sfx_player: AudioStreamPlayer = null
+var _paper_pin_player: AudioStreamPlayer = null
+
 # ช่องเก็บไอเทม: Array ขนาด MAX_SLOTS เก็บ Dictionary ของแต่ละไอเทม (หรือ {} ถ้าว่าง)
 # โครงสร้างของ Dictionary:
 # {
@@ -142,7 +181,189 @@ func remove_item(item_id: String) -> bool:
 func clear() -> void:
 	_init_slots()
 	deselect()
+	investigation_phase = 0
+	pinned_notes.clear()
 	inventory_updated.emit()
+
+func _init_pencil_sfx() -> void:
+	if _pencil_sfx_player:
+		return
+	_pencil_sfx_player = AudioStreamPlayer.new()
+	_pencil_sfx_player.name = "PencilSFXPlayer"
+	var sfx_idx: int = AudioServer.get_bus_index("SFX")
+	_pencil_sfx_player.bus = "SFX" if sfx_idx != -1 else "Master"
+	add_child(_pencil_sfx_player)
+	
+	var sample_rate: int = 22050
+	var duration: float = 0.38
+	var num_samples: int = int(sample_rate * duration)
+	var data: PackedByteArray = PackedByteArray()
+	data.resize(num_samples * 2)
+	
+	for i in range(num_samples):
+		var t: float = float(i) / float(sample_rate)
+		var stroke_env: float = 0.0
+		if t < 0.11:
+			stroke_env = sin(t / 0.11 * PI)
+		elif t >= 0.13 and t < 0.24:
+			stroke_env = sin((t - 0.13) / 0.11 * PI)
+		elif t >= 0.26 and t < 0.37:
+			stroke_env = sin((t - 0.26) / 0.11 * PI)
+		
+		var noise: float = randf_range(-1.0, 1.0) * 0.75
+		var resonance: float = sin(t * 3100.0 * TAU) * 0.25
+		var sample_val: float = (noise + resonance) * stroke_env * 0.22
+		var sample_int: int = int(clamp(sample_val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, sample_int)
+	
+	var wav: AudioStreamWAV = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = sample_rate
+	wav.data = data
+	_pencil_sfx_player.stream = wav
+
+func play_pencil_sfx() -> void:
+	if not _pencil_sfx_player:
+		_init_pencil_sfx()
+	if _pencil_sfx_player and _pencil_sfx_player.stream:
+		_pencil_sfx_player.play()
+
+func _init_paper_pin_sfx() -> void:
+	if _paper_pin_player:
+		return
+	_paper_pin_player = AudioStreamPlayer.new()
+	_paper_pin_player.name = "PaperPinPlayer"
+	var sfx_idx: int = AudioServer.get_bus_index("SFX")
+	_paper_pin_player.bus = "SFX" if sfx_idx != -1 else "Master"
+	add_child(_paper_pin_player)
+	
+	var sample_rate: int = 22050
+	var duration: float = 0.15
+	var num_samples: int = int(sample_rate * duration)
+	var data: PackedByteArray = PackedByteArray()
+	data.resize(num_samples * 2)
+	
+	for i in range(num_samples):
+		var t: float = float(i) / float(sample_rate)
+		var env: float = exp(-t * 28.0)
+		var pop: float = sin(t * 450.0 * TAU) * 0.6 + randf_range(-0.4, 0.4) * 0.4
+		var sample_val: float = pop * env * 0.3
+		var sample_int: int = int(clamp(sample_val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, sample_int)
+	
+	var wav: AudioStreamWAV = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = sample_rate
+	wav.data = data
+	_paper_pin_player.stream = wav
+
+func play_paper_pin_sfx() -> void:
+	if not _paper_pin_player:
+		_init_paper_pin_sfx()
+	if _paper_pin_player and _paper_pin_player.stream:
+		_paper_pin_player.play()
+
+## แจกโน้ตองค์ความรู้เข้ากระเป๋า 3 ช่อง พร้อมเสียงดินสอและ Toast
+func award_knowledge_note(note_id: String, parent_context: Node = null) -> int:
+	if not KNOWLEDGE_NOTES.has(note_id):
+		push_warning("[InventoryManager] Unknown note_id: %s" % note_id)
+		return -1
+	
+	if pinned_notes.has(note_id):
+		return -1
+	for slot in slots:
+		if not slot.is_empty() and slot.get("id", "") == note_id:
+			return -1
+	
+	play_pencil_sfx()
+	
+	var note_info: Dictionary = KNOWLEDGE_NOTES[note_id]
+	var note_name: String = note_info.get("name", "📝 โน้ตความรู้")
+	var note_desc: String = note_info.get("description", "")
+	var note_icon: Texture2D = load("res://assets/Icon32x32/book.png")
+	
+	var slot_idx: int = add_item(note_id, note_name, note_icon, note_desc)
+	show_knowledge_toast("✏️ จดบันทึกองค์ความรู้ใหม่ลงกระเป๋าแล้ว!\n(นำไปแปะที่ NoteBoard เพื่ออ่านสรุป)", parent_context)
+	return slot_idx
+
+## แสดงแบนเนอร์ Toast แจ้งเตือนสั้นๆ ด้านบนของจอ
+func show_knowledge_toast(message: String, parent_context: Node = null) -> void:
+	var target_parent: Node = parent_context
+	if not target_parent:
+		var tree: SceneTree = get_tree()
+		if tree and tree.root:
+			target_parent = tree.root
+	if not target_parent:
+		return
+	
+	var toast_layer: CanvasLayer = CanvasLayer.new()
+	toast_layer.layer = 120
+	target_parent.add_child(toast_layer)
+	
+	var panel: PanelContainer = PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	panel.offset_left = 60.0
+	panel.offset_top = 8.0
+	panel.offset_right = -60.0
+	panel.offset_bottom = 36.0
+	
+	var sb: StyleBoxFlat = StyleBoxFlat.new()
+	sb.bg_color = Color(0.12, 0.16, 0.24, 0.95)
+	sb.border_color = Color(0.95, 0.82, 0.35, 0.9)
+	sb.border_width_left = 1
+	sb.border_width_top = 1
+	sb.border_width_right = 1
+	sb.border_width_bottom = 1
+	sb.corner_radius_top_left = 4
+	sb.corner_radius_top_right = 4
+	sb.corner_radius_bottom_right = 4
+	sb.corner_radius_bottom_left = 4
+	sb.content_margin_left = 8.0
+	sb.content_margin_top = 3.0
+	sb.content_margin_right = 8.0
+	sb.content_margin_bottom = 3.0
+	panel.add_theme_stylebox_override("panel", sb)
+	
+	var label: Label = Label.new()
+	label.text = message
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_font_size_override("font_size", 6)
+	label.add_theme_color_override("font_color", Color(1.0, 0.95, 0.75, 1.0))
+	panel.add_child(label)
+	toast_layer.add_child(panel)
+	
+	var timer := target_parent.get_tree().create_timer(3.0)
+	timer.timeout.connect(func() -> void:
+		if is_instance_valid(toast_layer):
+			toast_layer.queue_free()
+	)
+
+## แปะโน้ตที่กำลังเลือกอยู่ลงกระดาน NoteBoard
+func pin_active_note_to_board() -> String:
+	var active_id: String = get_active_item_id()
+	if active_id.begins_with("note_") and KNOWLEDGE_NOTES.has(active_id):
+		if not pinned_notes.has(active_id):
+			pinned_notes.append(active_id)
+		remove_item(active_id)
+		play_paper_pin_sfx()
+		return active_id
+	return ""
+
+## แปะโน้ตความรู้ทั้งหมดในกระเป๋าลงกระดาน NoteBoard
+func pin_all_inventory_notes_to_board() -> Array[String]:
+	var pinned_list: Array[String] = []
+	for i in range(MAX_SLOTS):
+		if not slots[i].is_empty():
+			var item_id: String = slots[i].get("id", "")
+			if item_id.begins_with("note_") and KNOWLEDGE_NOTES.has(item_id):
+				if not pinned_notes.has(item_id):
+					pinned_notes.append(item_id)
+				pinned_list.append(item_id)
+				remove_item(item_id)
+	if not pinned_list.is_empty():
+		play_paper_pin_sfx()
+	return pinned_list
 
 ## กำหนดการแสดงผล Inventory (ซ่อนเมื่อไม่ได้อยู่ใน Playground เช่น ตอนใช้คอม)
 func set_inventory_visible(visible_state: bool) -> void:

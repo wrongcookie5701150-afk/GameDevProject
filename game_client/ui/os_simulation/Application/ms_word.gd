@@ -9,7 +9,9 @@ signal close_requested
 @onready var macro_banner: PanelContainer = find_child("MacroBanner", true, false) as PanelContainer
 @onready var enable_button: Button = find_child("EnableButton", true, false) as Button
 @onready var status_label: Label = find_child("StatusLabel", true, false) as Label
-@onready var margin_container: MarginContainer = find_child("MarginContainer", true, false) as MarginContainer
+@onready var workspace: HBoxContainer = get_node_or_null("ColorRect/VBoxContainer/Workspace") as HBoxContainer
+@onready var workspace_margin: MarginContainer = get_node_or_null("ColorRect/VBoxContainer/Workspace/MarginContainer") as MarginContainer
+@onready var margin_container: MarginContainer = workspace_margin
 @onready var typing_puzzle: TypingGamePuzzle = find_child("TypingPuzzle", true, false) as TypingGamePuzzle
 @onready var report_editor: TextEdit = find_child("TextEdit", true, false) as TextEdit
 @onready var passage_label: RichTextLabel = find_child("PassageLabel", true, false) as RichTextLabel
@@ -17,10 +19,23 @@ signal close_requested
 @onready var hide_button: Button = find_child("Hide", true, false) as Button
 @onready var exit_button: Button = find_child("Exit", true, false) as Button
 @onready var save_button: Button = find_child("SaveButton", true, false) as Button
+@onready var word_count_label: Label = find_child("WordCountLabel", true, false) as Label
+@onready var page_count_label: Label = find_child("PageCountLabel", true, false) as Label
 
 var _is_macro_enabled: bool = false
 
 func _ready() -> void:
+	if not workspace:
+		workspace = get_node_or_null("ColorRect/VBoxContainer/Workspace") as HBoxContainer
+		if not workspace:
+			workspace = find_child("Workspace", true, false) as HBoxContainer
+	if not workspace_margin:
+		if workspace:
+			workspace_margin = workspace.get_node_or_null("MarginContainer") as MarginContainer
+		if not workspace_margin:
+			workspace_margin = get_node_or_null("ColorRect/VBoxContainer/Workspace/MarginContainer") as MarginContainer
+	margin_container = workspace_margin
+
 	if not hide_button:
 		hide_button = find_child("Hide", true, false) as Button
 	if not exit_button:
@@ -37,8 +52,6 @@ func _ready() -> void:
 		report_editor = find_child("TextEdit", true, false) as TextEdit
 	if not v_scroll_bar:
 		v_scroll_bar = find_child("VScrollBar", true, false) as VScrollBar
-	if not margin_container:
-		margin_container = find_child("MarginContainer", true, false) as MarginContainer
 	if not passage_label:
 		passage_label = find_child("PassageLabel", true, false) as RichTextLabel
 	
@@ -62,6 +75,7 @@ func _ready() -> void:
 	if macro_banner:
 		macro_banner.show()
 	
+	update_word_count()
 	_setup_scrollbar()
 
 func _setup_scrollbar() -> void:
@@ -90,48 +104,79 @@ func _bind_scroll_input_recursive(node: Node) -> void:
 	for child: Node in node.get_children():
 		_bind_scroll_input_recursive(child)
 
+func _get_view_height() -> float:
+	if workspace_margin and workspace_margin.size.y > 0.0:
+		return workspace_margin.size.y
+	if workspace and workspace.size.y > 0.0:
+		return workspace.size.y
+	return 190.0
+
+func _calculate_content_height() -> float:
+	var view_h: float = _get_view_height()
+	
+	if not passage_label:
+		return view_h
+	
+	var text_h: float = 0.0
+	if passage_label.has_method("get_content_height"):
+		text_h = float(passage_label.get_content_height())
+	
+	var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
+	var estimated_h: float = 0.0
+	if not raw_text.is_empty():
+		var lines: PackedStringArray = raw_text.split("\n")
+		var estimated_lines: int = 0
+		for l: String in lines:
+			var l_len: int = l.length()
+			if l_len == 0:
+				estimated_lines += 1
+			else:
+				# In ShareTechMono size 6 with inner width ~303px (~3.24px per char),
+				# realistic word wrapping occurs at ~75-80 chars per line.
+				estimated_lines += maxi(1, int(ceil(float(l_len) / 80.0)))
+		var godot_lines: int = passage_label.get_line_count()
+		if godot_lines > 0:
+			estimated_lines = maxi(estimated_lines, godot_lines)
+		estimated_h = float(estimated_lines) * 10.0
+	
+	text_h = maxf(text_h, estimated_h)
+	
+	# StyleBox margins: top = 10.0, bottom = 8.0 (total 18.0)
+	var content_h: float = text_h + 18.0
+	return maxf(content_h, view_h)
+
 func _update_scrollbar_range() -> void:
+	update_word_count()
 	if not v_scroll_bar:
 		return
 	
-	var view_h: float = 130.0
-	if margin_container:
-		view_h = margin_container.size.y if margin_container.size.y > 0.0 else margin_container.custom_minimum_size.y
+	var view_h: float = _get_view_height()
+	var content_h: float = _calculate_content_height()
 	
-	var content_h: float = view_h
 	if passage_label:
-		if passage_label.has_method("get_content_height"):
-			var ch: float = float(passage_label.get_content_height())
-			if ch > 0.0:
-				content_h = maxf(content_h, ch + 18.0)
-		
-		var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
-		if not raw_text.is_empty():
-			var lines: PackedStringArray = raw_text.split("\n")
-			var total_lines: int = 0
-			for l: String in lines:
-				var l_len: int = l.length()
-				if l_len == 0:
-					total_lines += 1
-				else:
-					total_lines += maxi(1, int(ceil(float(l_len) / 46.0)))
-			var godot_lines: int = passage_label.get_line_count()
-			total_lines = maxi(total_lines, godot_lines)
-			content_h = maxf(content_h, float(total_lines) * 10.0 + 18.0)
-		
-		# Option A: Stretch PassageLabel paper height to fit content perfectly
-		passage_label.size.y = content_h
 		passage_label.custom_minimum_size.y = content_h
-		passage_label.offset_bottom = content_h
+		passage_label.size.y = content_h
+		# NOTE: Do NOT assign passage_label.offset_bottom = content_h!
+		# If position.y is negative (-val), setting offset_bottom sets size.y = content_h + val,
+		# which creates an extra val pixels (1 screen size) of blank paper below the text.
 	
 	if report_editor:
-		report_editor.size.y = content_h
 		report_editor.custom_minimum_size.y = content_h
-		report_editor.offset_bottom = content_h
+		report_editor.size.y = content_h
 	
 	var max_scroll: float = maxf(0.0, content_h - view_h)
-	v_scroll_bar.max_value = max_scroll
-	v_scroll_bar.page = view_h
+	if max_scroll <= 0.0:
+		v_scroll_bar.min_value = 0.0
+		v_scroll_bar.max_value = 0.0
+		v_scroll_bar.page = 0.0
+		v_scroll_bar.value = 0.0
+		v_scroll_bar.hide()
+		_apply_scroll(0.0)
+	else:
+		v_scroll_bar.show()
+		v_scroll_bar.min_value = 0.0
+		v_scroll_bar.max_value = content_h
+		v_scroll_bar.page = view_h
 
 func _on_scrollbar_value_changed(val: float) -> void:
 	_apply_scroll(val)
@@ -145,74 +190,78 @@ func _apply_scroll(val: float) -> void:
 func _on_scroll_input(event: InputEvent) -> void:
 	if typing_puzzle and typing_puzzle.has_method("is_pretest_active") and typing_puzzle.is_pretest_active():
 		return
-	if not v_scroll_bar:
+	if not v_scroll_bar or not v_scroll_bar.visible:
 		return
 	if event is InputEventMouseButton and event.pressed:
 		_update_scrollbar_range()
-		var step: float = 8.0
+		var step: float = 12.0
+		var max_val: float = maxf(0.0, v_scroll_bar.max_value - v_scroll_bar.page)
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			v_scroll_bar.value = maxf(v_scroll_bar.min_value, v_scroll_bar.value - step)
+			_apply_scroll(v_scroll_bar.value)
 			get_viewport().set_input_as_handled()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			v_scroll_bar.value = minf(v_scroll_bar.max_value, v_scroll_bar.value + step)
+			v_scroll_bar.value = minf(max_val, v_scroll_bar.value + step)
+			_apply_scroll(v_scroll_bar.value)
 			get_viewport().set_input_as_handled()
 
 func scroll_following_content(step_speed: float = -1.0) -> void:
 	_update_scrollbar_range()
-	if not v_scroll_bar:
+	if not v_scroll_bar or not v_scroll_bar.visible:
 		return
 	
-	var view_h: float = 130.0
-	if margin_container:
-		view_h = margin_container.size.y if margin_container.size.y > 0.0 else margin_container.custom_minimum_size.y
+	var view_h: float = _get_view_height()
 	
-	# Determine effective line count accurately and monotonically
-	var total_lines: int = 0
-	if passage_label:
-		var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
-		if not raw_text.is_empty():
-			var lines: PackedStringArray = raw_text.split("\n")
-			for l: String in lines:
-				var l_len: int = l.length()
-				if l_len == 0:
-					total_lines += 1
-				else:
-					total_lines += maxi(1, int(ceil(float(l_len) / 46.0)))
-		
-		# If Godot's line count is available and higher, use it
+	var text_h: float = 0.0
+	if passage_label and passage_label.has_method("get_content_height"):
+		text_h = float(passage_label.get_content_height())
+	
+	var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
+	var estimated_h: float = 0.0
+	if not raw_text.is_empty():
+		var lines: PackedStringArray = raw_text.split("\n")
+		var total_lines: int = 0
+		for l: String in lines:
+			var l_len: int = l.length()
+			if l_len == 0:
+				total_lines += 1
+			else:
+				total_lines += maxi(1, int(ceil(float(l_len) / 80.0)))
 		var godot_lines: int = passage_label.get_line_count()
-		total_lines = maxi(total_lines, godot_lines)
+		if godot_lines > 0:
+			total_lines = maxi(total_lines, godot_lines)
+		estimated_h = float(total_lines) * 10.0
 	
-	# StyleBox margins: top = 10.0, line_height = 10.0, bottom padding = 8.0
-	var current_bottom: float = float(total_lines) * 10.0 + 18.0
+	text_h = maxf(text_h, estimated_h)
 	
-	# Only start scrolling when the text actually exceeds the visible viewport
+	var current_bottom: float = text_h + 18.0
+	var max_val: float = maxf(0.0, v_scroll_bar.max_value - v_scroll_bar.page)
+	
 	var target_val: float = 0.0
 	if current_bottom > view_h:
-		target_val = clampf(current_bottom - view_h, 0.0, v_scroll_bar.max_value)
+		target_val = clampf(current_bottom - view_h, 0.0, max_val)
 	
-	# Smoothly follow the typed text without rushing or overshooting
-	var dist: float = target_val - v_scroll_bar.value
-	var step: float = 0.4
 	if step_speed > 0.0:
-		step = step_speed
+		v_scroll_bar.value = move_toward(v_scroll_bar.value, target_val, step_speed)
 	else:
-		if dist > 0.0:
-			step = clampf(dist * 0.08, 0.3, 0.8)
-		else:
-			step = 0.4
+		# Lock the active typing position flush to the bottom edge of the application
+		v_scroll_bar.value = target_val
 	
-	v_scroll_bar.value = move_toward(v_scroll_bar.value, target_val, step)
+	_apply_scroll(v_scroll_bar.value)
 
 func scroll_to_ratio(ratio: float) -> void:
 	_update_scrollbar_range()
-	if v_scroll_bar:
-		v_scroll_bar.value = clampf(ratio, 0.0, 1.0) * v_scroll_bar.max_value
+	if v_scroll_bar and v_scroll_bar.visible:
+		var max_val: float = maxf(0.0, v_scroll_bar.max_value - v_scroll_bar.page)
+		v_scroll_bar.value = clampf(ratio, 0.0, 1.0) * max_val
+		_apply_scroll(v_scroll_bar.value)
 
 func scroll_to_bottom() -> void:
 	_update_scrollbar_range()
-	if v_scroll_bar:
-		v_scroll_bar.value = v_scroll_bar.max_value
+	if v_scroll_bar and v_scroll_bar.visible:
+		var max_val: float = maxf(0.0, v_scroll_bar.max_value - v_scroll_bar.page)
+		v_scroll_bar.value = max_val
+		_apply_scroll(max_val)
 
 func scroll_to_top() -> void:
 	_update_scrollbar_range()
@@ -275,3 +324,28 @@ func _on_exit_pressed() -> void:
 
 func is_macro_enabled() -> bool:
 	return _is_macro_enabled
+
+func update_word_count() -> void:
+	if not word_count_label:
+		word_count_label = find_child("WordCountLabel", true, false) as Label
+	if not word_count_label:
+		return
+	
+	var text_str: String = ""
+	if passage_label:
+		text_str = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
+	elif report_editor:
+		text_str = report_editor.text
+	
+	var clean_str: String = text_str.strip_edges()
+	if clean_str.is_empty():
+		word_count_label.text = "0 words"
+		return
+	
+	var words: PackedStringArray = clean_str.split(" ", false)
+	var count: int = 0
+	for w: String in words:
+		var token: String = w.strip_edges()
+		if not token.is_empty() and token != "\n":
+			count += 1
+	word_count_label.text = "%d words" % count

@@ -8,6 +8,9 @@ extends BasePuzzleUI
 @onready var feedback_label: Label = find_child("FeedbackLabel", true, false) as Label
 
 func _ready() -> void:
+	hint_tier_1 = "ตรวจสอบมาตรการความปลอดภัย 4 ข้อก่อนใช้งานเครื่องวิเคราะห์แยกส่วน (เต่าดำ)"
+	hint_tier_2 = "ต้องปิด Wi-Fi, ถอดสาย LAN, ไม่ล็อกอินบัญชีส่วนตัว และไม่มีไฟล์สำคัญในเครื่อง"
+	hint_tier_3 = "ทำเครื่องหมายครบทั้ง 4 ข้อ: ปิด Wi-Fi, ถอด LAN, ออกจากระบบบัญชี, และล้างไฟล์สำคัญ"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var task_obj: Control = find_child("TaskObjective", true, false) as Control
 	if task_obj:
@@ -45,6 +48,7 @@ func start_puzzle() -> void:
 	_setup_automated_checks()
 
 func update_condition(condition_key: String, value: bool) -> void:
+	mark_decision_started()
 	_resolve_nodes()
 	match condition_key:
 		"wifi_disabled":
@@ -113,6 +117,7 @@ func on_solve_failed() -> void:
 		feedback_label.text = "Verify all four isolation conditions before continuing."
 
 func _on_submit_pressed() -> void:
+	mark_decision_started()
 	submit_puzzle(_checklist_values())
 
 func _checklist_values() -> Dictionary:

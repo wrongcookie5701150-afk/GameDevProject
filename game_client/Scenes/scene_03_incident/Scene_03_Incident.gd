@@ -4,7 +4,8 @@ const SCENE_04_PATH: String = "res://scenes/world_scenes/scene_04_investigation_
 
 # Cutscene Controls & Overlays
 @onready var ransom_note: PanelContainer = %RansomNote
-@onready var ransom_continue_btn: Button = $RansomNote/VBox/Body/ContentVBox/ContinueButton
+@onready var ransom_minimize_btn: Button = get_node_or_null("%MinimizeButton") as Button
+@onready var ransom_close_btn: Button = get_node_or_null("%CloseButton") as Button
 @onready var march_chat_panel: Panel = get_node_or_null("MarchChatPanel")
 @onready var skip_button: Button = %SkipCutsceneButton
 @onready var glitch_overlay: ColorRect = %GlitchOverlay
@@ -95,8 +96,15 @@ func _init_incident_overlays() -> void:
 func _connect_incident_signals() -> void:
 	if skip_button and not skip_button.pressed.is_connected(_on_skip_pressed):
 		skip_button.pressed.connect(_on_skip_pressed)
-	if ransom_continue_btn and not ransom_continue_btn.pressed.is_connected(_on_ransom_dismissed):
-		ransom_continue_btn.pressed.connect(_on_ransom_dismissed)
+	if not ransom_close_btn and ransom_note:
+		ransom_close_btn = ransom_note.find_child("CloseButton", true, false) as Button
+	if not ransom_minimize_btn and ransom_note:
+		ransom_minimize_btn = ransom_note.find_child("MinimizeButton", true, false) as Button
+	
+	if ransom_close_btn and not ransom_close_btn.pressed.is_connected(_on_ransom_dismissed):
+		ransom_close_btn.pressed.connect(_on_ransom_dismissed)
+	if ransom_minimize_btn and not ransom_minimize_btn.pressed.is_connected(_on_ransom_dismissed):
+		ransom_minimize_btn.pressed.connect(_on_ransom_dismissed)
 	
 	if ms_word_window:
 		if ms_word_window.has_signal("typing_completed") and not ms_word_window.typing_completed.is_connected(_on_typing_game_completed):
@@ -223,13 +231,20 @@ func _stream_text(text: String) -> void:
 		index += chunk_size
 		await get_tree().create_timer(0.04).timeout
 
-func _show_cutscene_toast(message: String) -> void:
+func _show_cutscene_toast(message: String, duration: float = 3.0) -> void:
 	if not notification_toast or not toast_label:
 		return
 	_toast_id += 1
+	var current_toast_id: int = _toast_id
 	toast_label.text = message
 	notification_toast.show()
 	notification_toast.move_to_front()
+	if duration > 0.0:
+		_toast_timer = get_tree().create_timer(duration)
+		_toast_timer.timeout.connect(func() -> void:
+			if is_instance_valid(self) and _toast_id == current_toast_id and notification_toast:
+				notification_toast.hide()
+		)
 
 func _hide_toast() -> void:
 	_toast_id += 1
@@ -254,11 +269,15 @@ func _ready_for_save_event() -> void:
 	if _passage_label:
 		_passage_label.text = FULL_REPORT_TEXT
 	
-	if ms_word_window and ms_word_window.has_method("scroll_to_bottom"):
-		ms_word_window.scroll_to_bottom()
-	
 	if clock_label:
 		clock_label.text = "21:23"
+	
+	await get_tree().process_frame
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+	
+	if ms_word_window and ms_word_window.has_method("scroll_to_bottom"):
+		ms_word_window.scroll_to_bottom()
 	
 	if ms_word_window and ms_word_window.has_method("highlight_save_button"):
 		ms_word_window.call("highlight_save_button")
@@ -362,7 +381,7 @@ func _on_app_activated(app_id: String) -> void:
 		_show_cutscene_toast("⚠️ ไม่สามารถเปิด Microsoft Word ได้: โปรแกรมถูกล็อกและไฟล์เสียหาย (.locked)")
 		return
 	if app_id == "discord" and _is_ransomware_triggered:
-		_show_cutscene_toast("💬 Discord (M4rch): Roblox ป่าวน้อง หรือทำการบ้านอยู่? (ไปคุยต่อในมือถือ)")
+		_show_cutscene_toast("💬 Discord: เล่น Roblox ป่าวน้อง")
 		return
 	super._on_app_activated(app_id)
 
@@ -393,15 +412,8 @@ func _on_ransom_dismissed() -> void:
 		leave_pc_button.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2, 1.0))
 		leave_pc_button.text = "ออก (Exit)"
 	
-	# ข้อความจากพี่มาร์ชในหน้าจอคอมขึ้นแค่อันเดียวคือ Roblox ป่าว
-	_show_cutscene_toast("💬 Discord: M4rchupikchu_inw101: Roblox ป่าวน้อง หรือทำการบ้านอยู่?")
-	
-	await get_tree().create_timer(2.0).timeout
-	if not is_instance_valid(self) or not is_inside_tree():
-		return
-	
-	# ชี้แนะให้เมย์ออกจากคอมไปอ่านและคุยต่อในมือถือ
-	_show_cutscene_toast("⚠️ เมย์: ไม่นะ! ไฟล์งานโดนล็อกหมดแล้ว! ต้องออกจากคอมไปคุยกับพี่มาร์ชในมือถือ (กด 'ออก' ที่ Taskbar)")
+	# แจ้งเตือนข้อความบนหน้าจอคอมพิวเตอร์หลัง Ransomware มีแค่ "เล่น Roblox ป่าวน้อง" (ที่เหลือดูได้ในมือถือ)
+	_show_cutscene_toast("💬 Discord: เล่น Roblox ป่าวน้อง")
 
 func _on_leave_pc_pressed() -> void:
 	if not _can_exit_pc:

@@ -116,6 +116,7 @@ res://
 ## Source Documents
 
 - [Abstract Alignment Plan](docs/Abstract_Alignment_Plan.md)
+- [Telemetry & Assessment Metrics Analysis](docs/Telemetry_Metrics_Analysis.md)
 - [Story Content](docs/Story%20Content.md)
 - [Architecture Plan](docs/Architecture_plan.md)
 - [Directory Tree](docs/Directory_tree.md)

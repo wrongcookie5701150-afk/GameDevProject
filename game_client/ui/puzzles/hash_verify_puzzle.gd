@@ -23,6 +23,9 @@ var _expected_hash: String = ""
 var _match_status: bool = false
 
 func _ready() -> void:
+	hint_tier_1 = "เลือกไฟล์หลักฐานในรายการเพื่อคำนวณค่า MD5 เทียบกับ Evidence Manifest"
+	hint_tier_2 = "ค่า Hash ทำหน้าที่เป็นลายนิ้วมือดิจิทัล ยืนยันว่าไฟล์ไม่ถูกดัดแปลงแก้ไขระหว่างนำมาตรวจ"
+	hint_tier_3 = "กดเลือกไฟล์ Report_Final.docx แล้วกด Verify MD5 เพื่อยืนยันความถูกต้องสมบูรณ์ของหลักฐาน"
 	super._ready()
 	for file_name: String in EVIDENCE_CONTENTS:
 		var item_index: int = evidence_list.add_item(file_name)
@@ -30,6 +33,7 @@ func _ready() -> void:
 	evidence_list.item_selected.connect(_on_evidence_selected)
 	verify_button.pressed.connect(_on_verify_pressed)
 	hash_input.text_submitted.connect(func(_t: String) -> void: _on_verify_pressed())
+	hash_input.text_changed.connect(func(_t: String) -> void: mark_decision_started())
 	manifest_label.text = "Select an evidence file to view its manifest MD5."
 	if evidence_list.item_count > 0 and _selected_file.is_empty():
 		evidence_list.select(0)
@@ -69,6 +73,7 @@ func on_solve_failed() -> void:
 	feedback_label.text = "Hash mismatch. Check the selected file and manifest value."
 
 func _on_evidence_selected(index: int) -> void:
+	mark_decision_started()
 	_selected_file = str(evidence_list.get_item_metadata(index))
 	_expected_hash = _calculate_md5(str(EVIDENCE_CONTENTS[_selected_file]))
 	manifest_label.text = "Evidence_Manifest.txt | %s | MD5: %s" % [_selected_file, _expected_hash]
@@ -76,6 +81,7 @@ func _on_evidence_selected(index: int) -> void:
 	feedback_label.text = "คำนวณค่า MD5 ของไฟล์ %s แล้ว กด Verify MD5 เพื่อเทียบกับ Manifest" % _selected_file
 
 func _on_verify_pressed() -> void:
+	mark_decision_started()
 	submit_puzzle(hash_input.text)
 
 func _calculate_md5(content: String) -> String:

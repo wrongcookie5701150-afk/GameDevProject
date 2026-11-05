@@ -10,6 +10,94 @@
 [ext_resource type="FontFile" uid="uid://d4beklbo4lpf5" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf" id="5_8nw4h"]
 [ext_resource type="Script" uid="uid://dnnc0n16qy8uy" path="res://ui/os_simulation/Application/ms_word.gd" id="5_script"]
 [ext_resource type="Texture2D" uid="uid://clf7xpoesnj6d" path="res://assets/Icon32x32/exit (2).png" id="5_tlii3"]
+[ext_resource type="Texture2D" uid="uid://b4w4u2ob7v6dd" path="res://assets/Icon32x32/undo.png" id="6_undo"]
+[ext_resource type="Texture2D" uid="uid://dpnyesknhy5wq" path="res://assets/Icon32x32/redo.png" id="7_redo"]
+[ext_resource type="Texture2D" uid="uid://b8ml6sqo6pors" path="res://assets/Icon32x32/text_bullets.png" id="8_bullets"]
+[ext_resource type="Texture2D" uid="uid://brgrxvqxvi2og" path="res://assets/Icon32x32/text_align_center.png" id="9_align"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ribbon_tab_file"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.08, 0.35, 0.68, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ribbon_tab_home"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.945098, 0.9490196, 0.9607843, 1)
+border_width_bottom = 2
+border_color = Color(0.08, 0.35, 0.68, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ribbon_bar"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.945098, 0.9490196, 0.9607843, 1)
+border_width_bottom = 1
+border_color = Color(0.82, 0.83, 0.86, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tool_btn"]
+content_margin_left = 3.0
+content_margin_top = 1.0
+content_margin_right = 3.0
+content_margin_bottom = 1.0
+bg_color = Color(1, 1, 1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.82, 0.85, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tool_btn_hover"]
+content_margin_left = 3.0
+content_margin_top = 1.0
+content_margin_right = 3.0
+content_margin_bottom = 1.0
+bg_color = Color(0.85, 0.9, 0.98, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.6, 0.9, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tool_btn_active"]
+content_margin_left = 3.0
+content_margin_top = 1.0
+content_margin_right = 3.0
+content_margin_bottom = 1.0
+bg_color = Color(0.78, 0.86, 0.98, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.45, 0.85, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_word_statusbar"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 1.0
+bg_color = Color(0.10588235, 0.36862745, 0.6901961, 1)
+border_width_top = 1
+border_color = Color(0.08, 0.3, 0.58, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48kt2"]
 
@@ -90,13 +178,6 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ftuyi"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bk5wb"]
-content_margin_left = 15.0
-content_margin_top = 8.0
-content_margin_right = 15.0
-content_margin_bottom = 8.0
-bg_color = Color(1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_up108"]
 content_margin_left = 1.0
@@ -280,48 +361,218 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_tlii3")
 text = "Enable"
 icon_alignment = 1
 
-[node name="ToolBar" type="MarginContainer" parent="ColorRect/VBoxContainer" unique_id=983202123]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 2
-
-[node name="Hbox" type="HBoxContainer" parent="ColorRect/VBoxContainer/ToolBar" unique_id=549877728]
+[node name="RibbonTabs" type="HBoxContainer" parent="ColorRect/VBoxContainer" unique_id=983202120]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-size_flags_vertical = 4
+theme_override_constants/separation = 1
 
-[node name="SaveButton" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=1136286031]
-custom_minimum_size = Vector2(20, 0)
+[node name="FileTab" type="Label" parent="ColorRect/VBoxContainer/RibbonTabs" unique_id=983202121]
 layout_mode = 2
-size_flags_vertical = 4
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_constants/icon_max_width = 10
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("1_vykip")
 theme_override_font_sizes/font_size = 5
-theme_override_styles/normal = SubResource("StyleBoxFlat_d37hm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_o58am")
-theme_override_styles/hover = SubResource("StyleBoxFlat_ftuyi")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ribbon_tab_file")
+text = "File"
+vertical_alignment = 1
+
+[node name="HomeTab" type="Label" parent="ColorRect/VBoxContainer/RibbonTabs" unique_id=983202122]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.15, 0.25, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/normal = SubResource("StyleBoxFlat_ribbon_tab_home")
+text = "Home"
+vertical_alignment = 1
+
+[node name="InsertTab" type="Label" parent="ColorRect/VBoxContainer/RibbonTabs" unique_id=983202124]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.4, 0.45, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = " Insert "
+vertical_alignment = 1
+
+[node name="LayoutTab" type="Label" parent="ColorRect/VBoxContainer/RibbonTabs" unique_id=983202125]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.4, 0.45, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = " Layout "
+vertical_alignment = 1
+
+[node name="ReviewTab" type="Label" parent="ColorRect/VBoxContainer/RibbonTabs" unique_id=983202126]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.4, 0.45, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = " Review "
+vertical_alignment = 1
+
+[node name="ViewTab" type="Label" parent="ColorRect/VBoxContainer/RibbonTabs" unique_id=983202127]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.4, 0.45, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = " View "
+vertical_alignment = 1
+
+[node name="ToolBar" type="PanelContainer" parent="ColorRect/VBoxContainer" unique_id=983202123]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ribbon_bar")
+
+[node name="Hbox" type="HBoxContainer" parent="ColorRect/VBoxContainer/ToolBar" unique_id=549877728]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 3
+
+[node name="SaveButton" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=1136286031]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.15, 0.15, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.05, 0.25, 0.6, 1)
+theme_override_constants/icon_max_width = 8
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tool_btn_active")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
 text = "Save"
 icon = ExtResource("3_obqqg")
-icon_alignment = 1
-vertical_icon_alignment = 0
+icon_alignment = 0
 
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=503894669]
+[node name="UndoBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877729]
 layout_mode = 2
-size_flags_horizontal = 6
-theme_override_colors/font_color = Color(0.35, 0.4, 0.5, 1)
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+icon = ExtResource("6_undo")
+
+[node name="RedoBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877730]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+icon = ExtResource("7_redo")
+
+[node name="Sep1" type="ColorRect" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877731]
+custom_minimum_size = Vector2(1, 10)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.78, 0.8, 0.83, 1)
+
+[node name="FontBox" type="PanelContainer" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877732]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tool_btn")
+
+[node name="FontLabel" type="Label" parent="ColorRect/VBoxContainer/ToolBar/Hbox/FontBox" unique_id=549877733]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.15, 0.15, 0.2, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "Calibri ▼"
+
+[node name="SizeBox" type="PanelContainer" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877734]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tool_btn")
+
+[node name="SizeLabel" type="Label" parent="ColorRect/VBoxContainer/ToolBar/Hbox/SizeBox" unique_id=549877735]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.15, 0.15, 0.2, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "11 ▼"
+
+[node name="Sep2" type="ColorRect" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877736]
+custom_minimum_size = Vector2(1, 10)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.78, 0.8, 0.83, 1)
+
+[node name="BoldBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877737]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.15, 0.15, 0.2, 1)
+theme_override_fonts/font = ExtResource("5_8nw4h")
 theme_override_font_sizes/font_size = 6
-text = "Report_CyberSecurity_Draft.docx"
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+text = "B"
+
+[node name="ItalicBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877738]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.15, 0.15, 0.2, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+text = "I"
+
+[node name="UnderlineBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877739]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.15, 0.15, 0.2, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+text = "U"
+
+[node name="Sep3" type="ColorRect" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877740]
+custom_minimum_size = Vector2(1, 10)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.78, 0.8, 0.83, 1)
+
+[node name="BulletsBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877741]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+icon = ExtResource("8_bullets")
+
+[node name="AlignBtn" type="Button" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877742]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tool_btn_hover")
+icon = ExtResource("9_align")
+
+[node name="Sep4" type="ColorRect" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877743]
+custom_minimum_size = Vector2(1, 10)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.78, 0.8, 0.83, 1)
+
+[node name="NormalStyle" type="Label" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877744]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.15, 0.25, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn_active")
+text = "Normal"
+vertical_alignment = 1
+
+[node name="HeadingStyle" type="Label" parent="ColorRect/VBoxContainer/ToolBar/Hbox" unique_id=549877745]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.42, 0.72, 1)
+theme_override_fonts/font = ExtResource("5_8nw4h")
+theme_override_font_sizes/font_size = 5
+theme_override_styles/normal = SubResource("StyleBoxFlat_tool_btn")
+text = "Heading 1"
+vertical_alignment = 1
 
 [node name="Workspace" type="HBoxContainer" parent="ColorRect/VBoxContainer" unique_id=2133986910]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer/Workspace" unique_id=596463150]
-custom_minimum_size = Vector2(0, 165)
+custom_minimum_size = Vector2(0, 190)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -333,14 +584,14 @@ theme_override_constants/margin_right = 6
 layout_mode = 2
 
 [node name="PassageLabel" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="0" unique_id=1531474539]
-custom_minimum_size = Vector2(340, 140)
+custom_minimum_size = Vector2(340, 190)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.0
 offset_left = -170.0
 offset_right = 170.0
-offset_bottom = 580.0
+offset_bottom = 190.0
 grow_vertical = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ftuyi")
 
@@ -365,25 +616,136 @@ theme_override_styles/grabber = SubResource("StyleBoxFlat_dx54t")
 theme_override_styles/grabber_pressed = SubResource("StyleBoxFlat_48kt2")
 rounded = true
 
-[node name="DetailsBar" type="Panel" parent="ColorRect/VBoxContainer" unique_id=128244053]
-custom_minimum_size = Vector2(0, 6)
+[node name="DetailsBar" type="PanelContainer" parent="ColorRect/VBoxContainer" unique_id=128244053]
+custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xil4g")
+theme_override_styles/panel = SubResource("StyleBoxFlat_word_statusbar")
 
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/DetailsBar" unique_id=941245955]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = -0.5
-offset_right = -4.0
-offset_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 3
-theme_override_styles/normal = SubResource("StyleBoxEmpty_pqs4c")
-text = "Page 1 of 1   0 Word"
+[node name="HBox" type="HBoxContainer" parent="ColorRect/VBoxContainer/DetailsBar" unique_id=941245955]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="LeftInfo" type="HBoxContainer" parent="ColorRect/VBoxContainer/DetailsBar/HBox" unique_id=941245956]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="PageCountLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245957]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "Page 1 of 1"
+vertical_alignment = 1
+
+[node name="Div1" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245958]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.8, 1, 0.7)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "|"
+vertical_alignment = 1
+
+[node name="WordCountLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245959]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "0 words"
+vertical_alignment = 1
+
+[node name="Div2" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245960]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.8, 1, 0.7)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "|"
+vertical_alignment = 1
+
+[node name="LangLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245961]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "English (U.S.)"
+vertical_alignment = 1
+
+[node name="Div3" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245962]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.8, 1, 0.7)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "|"
+vertical_alignment = 1
+
+[node name="ProofLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/LeftInfo" unique_id=941245963]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "✓"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="ColorRect/VBoxContainer/DetailsBar/HBox" unique_id=941245964]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightControls" type="HBoxContainer" parent="ColorRect/VBoxContainer/DetailsBar/HBox" unique_id=941245965]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ReadModeLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245966]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 0.8)
+theme_override_font_sizes/font_size = 4
+text = "📖"
+vertical_alignment = 1
+
+[node name="PrintLayoutLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245967]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 4
+text = "📄"
+vertical_alignment = 1
+
+[node name="WebLayoutLabel" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245968]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 0.8)
+theme_override_font_sizes/font_size = 4
+text = "🌐"
+vertical_alignment = 1
+
+[node name="Div4" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245969]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.8, 1, 0.7)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "|"
+vertical_alignment = 1
+
+[node name="ZoomMinus" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245970]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "—"
+vertical_alignment = 1
+
+[node name="ZoomPlus" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245972]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "+"
+vertical_alignment = 1
+
+[node name="ZoomPct" type="Label" parent="ColorRect/VBoxContainer/DetailsBar/HBox/RightControls" unique_id=941245973]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vykip")
+theme_override_font_sizes/font_size = 5
+text = "100%"
+vertical_alignment = 1
 
 [editable path="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle"]

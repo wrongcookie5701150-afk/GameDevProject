@@ -1,6 +1,7 @@
 extends Control
 
 const SCENE_07_RECOVERY_PATH: String = "res://scenes/scene_07_recovery/Scene_07_Recovery.tscn"
+const SCENE_04_BEDROOM_PATH: String = "res://scenes/world_scenes/scene_04_investigation_intro/Scene_04_Investigation_Intro.tscn"
 
 @onready var notebook_screen: Control = $CanvasLayer/NotebookScreen
 @onready var forensic_toolbar: PanelContainer = $CanvasLayer/ForensicToolbar
@@ -166,7 +167,13 @@ func _on_event_log_verified() -> void:
 func _on_drive_history_verified() -> void:
 	_drive_history_verified = true
 	_hide_puzzles()
-	status_label.text = "✅ [3/6] พบผู้ส่งปลอม (@universcity.example)! ต่อไปกด [4.Macro(T09)] ตรวจโครงสร้างเอกสาร"
+	
+	# แจกโน้ตองค์ความรู้ #2 (Isolation & Logs) หลังตรวจเต่าดำ, MD5, EventLog และ DriveLog ครบ
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("award_knowledge_note"):
+		inv.award_knowledge_note("note_isolation_logs", self)
+	
+	status_label.text = "✅ [3/6] พบผู้ส่งปลอม (@universcity.example)! ได้รับโน้ตความรู้ #2 เข้ากระเป๋าแล้ว ต่อไปกด [4.Macro(T09)]"
 	_refresh_tool_availability()
 	_on_macro_pressed()
 
@@ -180,19 +187,36 @@ func _on_macro_inspected() -> void:
 func _on_decoding_complete() -> void:
 	_decoding_complete = true
 	_hide_puzzles()
-	status_label.text = "✅ [5/6] ยืนยันมัลแวร์ Office_Update_Helper (FILE_WIPE)! ต่อไปกด [6.StopTask(T12)]"
+	
+	# แจกโน้ตองค์ความรู้ #3 (Macro & Payload) หลังตรวจ vbaProject.bin และถอดรหัส Base64/Hex ครบ
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("award_knowledge_note"):
+		inv.award_knowledge_note("note_malware_payload", self)
+	
+	status_label.text = "✅ [5/6] ยืนยันมัลแวร์ Office_Update_Helper (FILE_WIPE)! ได้รับโน้ตความรู้ #3 เข้ากระเป๋าแล้ว ต่อไปกด [6.StopTask(T12)]"
 	_refresh_tool_availability()
 	_on_persistence_pressed()
 
 func _on_persistence_stopped() -> void:
 	_hide_puzzles()
+	
+	# แจกโน้ตองค์ความรู้ #4 (Persistence Stop) หลังจัดลำดับตัดวงจร 7 ขั้นตอนสำเร็จ (กระเป๋าเต็ม 3/3 พอดี)
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("award_knowledge_note"):
+		inv.award_knowledge_note("note_persistence_stop", self)
+	
+	if recovery_button:
+		recovery_button.text = "ลุกจากเต่าดำกลับห้องนอน (นำโน้ตทั้ง 3 แผ่นไปแปะที่บอร์ดก่อนกู้คืน PC)"
 	completion_panel.show()
-	status_label.text = "✅ [6/6] สืบสวนและวางแผนหยุด Persistence สำเร็จ! พร้อมกลับไปกู้คืนข้อมูลที่ PC ของเมย์"
+	status_label.text = "✅ [6/6] ตัดวงจร Persistence สำเร็จ! ได้รับโน้ตความรู้ #4 (กระเป๋าเต็ม 3/3) พร้อมลุกกลับห้องนอนเพื่อแปะบอร์ด"
 
 func _on_recovery_pressed() -> void:
-	var result: Error = get_tree().change_scene_to_file(SCENE_07_RECOVERY_PATH)
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv:
+		inv.investigation_phase = 2
+	var result: Error = get_tree().change_scene_to_file(SCENE_04_BEDROOM_PATH)
 	if result != OK:
-		push_error("Unable to load Scene 7 recovery: %s" % result)
+		push_error("Unable to load Scene 4 bedroom: %s" % result)
 
 func _refresh_tool_availability() -> void:
 	event_log_button.disabled = not _hash_verified

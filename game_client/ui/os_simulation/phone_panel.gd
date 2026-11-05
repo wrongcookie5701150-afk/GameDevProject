@@ -7,6 +7,10 @@ signal closed
 signal messages_read(contact: String)
 signal message_sent(contact: String, text: String)
 
+static var saved_view_mode: String = "chat" # Persists across scene changes
+var current_view_mode: String = "chat" # "chat" or "task"
+var current_tasks: Array = [] # [{ "id": String, "text": String, "completed": bool }]
+
 @onready var toggle_btn: Button = find_child("Toggle", true, false) as Button
 @onready var mesa_btn: Button = find_child("MesasIcon", true, false) as Button
 @onready var march_btn: Button = find_child("MarchIcon", true, false) as Button
@@ -17,8 +21,15 @@ signal message_sent(contact: String, text: String)
 @onready var line_edit: LineEdit = find_child("LineEdit", true, false) as LineEdit
 @onready var send_btn: Button = find_child("Button", true, false) as Button
 
+# Task view elements
+@onready var chat_content: Control = find_child("Content", true, false) as Control
+@onready var task_content: Control = find_child("TaskContent", true, false) as Control
+@onready var task_list_label: Label = find_child("TaskListLabel", true, false) as Label
+@onready var task_scroll_container: ScrollContainer = find_child("TaskScrollContainer", true, false) as ScrollContainer
+
 var current_contact: String = "mesa" # "mesa" or "march"
 var mesa_read: bool = false
+var _chime_player: AudioStreamPlayer = null
 
 var mesa_messages: String = """14:33 | May
 ทำส่วนไหนกันอยู่หรอ?
@@ -33,6 +44,8 @@ var mesa_messages: String = """14:33 | May
 var march_history: String = ""
 
 func _ready() -> void:
+	_init_chime_player()
+
 	if toggle_btn and not toggle_btn.pressed.is_connected(_on_toggle_pressed):
 		toggle_btn.pressed.connect(_on_toggle_pressed)
 	
@@ -50,21 +63,148 @@ func _ready() -> void:
 	
 	_setup_scrollbar()
 	
-	# Initial view (update labels without consuming mesa_read while hidden)
+	# Apply persisted view mode
+	switch_view_mode(saved_view_mode)
+	
+	# Initial contact view (update labels without consuming mesa_read while hidden)
 	_refresh_contact_view(current_contact)
-	if visible and current_contact == "mesa":
+	if visible and current_contact == "mesa" and current_view_mode == "chat":
 		mesa_read = true
 		messages_read.emit("mesa")
 
-func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
+func _init_chime_player() -> void:
+	if _chime_player:
 		return
+	_chime_player = AudioStreamPlayer.new()
+	_chime_player.name = "TaskChimePlayer"
+	var sfx_idx: int = AudioServer.get_bus_index("SFX")
+	_chime_player.bus = "SFX" if sfx_idx != -1 else "Master"
+	add_child(_chime_player)
+	
+	# Synthesize a pleasant two-tone chime (C6 -> G6) with gentle exponential decay
+	var sample_rate: int = 22050
+	var duration: float = 0.35
+	var num_samples: int = int(sample_rate * duration)
+	var data: PackedByteArray = PackedByteArray()
+	data.resize(num_samples * 2)
+	
+	for i in range(num_samples):
+		var t: float = float(i) / float(sample_rate)
+		var freq: float = 1046.50 if t < 0.12 else 1567.98 # C6 then G6
+		var note_t: float = t if t < 0.12 else (t - 0.12)
+		var env: float = exp(-note_t * 14.0)
+		var sample_val: float = sin(note_t * freq * TAU) * env * 0.35
+		var sample_int: int = int(clamp(sample_val, -1.0, 1.0) * 32767.0)
+		data.encode_s16(i * 2, sample_int)
+	
+	var wav: AudioStreamWAV = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = sample_rate
+	wav.data = data
+	_chime_player.stream = wav
+
+func play_task_chime() -> void:
+	if not _chime_player:
+		_init_chime_player()
+	if _chime_player and _chime_player.stream:
+		_chime_player.play()
+
+func _unhandled_input(event: InputEvent) -> void:
+	var focused: Control = get_viewport().gui_get_focus_owner()
+	if focused is LineEdit or focused is TextEdit:
+		return
+	
 	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
-		var focused: Control = get_viewport().gui_get_focus_owner()
-		if focused is LineEdit or focused is TextEdit:
+		if visible:
+			close_phone()
+			get_viewport().set_input_as_handled()
 			return
-		close_phone()
+	
+	if event.is_action_pressed("Chat"):
+		toggle_phone("chat")
 		get_viewport().set_input_as_handled()
+		return
+	
+	if event.is_action_pressed("Task"):
+		toggle_phone("task")
+		get_viewport().set_input_as_handled()
+		return
+
+func switch_view_mode(mode: String) -> void:
+	if mode != "task" and mode != "chat":
+		mode = "chat"
+	current_view_mode = mode
+	saved_view_mode = mode
+	
+	if mode == "task":
+		if chat_content:
+			chat_content.hide()
+		if task_content:
+			task_content.show()
+		if toggle_btn:
+			toggle_btn.tooltip_text = "ดูแชท (Chat [C])"
+		refresh_task_view()
+	else:
+		if task_content:
+			task_content.hide()
+		if chat_content:
+			chat_content.show()
+		if toggle_btn:
+			toggle_btn.tooltip_text = "ดูภารกิจ (Task [T])"
+		if visible and current_contact == "mesa":
+			mesa_read = true
+			messages_read.emit("mesa")
+		_scroll_to_bottom()
+
+func _on_toggle_pressed() -> void:
+	if current_view_mode == "chat":
+		switch_view_mode("task")
+	else:
+		switch_view_mode("chat")
+
+func set_tasks(tasks: Array) -> void:
+	current_tasks = tasks.duplicate(true)
+	refresh_task_view()
+
+func add_task(task_id: String, text: String, play_chime: bool = true) -> void:
+	for t: Dictionary in current_tasks:
+		if t.get("id", "") == task_id:
+			t["text"] = text
+			refresh_task_view()
+			if play_chime:
+				play_task_chime()
+			return
+	current_tasks.append({
+		"id": task_id,
+		"text": text,
+		"completed": false
+	})
+	refresh_task_view()
+	if play_chime:
+		play_task_chime()
+
+func set_task_completed(task_id: String, completed: bool = true) -> void:
+	for t: Dictionary in current_tasks:
+		if t.get("id", "") == task_id:
+			t["completed"] = completed
+			break
+	refresh_task_view()
+
+func refresh_task_view() -> void:
+	if not task_list_label:
+		return
+	if current_tasks.is_empty():
+		task_list_label.text = "• ไม่มีภารกิจค้างอยู่"
+		return
+	var lines: Array[String] = []
+	for t: Dictionary in current_tasks:
+		var is_comp: bool = t.get("completed", false)
+		var desc: String = t.get("text", "")
+		if is_comp:
+			lines.append("✓ %s (เสร็จสิ้น)" % desc)
+		else:
+			lines.append("• %s" % desc)
+	task_list_label.text = "\n\n".join(lines)
 
 func _refresh_contact_view(contact: String) -> void:
 	current_contact = contact
@@ -87,26 +227,29 @@ func switch_to_contact(contact: String) -> void:
 	_scroll_to_bottom()
 
 func _on_mesa_btn_pressed() -> void:
+	switch_view_mode("chat")
 	switch_to_contact("mesa")
 
 func _on_march_btn_pressed() -> void:
+	switch_view_mode("chat")
 	switch_to_contact("march")
 
-func _on_toggle_pressed() -> void:
-	toggle_phone()
-
-func toggle_phone() -> void:
-	if visible:
-		close_phone()
+func toggle_phone(target_mode: String = "") -> void:
+	if not visible:
+		open_phone(target_mode)
 	else:
-		open_phone()
+		if target_mode.is_empty():
+			close_phone()
+		elif current_view_mode == target_mode:
+			close_phone()
+		else:
+			switch_view_mode(target_mode)
 
-func open_phone() -> void:
+func open_phone(target_mode: String = "") -> void:
 	show()
-	if current_contact == "mesa":
-		mesa_read = true
-		messages_read.emit("mesa")
-	_scroll_to_bottom()
+	if target_mode.is_empty():
+		target_mode = saved_view_mode
+	switch_view_mode(target_mode)
 
 func close_phone() -> void:
 	hide()
@@ -171,9 +314,13 @@ func _scroll_to_bottom() -> void:
 			scroll_container.scroll_vertical = int(scroll_container.get_v_scroll_bar().max_value)
 
 func _setup_scrollbar() -> void:
-	if not scroll_container:
+	_style_scroll_container(scroll_container)
+	_style_scroll_container(task_scroll_container)
+
+func _style_scroll_container(sc: ScrollContainer) -> void:
+	if not sc:
 		return
-	var vsb: VScrollBar = scroll_container.get_v_scroll_bar()
+	var vsb: VScrollBar = sc.get_v_scroll_bar()
 	if not vsb:
 		return
 	vsb.custom_minimum_size = Vector2(3, 0)

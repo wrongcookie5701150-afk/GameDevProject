@@ -106,7 +106,7 @@ offset_right = 480.0
 offset_bottom = 58.0
 theme_override_font_sizes/font_size = 7
 theme_override_styles/normal = SubResource("StyleBoxTexture_f1kp7")
-text = "     ภารกิจ: กด [P] เพื่อเปิดมือถือ
+text = "     ภารกิจ: กด [C] เพื่อเปิดมือถือ
            - คุยกับพี่มาร์ช (March)"
 vertical_alignment = 1
 
@@ -117,7 +117,7 @@ offset_right = 479.0
 offset_bottom = 190.0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_x1j8a")
-text = "- กด [P] เพื่อใช้มือถือ"
+text = "- กด [C] แชท / [T] ภารกิจ"
 
 [node name="InspectHint" type="Button" parent="CanvasLayer" unique_id=983362144]
 offset_left = 410.0

@@ -336,7 +336,7 @@ func _show_toast(message: String) -> void:
 	notification_toast.show()
 	notification_toast.move_to_front()
 	
-	_toast_timer = get_tree().create_timer(3.5)
+	_toast_timer = get_tree().create_timer(3.0)
 	_toast_timer.timeout.connect(func() -> void:
 		if is_instance_valid(self) and _toast_id == current_toast_id and notification_toast:
 			notification_toast.hide()
