@@ -1127,7 +1127,22 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
 theme_override_fonts/font = ExtResource("6_noto_sans_thai_medium")
 theme_override_font_sizes/font_size = 8
-text = "เมนูหยุดเกม / ย้อนกลับ"
+text = "เมนูหยุดเกม"
+
+[node name="Key5" type="Label" parent="Center/ModalPanel/VBox/ContentContainer/PanelOther/OtherVBox/ControlGuideSection/GuideGrid" unique_id=1718856031]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.301961, 0.65098, 1, 1)
+theme_override_fonts/font = ExtResource("3_share_tech_mono")
+theme_override_font_sizes/font_size = 8
+text = "[Q]"
+
+[node name="Desc5" type="Label" parent="Center/ModalPanel/VBox/ContentContainer/PanelOther/OtherVBox/ControlGuideSection/GuideGrid" unique_id=2107677751]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_fonts/font = ExtResource("6_noto_sans_thai_medium")
+theme_override_font_sizes/font_size = 8
+text = "ออก / ย้อนกลับ"
 
 [node name="Footer" type="HBoxContainer" parent="Center/ModalPanel/VBox" unique_id=403431078]
 layout_mode = 2

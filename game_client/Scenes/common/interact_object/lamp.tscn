@@ -16,23 +16,22 @@ shader_parameter/glowSharpness = 1.0
 shader_parameter/alphaThreshold = 0.2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o5vd4"]
-size = Vector2(18, 12)
+size = Vector2(18, 24)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ftuxk"]
-radius = 24.0
+radius = 16.0
 
 [node name="LampOn" type="StaticBody2D" unique_id=905537924]
 script = ExtResource("1_yxsak")
+object_id = "lamp"
+prompt_message = "Press Space to toggle the lamp"
 metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1964538242]
 material = SubResource("ShaderMaterial_knait")
 texture = ExtResource("1_h4pq0")
-flip_h = true
-hframes = 2
-frame = 1
 region_enabled = true
-region_rect = Rect2(417.77917, 76.62417, 95.25366, 24.901657)
+region_rect = Rect2(436, 77, 18, 24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=449897262]
 shape = SubResource("RectangleShape2D_o5vd4")
@@ -43,5 +42,5 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=1457497429]
-position = Vector2(6, 9)
+position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_ftuxk")

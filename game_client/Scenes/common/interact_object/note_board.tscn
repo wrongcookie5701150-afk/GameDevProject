@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cg55p1rasyodd"]
+
+[ext_resource type="Script" uid="uid://cwxxhmrowhlrq" path="res://scenes/common/interact_object/interact_object.gd" id="1_cocmm"]
+[ext_resource type="Shader" uid="uid://dsn4jfscfgy1g" path="res://scenes/common/interact_object/glow.gdshader" id="2_12dsw"]
+[ext_resource type="Texture2D" uid="uid://hvyljww33m8r" path="res://assets/House/InteriorTilesLITE.png" id="3_r7qfq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ot8nr"]
+render_priority = 0
+shader = ExtResource("2_12dsw")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/glowSize = 15.0
+shader_parameter/glowDensity = 3
+shader_parameter/glowRadialCoverage = 4
+shader_parameter/glowAngle = 1.57
+shader_parameter/glowSharpness = 1.0
+shader_parameter/alphaThreshold = 0.2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r60q5"]
+atlas = ExtResource("3_r7qfq")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dlmk7"]
+size = Vector2(40, 24)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grvlw"]
+radius = 19.0
+height = 64.0
+
+[node name="NoteBoard" type="StaticBody2D" unique_id=1642139721]
+script = ExtResource("1_cocmm")
+object_id = "note_board"
+prompt_message = "Press Space to read Note Board"
+metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=899188463]
+material = SubResource("ShaderMaterial_ot8nr")
+scale = Vector2(1.5, 1.5)
+texture = SubResource("AtlasTexture_r60q5")
+region_enabled = true
+region_rect = Rect2(2.5, 172, 27, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1685859906]
+shape = SubResource("RectangleShape2D_dlmk7")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=1910626220]
+position = Vector2(0, -2)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=736158734]
+position = Vector2(0, 2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_grvlw")

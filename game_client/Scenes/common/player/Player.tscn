@@ -509,8 +509,7 @@ radius = 11.0
 height = 24.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jexof"]
-radius = 13.0
-height = 55.0
+height = 34.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1657159317]
 light_mask = 16
@@ -549,7 +548,6 @@ position = Vector2(0, 14)
 shape = SubResource("CapsuleShape2D_7ldla")
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=936145106]
-collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=531260548]

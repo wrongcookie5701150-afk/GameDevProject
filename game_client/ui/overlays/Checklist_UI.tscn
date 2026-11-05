@@ -1,8 +1,26 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://4hbbts3rjmd4"]
 
-[ext_resource type="Script" path="res://ui/overlays/checklist_ui.gd" id="1_checklist_script"]
+[ext_resource type="Script" uid="uid://dqjd5nlxul2rj" path="res://ui/overlays/checklist_ui.gd" id="1_checklist_script"]
+[ext_resource type="Texture2D" uid="uid://cqbva02t7cu1n" path="res://assets/UI_Wenrexa/Checked_01.png" id="2_73pwj"]
+[ext_resource type="Texture2D" uid="uid://bgu08d5stpj3p" path="res://assets/UI_Wenrexa/Checked_02.png" id="3_ewn6q"]
 
-[node name="Checklist_UI" type="Control"]
+[sub_resource type="Gradient" id="Gradient_f3c6c"]
+colors = PackedColorArray(0, 0, 0, 0.6509804, 0.3137255, 0.3137255, 0.3137255, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p70ae"]
+gradient = SubResource("Gradient_f3c6c")
+fill_from = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rr0yd"]
+texture = SubResource("GradientTexture2D_p70ae")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_apeb1"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[node name="Checklist_UI" type="Control" unique_id=1094843033]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,58 +31,76 @@ script = ExtResource("1_checklist_script")
 scene_id = "Scene_04"
 task_id = &"T05"
 
-[node name="Panel" type="Panel" parent="."]
-anchors_preset = 8
+[node name="TaskObjective" type="Panel" parent="." unique_id=1847338986]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.12592593
+offset_left = 300.0
+offset_top = 16.0
+offset_right = 480.0
+offset_bottom = 59.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_rr0yd")
+metadata/_edit_use_anchors_ = true
+
+[node name="Content" type="VBoxContainer" parent="TaskObjective" unique_id=334025]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -194.0
-offset_top = -112.0
-offset_right = 194.0
-offset_bottom = 112.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Content" type="VBoxContainer" parent="Panel"]
-anchors_preset = 15
-anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = 10.0
-offset_right = -12.0
-offset_bottom = -10.0
+offset_left = -75.0
+offset_right = 75.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
 
-[node name="TitleLabel" type="Label" parent="Panel/Content"]
+[node name="TitleLabel" type="Label" parent="TaskObjective/Content" unique_id=441630581]
 layout_mode = 2
-text = "T05: Isolate TaoDam before inspection"
+theme_override_font_sizes/font_size = 8
+text = "Task 05: Isolate TaoDam before inspection"
 horizontal_alignment = 1
 
-[node name="WifiCheck" type="CheckBox" parent="Panel/Content"]
+[node name="WifiCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=1720067943]
 layout_mode = 2
+size_flags_horizontal = 5
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
+theme_override_icons/checked = ExtResource("2_73pwj")
+theme_override_icons/unchecked = ExtResource("3_ewn6q")
 text = "Wi-Fi is off"
 
-[node name="LanCheck" type="CheckBox" parent="Panel/Content"]
+[node name="LanCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=2051288174]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
+theme_override_icons/checked = ExtResource("2_73pwj")
+theme_override_icons/unchecked = ExtResource("3_ewn6q")
 text = "LAN cable is unplugged"
 
-[node name="AccountsCheck" type="CheckBox" parent="Panel/Content"]
+[node name="AccountsCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=1064603653]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
+theme_override_icons/checked = ExtResource("2_73pwj")
+theme_override_icons/unchecked = ExtResource("3_ewn6q")
 text = "No personal email or account is connected"
 
-[node name="FilesCheck" type="CheckBox" parent="Panel/Content"]
+[node name="FilesCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=9200891]
 layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
+theme_override_icons/checked = ExtResource("2_73pwj")
+theme_override_icons/unchecked = ExtResource("3_ewn6q")
 text = "No important work files are stored on this laptop"
-
-[node name="FeedbackLabel" type="Label" parent="Panel/Content"]
-layout_mode = 2
-size_flags_vertical = 3
-text = ""
-autowrap_mode = 3
-horizontal_alignment = 1
-
-[node name="SubmitButton" type="Button" parent="Panel/Content"]
-layout_mode = 2
-text = "Confirm isolation"

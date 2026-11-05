@@ -16,22 +16,27 @@ shader_parameter/glowSharpness = 1.0
 shader_parameter/alphaThreshold = 0.2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tpq6a"]
-size = Vector2(18, 12)
+size = Vector2(34, 51)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pqs4c"]
-size = Vector2(31, 44)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0u2ny"]
+radius = 22.0
+height = 74.0
 
 [node name="Notebook" type="StaticBody2D" unique_id=981493935]
 script = ExtResource("1_w5vmt")
+object_id = "taodam"
+prompt_message = "Press Space to inspect TaoDam"
 metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=920651619]
 material = SubResource("ShaderMaterial_d37hm")
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_w5vmt")
 region_enabled = true
 region_rect = Rect2(271.3211, 12.730389, 32.08673, 46.20266)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=9940086]
+position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_tpq6a")
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=1245947121]
@@ -40,5 +45,5 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=714924516]
-position = Vector2(-0.5, 0)
-shape = SubResource("RectangleShape2D_pqs4c")
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_0u2ny")

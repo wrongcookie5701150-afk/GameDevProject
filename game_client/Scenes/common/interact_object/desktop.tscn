@@ -16,13 +16,15 @@ shader_parameter/glowSharpness = 1.0
 shader_parameter/alphaThreshold = 0.2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_phw53"]
-size = Vector2(40, 44)
+size = Vector2(40, 45)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s80ur"]
-radius = 24.0
+radius = 30.016663
 
 [node name="Desktop" type="StaticBody2D" unique_id=1020192829]
 script = ExtResource("1_etq3p")
+object_id = "computer"
+prompt_message = "Press Space to use the computer"
 metadata/_custom_type_script = "uid://cwxxhmrowhlrq"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1696647250]
@@ -32,6 +34,7 @@ region_enabled = true
 region_rect = Rect2(324, 9.373478, 45.145844, 50.691257)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=537319616]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_phw53")
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=1859910369]

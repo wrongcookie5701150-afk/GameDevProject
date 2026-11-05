@@ -1,0 +1,285 @@
+[gd_scene format=3 uid="uid://bnk0bp42oat41"]
+
+[ext_resource type="Script" path="res://ui/os_simulation/Application/discord_app.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_mono"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="3_pixel"]
+[ext_resource type="Texture2D" uid="uid://ctlpl0vvtc8r5" path="res://assets/Icon32x32/minimize.png" id="4_minimize"]
+[ext_resource type="Texture2D" uid="uid://clf7xpoesnj6d" path="res://assets/Icon32x32/exit (2).png" id="5_exit"]
+[ext_resource type="Texture2D" uid="uid://cqihxeox1mfnj" path="res://assets/Icon/Discord.png" id="6_discord"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="7_thai"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_btn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sidebar"]
+bg_color = Color(0.17, 0.18, 0.19, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_msg_input"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.24, 0.25, 0.27, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="DiscordApp" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(300, 180)
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.167
+anchor_right = 0.812
+anchor_bottom = 0.833
+offset_left = 0.24
+offset_top = -0.09
+offset_right = 0.24
+offset_bottom = 0.09
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.19, 0.2, 0.22, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBar" type="ColorRect" parent="ColorRect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+color = Color(0.12, 0.12, 0.13, 1)
+
+[node name="Margin" type="MarginContainer" parent="ColorRect/VBoxContainer/TitleBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="HBox" type="HBoxContainer" parent="ColorRect/VBoxContainer/TitleBar/Margin"]
+layout_mode = 2
+alignment = 1
+
+[node name="AppIcon" type="TextureRect" parent="ColorRect/VBoxContainer/TitleBar/Margin/HBox"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6_discord")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="ColorRect/VBoxContainer/TitleBar/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 6
+text = "Discord - #general (งานกลุ่มล้านแปด)"
+horizontal_alignment = 1
+
+[node name="WindowControls" type="HBoxContainer" parent="ColorRect/VBoxContainer/TitleBar/Margin/HBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Hide" type="Button" parent="ColorRect/VBoxContainer/TitleBar/Margin/HBox/WindowControls"]
+layout_mode = 2
+theme_override_constants/icon_max_width = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_btn")
+icon = ExtResource("4_minimize")
+
+[node name="Exit" type="Button" parent="ColorRect/VBoxContainer/TitleBar/Margin/HBox/WindowControls"]
+layout_mode = 2
+theme_override_constants/icon_max_width = 6
+theme_override_styles/normal = SubResource("StyleBoxEmpty_btn")
+icon = ExtResource("5_exit")
+
+[node name="Body" type="HBoxContainer" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Sidebar" type="PanelContainer" parent="ColorRect/VBoxContainer/Body"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sidebar")
+
+[node name="Margin" type="MarginContainer" parent="ColorRect/VBoxContainer/Body/Sidebar"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBox" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ChannelsHeader" type="Label" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.62, 0.65, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = "TEXT CHANNELS"
+
+[node name="ChanGeneral" type="Label" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = " # general"
+
+[node name="ChanVoice" type="Label" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.57, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = " 🔊 voice-room"
+
+[node name="HSeparator" type="HSeparator" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+
+[node name="DMHeader" type="Label" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.62, 0.65, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = "DIRECT MESSAGES"
+
+[node name="UserMesa" type="Label" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.5, 1)
+theme_override_fonts/font = ExtResource("7_thai")
+theme_override_font_sizes/font_size = 5
+text = " ● Mesa (Online)"
+
+[node name="UserMay" type="Label" parent="ColorRect/VBoxContainer/Body/Sidebar/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.5, 1)
+theme_override_fonts/font = ExtResource("7_thai")
+theme_override_font_sizes/font_size = 5
+text = " ● May (CS Yr 2)"
+
+[node name="ChatArea" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="MessagesMargin" type="MarginContainer" parent="ColorRect/VBoxContainer/Body/ChatArea"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="MessagesVBox" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Msg1" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Sender" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = "Mesasohot131415  Today at 14:33"
+
+[node name="Text" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.92, 0.95, 1)
+theme_override_fonts/font = ExtResource("7_thai")
+theme_override_font_sizes/font_size = 5
+text = "เมย์ การบ้านเธอจะทำส่วนไหน ฉันแบ่งสไลด์ให้แล้วนะ"
+
+[node name="Msg2" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Sender" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = "Mesasohot131415  Today at 17:47"
+
+[node name="Text" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.92, 0.95, 1)
+theme_override_fonts/font = ExtResource("7_thai")
+theme_override_font_sizes/font_size = 5
+text = "ฉันทำหมดแล้วล่ะ เหลือส่วนของรายงานใน GG Disk"
+
+[node name="Msg3" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Sender" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = "Mesasohot131415  Today at 18:48"
+
+[node name="Text" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0.4, 1)
+theme_override_fonts/font = ExtResource("7_thai")
+theme_override_font_sizes/font_size = 5
+text = "ฮาโหลลล รีบเปิด GG Disk โหลดโฟลเดอร์งานมาทำต่อนะ! พรุ่งนี้เช้าเดดไลน์แล้ว"
+
+[node name="Msg4" type="VBoxContainer" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Sender" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg4"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = "May  Today at 19:02"
+
+[node name="Text" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/MessagesMargin/MessagesVBox/Msg4"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("7_thai")
+theme_override_font_sizes/font_size = 5
+text = "รับทราบจ้า กำลังเปิด GG Disk โหลดไฟล์ Report มาพิมพ์ต่อเดี๋ยวนี้~"
+
+[node name="InputMargin" type="MarginContainer" parent="ColorRect/VBoxContainer/Body/ChatArea"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="Panel" type="PanelContainer" parent="ColorRect/VBoxContainer/Body/ChatArea/InputMargin"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_msg_input")
+
+[node name="Placeholder" type="Label" parent="ColorRect/VBoxContainer/Body/ChatArea/InputMargin/Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.57, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_mono")
+theme_override_font_sizes/font_size = 5
+text = " Message #general"

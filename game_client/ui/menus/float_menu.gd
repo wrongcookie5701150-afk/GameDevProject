@@ -1,20 +1,22 @@
-extends Control
+extends CanvasLayer
 
-## FloatMenu Controller: ควบคุมเมนู Pause และเปิด SettingsModal ผ่าน Code
+## FloatMenu Controller: Global Pause Menu & Settings Modal Launcher
 
 @onready var resume_button: Button = %Resume
 @onready var settings_button: Button = %Settings
 @onready var main_menu_button: Button = %MainManu
 @onready var quit_button: Button = %QuitGame
+@onready var menu_root: Control = $MenuRoot
+@onready var settings_modal: Control = get_node_or_null("SettingsModal")
 
-const SETTINGS_MODAL_SCENE: PackedScene = preload("res://ui/menus/SettingsModal.tscn")
 const MAIN_MENU_SCENE_PATH: String = "res://ui/menus/MainMenu.tscn"
 
-var settings_modal_instance: Control = null
+var can_pause: bool = true
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	hide()
+	layer = 100
+	hide_menu()
 	_connect_signals()
 
 func _connect_signals() -> void:
@@ -27,48 +29,73 @@ func _connect_signals() -> void:
 	if quit_button and not quit_button.pressed.is_connected(_on_quit_pressed):
 		quit_button.pressed.connect(_on_quit_pressed)
 
+	if settings_modal and settings_modal.has_signal("closed") and not settings_modal.closed.is_connected(_on_settings_closed):
+		settings_modal.closed.connect(_on_settings_closed)
+
 func _unhandled_input(event: InputEvent) -> void:
+	if not can_pause:
+		return
+
+	var current_scene = get_tree().current_scene
+	if current_scene and current_scene.scene_file_path == MAIN_MENU_SCENE_PATH:
+		return
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE:
-			if settings_modal_instance and is_instance_valid(settings_modal_instance) and settings_modal_instance.visible:
+			if settings_modal and is_instance_valid(settings_modal) and settings_modal.visible:
 				return
-			
-			_toggle_pause()
+
+			toggle_pause()
 			get_viewport().set_input_as_handled()
 
-func _toggle_pause() -> void:
-	var new_pause_state: bool = not get_tree().paused
-	get_tree().paused = new_pause_state
-	visible = new_pause_state
-	
-	if new_pause_state and resume_button:
-		resume_button.grab_focus()
+func toggle_pause() -> void:
+	if visible and menu_root and menu_root.visible:
+		resume_game()
+	else:
+		pause_game()
+
+func pause_game() -> void:
+	if not can_pause:
+		return
+
+	var current_scene = get_tree().current_scene
+	if current_scene and current_scene.scene_file_path == MAIN_MENU_SCENE_PATH:
+		return
+
+	get_tree().paused = true
+	visible = true
+	if menu_root:
+		menu_root.visible = true
+	if resume_button:
+		resume_button.call_deferred("grab_focus")
+
+func resume_game() -> void:
+	get_tree().paused = false
+	hide_menu()
+
+func hide_menu() -> void:
+	visible = false
+	if menu_root:
+		menu_root.visible = false
+	if settings_modal and is_instance_valid(settings_modal):
+		settings_modal.visible = false
 
 func _on_resume_pressed() -> void:
-	get_tree().paused = false
-	hide()
+	resume_game()
 
 func _on_settings_pressed() -> void:
-	if not settings_modal_instance or not is_instance_valid(settings_modal_instance):
-		settings_modal_instance = SETTINGS_MODAL_SCENE.instantiate() as Control
-		settings_modal_instance.process_mode = Node.PROCESS_MODE_ALWAYS
-		
-		get_parent().add_child(settings_modal_instance)
-		
-		if settings_modal_instance.has_signal("closed"):
-			settings_modal_instance.closed.connect(_on_settings_closed)
-
-	if settings_modal_instance.has_method("open"):
-		settings_modal_instance.open()
-	else:
-		settings_modal_instance.show()
+	if settings_modal and is_instance_valid(settings_modal):
+		if settings_modal.has_method("open"):
+			settings_modal.open()
+		else:
+			settings_modal.show()
 
 func _on_settings_closed() -> void:
-	if settings_button:
-		settings_button.grab_focus()
+	if settings_button and visible:
+		settings_button.call_deferred("grab_focus")
 
 func _on_main_menu_pressed() -> void:
-	get_tree().paused = false
+	resume_game()
 	if ResourceLoader.exists(MAIN_MENU_SCENE_PATH):
 		get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 	else:

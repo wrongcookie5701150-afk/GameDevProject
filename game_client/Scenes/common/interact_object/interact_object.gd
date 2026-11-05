@@ -9,6 +9,14 @@ signal player_left(object: InteractObject, player: Node2D)
 @export var prompt_message: String = "Press Space to inspect"
 @export var debug_mode: bool = false
 
+@export_group("Item Pickup")
+@export var gives_item: bool = false
+@export var item_id: String = ""
+@export var item_name: String = ""
+@export var item_icon: Texture2D
+@export var item_description: String = ""
+@export var hide_on_pickup: bool = false
+
 @onready var interaction_area: Area2D = $InteractionArea
 
 var _is_player_nearby: bool = false
@@ -29,6 +37,17 @@ func _ready() -> void:
 func interact() -> void:
 	if debug_mode:
 		print("[InteractObject] %s interacted with!" % object_id)
+
+	if gives_item and not item_id.is_empty():
+		var inv = get_node_or_null("/root/InventoryManager")
+		if inv:
+			var slot: int = inv.add_item(item_id, item_name, item_icon, item_description)
+			if slot != -1 and hide_on_pickup:
+				hide()
+				collision_layer = 0
+				if interaction_area:
+					interaction_area.collision_layer = 0
+
 	interaction_requested.emit(self)
 
 func _on_body_entered(body: Node2D) -> void:

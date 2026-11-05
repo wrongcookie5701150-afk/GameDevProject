@@ -1,0 +1,142 @@
+[gd_scene format=3 uid="uid://b1nv3nt0rybar"]
+
+[ext_resource type="Script" path="res://ui/overlays/inventory_bar.gd" id="1_inv_script"]
+[ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="2_pixel_font"]
+[ext_resource type="FontFile" uid="uid://but7ctdme0p66" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf" id="3_thai_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
+bg_color = Color(0.0470588, 0.0784314, 0.12549, 0.75)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.247059, 0.443137, 0.654902, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="InventoryBar" type="Control" unique_id=712839101]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -42.0
+offset_right = 100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_inv_script")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=129837192]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=892371923]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="ActiveItemLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=45920184]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_thai_font")
+theme_override_font_sizes/font_size = 6
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+text = "ถือ: - (กด 1 หรือ V เพื่อเก็บ)"
+horizontal_alignment = 1
+
+[node name="SlotsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=77812938]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Slot1" type="PanelContainer" parent="MarginContainer/VBoxContainer/SlotsContainer" unique_id=101]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Badge" type="Label" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot1" unique_id=201]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_fonts/font = ExtResource("2_pixel_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.9)
+text = "1"
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot1" unique_id=301]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="IconRect" type="TextureRect" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot1/CenterContainer" unique_id=401]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot2" type="PanelContainer" parent="MarginContainer/VBoxContainer/SlotsContainer" unique_id=102]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Badge" type="Label" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot2" unique_id=202]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_fonts/font = ExtResource("2_pixel_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.9)
+text = "2"
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot2" unique_id=302]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="IconRect" type="TextureRect" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot2/CenterContainer" unique_id=402]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot3" type="PanelContainer" parent="MarginContainer/VBoxContainer/SlotsContainer" unique_id=103]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Badge" type="Label" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot3" unique_id=203]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_fonts/font = ExtResource("2_pixel_font")
+theme_override_font_sizes/font_size = 5
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.9)
+text = "3"
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot3" unique_id=303]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="IconRect" type="TextureRect" parent="MarginContainer/VBoxContainer/SlotsContainer/Slot3/CenterContainer" unique_id=403]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
