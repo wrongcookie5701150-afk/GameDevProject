@@ -174,10 +174,28 @@ offset_right = 239.0
 offset_bottom = 102.0
 
 [node name="DecoderApp" parent="WindowContainer" unique_id=934291513 instance=ExtResource("6_0nxfn")]
+visible = false
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="EvFolder" parent="WindowContainer" unique_id=1722629006 instance=ExtResource("7_x0tj6")]
+visible = false
 layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Taskbar" type="PanelContainer" parent="." unique_id=1905426240]
 z_index = 10

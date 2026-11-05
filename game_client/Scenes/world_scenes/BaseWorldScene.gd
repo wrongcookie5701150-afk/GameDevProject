@@ -14,12 +14,16 @@ func setup_scene() -> void:
 	if not player_node:
 		player_node = find_child("Player", true, false) as BasePlayer
 
-	if player_node:
+	if player_node and not player_node.interaction_requested.is_connected(_on_player_interacted):
 		player_node.interaction_requested.connect(_on_player_interacted)
 
 	_setup_inventory_ui()
 
 func open_note_board() -> void:
+	if not note_board_ui:
+		var nb_controls: Array[Node] = find_children("NoteBoard", "Control", true, false)
+		if not nb_controls.is_empty():
+			note_board_ui = nb_controls[0] as Control
 	if not note_board_ui:
 		var nb_scene = load("res://scenes/initial/note_board.tscn")
 		if nb_scene:
@@ -32,9 +36,9 @@ func open_note_board() -> void:
 				new_canvas.name = "NoteBoardCanvas"
 				add_child(new_canvas)
 				new_canvas.add_child(note_board_ui)
-			if note_board_ui.has_signal("closed") and not note_board_ui.closed.is_connected(_on_note_board_closed):
-				note_board_ui.closed.connect(_on_note_board_closed)
 	if note_board_ui:
+		if note_board_ui.has_signal("closed") and not note_board_ui.closed.is_connected(_on_note_board_closed):
+			note_board_ui.closed.connect(_on_note_board_closed)
 		var inv = get_node_or_null("/root/InventoryManager")
 		if inv:
 			inv.hide_inventory()
@@ -49,6 +53,9 @@ func _on_note_board_closed() -> void:
 		inv.show_inventory()
 
 func _setup_inventory_ui() -> void:
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv and inv.has_method("show_inventory"):
+		inv.show_inventory()
 	if find_child("InventoryBar", true, false):
 		return
 	var inv_scene: PackedScene = load("res://ui/overlays/inventory_bar.tscn")

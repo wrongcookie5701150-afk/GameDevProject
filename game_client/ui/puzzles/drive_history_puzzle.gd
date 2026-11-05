@@ -7,6 +7,9 @@ const SPOOFED_DOMAIN: String = "universcity.example"
 @onready var feedback_label: Label = $Panel/Content/FeedbackLabel
 
 func _ready() -> void:
+	hint_tier_1 = "สังเกตชื่อผู้ส่งและชื่อโดเมนของแต่ละไฟล์ใน Drive ว่ามีตัวสะกดใดผิดปกติ"
+	hint_tier_2 = "ระวังเทคนิค Typosquatting ที่สะกดคำว่า 'university' ผิด หรืออีเมลที่ไม่ใช่ของมหาวิทยาลัยจริง"
+	hint_tier_3 = "คลิกเลือกบรรทัด Report_Final.docx ที่ส่งมาจาก mesasohot.sukj@universcity.example (สะกด universcity มีตัว c เกินมา)"
 	super._ready()
 	_add_entry(
 		"18:54 | Network_Diagram.png | mesa.sukj@university.example | Normal",
@@ -25,6 +28,12 @@ func _ready() -> void:
 	)
 	entries.item_selected.connect(_on_entry_selected)
 
+func start_puzzle() -> void:
+	super.start_puzzle()
+	if not is_resolved and entries:
+		entries.deselect_all()
+		entries.mouse_filter = Control.MOUSE_FILTER_STOP
+
 func _add_entry(label: String, option_id: String, sender_email: String) -> void:
 	var index: int = entries.add_item(label)
 	entries.set_item_metadata(index, {
@@ -34,12 +43,15 @@ func _add_entry(label: String, option_id: String, sender_email: String) -> void:
 	})
 
 func _on_entry_selected(index: int) -> void:
+	mark_decision_started()
 	var metadata: Dictionary = entries.get_item_metadata(index)
 	submit_selection(StringName(metadata["file_name"]), metadata)
 
 func on_solve_success() -> void:
-	feedback_label.text = "Correct: %s is a spoofed university domain." % SPOOFED_DOMAIN
-	entries.disabled = true
+	feedback_label.text = "✅ ถูกต้อง: พบโดเมนปลอมแปลง %s (สะกดผิดจาก university.example)" % SPOOFED_DOMAIN
+	for i: int in range(entries.item_count):
+		entries.set_item_disabled(i, true)
+	entries.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func on_solve_failed() -> void:
-	feedback_label.text = "That file came from the expected sender. Check the report sender closely."
+	feedback_label.text = "❌ ไฟล์นี้มาจากโดเมนจริง (@university.example) สังเกตตัวสะกดโดเมนที่ต่างออกไป (กด [H] เพื่อดูคำใบ้)"

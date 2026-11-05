@@ -22,6 +22,9 @@ func get_submission_metrics() -> Dictionary:
 		"knowledge_score": int(summary.get("knowledge_score", 0)),
 		"skills_score": int(summary.get("skills_score", 0)),
 		"attitude_score": int(summary.get("attitude_score", 0)),
+		"cause_analysis_score": int(summary.get("cause_analysis_score", 0)),
+		"problem_solving_score": int(summary.get("problem_solving_score", 0)),
+		"prevention_score": int(summary.get("prevention_score", 0)),
 		"attempt_count": int(summary.get("attempt_count", 0)),
 		"hints_used": int(summary.get("hints_used", 0))
 	}
@@ -53,9 +56,16 @@ func _on_acknowledge_pressed() -> void:
 func _refresh_results() -> void:
 	var summary: Dictionary = TelemetryManager.get_assessment_summary()
 	results_label.text = (
-		"Knowledge: %d / 100\nSkills: %d / 100\nAttitude: %d / 100\n"
-		+ "Tasks completed: %d / %d\nAttempts: %d    Hints: %d"
+		"=== ผลการประเมินทักษะการป้องกันภัยคุกคามไซเบอร์ (Abstract Competencies) ===\n"
+		+ "1. การวิเคราะห์สาเหตุ (Cause Analysis): %d / 100\n"
+		+ "2. การแก้ปัญหาและกู้คืน (Problem Solving): %d / 100\n"
+		+ "3. การป้องกันแรนซัมแวร์ (Ransomware Prevention): %d / 100\n\n"
+		+ "[KSA Scores] Knowledge: %d | Skills: %d | Attitude: %d\n"
+		+ "ภารกิจที่สำเร็จ: %d/%d | จำนวนครั้งที่ทดลอง: %d | คำใบ้ที่ใช้: %d"
 	) % [
+		int(summary.get("cause_analysis_score", 0)),
+		int(summary.get("problem_solving_score", 0)),
+		int(summary.get("prevention_score", 0)),
 		int(summary.get("knowledge_score", 0)),
 		int(summary.get("skills_score", 0)),
 		int(summary.get("attitude_score", 0)),

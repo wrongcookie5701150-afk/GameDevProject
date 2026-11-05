@@ -44,7 +44,10 @@ func _setup_notes_content() -> void:
 	if label5:
 		label5.text = "🛡️ การสืบสวน & กู้คืน\n- เต่าดำ: โน้ตบุ๊กออฟไลน์\n- EV Drive: แฟลชไดรฟ์หลักฐาน\n- Backup: กฎ 3-2-1\n- Hash: MD5 ยืนยันไฟล์"
 
+var _opened_frame: int = -1
+
 func open_board() -> void:
+	_opened_frame = Engine.get_process_frames()
 	show()
 	# หยุดการเดินของตัวละครขณะเปิดอ่านกระดาน
 	var player = get_tree().root.find_child("Player", true, false)
@@ -61,6 +64,8 @@ func close_board() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		return
+	if Engine.get_process_frames() == _opened_frame:
 		return
 
 	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and (event.keycode == KEY_Q or event.keycode == KEY_SPACE or event.keycode == KEY_ENTER)):

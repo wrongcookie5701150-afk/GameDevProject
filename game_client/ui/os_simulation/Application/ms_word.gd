@@ -79,6 +79,8 @@ func _setup_scrollbar() -> void:
 		_bind_scroll_input_recursive(margin_container)
 
 func _bind_scroll_input_recursive(node: Node) -> void:
+	if node.name == "PretestScroll":
+		return
 	if node is Control and node is not VScrollBar:
 		var ctrl: Control = node as Control
 		if ctrl.mouse_filter == Control.MOUSE_FILTER_IGNORE:
@@ -103,7 +105,7 @@ func _update_scrollbar_range() -> void:
 			if ch > 0.0:
 				content_h = maxf(content_h, ch + 18.0)
 		
-		var raw_text: String = passage_label.text
+		var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
 		if not raw_text.is_empty():
 			var lines: PackedStringArray = raw_text.split("\n")
 			var total_lines: int = 0
@@ -141,6 +143,8 @@ func _apply_scroll(val: float) -> void:
 		passage_label.position.y = -val
 
 func _on_scroll_input(event: InputEvent) -> void:
+	if typing_puzzle and typing_puzzle.has_method("is_pretest_active") and typing_puzzle.is_pretest_active():
+		return
 	if not v_scroll_bar:
 		return
 	if event is InputEventMouseButton and event.pressed:
@@ -165,7 +169,7 @@ func scroll_following_content(step_speed: float = -1.0) -> void:
 	# Determine effective line count accurately and monotonically
 	var total_lines: int = 0
 	if passage_label:
-		var raw_text: String = passage_label.text
+		var raw_text: String = passage_label.get_parsed_text() if passage_label.has_method("get_parsed_text") else passage_label.text
 		if not raw_text.is_empty():
 			var lines: PackedStringArray = raw_text.split("\n")
 			for l: String in lines:
@@ -235,8 +239,10 @@ func _on_enable_content_pressed() -> void:
 		macro_banner.hide()
 	if status_label:
 		status_label.text = "Macros enabled. Document is being processed..."
+	if v_scroll_bar:
+		v_scroll_bar.hide()
 	
-	# Trigger typing puzzle
+	# Trigger pretest / typing puzzle
 	if typing_puzzle:
 		typing_puzzle.show()
 		if typing_puzzle.has_method("start_puzzle"):
@@ -245,8 +251,8 @@ func _on_enable_content_pressed() -> void:
 	macro_enabled.emit()
 
 func _on_typing_completed() -> void:
-	if typing_puzzle:
-		typing_puzzle.hide()
+	if v_scroll_bar:
+		v_scroll_bar.show()
 	if status_label:
 		status_label.text = "Document processed successfully!"
 	typing_completed.emit()

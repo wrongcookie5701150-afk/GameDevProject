@@ -39,8 +39,9 @@ def test_end_to_end_scene_transition_paths_exist():
         ("scenes/world_scenes/scene_02_tutorial/scene_02_tutorial.gd", "res://scenes/scene_03_incident/Scene_03_Incident.tscn"),
         ("scenes/scene_03_incident/Scene_03_Incident.gd", "res://scenes/world_scenes/scene_04_investigation_intro/Scene_04_Investigation_Intro.tscn"),
         ("scenes/world_scenes/scene_04_investigation_intro/scene_04_investigation_intro.gd", "res://scenes/scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.tscn"),
-        ("scenes/scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.gd", "res://scenes/scene_06_recovery/Scene_06_Recovery.tscn"),
-        ("scenes/scene_06_recovery/Scene_06_Recovery.gd", "res://ui/menus/MainMenu.tscn"),
+        ("scenes/scene_05_taodam_desktop/Scene_05_TaoDam_Desktop.gd", "res://scenes/scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.tscn"),
+        ("scenes/scene_06_taodam_investigation/Scene_06_TaoDam_Investigation.gd", "res://scenes/scene_07_recovery/Scene_07_Recovery.tscn"),
+        ("scenes/scene_07_recovery/Scene_07_Recovery.gd", "res://ui/menus/MainMenu.tscn"),
     ]
     for source_path, target_path in transitions:
         source_file = os.path.join(GAME_CLIENT_DIR, source_path)

@@ -31,16 +31,29 @@ func _ready() -> void:
 func open_phone() -> void:
 	super.open_phone()
 	switch_to_contact("march")
-	if not march_chat_done and not is_march_typing:
+	if march_chat_done:
+		march_chat_completed.emit()
+	elif not is_march_typing:
 		start_march_chat()
 
+func switch_to_contact(contact: String) -> void:
+	super.switch_to_contact(contact)
+	if contact == "march" and visible:
+		if march_chat_done:
+			march_chat_completed.emit()
+		elif not is_march_typing:
+			start_march_chat()
+
 func close_phone() -> void:
-	if is_march_typing:
+	if is_march_typing or not march_chat_done:
 		finish_march_chat()
 	super.close_phone()
 
 func start_march_chat() -> void:
 	if is_march_typing:
+		return
+	if march_chat_done:
+		march_chat_completed.emit()
 		return
 	is_march_typing = true
 	current_contact = "march"
@@ -64,7 +77,7 @@ func start_march_chat() -> void:
 		if chat_name_btn:
 			chat_name_btn.text = "%s (กำลังพิมพ์...)" % msg["sender"]
 		await get_tree().create_timer(0.8).timeout
-		if not is_instance_valid(messages_label) or not is_march_typing:
+		if not is_instance_valid(self) or not is_instance_valid(messages_label) or not is_march_typing:
 			return
 		var line_str: String = "%s: %s\n\n" % [msg["sender"], msg["text"]]
 		march_history += line_str
@@ -72,6 +85,8 @@ func start_march_chat() -> void:
 			messages_label.text = march_history
 		_scroll_to_bottom()
 		await get_tree().create_timer(0.4).timeout
+		if not is_instance_valid(self) or not is_march_typing:
+			return
 	
 	finish_march_chat()
 
@@ -80,9 +95,10 @@ func finish_march_chat() -> void:
 	march_chat_done = true
 	if chat_name_btn:
 		chat_name_btn.text = "March (พี่มาร์ช)"
-	if march_history.is_empty():
-		for msg: Dictionary in MARCH_CHAT_LINES:
-			march_history += "%s: %s\n\n" % [msg["sender"], msg["text"]]
+	var full_history: String = ""
+	for msg: Dictionary in MARCH_CHAT_LINES:
+		full_history += "%s: %s\n\n" % [msg["sender"], msg["text"]]
+	march_history = full_history
 	if current_contact == "march" and messages_label:
 		messages_label.text = march_history
 	_scroll_to_bottom()

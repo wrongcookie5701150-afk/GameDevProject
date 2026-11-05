@@ -28,6 +28,7 @@ var master_volume: float = 80.0
 var bgm_volume: float = 80.0
 var sfx_volume: float = 80.0
 var is_mute_all: bool = false
+var pending_decoder_task: String = ""
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS

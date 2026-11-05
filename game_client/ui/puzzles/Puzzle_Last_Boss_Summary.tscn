@@ -1,6 +1,25 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://ui/puzzles/incident_report_puzzle.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="3_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pc_win"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09, 0.13, 0.2, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.75, 1, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
 
 [node name="Puzzle_Last_Boss_Summary" type="Control"]
 layout_mode = 3
@@ -9,65 +28,95 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_script")
 scene_id = "Scene_06"
 task_id = &"T14"
 puzzle_id = &"P09"
 
 [node name="Panel" type="Panel" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 28.0
-offset_right = -20.0
-offset_bottom = -8.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -105.0
+offset_right = 195.0
+offset_bottom = 95.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pc_win")
 
 [node name="Content" type="VBoxContainer" parent="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 6.0
-offset_right = -8.0
-offset_bottom = -6.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 3
 
 [node name="TitleLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "T14 / P09: Complete the incident report"
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "MS Word - Final Incident Analysis Report (T14)"
 horizontal_alignment = 1
 
 [node name="EntryLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "Entry point:"
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "1. ช่องทางการโจมตีเริ่มต้น (Initial Entry Point):"
 
 [node name="EntrySelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="PayloadLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "Payload:"
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "2. ชนิดของมัลแวร์ที่ตรวจพบ (Malware Payload Type):"
 
 [node name="PayloadSelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="MitigationLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = "Mitigation:"
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "3. การควบคุมและป้องกันความเสียหาย (Containment & Mitigation):"
 
 [node name="MitigationSelector" type="OptionButton" parent="Panel/Content"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
 
 [node name="FeedbackLabel" type="Label" parent="Panel/Content"]
 layout_mode = 2
-text = ""
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "สรุปผลการสืบสวนลงในรายงานส่งอาจารย์ให้ครบทั้ง 3 หัวข้อ"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="SubmitButton" type="Button" parent="Panel/Content"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-text = "Submit incident report"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "บันทึกและส่งรายงานฉบับสมบูรณ์ (Submit Report)"

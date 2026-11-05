@@ -14,19 +14,35 @@ var _is_downloaded: bool = false
 
 func _ready() -> void:
 	if hide_button:
-		hide_button.pressed.connect(_on_hide_pressed)
+		hide_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		hide_button.custom_minimum_size = Vector2(10, 8)
+		if not hide_button.pressed.is_connected(_on_hide_pressed):
+			hide_button.pressed.connect(_on_hide_pressed)
 	if exit_button:
-		exit_button.pressed.connect(_on_exit_pressed)
+		exit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		exit_button.custom_minimum_size = Vector2(10, 8)
+		if not exit_button.pressed.is_connected(_on_exit_pressed):
+			exit_button.pressed.connect(_on_exit_pressed)
 	if download_button:
-		download_button.pressed.connect(_on_download_pressed)
+		if not download_button.pressed.is_connected(_on_download_pressed):
+			download_button.pressed.connect(_on_download_pressed)
+		download_button.custom_minimum_size = Vector2(12, 10)
 		download_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		download_button.tooltip_text = "ดาวน์โหลดโฟลเดอร์งานกลุ่ม (Download Folder)"
 	
 	# Clicking on the report panel or download icon also triggers download
 	if report_item:
+		_set_mouse_filter_recursive(report_item, Control.MOUSE_FILTER_IGNORE)
 		report_item.mouse_filter = Control.MOUSE_FILTER_STOP
 		report_item.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		report_item.gui_input.connect(_on_report_item_gui_input)
+		if not report_item.gui_input.is_connected(_on_report_item_gui_input):
+			report_item.gui_input.connect(_on_report_item_gui_input)
+
+func _set_mouse_filter_recursive(node: Node, filter_mode: Control.MouseFilter) -> void:
+	for child in node.get_children():
+		if child is Control:
+			child.mouse_filter = filter_mode
+			_set_mouse_filter_recursive(child, filter_mode)
 
 func _on_report_item_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

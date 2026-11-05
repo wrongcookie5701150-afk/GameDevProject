@@ -2,11 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cj3ukrsiiqucy" path="res://scenes/world_scenes/scene_04_investigation_intro/scene_04_investigation_intro.gd" id="1_scene_script"]
 [ext_resource type="PackedScene" uid="uid://cahpqs4fo3l42" path="res://scenes/initial/playground.tscn" id="2_playground"]
-[ext_resource type="PackedScene" path="res://ui/overlays/Checklist_UI.tscn" id="4_checklist"]
-[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Event_Log.tscn" id="5_event_log"]
-[ext_resource type="PackedScene" path="res://ui/puzzles/Puzzle_Drive_History.tscn" id="6_drive_history"]
-[ext_resource type="PackedScene" uid="uid://5fibvbiun4qk" path="res://ui/os_simulation/notebook_screen.tscn" id="8_notebook_screen"]
 [ext_resource type="PackedScene" uid="uid://dg08a3teibug1" path="res://ui/os_simulation/phone_panel_investigation.tscn" id="9_phone_panel"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="10_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="11_font_thai"]
 
 [sub_resource type="Gradient" id="Gradient_bvroy"]
 colors = PackedColorArray(0, 0, 0, 0.1254902, 0.21176471, 0.21176471, 0.21176471, 0.6627451)
@@ -21,21 +19,29 @@ texture = SubResource("GradientTexture2D_llgyj")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1j8a"]
 bg_color = Color(0, 0, 0, 0.18431373)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_window"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.1, 0.13, 0.19, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.55, 0.8, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
+
 [node name="Scene_04_Investigation_Intro" type="Node2D" unique_id=869697032]
 script = ExtResource("1_scene_script")
 
 [node name="Playground" parent="." unique_id=1245398925 instance=ExtResource("2_playground")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=88576246]
-
-[node name="Checklist_UI" parent="CanvasLayer" unique_id=188102317 instance=ExtResource("4_checklist")]
-visible = false
-
-[node name="Puzzle_Event_Log" parent="CanvasLayer" unique_id=1480171565 instance=ExtResource("5_event_log")]
-visible = false
-
-[node name="Puzzle_Drive_History" parent="CanvasLayer" unique_id=1043943672 instance=ExtResource("6_drive_history")]
-visible = false
 
 [node name="EVDrivePanel" type="Panel" parent="CanvasLayer" unique_id=255758602]
 visible = false
@@ -44,50 +50,67 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -45.0
-offset_right = 150.0
-offset_bottom = 45.0
+offset_left = -165.0
+offset_top = -58.0
+offset_right = 165.0
+offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_window")
 
 [node name="Content" type="VBoxContainer" parent="CanvasLayer/EVDrivePanel" unique_id=2141525413]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
+offset_left = 10.0
 offset_top = 8.0
-offset_right = -8.0
+offset_right = -10.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/EVDrivePanel/Content" unique_id=1993949196]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("10_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "FTK Forensic Image Exporter - EV-DRIVE (E:)"
+horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/EVDrivePanel/Content" unique_id=1993949197]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
-text = "EV Drive collected. Evidence is ready for Scene 5."
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("11_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "สร้าง Forensic Image ลงแฟลชไดรฟ์ EV-DRIVE สำเร็จ!
+(Report_Final.docx, Windows_Event_Log.txt, Drive_Activity.log)"
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="CloseButton" type="Button" parent="CanvasLayer/EVDrivePanel/Content" unique_id=709709471]
+custom_minimum_size = Vector2(140, 20)
 layout_mode = 2
-text = "Open evidence drive"
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("11_font_thai")
+theme_override_font_sizes/font_size = 7
+text = "ตกลง (นำไปตรวจที่เครื่องเต่าดำ)"
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=627068686]
-
-[node name="TaskObjective" type="Label" parent="CanvasLayer2" unique_id=1170846195]
-offset_left = 300.0
-offset_top = 16.0
+[node name="TaskObjective" type="Label" parent="CanvasLayer" unique_id=1170846195]
+offset_left = 290.0
+offset_top = 12.0
 offset_right = 480.0
-offset_bottom = 59.0
+offset_bottom = 58.0
 theme_override_font_sizes/font_size = 7
 theme_override_styles/normal = SubResource("StyleBoxTexture_f1kp7")
 text = "     ภารกิจ: กด [P] เพื่อเปิดมือถือ
            - คุยกับพี่มาร์ช (March)"
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
 
-[node name="PhoneToggleButton" type="Button" parent="CanvasLayer2" unique_id=1610794499]
+[node name="PhoneToggleButton" type="Button" parent="CanvasLayer" unique_id=1610794499]
 offset_left = 410.0
 offset_top = 172.0
 offset_right = 479.0
@@ -95,9 +118,8 @@ offset_bottom = 190.0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_x1j8a")
 text = "- กด [P] เพื่อใช้มือถือ"
-metadata/_edit_use_anchors_ = true
 
-[node name="InspectHint" type="Button" parent="CanvasLayer2" unique_id=983362144]
+[node name="InspectHint" type="Button" parent="CanvasLayer" unique_id=983362144]
 offset_left = 410.0
 offset_top = 191.0
 offset_right = 479.0
@@ -105,16 +127,10 @@ offset_bottom = 209.0
 theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_x1j8a")
 text = "- กด [spacebar] inspect"
-metadata/_edit_use_anchors_ = true
 
-[node name="PhonePanel" parent="CanvasLayer2" unique_id=1047357630 instance=ExtResource("9_phone_panel")]
+[node name="PhonePanel" parent="CanvasLayer" unique_id=1047357630 instance=ExtResource("9_phone_panel")]
 visible = false
 offset_left = 287.0
 offset_top = 46.0
 offset_right = 408.0
 offset_bottom = 261.0
-
-
-[node name="NotebookScreen" parent="CanvasLayer2" unique_id=1608793853 instance=ExtResource("8_notebook_screen")]
-visible = false
-z_index = 1

@@ -1,6 +1,25 @@
 [gd_scene format=3 uid="uid://bd0d5me4ok8dy"]
 
 [ext_resource type="Script" uid="uid://v6lnh0awf26r" path="res://ui/puzzles/macro_structure_puzzle.gd" id="1_macro_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="3_font_thai"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_forensic_win"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.08, 0.11, 0.17, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.7, 0.95, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_size = 6
 
 [node name="Puzzle_File_Structure" type="Control" unique_id=1953494715]
 layout_mode = 3
@@ -9,6 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_macro_script")
 correct_option_id = &"vba_project"
 scene_id = "Scene_05"
@@ -21,46 +41,62 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -190.0
-offset_top = -105.0
-offset_right = 190.0
-offset_bottom = 105.0
+offset_left = -195.0
+offset_top = -124.0
+offset_right = 195.0
+offset_bottom = 62.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_forensic_win")
 
 [node name="Content" type="VBoxContainer" parent="Panel" unique_id=626911966]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
-offset_top = 10.0
+offset_top = 6.0
 offset_right = -10.0
-offset_bottom = -10.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 3
 
 [node name="TitleLabel" type="Label" parent="Panel/Content" unique_id=1748763410]
 layout_mode = 2
-text = "T09 / P04: Inspect Report_Final.docx structure"
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 8
+text = "[4/6] olevba - Inspect Report_Final.docx Structure (T09)"
 horizontal_alignment = 1
 
 [node name="StructureLabel" type="Label" parent="Panel/Content" unique_id=1919903371]
 layout_mode = 2
-text = "Final_Report_Revision_v4.docx contains:"
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "Archive structure of Report_Final.docx:"
 horizontal_alignment = 1
 
 [node name="Components" type="ItemList" parent="Panel/Content" unique_id=563598370]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
 allow_reselect = true
 
 [node name="HintButton" type="Button" parent="Panel/Content" unique_id=1209560670]
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
-text = "Hint"
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "คำใบ้ (Hint)"
 
 [node name="FeedbackLabel" type="Label" parent="Panel/Content" unique_id=114225917]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
-text = "Select the component that identifies the embedded macro."
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "คลิกเลือกส่วนประกอบที่เป็นโค้ด Macro (VBA Binary) ที่ฝังอยู่ในเอกสาร"
 horizontal_alignment = 1
 autowrap_mode = 3

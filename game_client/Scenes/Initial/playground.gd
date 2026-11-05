@@ -49,14 +49,22 @@ func get_interact_object(id_or_name: String) -> InteractObject:
 					return child
 				# Aliases
 				if (id_or_name.to_lower() == "taodam" and child.name.to_lower() == "notebook") or \
-				   (id_or_name.to_lower() == "computer" and child.name.to_lower() == "desktop"):
+				   (id_or_name.to_lower() == "computer" and child.name.to_lower() == "desktop") or \
+				   (id_or_name.to_lower() == "ev_drive" and child.name.to_lower() == "evdrive") or \
+				   (id_or_name.to_lower() == "flashdrive" and (child.name.to_lower() == "evdrive" or child.object_id.to_lower() == "ev_drive")):
 					return child
 
 	# 3. Fallback search anywhere in Playground
 	for node: Node in find_children("*", "InteractObject", true, false):
 		var obj: InteractObject = node as InteractObject
-		if obj and (obj.object_id.to_lower() == id_or_name.to_lower() or obj.name.to_lower() == id_or_name.to_lower()):
-			return obj
+		if obj:
+			var obj_id_low := obj.object_id.to_lower()
+			var name_low := obj.name.to_lower()
+			var target_low := id_or_name.to_lower()
+			if obj_id_low == target_low or name_low == target_low:
+				return obj
+			if target_low in ["ev_drive", "flashdrive", "evdrive"] and (obj_id_low in ["ev_drive", "flashdrive"] or name_low in ["evdrive", "ev_drive"]):
+				return obj
 	return null
 
 func get_all_interact_objects() -> Array[InteractObject]:

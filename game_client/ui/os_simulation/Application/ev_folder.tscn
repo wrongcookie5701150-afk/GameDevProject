@@ -1,7 +1,418 @@
 [gd_scene format=3 uid="uid://kqfqsi5ou0n4"]
 
+[ext_resource type="Script" uid="uid://o2edo8c0lub3" path="res://ui/os_simulation/Application/ev_folder.gd" id="1_ev_folder_script"]
+[ext_resource type="Texture2D" uid="uid://bltqr4f02d1se" path="res://assets/Icon32x32/folder.png" id="1_x4l8k"]
+[ext_resource type="Texture2D" uid="uid://dr4x47scfpte6" path="res://assets/UI_Wenrexa/CellBig_01.png" id="2_ke1yr"]
+[ext_resource type="Texture2D" uid="uid://b31w3c7yk83ck" path="res://assets/Icon32x32/disk.png" id="3_disk"]
+[ext_resource type="Texture2D" uid="uid://cspjqa2027com" path="res://assets/Icon32x32/eye.png" id="4_eye"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_title"]
+bg_color = Color(0.15503833, 0.15988427, 0.18043, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lmy4a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p25hg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gieoq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wu6w7"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c2lyj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q5dif"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_path"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 1.0
+bg_color = Color(0.66399074, 0.66656, 0.673584, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_content"]
+bg_color = Color(0.13697249, 0.14153817, 0.14215201, 0.8509804)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sidebar"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.122685544, 0.12342813, 0.120039575, 0.9490196)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_folder_btn"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.19188416, 0.2218521, 0.23446348, 0.6)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qj3x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_folder_btn_hover"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.24689779, 0.25511947, 0.2779164, 0.9019608)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6055548, 0.61482453, 0.6125427, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_file_btn"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12, 0.12, 0.16, 0.6)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_file_btn_hover"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.2, 0.24, 0.35, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.65, 0.95, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_details"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12024791, 0.14014772, 0.1547721, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inspect_btn"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.22, 0.4, 0.7, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="EvFolder" type="Control" unique_id=1722629006]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ev_folder_script")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1646780593]
+custom_minimum_size = Vector2(380, 190)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -95.0
+offset_right = 190.0
+offset_bottom = 95.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.10661956, 0.11259387, 0.14796686, 1)
+
+[node name="AppTitle" type="Panel" parent="ColorRect" unique_id=685174869]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 0
+offset_right = 380.0
+offset_bottom = 15.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_title")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/AppTitle" unique_id=231098666]
+custom_maximum_size = Vector2(370, -1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 1.5
+offset_right = -5.0
+offset_bottom = -1.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/AppTitle/HBoxContainer" unique_id=819320927]
+layout_mode = 2
+texture = ExtResource("3_disk")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="ColorRect/AppTitle/HBoxContainer" unique_id=189651274]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+text = "EV-DRIVE (E:) - File Explorer [Forensic USB]"
+
+[node name="Minimize" type="Button" parent="ColorRect/AppTitle/HBoxContainer" unique_id=1325533425]
+layout_mode = 2
+theme_override_colors/icon_normal_color = Color(0.96862745, 1, 0, 1)
+theme_override_constants/icon_max_width = 10
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lmy4a")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p25hg")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gieoq")
+icon = ExtResource("2_ke1yr")
+
+[node name="Exit" type="Button" parent="ColorRect/AppTitle/HBoxContainer" unique_id=1125178117]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(0.85490197, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.85490197, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.85490197, 0, 0, 1)
+theme_override_colors/icon_hover_color = Color(0.85490197, 0, 0, 1)
+theme_override_constants/icon_max_width = 10
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wu6w7")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_c2lyj")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_q5dif")
+icon = ExtResource("2_ke1yr")
+icon_alignment = 1
+
+[node name="PathBar" type="Panel" parent="ColorRect" unique_id=892341201]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 0
+offset_top = 15.0
+offset_right = 380.0
+offset_bottom = 29.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_path")
+
+[node name="HBox" type="HBoxContainer" parent="ColorRect/PathBar" unique_id=178239014]
+custom_minimum_size = Vector2(370, 12)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.5
+offset_right = 64.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PathIcon" type="TextureRect" parent="ColorRect/PathBar/HBox" unique_id=98721345]
+layout_mode = 2
+texture = ExtResource("1_x4l8k")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="PathLabel" type="Label" parent="ColorRect/PathBar/HBox" unique_id=451290382]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.019033024, 0.017232725, 0.017678984, 1)
+theme_override_font_sizes/font_size = 6
+text = " E:\\Documents\\"
+
+[node name="DriveStatus" type="Label" parent="ColorRect/PathBar/HBox" unique_id=129384756]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26102564, 0.30551732, 0.17013252, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.7750634, 0.7750634, 0.7750634, 1)
+theme_override_font_sizes/font_size = 5
+text = "[WRITE-PROTECTED IMAGE]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FileContent" type="Panel" parent="ColorRect" unique_id=1329092189]
+layout_mode = 0
+offset_top = 29.0
+offset_right = 380.0
+offset_bottom = 166.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_content")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/FileContent" unique_id=1960150523]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+
+[node name="FolderSidebar" type="Panel" parent="ColorRect/FileContent/HBoxContainer" unique_id=129847120]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sidebar")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/FileContent/HBoxContainer/FolderSidebar" unique_id=336720345]
+custom_minimum_size = Vector2(100, 137)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -41.5
+offset_right = 41.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SidebarHeader" type="Label" parent="ColorRect/FileContent/HBoxContainer/FolderSidebar/VBoxContainer" unique_id=748392019]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78431374, 0.8156863, 0.8745098, 1)
+theme_override_font_sizes/font_size = 7
+text = "DIRECTORIES"
+
+[node name="Folder1" type="Button" parent="ColorRect/FileContent/HBoxContainer/FolderSidebar/VBoxContainer" unique_id=1678573551]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_folder_btn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qj3x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_folder_btn_hover")
+text = " Documents"
+icon = ExtResource("1_x4l8k")
+alignment = 0
+
+[node name="Folder2" type="Button" parent="ColorRect/FileContent/HBoxContainer/FolderSidebar/VBoxContainer" unique_id=1156771912]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_folder_btn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qj3x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_folder_btn_hover")
+text = " Logs"
+icon = ExtResource("1_x4l8k")
+alignment = 0
+
+[node name="Folder3" type="Button" parent="ColorRect/FileContent/HBoxContainer/FolderSidebar/VBoxContainer" unique_id=2124345123]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_folder_btn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qj3x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_folder_btn_hover")
+text = " Malware_Artifacts"
+icon = ExtResource("1_x4l8k")
+alignment = 0
+
+[node name="Folder4" type="Button" parent="ColorRect/FileContent/HBoxContainer/FolderSidebar/VBoxContainer" unique_id=1953397907]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/icon_max_width = 8
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_folder_btn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qj3x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_folder_btn_hover")
+text = " Incident_Notes"
+icon = ExtResource("1_x4l8k")
+alignment = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/FileContent/HBoxContainer" unique_id=287210175]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="FileHeader" type="Label" parent="ColorRect/FileContent/HBoxContainer/VBoxContainer2" unique_id=892347102]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78476083, 0.8148943, 0.8746681, 1)
+theme_override_font_sizes/font_size = 7
+text = "FILES IN DIRECTORY"
+
+[node name="File1" type="Button" parent="ColorRect/FileContent/HBoxContainer/VBoxContainer2" unique_id=1815382908]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_file_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_file_btn_hover")
+alignment = 0
+
+[node name="File2" type="Button" parent="ColorRect/FileContent/HBoxContainer/VBoxContainer2" unique_id=1994740072]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_file_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_file_btn_hover")
+alignment = 0
+
+[node name="File3" type="Button" parent="ColorRect/FileContent/HBoxContainer/VBoxContainer2" unique_id=893668881]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_file_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_file_btn_hover")
+alignment = 0
+
+[node name="File4" type="Button" parent="ColorRect/FileContent/HBoxContainer/VBoxContainer2" unique_id=2077748757]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_file_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_file_btn_hover")
+alignment = 0
+
+[node name="File5" type="Button" parent="ColorRect/FileContent/HBoxContainer/VBoxContainer2" unique_id=1976276614]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_file_btn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_file_btn_hover")
+alignment = 0
+
+[node name="DetailsBar" type="Panel" parent="ColorRect" unique_id=983471029]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 0
+offset_top = 166.0
+offset_right = 380.0
+offset_bottom = 190.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_details")
+
+[node name="HBox" type="HBoxContainer" parent="ColorRect/DetailsBar" unique_id=192837465]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="DetailsLabel" type="Label" parent="ColorRect/DetailsBar/HBox" unique_id=873491028]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.75, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 6
+text = "Select a file to inspect metadata"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InspectBtn" type="Button" parent="ColorRect/DetailsBar/HBox" unique_id=765102938]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/icon_max_width = 6
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_inspect_btn")
+text = "Inspect 🔍"
+icon = ExtResource("4_eye")

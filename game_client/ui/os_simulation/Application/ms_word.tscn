@@ -152,28 +152,27 @@ content_margin_right = 0.0
 content_margin_bottom = 0.0
 
 [node name="MsWord" type="Control" unique_id=908828390]
-custom_minimum_size = Vector2(300, 180)
+custom_minimum_size = Vector2(390, 220)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -90.0
-offset_right = 150.0
-offset_bottom = 90.0
+offset_left = -195.0
+offset_top = -118.0
+offset_right = 195.0
+offset_bottom = 102.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_script")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=142237650]
-custom_minimum_size = Vector2(300, 180)
+custom_minimum_size = Vector2(390, 220)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 1.0170001
-offset_bottom = -0.060012817
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.95686275, 0.95686275, 0.95686275, 1)
@@ -319,42 +318,40 @@ text = "Report_CyberSecurity_Draft.docx"
 
 [node name="Workspace" type="HBoxContainer" parent="ColorRect/VBoxContainer" unique_id=2133986910]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/VBoxContainer/Workspace" unique_id=596463150]
-custom_minimum_size = Vector2(0, 130)
+custom_minimum_size = Vector2(0, 165)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_right = 4
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
 
 [node name="TypingPuzzle" parent="ColorRect/VBoxContainer/Workspace/MarginContainer" unique_id=1160543254 instance=ExtResource("4_typing_puzzle")]
 layout_mode = 2
 
 [node name="PassageLabel" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="0" unique_id=1531474539]
-custom_minimum_size = Vector2(225, 100)
+custom_minimum_size = Vector2(340, 140)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.0
-offset_left = -112.5
-offset_right = 112.5
+offset_left = -170.0
+offset_right = 170.0
 offset_bottom = 580.0
 grow_vertical = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ftuyi")
 
-[node name="ReportPaper" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="1" unique_id=959806716]
-visible = false
-theme_override_styles/panel = SubResource("StyleBoxFlat_bk5wb")
-
-[node name="TextEdit" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="2" unique_id=1525266629]
-custom_minimum_size = Vector2(225, 0)
+[node name="TextEdit" parent="ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" index="1" unique_id=1525266629]
+custom_minimum_size = Vector2(340, 0)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.0
-offset_left = -112.5
-offset_right = 112.5
+offset_left = -170.0
+offset_right = 170.0
 offset_bottom = 42.5
 grow_vertical = 1
 
