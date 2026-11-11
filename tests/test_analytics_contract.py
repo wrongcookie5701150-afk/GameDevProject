@@ -13,9 +13,36 @@ client = TestClient(app)
 GAME_CLIENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../game_client"))
 if not os.path.exists(GAME_CLIENT_DIR):
     GAME_CLIENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../game-client"))
-SCENES_DIR = os.path.join(GAME_CLIENT_DIR, "scenes")
-PUZZLES_DIR = os.path.join(GAME_CLIENT_DIR, "ui", "puzzles")
-SCRIPTS_DIR = os.path.join(GAME_CLIENT_DIR, "Scripts" if os.path.exists(os.path.join(GAME_CLIENT_DIR, "Scripts")) else "scripts")
+
+
+def resolve_game_client_path(rel_path: str) -> str:
+    """Helper to resolve paths case-insensitively for Linux CI compatibility."""
+    clean_rel = rel_path.removeprefix("res://").replace("\\", "/")
+    curr = GAME_CLIENT_DIR
+    for part in clean_rel.split("/"):
+        if not part:
+            continue
+        found = False
+        if os.path.exists(curr) and os.path.isdir(curr):
+            for entry in os.listdir(curr):
+                if entry == part:
+                    curr = os.path.join(curr, entry)
+                    found = True
+                    break
+            if not found:
+                for entry in os.listdir(curr):
+                    if entry.lower() == part.lower():
+                        curr = os.path.join(curr, entry)
+                        found = True
+                        break
+        if not found:
+            curr = os.path.join(curr, part)
+    return curr
+
+
+SCENES_DIR = resolve_game_client_path("scenes")
+PUZZLES_DIR = resolve_game_client_path("ui/puzzles")
+SCRIPTS_DIR = resolve_game_client_path("scripts")
 
 def create_base_payload(scene_id: str, task_id: str, metrics: dict):
     return {
@@ -44,8 +71,8 @@ def test_end_to_end_scene_transition_paths_exist():
         ("scenes/scene_07_recovery/Scene_07_Recovery.gd", "res://ui/menus/MainMenu.tscn"),
     ]
     for source_path, target_path in transitions:
-        source_file = os.path.join(GAME_CLIENT_DIR, source_path)
-        target_file = os.path.join(GAME_CLIENT_DIR, target_path.removeprefix("res://"))
+        source_file = resolve_game_client_path(source_path)
+        target_file = resolve_game_client_path(target_path)
         assert os.path.isfile(source_file), source_file
         assert os.path.isfile(target_file), target_file
         with open(source_file, encoding="utf-8") as source:
