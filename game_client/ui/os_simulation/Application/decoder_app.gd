@@ -6,11 +6,18 @@ class_name DecoderApp extends Control
 signal closed()
 signal mode_executed(mode_name: String, input_text: String, output_text: String)
 
+const FONT_MONO: FontFile = preload("res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf")
+
 @onready var input_edit: TextEdit = find_child("RawCode", true, false).find_child("TextEdit", true, false) as TextEdit
 @onready var output_edit: TextEdit = find_child("Result", true, false).find_child("TextEdit", true, false) as TextEdit
 @onready var status_label: Label = find_child("StatusLabel", true, false) as Label
 @onready var minimize_button: Button = find_child("Minimize", true, false) as Button
 @onready var exit_button: Button = find_child("Exit", true, false) as Button
+var maximize_button: Button = null
+
+var _is_maximized: bool = false
+var _pre_maximize_pos: Vector2 = Vector2(40, 30)
+var _pre_maximize_size: Vector2 = Vector2(400, 200)
 
 # Scroll & Container Nodes
 @onready var scroll_container: ScrollContainer = find_child("ScrollContainer", true, false) as ScrollContainer
@@ -70,14 +77,200 @@ func _ready() -> void:
 		_char_to_morse[MORSE_TO_CHAR[code]] = code
 	_char_to_morse[" "] = "/"
 
+	_apply_modern_styling()
+	_setup_window_dragging()
+	_style_window()
+	_setup_mode_controls()
+
+func _style_window() -> void:
+	var window_box: Control = get_node_or_null("ColorRect") as Control
+	if not window_box:
+		window_box = find_child("ColorRect", true, false) as Control
+	var title_bar: Control = null
+	if window_box:
+		title_bar = window_box.get_node_or_null("AppTitle") as Control
+		if not title_bar:
+			title_bar = window_box.find_child("AppTitle", true, false) as Control
+	if not title_bar:
+		return
+
+	# 1. ตั้งค่า AppTitle ให้ยืดเต็มความกว้างด้านบนของ ColorRect
+	title_bar.anchor_left = 0.0
+	title_bar.anchor_right = 1.0
+	title_bar.offset_left = 0.0
+	title_bar.offset_right = 0.0
+	title_bar.offset_top = 0.0
+	title_bar.offset_bottom = 20.0
+	title_bar.custom_minimum_size = Vector2(0, 20)
+
+	# 2. ตั้งค่า AppTitle/HBoxContainer ให้ยืดเต็ม AppTitle
+	var title_hbox: HBoxContainer = title_bar.find_child("HBoxContainer", true, false) as HBoxContainer
+	if title_hbox:
+		title_hbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		title_hbox.offset_left = 4.0
+		title_hbox.offset_right = -4.0
+		title_hbox.custom_maximum_size = Vector2.ZERO
+		title_hbox.add_theme_constant_override("separation", 2)
+
+	var old_btn_container = title_bar.find_child("ControlButtonsHBox", true, false)
+	if old_btn_container:
+		for c in old_btn_container.get_children():
+			c.reparent(title_hbox)
+		old_btn_container.queue_free()
+
+	if not minimize_button:
+		minimize_button = title_bar.find_child("Minimize", true, false) as Button
+	if not exit_button:
+		exit_button = title_bar.find_child("Exit", true, false) as Button
+
+	# 3. จัดการปุ่ม Maximize ให้อยู่คั่นกลางระหว่าง Minimize และ Exit ภายใน title_hbox
+	if not maximize_button:
+		maximize_button = title_bar.find_child("Maximize", true, false) as Button
+		if not maximize_button:
+			maximize_button = title_bar.find_child("MaximizeButton", true, false) as Button
+		if not maximize_button and title_hbox:
+			maximize_button = Button.new()
+			maximize_button.name = "Maximize"
+			title_hbox.add_child(maximize_button)
+
+	if title_hbox and minimize_button and maximize_button and exit_button:
+		var min_idx: int = minimize_button.get_index()
+		title_hbox.move_child(maximize_button, min_idx + 1)
+		title_hbox.move_child(exit_button, min_idx + 2)
+
+	var title_lbl := title_bar.find_child("Label", true, false) as Label
+	if title_lbl:
+		title_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	var btn_normal := StyleBoxEmpty.new()
+	var btn_hover := StyleBoxFlat.new()
+	btn_hover.bg_color = Color(1.0, 1.0, 1.0, 0.15)
+	btn_hover.corner_radius_top_left = 2
+	btn_hover.corner_radius_top_right = 2
+	btn_hover.corner_radius_bottom_right = 2
+	btn_hover.corner_radius_bottom_left = 2
+
+	var btn_pressed := StyleBoxFlat.new()
+	btn_pressed.bg_color = Color(1.0, 1.0, 1.0, 0.25)
+	btn_pressed.corner_radius_top_left = 2
+	btn_pressed.corner_radius_top_right = 2
+	btn_pressed.corner_radius_bottom_right = 2
+	btn_pressed.corner_radius_bottom_left = 2
+
+	# Exit button style (dark red #b83333, white text style terminal.tscn)
+	var exit_normal := StyleBoxFlat.new()
+	exit_normal.bg_color = Color("#b83333")
+	exit_normal.corner_radius_top_left = 2
+	exit_normal.corner_radius_top_right = 2
+	exit_normal.corner_radius_bottom_right = 2
+	exit_normal.corner_radius_bottom_left = 2
+
+	var exit_hover := StyleBoxFlat.new()
+	exit_hover.bg_color = Color(0.91, 0.08, 0.14, 1.0)
+	exit_hover.corner_radius_top_left = 2
+	exit_hover.corner_radius_top_right = 2
+	exit_hover.corner_radius_bottom_right = 2
+	exit_hover.corner_radius_bottom_left = 2
+
+	var exit_pressed := StyleBoxFlat.new()
+	exit_pressed.bg_color = Color(0.75, 0.05, 0.1, 1.0)
+	exit_pressed.corner_radius_top_left = 2
+	exit_pressed.corner_radius_top_right = 2
+	exit_pressed.corner_radius_bottom_right = 2
+	exit_pressed.corner_radius_bottom_left = 2
+
+	# 4. ตั้งค่าปุ่ม Minimize
 	if minimize_button:
-		minimize_button.pressed.connect(func() -> void: hide())
+		minimize_button.icon = null
+		minimize_button.text = "─"
+		minimize_button.custom_minimum_size = Vector2(18, 18)
+		minimize_button.size = Vector2(18, 18)
+		minimize_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		minimize_button.add_theme_font_override("font", FONT_MONO)
+		minimize_button.add_theme_font_size_override("font_size", 8)
+		minimize_button.add_theme_color_override("font_color", Color(0.85, 0.85, 0.85, 1.0))
+		minimize_button.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+		minimize_button.add_theme_stylebox_override("normal", btn_normal)
+		minimize_button.add_theme_stylebox_override("hover", btn_hover)
+		minimize_button.add_theme_stylebox_override("pressed", btn_pressed)
+		if not minimize_button.pressed.is_connected(_on_close_pressed):
+			minimize_button.pressed.connect(_on_close_pressed)
+
+	# 5. ตั้งค่าปุ่ม Maximize
+	if maximize_button:
+		maximize_button.icon = null
+		maximize_button.text = "❐" if _is_maximized else "□"
+		maximize_button.custom_minimum_size = Vector2(18, 18)
+		maximize_button.size = Vector2(18, 18)
+		maximize_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		maximize_button.add_theme_font_override("font", FONT_MONO)
+		maximize_button.add_theme_font_size_override("font_size", 8)
+		maximize_button.add_theme_color_override("font_color", Color(0.85, 0.85, 0.85, 1.0))
+		maximize_button.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+		maximize_button.add_theme_stylebox_override("normal", btn_normal)
+		maximize_button.add_theme_stylebox_override("hover", btn_hover)
+		maximize_button.add_theme_stylebox_override("pressed", btn_pressed)
+		if not maximize_button.pressed.is_connected(_toggle_maximize):
+			maximize_button.pressed.connect(_toggle_maximize)
+
+	# 6. ตั้งค่าปุ่ม Exit
 	if exit_button:
-		exit_button.pressed.connect(func() -> void:
-			hide()
-			closed.emit()
-		)
+		exit_button.icon = null
+		exit_button.text = "✕"
+		exit_button.custom_minimum_size = Vector2(18, 18)
+		exit_button.size = Vector2(18, 18)
+		exit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		exit_button.add_theme_font_override("font", FONT_MONO)
+		exit_button.add_theme_font_size_override("font_size", 8)
+		exit_button.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+		exit_button.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+		exit_button.add_theme_color_override("font_pressed_color", Color(1.0, 1.0, 1.0, 1.0))
+		exit_button.add_theme_stylebox_override("normal", exit_normal)
+		exit_button.add_theme_stylebox_override("hover", exit_hover)
+		exit_button.add_theme_stylebox_override("pressed", exit_pressed)
+		if not exit_button.pressed.is_connected(_on_close_pressed):
+			exit_button.pressed.connect(_on_close_pressed)
+
+	if title_bar and not title_bar.gui_input.is_connected(_on_title_bar_gui_input):
+		title_bar.gui_input.connect(_on_title_bar_gui_input)
+
+func _setup_window_buttons() -> void:
+	_style_window()
+
+func _on_close_pressed() -> void:
+	hide()
+	closed.emit()
+
+func _on_title_bar_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if event.double_click:
+			_toggle_maximize()
+
+func _toggle_maximize() -> void:
+	var window_box: Control = get_node_or_null("ColorRect") as Control
+	if not window_box:
+		window_box = find_child("ColorRect", true, false) as Control
+	if not window_box:
+		return
 	
+	_is_maximized = !_is_maximized
+	if _is_maximized:
+		_pre_maximize_pos = window_box.position
+		_pre_maximize_size = window_box.size
+		window_box.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		window_box.position = Vector2(2, 2)
+		window_box.size = Vector2(476, 246)
+		window_box.custom_minimum_size = Vector2(476, 246)
+		if maximize_button:
+			maximize_button.text = "❐"
+	else:
+		window_box.position = _pre_maximize_pos
+		window_box.size = _pre_maximize_size
+		window_box.custom_minimum_size = _pre_maximize_size
+		if maximize_button:
+			maximize_button.text = "□"
+
+func _setup_mode_controls() -> void:
 	_register_mode_button(btn_hex, "HexCode", _decode_hex)
 	_register_mode_button(btn_base64, "Base64", _decode_base64)
 	_register_mode_button(btn_binary, "Binary", _decode_binary)
@@ -97,14 +290,147 @@ func _ready() -> void:
 		if status_label:
 			status_label.text = "Status: 1. Select Mode -> 2. Enter Code -> 3. Click ▶ Decode"
 	
-	if btn_decode:
+	if btn_decode and not btn_decode.pressed.is_connected(_on_decode_pressed):
 		btn_decode.pressed.connect(_on_decode_pressed)
-	if btn_clear:
+	if btn_clear and not btn_clear.pressed.is_connected(_on_clear_pressed):
 		btn_clear.pressed.connect(_on_clear_pressed)
-	if btn_copy:
+	if btn_copy and not btn_copy.pressed.is_connected(_on_copy_pressed):
 		btn_copy.pressed.connect(_on_copy_pressed)
 
 	call_deferred("_post_init_scrollbars")
+
+func _apply_modern_styling() -> void:
+	var window_box: Control = get_node_or_null("ColorRect") as Control
+	if not window_box:
+		window_box = find_child("ColorRect", true, false) as Control
+	if window_box:
+		if window_box is ColorRect:
+			(window_box as ColorRect).color = Color(0, 0, 0, 0)
+		
+		var bg_panel: Panel = window_box.get_node_or_null("WinBgPanel") as Panel
+		if not bg_panel:
+			bg_panel = Panel.new()
+			bg_panel.name = "WinBgPanel"
+			bg_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			bg_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+			window_box.add_child(bg_panel)
+			window_box.move_child(bg_panel, 0)
+		
+		var win_sb := StyleBoxFlat.new()
+		win_sb.bg_color = Color(0.11, 0.13, 0.18, 0.98)
+		win_sb.corner_radius_top_left = 7
+		win_sb.corner_radius_top_right = 7
+		win_sb.corner_radius_bottom_left = 7
+		win_sb.corner_radius_bottom_right = 7
+		win_sb.shadow_size = 6
+		win_sb.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
+		win_sb.shadow_offset = Vector2(0, 3)
+		win_sb.border_width_left = 1
+		win_sb.border_width_top = 1
+		win_sb.border_width_right = 1
+		win_sb.border_width_bottom = 1
+		win_sb.border_color = Color(0.25, 0.38, 0.65, 0.7)
+		bg_panel.add_theme_stylebox_override("panel", win_sb)
+		
+		var title_bar: Panel = window_box.get_node_or_null("AppTitle") as Panel
+		if not title_bar:
+			title_bar = window_box.find_child("AppTitle", true, false) as Panel
+		if title_bar:
+			var title_sb := StyleBoxFlat.new()
+			title_sb.bg_color = Color(0.16, 0.18, 0.26, 1.0)
+			title_sb.corner_radius_top_left = 7
+			title_sb.corner_radius_top_right = 7
+			title_sb.corner_radius_bottom_left = 0
+			title_sb.corner_radius_bottom_right = 0
+			title_sb.border_width_bottom = 1
+			title_sb.border_color = Color(0.22, 0.28, 0.42, 0.8)
+			title_bar.add_theme_stylebox_override("panel", title_sb)
+
+		var title_lbl := window_box.find_child("Label", true, false) as Label
+		if title_lbl:
+			title_lbl.add_theme_font_size_override("font_size", 9)
+
+	var mode_panel := find_child("DecoderMode", true, false) as Control
+	if mode_panel:
+		var mode_sb := StyleBoxFlat.new()
+		mode_sb.bg_color = Color(0.13, 0.15, 0.22, 0.9)
+		mode_sb.corner_radius_top_left = 7
+		mode_sb.corner_radius_top_right = 7
+		mode_sb.corner_radius_bottom_left = 7
+		mode_sb.corner_radius_bottom_right = 7
+		mode_sb.shadow_size = 6
+		mode_sb.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
+		mode_sb.shadow_offset = Vector2(0, 3)
+		mode_sb.border_width_left = 1
+		mode_sb.border_width_top = 1
+		mode_sb.border_width_right = 1
+		mode_sb.border_width_bottom = 1
+		mode_sb.border_color = Color(0.24, 0.32, 0.48, 0.6)
+		mode_panel.add_theme_stylebox_override("panel", mode_sb)
+
+	var raw_panel := find_child("RawCode", true, false) as Control
+	if raw_panel:
+		var raw_sb := StyleBoxFlat.new()
+		raw_sb.bg_color = Color(0.09, 0.11, 0.16, 0.95)
+		raw_sb.corner_radius_top_left = 7
+		raw_sb.corner_radius_top_right = 7
+		raw_sb.corner_radius_bottom_left = 7
+		raw_sb.corner_radius_bottom_right = 7
+		raw_sb.shadow_size = 6
+		raw_sb.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
+		raw_sb.shadow_offset = Vector2(0, 3)
+		raw_sb.border_width_left = 1
+		raw_sb.border_width_top = 1
+		raw_sb.border_width_right = 1
+		raw_sb.border_width_bottom = 1
+		raw_sb.border_color = Color(0.22, 0.3, 0.45, 0.6)
+		raw_panel.add_theme_stylebox_override("panel", raw_sb)
+
+	var result_panel := find_child("Result", true, false) as Control
+	if result_panel:
+		var res_sb := StyleBoxFlat.new()
+		res_sb.bg_color = Color(0.09, 0.11, 0.16, 0.95)
+		res_sb.corner_radius_top_left = 7
+		res_sb.corner_radius_top_right = 7
+		res_sb.corner_radius_bottom_left = 7
+		res_sb.corner_radius_bottom_right = 7
+		res_sb.shadow_size = 6
+		res_sb.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
+		res_sb.shadow_offset = Vector2(0, 3)
+		res_sb.border_width_left = 1
+		res_sb.border_width_top = 1
+		res_sb.border_width_right = 1
+		res_sb.border_width_bottom = 1
+		res_sb.border_color = Color(0.22, 0.3, 0.45, 0.6)
+		result_panel.add_theme_stylebox_override("panel", res_sb)
+
+	if input_edit:
+		input_edit.add_theme_font_size_override("font_size", 7)
+	if output_edit:
+		output_edit.add_theme_font_size_override("font_size", 7)
+	if status_label:
+		status_label.add_theme_font_size_override("font_size", 6)
+
+	var action_buttons: Array[Button] = [btn_decode, btn_clear, btn_copy]
+	for ab in action_buttons:
+		if ab:
+			ab.add_theme_font_size_override("font_size", 6)
+			var a_sb := StyleBoxFlat.new()
+			a_sb.bg_color = Color(0.16, 0.28, 0.46, 0.9)
+			a_sb.corner_radius_top_left = 7
+			a_sb.corner_radius_top_right = 7
+			a_sb.corner_radius_bottom_left = 7
+			a_sb.corner_radius_bottom_right = 7
+			a_sb.border_width_left = 1
+			a_sb.border_width_top = 1
+			a_sb.border_width_right = 1
+			a_sb.border_width_bottom = 1
+			a_sb.border_color = Color(0.35, 0.6, 0.9, 0.8)
+			a_sb.content_margin_left = 5.0
+			a_sb.content_margin_right = 5.0
+			a_sb.content_margin_top = 1.0
+			a_sb.content_margin_bottom = 1.0
+			ab.add_theme_stylebox_override("normal", a_sb)
 
 func _process(_delta: float) -> void:
 	_sync_ranges_if_needed(_internal_mode_scroll, mode_scroll_bar)
@@ -245,6 +571,29 @@ func _register_mode_button(btn: Button, mode_name: String, decode_func: Callable
 	if not btn:
 		return
 	btn.toggle_mode = true
+	btn.add_theme_font_size_override("font_size", 6)
+	var m_sb := StyleBoxFlat.new()
+	m_sb.bg_color = Color(0.16, 0.20, 0.28, 0.85)
+	m_sb.corner_radius_top_left = 7
+	m_sb.corner_radius_top_right = 7
+	m_sb.corner_radius_bottom_left = 7
+	m_sb.corner_radius_bottom_right = 7
+	m_sb.border_width_left = 1
+	m_sb.border_width_top = 1
+	m_sb.border_width_right = 1
+	m_sb.border_width_bottom = 1
+	m_sb.border_color = Color(0.28, 0.38, 0.52, 0.7)
+	m_sb.content_margin_left = 4.0
+	m_sb.content_margin_right = 4.0
+	m_sb.content_margin_top = 2.0
+	m_sb.content_margin_bottom = 2.0
+	btn.add_theme_stylebox_override("normal", m_sb)
+
+	var p_sb := m_sb.duplicate() as StyleBoxFlat
+	p_sb.bg_color = Color(0.15, 0.35, 0.6, 1.0)
+	p_sb.border_color = Color(0.5, 0.8, 1.0, 1.0)
+	btn.add_theme_stylebox_override("pressed", p_sb)
+
 	_mode_buttons.append(btn)
 	btn.pressed.connect(func() -> void:
 		_select_mode(btn, mode_name, decode_func)
@@ -580,3 +929,72 @@ func _hash_crc32(raw: String) -> String:
 	if status_label:
 		status_label.text = "CRC32 Checksum (32-bit): 0x%s" % crc_str
 	return crc_str
+
+func _setup_window_dragging() -> void:
+	var window_box: Control = get_node_or_null("ColorRect") as Control
+	if not window_box:
+		window_box = find_child("ColorRect", true, false) as Control
+	var title_bar: Control = null
+	if window_box:
+		title_bar = window_box.get_node_or_null("AppTitle") as Control
+		if not title_bar:
+			title_bar = window_box.find_child("AppTitle", true, false) as Control
+
+	if not window_box or not title_bar:
+		return
+
+	var gs = get_node_or_null("/root/GlobalSettings")
+	if gs and gs.has_method("make_window_draggable"):
+		gs.call("make_window_draggable", window_box, title_bar)
+		return
+
+	for child in title_bar.find_children("*", "Control", true, false):
+		if child is Control and not (child is BaseButton):
+			(child as Control).mouse_filter = Control.MOUSE_FILTER_PASS
+
+	title_bar.mouse_filter = Control.MOUSE_FILTER_STOP
+	title_bar.mouse_default_cursor_shape = Control.CURSOR_MOVE
+
+	var drag_state := {
+		"is_dragging": false,
+		"drag_start_pos": Vector2.ZERO,
+		"box_start_pos": Vector2.ZERO
+	}
+
+	title_bar.gui_input.connect(func(event: InputEvent) -> void:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					drag_state["is_dragging"] = true
+					drag_state["drag_start_pos"] = event.global_position
+					var cur_gp: Vector2 = window_box.global_position
+					window_box.set_anchors_preset(Control.PRESET_TOP_LEFT)
+					window_box.global_position = cur_gp
+					drag_state["box_start_pos"] = cur_gp
+					move_to_front()
+					window_box.move_to_front()
+				else:
+					drag_state["is_dragging"] = false
+		elif event is InputEventMouseMotion and drag_state["is_dragging"]:
+			if _is_maximized:
+				_toggle_maximize()
+			var delta: Vector2 = event.global_position - drag_state["drag_start_pos"]
+			var target_pos: Vector2 = drag_state["box_start_pos"] + delta
+			
+			var vp_size: Vector2 = get_viewport_rect().size
+			if vp_size == Vector2.ZERO:
+				vp_size = Vector2(480, 270)
+			var box_size: Vector2 = window_box.size
+			if box_size == Vector2.ZERO:
+				box_size = Vector2(380, 190)
+			
+			var min_x: float = -box_size.x + 40.0
+			var max_x: float = vp_size.x - 40.0
+			var min_y: float = 0.0
+			var max_y: float = vp_size.y - 20.0
+			
+			target_pos.x = clampf(target_pos.x, min_x, max_x)
+			target_pos.y = clampf(target_pos.y, min_y, max_y)
+			
+			window_box.global_position = target_pos
+	)

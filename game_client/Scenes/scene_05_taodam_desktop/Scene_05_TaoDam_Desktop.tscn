@@ -6,6 +6,22 @@
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="4_font_mono"]
 [ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="5_font_thai"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint_bar"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.06, 0.09, 0.14, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.5, 0.75, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_window"]
 content_margin_left = 8.0
 content_margin_top = 6.0
@@ -22,22 +38,6 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 shadow_size = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint_bar"]
-content_margin_left = 8.0
-content_margin_top = 3.0
-content_margin_right = 8.0
-content_margin_bottom = 3.0
-bg_color = Color(0.06, 0.09, 0.14, 0.92)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.25, 0.5, 0.75, 0.8)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
 
 [node name="Scene_05_TaoDam_Desktop" type="Control" unique_id=900208353]
 layout_mode = 3
@@ -60,10 +60,10 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -54.0
-offset_right = 310.0
-offset_bottom = -28.0
+offset_left = 6.0
+offset_top = -52.0
+offset_right = 330.0
+offset_bottom = -22.0
 grow_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hint_bar")
@@ -73,7 +73,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
 theme_override_fonts/font = ExtResource("5_font_thai")
 theme_override_font_sizes/font_size = 6
-text = "💡 ตรวจ Isolate 3 จุด: (1) คลิกปุ่ม Wi-Fi มุมขวาล่างเพื่อตัดเน็ต (2) เปิด Start > Discord/GG Disk เช็คบัญชี (3) เปิด Start > Files เช็คไฟล์ในเครื่อง"
+text = "🎯 เป้าหมายการเตรียมเครื่องวิเคราะห์ (Isolation): ตรวจสอบและตัดช่องทางสื่อสารภายนอก บัญชีซิงค์ในตั้งค่าระบบ และพื้นที่จัดเก็บหลักก่อนเปิดหลักฐาน"
 autowrap_mode = 2
 
 [node name="AppLoginWindow" type="PanelContainer" parent="CanvasLayer/NotebookScreen" unique_id=193847201]

@@ -1,0 +1,236 @@
+[gd_scene format=3 uid="uid://c85ejqu3g55y1"]
+
+[ext_resource type="Script" path="res://ui/os_simulation/Application/terminal.gd" id="1_terminal_script"]
+[ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="2_font_mono"]
+[ext_resource type="Texture2D" path="res://assets/Icon32x32/windows_logo.png" id="3_icon_win"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_win_bg"]
+bg_color = Color(0.047, 0.047, 0.047, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.24, 0.24, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_titlebar"]
+bg_color = Color(0.125, 0.125, 0.125, 1)
+border_width_bottom = 1
+border_color = Color(0.18, 0.18, 0.18, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_btn_normal"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(1, 1, 1, 0.12)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(1, 1, 1, 0.2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_hover"]
+bg_color = Color(0.91, 0.08, 0.14, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_pressed"]
+bg_color = Color(0.75, 0.05, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_output_bg"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.047, 0.047, 0.047, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_input"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_statusbar"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+bg_color = Color(0.08, 0.08, 0.08, 1)
+border_width_top = 1
+border_color = Color(0.18, 0.18, 0.18, 1)
+
+[node name="Terminal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_terminal_script")
+
+[node name="WindowPanel" type="Panel" parent="."]
+custom_minimum_size = Vector2(440, 194)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -97.0
+offset_right = 220.0
+offset_bottom = 97.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_win_bg")
+
+[node name="MainLayout" type="VBoxContainer" parent="WindowPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBar" type="Panel" parent="WindowPanel/MainLayout"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_titlebar")
+
+[node name="HBox" type="HBoxContainer" parent="WindowPanel/MainLayout/TitleBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="AppIcon" type="TextureRect" parent="WindowPanel/MainLayout/TitleBar/HBox"]
+custom_minimum_size = Vector2(11, 11)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_icon_win")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="WindowPanel/MainLayout/TitleBar/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "Command Prompt - C:\\Windows\\system32\\cmd.exe"
+vertical_alignment = 1
+
+[node name="ControlButtonsHBox" type="HBoxContainer" parent="WindowPanel/MainLayout/TitleBar/HBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MinimizeButton" type="Button" parent="WindowPanel/MainLayout/TitleBar/HBox/ControlButtonsHBox"]
+custom_minimum_size = Vector2(20, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxEmpty_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "─"
+
+[node name="MaximizeButton" type="Button" parent="WindowPanel/MainLayout/TitleBar/HBox/ControlButtonsHBox"]
+custom_minimum_size = Vector2(20, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxEmpty_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+text = "□"
+
+[node name="ExitButton" type="Button" parent="WindowPanel/MainLayout/TitleBar/HBox/ControlButtonsHBox"]
+custom_minimum_size = Vector2(24, 18)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxEmpty_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_close_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_close_pressed")
+text = "✕"
+
+[node name="ConsoleContentVBox" type="VBoxContainer" parent="WindowPanel/MainLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="OutputContainer" type="PanelContainer" parent="WindowPanel/MainLayout/ConsoleContentVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_output_bg")
+
+[node name="OutputLabel" type="RichTextLabel" parent="WindowPanel/MainLayout/ConsoleContentVBox/OutputContainer"]
+layout_mode = 2
+focus_mode = 2
+theme_override_colors/default_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_fonts/normal_font = ExtResource("2_font_mono")
+theme_override_font_sizes/normal_font_size = 7
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+
+[node name="InputMargin" type="MarginContainer" parent="WindowPanel/MainLayout/ConsoleContentVBox"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="InputHBox" type="HBoxContainer" parent="WindowPanel/MainLayout/ConsoleContentVBox/InputMargin"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PromptLabel" type="Label" parent="WindowPanel/MainLayout/ConsoleContentVBox/InputMargin/InputHBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+text = "E:\\>"
+vertical_alignment = 1
+
+[node name="CommandInput" type="LineEdit" parent="WindowPanel/MainLayout/ConsoleContentVBox/InputMargin/InputHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.92, 0.92, 1)
+theme_override_colors/caret_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_font_mono")
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxEmpty_input")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_input")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_input")
+caret_blink = true
+
+[node name="RunButton" type="Button" parent="WindowPanel/MainLayout/ConsoleContentVBox/InputMargin/InputHBox"]
+visible = false
+layout_mode = 2
+
+[node name="StatusBar" type="PanelContainer" parent="WindowPanel/MainLayout"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_statusbar")
+
+[node name="QuickCommandsScroll" type="ScrollContainer" parent="WindowPanel/MainLayout/StatusBar"]
+layout_mode = 2
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 0
+
+[node name="QuickCommandsHBox" type="HBoxContainer" parent="WindowPanel/MainLayout/StatusBar/QuickCommandsScroll"]
+layout_mode = 2
+theme_override_constants/separation = 4

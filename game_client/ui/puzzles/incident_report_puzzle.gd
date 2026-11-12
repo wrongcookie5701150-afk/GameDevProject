@@ -5,6 +5,15 @@ const FONT_THAI_REG: FontFile = preload("res://assets/fonts/Noto_Sans_Thai/stati
 const FONT_THAI_BOLD: FontFile = preload("res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf")
 const FONT_MONO: FontFile = preload("res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf")
 
+const ICON_INFO: Texture2D = preload("res://assets/Icon32x32/information.png")
+const ICON_WARN: Texture2D = preload("res://assets/Icon32x32/warning.png")
+const ICON_DISK: Texture2D = preload("res://assets/Icon32x32/disk.png")
+const ICON_TOOL: Texture2D = preload("res://assets/Icon32x32/tools.png")
+const ICON_FOLDER: Texture2D = preload("res://assets/Icon32x32/folder.png")
+const ICON_SEARCH: Texture2D = preload("res://assets/Icon32x32/folder_search.png")
+const ICON_LOCK: Texture2D = preload("res://assets/Icon32x32/lock.png")
+const ICON_CHECK: Texture2D = preload("res://assets/Icon32x32/checkmark.png")
+
 # ---------------------------------------------------------------------------
 # 1. ข้อมูลคำถามแบบเติมคำด้วย Dropdown 6 ช่อง (6 คะแนน)
 # ---------------------------------------------------------------------------
@@ -12,73 +21,73 @@ const DROPDOWN_QUESTIONS: Array[Dictionary] = [
 	{
 		"blank_id": 1,
 		"label": "ช่องว่าง __(1)__ :",
-		"correct_id": "typosquatting",
+		"correct_id": "typosquatting_urgency",
 		"options": [
 			["-- เลือกคำตอบช่อง (1) --", ""],
-			["Typosquatting (การสะกดชื่อโดเมนเลียนแบบของจริง)", "typosquatting"],
-			["Brute Force (การสุ่มเดารหัสผ่านเข้าระบบ)", "brute_force"],
-			["SQL Injection (การแทรกคำสั่งฐานข้อมูล)", "sql_injection"],
-			["DDoS Attack (การยิงทราฟฟิกให้เซิร์ฟเวอร์ล่ม)", "ddos"]
+			["Domain Typosquatting จดชื่อโดเมนเลียนแบบองค์กรร่วมกับการสร้างสถานการณ์เร่งด่วนหลอกเหยื่อ", "typosquatting_urgency"],
+			["DNS Cache Poisoning แก้ไขตารางจับคู่ไอพีในเร้าเตอร์เพื่อเปลี่ยนเส้นทางเว็บท่าของมหาวิทยาลัย", "dns_poisoning"],
+			["Session Hijacking ดักจับคุกกี้ยืนยันตัวตนขณะเหยื่อล็อกอินเข้าใช้งานระบบคลาวด์ผ่านเครือข่ายไร้สาย", "session_hijack"],
+			["SMTP Header Relaying แทรกแซงเซิร์ฟเวอร์รับส่งเมลภายในเพื่อเปลี่ยนเนื้อหาไฟล์แนบระหว่างทาง", "smtp_relay"]
 		]
 	},
 	{
 		"blank_id": 2,
 		"label": "ช่องว่าง __(2)__ :",
-		"correct_id": "ransomware_wiper",
+		"correct_id": "vba_macro_wiper",
 		"options": [
 			["-- เลือกคำตอบช่อง (2) --", ""],
-			["Ransomware / Wiper (มัลแวร์เรียกค่าไถ่/ทำลายไฟล์)", "ransomware_wiper"],
-			["Adware (โปรแกรมแสดงโฆษณาแฝง)", "adware"],
-			["Keylogger (โปรแกรมดักจับการกดแป้นพิมพ์)", "keylogger"],
-			["Spyware (สปายแวร์สอดแนมข้อมูลทั่วไป)", "spyware"]
+			["โมดูล VBA Macro ที่พรางชุดคำสั่งทำลายและล็อกไฟล์ (Wiper / Ransomware) ไว้ด้วย Base64 และ Hex", "vba_macro_wiper"],
+			["สคริปต์ Dynamic Data Exchange (DDE) ที่ฝังอยู่ในตารางคำนวณและเรียกใช้ไลบรารีการ์ดจอโดยตรง", "dde_script"],
+			["โค้ด ActiveX Control ในเทมเพลตมาตรฐานที่บังคับให้ระบบปฏิบัติการเขียนทับพาร์ทิชันบูตหลัก", "activex_mbr"],
+			["ชุดคำสั่ง XML External Entity (XXE) ในไฟล์โครงสร้างสไตล์ชีตที่ดึงเพย์โหลดผ่านพอร์ตเว็บเบราว์เซอร์", "xxe_stylesheet"]
 		]
 	},
 	{
 		"blank_id": 3,
 		"label": "ช่องว่าง __(3)__ :",
-		"correct_id": "network_isolation",
+		"correct_id": "net_sync_isolation",
 		"options": [
 			["-- เลือกคำตอบช่อง (3) --", ""],
-			["Network Isolation (การตัดเครือข่ายและหยุดซิงค์ทันที)", "network_isolation"],
-			["Disk Defragment (การจัดเรียงพื้นที่ฮาร์ดดิสก์)", "disk_defrag"],
-			["System Reboot (การรีสตาร์ทเครื่องซ้ำหลายครั้ง)", "system_reboot"],
-			["Cloud Upload (การอัปโหลดไฟล์ทั้งหมดขึ้นคลาวด์ทันที)", "cloud_upload"]
+			["ตัดการเชื่อมต่อเครือข่ายทุกช่องทางและระงับบริการ Cloud Auto-Sync เพื่อไม่ให้ไฟล์เสียซิงค์ทับสำเนาบนคลาวด์", "net_sync_isolation"],
+			["สั่งล็อกพาร์ทิชันหลักด้วย BitLocker ทันทีและบังคับซิงค์สถานะระบบล่าสุดขึ้นเก็บไว้บน Cloud Drive สำรอง", "bitlocker_forcesync"],
+			["ปิดโปรเซสงานเบื้องหลังผ่าน Task Manager แล้วเปิดแชร์โฟลเดอร์ผ่าน LAN เพื่อโอนย้ายไฟล์ออกไปยังเครื่องเพื่อน", "lan_share_transfer"],
+			["รีเซ็ตการตั้งค่าไฟร์วอลล์กลับเป็นค่าเริ่มต้นและสั่งรันคำสั่งซ่อมแซมเซกเตอร์ฮาร์ดดิสก์ในโหมดการทำงานปกติ", "firewall_chkdsk"]
 		]
 	},
 	{
 		"blank_id": 4,
 		"label": "ช่องว่าง __(4)__ :",
-		"correct_id": "forensic_image",
+		"correct_id": "readonly_forensic_img",
 		"options": [
 			["-- เลือกคำตอบช่อง (4) --", ""],
-			["Forensic Image (สำเนาหลักฐานดิจิทัลสำหรับตรวจแยกส่วน)", "forensic_image"],
-			["Shortcut File (ไฟล์ทางลัดบนหน้าเดสก์ท็อป)", "shortcut_file"],
-			["Temp Cache (ไฟล์แคชชั่วคราวของเบราว์เซอร์)", "temp_cache"],
-			["Screen Capture (ภาพถ่ายหน้าจอปกติ)", "screen_capture"]
+			["สร้างและตรวจสอบผ่านสำเนาหลักฐานแบบอ่านอย่างเดียว (Read-Only Forensic Image) เพื่อรักษาค่า Timestamp และเนื้อหาเดิม", "readonly_forensic_img"],
+			["โคลนนิ่งระบบเข้าสู่ดิสก์เสมือนแบบเขียนทับได้ (Read-Write Virtual Disk) แล้วเปิดไฟล์ด้วยโปรแกรม Word เพื่อจำลองเหตุการณ์", "readwrite_vdisk"],
+			["ถอดรหัสโครงสร้างไบนารีของไฟล์ต้นฉบับโดยตรงบนสื่อบันทึกข้อมูลเดิมเพื่อบันทึกเวลาการตรวจพิสูจน์ลงใน Metadata", "inplace_decode"],
+			["บีบอัดไฟล์ต้องสงสัยทั้งหมดเข้าด้วยกันพร้อมใส่รหัสผ่านใหม่บนเครื่องเกิดเหตุก่อนคัดลอกผ่านแฟลชไดรฟ์ส่วนตัว", "rezip_personal_usb"]
 		]
 	},
 	{
 		"blank_id": 5,
 		"label": "ช่องว่าง __(5)__ :",
-		"correct_id": "file_hash",
+		"correct_id": "md5_hash_manifest",
 		"options": [
 			["-- เลือกคำตอบช่อง (5) --", ""],
-			["File Hash / MD5 (ค่าแฮชตรวจสอบความสมบูรณ์ของไฟล์)", "file_hash"],
-			["File Size (ขนาดไฟล์เบื้องต้นเป็นกิโลไบต์)", "file_size"],
-			["File Extension (นามสกุลของไฟล์เอกสาร)", "file_ext"],
-			["File Icon (รูปสัญลักษณ์ไอคอนของไฟล์)", "file_icon"]
+			["ค่าแฮช MD5 (Cryptographic Hash) จากเนื้อหาไบนารีของไฟล์เพื่อพิสูจน์ความสมบูรณ์เทียบกับค่าอ้างอิงเดิม", "md5_hash_manifest"],
+			["ค่า Cyclic Redundancy Check (CRC) ของตารางพาร์ทิชันเพื่อตรวจสอบจำนวนเซกเตอร์ที่ชำรุดทางกายภาพ", "crc_sector_check"],
+			["หมายเลข Digital Signature Serial ของผู้ผลิตระบบปฏิบัติการที่ฝังอยู่ในส่วนหัวของไฟล์ระบบทุกไฟล์", "os_sig_serial"],
+			["ค่า Entropy การกระจายตัวของบิตข้อมูลภายในไฟล์เทียบกับขนาดหน่วยความจำที่ใช้ขณะเปิดอ่านเอกสาร", "bit_entropy_ram"]
 		]
 	},
 	{
 		"blank_id": 6,
 		"label": "ช่องว่าง __(6)__ :",
-		"correct_id": "backup_321",
+		"correct_id": "safemode_321_clean",
 		"options": [
 			["-- เลือกคำตอบช่อง (6) --", ""],
-			["3-2-1 Backup Rule (กู้คืนจากจุดเวลาก่อนติดเชื้อลงไดรฟ์แยก)", "backup_321"],
-			["Overwrite Sync (เปิดซิงค์คลาวด์ทับไฟล์เดิมทันที)", "overwrite_sync"],
-			["Pay Ransom (จ่ายเงินค่าไถ่ให้ผู้โจมตีเพื่อขอรหัสปลดล็อก)", "pay_ransom"],
-			["Rename Extension (ลบคำว่า .locked ออกจากชื่อไฟล์ตรงๆ)", "rename_ext"]
+			["ถอนการฝังตัวใน Scheduled Task ภายใต้ Safe Mode ก่อนกู้คืนจาก Clean Version History ตามหลักการสำรองข้อมูล 3-2-1", "safemode_321_clean"],
+			["ดึงไฟล์จาก Latest Cloud Sync เวอร์ชันล่าสุดหลังเวลาเกิดเหตุกลับมาทับทันที พร้อมสำรองไว้ 3 โฟลเดอร์ในไดรฟ์เดียวกัน", "latest_sync_samedrive"],
+			["สั่งรันสคริปต์ล้างค่า Registry ในโหมดปกติ แล้วคัดลอกไฟล์สำรองจากแฟลชไดรฟ์ที่เสียบค้างไว้กับเครื่องตั้งแต่ก่อนเกิดเหตุ", "normal_reg_pluggedusb"],
+			["ย้อนเวลาเครื่องด้วย System Restore ไปยังวันก่อนเกิดเหตุโดยไม่ต้องตรวจสอบ Scheduled Task หรือแยกเก็บสำเนาออฟไลน์", "sysrestore_notask"]
 		]
 	}
 ]
@@ -87,17 +96,17 @@ const DROPDOWN_QUESTIONS: Array[Dictionary] = [
 # 2. ข้อมูลภาพประกอบที่ 1 (Figure 1): แบบติ๊กเลือก CheckBox 2 ส่วน (2 คะแนน)
 # ---------------------------------------------------------------------------
 const FIG1_PART_A_OPTIONS: Array[Dictionary] = [
-	{"id": "doc_xml", "text": "word/document.xml (โครงสร้างข้อความปกติของเอกสาร)", "is_correct": false},
-	{"id": "vba_bin", "text": "word/vbaProject.bin (โมดูลชุดคำสั่ง Macro ที่รันอัตโนมัติ)", "is_correct": true},
-	{"id": "media_img", "text": "word/media/image1.png (ไฟล์รูปภาพประกอบในหน้ากระดาษ)", "is_correct": false},
-	{"id": "b64_hex", "text": "สตริงข้อความในโค้ดที่ถูกแปลงรหัสด้วย Base64 / Hexadecimal (FILE_WIPE)", "is_correct": true}
+	{"id": "vba_bin", "text": "พบออบเจกต์ไบนารี word/vbaProject.bin แฝงอยู่ในโครงสร้าง ทั้งที่เอกสารนามสกุล .docx มาตรฐานจะต้องไม่มีโมดูลมาโคร", "is_correct": true},
+	{"id": "b64_hex", "text": "พบสตริงที่ถูกเข้ารหัสอำพรางหลายชั้นด้วย Base64 และ Hexadecimal เพื่อซ่อนคำสั่งลบไฟล์และหลบเลี่ยงการตรวจจับ", "is_correct": true},
+	{"id": "rels_xml", "text": "พบไฟล์กำหนดความสัมพันธ์ _rels/.rels และ [Content_Types].xml ที่ระบุโครงสร้างเอกสารตามมาตรฐาน OpenXML", "is_correct": false},
+	{"id": "styles_xml", "text": "พบข้อมูลการจัดรูปแบบย่อหน้าและฟอนต์ภาษาไทยถูกแยกเก็บอยู่ในไฟล์ word/styles.xml และ word/document.xml", "is_correct": false}
 ]
 
 const FIG1_PART_B_OPTIONS: Array[Dictionary] = [
-	{"id": "unplug_net", "text": "ปิด Wi-Fi และถอดสาย LAN ออกทั้งหมดก่อนเสียบไดรฟ์หลักฐาน", "is_correct": true},
-	{"id": "login_cloud", "text": "ล็อกอินบัญชี Cloud Drive ทิ้งไว้เพื่ออัปโหลดผลตรวจอัตโนมัติ", "is_correct": false},
-	{"id": "clean_account", "text": "ไม่ล็อกอินบัญชีส่วนตัวและไม่มีไฟล์สำคัญเก็บไว้ในเครื่องวิเคราะห์", "is_correct": true},
-	{"id": "enable_macro", "text": "เปิดไฟล์หลักฐานใน MS Word แล้วกด Enable Content ทันที", "is_correct": false}
+	{"id": "airgap_offline", "text": "ตัดการเชื่อมต่อเครือข่ายขาออกทั้งหมด (Air-Gapped / Offline) เพื่อบล็อกไม่ให้สคริปต์ส่งข้อมูลหรือดึงคำสั่งจากเซิร์ฟเวอร์ภายนอก", "is_correct": true},
+	{"id": "no_personal_sync", "text": "แยกสภาพแวดล้อมการวิเคราะห์ออกจากข้อมูลส่วนตัวโดยไม่ผูกบัญชี Cloud Sync หรือเสียบสื่อบันทึกข้อมูลงานจริงค้างไว้", "is_correct": true},
+	{"id": "smb_lan_open", "text": "เปิดพอร์ตสื่อสารภายในวงแลนเดียวกันเฉพาะโปรโตคอล SMB เพื่อให้โอนย้ายไฟล์ตัวอย่างระหว่างเครื่องวิเคราะห์กับเครื่องหลักได้รวดเร็ว", "is_correct": false},
+	{"id": "admin_online_cert", "text": "ตั้งค่าระบบให้รันโปรเซสทั้งหมดภายใต้สิทธิ์ System Administrator พร้อมเปิดใช้งานการซิงค์เวลาและใบรับรองผ่านอินเทอร์เน็ตตลอดการวิเคราะห์", "is_correct": false}
 ]
 
 # ---------------------------------------------------------------------------
@@ -112,20 +121,20 @@ const FIG2_CORRECT_ORDER: Array[String] = [
 
 const FIG2_STEP_ITEMS: Array[Dictionary] = [
 	{
-		"id": "boot_safemode",
-		"short": "บูตเข้า Safe Mode เพื่อระงับการทำงานเบื้องหลังของมัลแวร์"
-	},
-	{
-		"id": "restore_clean",
-		"short": "กู้คืนไฟล์สะอาดจาก Clean Backup (18:55) โดยปิด Cloud Sync"
-	},
-	{
 		"id": "inspect_logs",
-		"short": "ตรวจ Windows Event Logs เพื่อระบุเวลาและชื่อโปรเซสต้นตอ"
+		"short": "ตรวจสอบค่า MD5 Hash เทียบกับ Manifest และวิเคราะห์ System Log เพื่อระบุเวลาเกิดเหตุที่แน่ชัด"
+	},
+	{
+		"id": "boot_safemode",
+		"short": "รีสตาร์ทระบบเข้าสู่ Safe Mode เพื่อระงับการทำงานของโปรเซสและสคริปต์แปลกปลอมเบื้องหลัง"
 	},
 	{
 		"id": "disable_task",
-		"short": "ปิด Scheduled Task และกักกันไฟล์ตัวช่วยรัน (Quarantine Helper)"
+		"short": "ตรวจสอบและถอนการฝังตัวถาวร (Persistence) ของมัลแวร์ออกจาก Scheduled Task และ Startup"
+	},
+	{
+		"id": "restore_clean",
+		"short": "กู้คืนข้อมูลจาก Clean Snapshot ก่อนเวลาเกิดเหตุ และจัดเก็บสำเนาตามมาตรฐาน 3-2-1 Backup"
 	}
 ]
 
@@ -238,6 +247,8 @@ var _fig1_part_b_checks: Array[CheckBox] = []
 var _fig2_slots: Array[PosttestDropSlotBtn] = []
 var _fig2_pool_btns: Dictionary = {}
 var _selected_pool_step_id: String = ""
+var _fig2_pool_title: Label = null
+var _fig2_pool_container: VBoxContainer = null
 
 var _para1_rtl: RichTextLabel = null
 var _para2_rtl: RichTextLabel = null
@@ -255,9 +266,10 @@ var _started_at_msec: int = 0
 var _first_interaction_msec: int = 0
 
 func _ready() -> void:
+	randomize()
 	hint_tier_1 = "ทบทวนการสืบสวน: ตรวจ Log, เข้า Safe Mode, ปิด Task & Helper, และกู้คืนข้อมูลก่อนติดเชื้อ 19:02"
 	hint_tier_2 = "ข้อสอบ Post-test วัด 3 ด้าน: 1. ต้นตอมัลแวร์ (Macro/Wiper) 2. การสืบสวนและแยกส่วน (เต่าดำ/MD5) 3. การกู้คืน (3-2-1 Backup)"
-	hint_tier_3 = "ช่อง (1) Typosquatting, (2) Ransomware/Wiper, (3) Network Isolation, (4) Forensic Image, (5) File Hash, (6) 3-2-1 Backup"
+	hint_tier_3 = "ช่อง (1) Typosquatting, (2) VBA Macro Wiper, (3) Net & Sync Isolation, (4) Read-Only Forensic Image, (5) MD5 Hash, (6) Safe Mode 3-2-1"
 	super._ready()
 	_build_word_posttest_ui()
 
@@ -284,14 +296,13 @@ func _build_word_posttest_ui() -> void:
 	if _word_scroll and is_instance_valid(_word_scroll):
 		return
 
-	# กรอบหน้าต่างหลักโปรแกรม MS Word
+	# กรอบหน้าต่างหลักโปรแกรม MS Word จัดกึ่งกลางจอ (384x220)
 	var window_panel := PanelContainer.new()
-	window_panel.name = "WordWindowPanel"
-	window_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	window_panel.offset_left = 6.0
-	window_panel.offset_top = 4.0
-	window_panel.offset_right = -6.0
-	window_panel.offset_bottom = -4.0
+	window_panel.name = "PaperPanel"
+	window_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	window_panel.position = Vector2(48, 24)
+	window_panel.size = Vector2(384, 220)
+	window_panel.custom_minimum_size = Vector2(384, 220)
 	var win_style := StyleBoxFlat.new()
 	win_style.bg_color = Color(0.95, 0.96, 0.98, 1.0)
 	win_style.border_width_left = 1
@@ -299,12 +310,12 @@ func _build_word_posttest_ui() -> void:
 	win_style.border_width_right = 1
 	win_style.border_width_bottom = 1
 	win_style.border_color = Color(0.2, 0.45, 0.8, 0.95)
-	win_style.corner_radius_top_left = 4
-	win_style.corner_radius_top_right = 4
-	win_style.corner_radius_bottom_left = 4
-	win_style.corner_radius_bottom_right = 4
-	win_style.shadow_size = 4
-	win_style.shadow_color = Color(0, 0, 0, 0.35)
+	win_style.corner_radius_top_left = 7
+	win_style.corner_radius_top_right = 7
+	win_style.corner_radius_bottom_left = 7
+	win_style.corner_radius_bottom_right = 7
+	win_style.shadow_size = 6
+	win_style.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
 	window_panel.add_theme_stylebox_override("panel", win_style)
 	add_child(window_panel)
 
@@ -318,8 +329,8 @@ func _build_word_posttest_ui() -> void:
 	title_bar.custom_minimum_size = Vector2(0, 18)
 	var tb_style := StyleBoxFlat.new()
 	tb_style.bg_color = Color(0.09, 0.32, 0.65, 1.0)
-	tb_style.corner_radius_top_left = 3
-	tb_style.corner_radius_top_right = 3
+	tb_style.corner_radius_top_left = 7
+	tb_style.corner_radius_top_right = 7
 	tb_style.content_margin_left = 8.0
 	tb_style.content_margin_right = 8.0
 	title_bar.add_theme_stylebox_override("panel", tb_style)
@@ -344,32 +355,7 @@ func _build_word_posttest_ui() -> void:
 	tb_controls.add_theme_color_override("font_color", Color(0.8, 0.9, 1.0, 0.8))
 	tb_hbox.add_child(tb_controls)
 
-	# 2. แถบริบบอน (Ribbon Menu Tabs)
-	var ribbon_bar := PanelContainer.new()
-	ribbon_bar.custom_minimum_size = Vector2(0, 14)
-	var rb_style := StyleBoxFlat.new()
-	rb_style.bg_color = Color(0.92, 0.94, 0.97, 1.0)
-	rb_style.border_width_bottom = 1
-	rb_style.border_color = Color(0.8, 0.84, 0.9, 1.0)
-	rb_style.content_margin_left = 8.0
-	rb_style.content_margin_right = 8.0
-	ribbon_bar.add_theme_stylebox_override("panel", rb_style)
-	win_vbox.add_child(ribbon_bar)
-
-	var rb_hbox := HBoxContainer.new()
-	rb_hbox.add_theme_constant_override("separation", 10)
-	ribbon_bar.add_child(rb_hbox)
-
-	var tabs: Array[String] = ["ไฟล์", "หน้าแรก", "แทรก", "เค้าโครง", "การอ้างอิง", "ส่งตรวจ (Review)"]
-	for i: int in range(tabs.size()):
-		var t_lbl := Label.new()
-		t_lbl.text = tabs[i]
-		t_lbl.add_theme_font_override("font", FONT_THAI_REG)
-		t_lbl.add_theme_font_size_override("font_size", 5)
-		t_lbl.add_theme_color_override("font_color", Color(0.12, 0.35, 0.72, 1.0) if i == 1 else Color(0.3, 0.35, 0.42, 1.0))
-		rb_hbox.add_child(t_lbl)
-
-	# 3. พื้นที่ ScrollContainer สำหรับแสดงกระดาษเอกสาร A4
+	# 2. พื้นที่ ScrollContainer สำหรับแสดงกระดาษเอกสาร A4
 	_word_scroll = ScrollContainer.new()
 	_word_scroll.name = "PosttestWordScroll"
 	_word_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -379,17 +365,24 @@ func _build_word_posttest_ui() -> void:
 	_word_scroll.mouse_filter = Control.MOUSE_FILTER_PASS
 	win_vbox.add_child(_word_scroll)
 
-	var page_margin := MarginContainer.new()
-	page_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	page_margin.add_theme_constant_override("margin_left", 8)
-	page_margin.add_theme_constant_override("margin_right", 10)
-	page_margin.add_theme_constant_override("margin_top", 6)
-	page_margin.add_theme_constant_override("margin_bottom", 8)
-	_word_scroll.add_child(page_margin)
+	# พื้นหลังโต๊ะทำงาน MS Word สีเทาอมฟ้าอ่อน (ขนาบข้างละ ~35px)
+	var desk_panel := PanelContainer.new()
+	desk_panel.name = "DeskBackground"
+	desk_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	desk_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var desk_style := StyleBoxFlat.new()
+	desk_style.bg_color = Color(0.86, 0.89, 0.93, 1.0)
+	desk_style.content_margin_left = 6.0
+	desk_style.content_margin_right = 6.0
+	desk_style.content_margin_top = 6.0
+	desk_style.content_margin_bottom = 10.0
+	desk_panel.add_theme_stylebox_override("panel", desk_style)
+	_word_scroll.add_child(desk_panel)
 
-	# แผ่นกระดาษรายงานสีขาวสไตล์ MS Word
+	# แผ่นกระดาษรายงานสีขาวสไตล์ MS Word กว้าง 348px กึ่งกลางโต๊ะทำงาน พร้อมเงาตกกระทบ
 	var paper_panel := PanelContainer.new()
-	paper_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	paper_panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	paper_panel.custom_minimum_size = Vector2(348, 0)
 	var paper_style := StyleBoxFlat.new()
 	paper_style.bg_color = Color(1.0, 1.0, 1.0, 1.0)
 	paper_style.border_width_left = 1
@@ -397,20 +390,34 @@ func _build_word_posttest_ui() -> void:
 	paper_style.border_width_right = 1
 	paper_style.border_width_bottom = 2
 	paper_style.border_color = Color(0.75, 0.78, 0.84, 1.0)
-	paper_style.corner_radius_top_left = 2
-	paper_style.corner_radius_top_right = 2
-	paper_style.corner_radius_bottom_left = 2
-	paper_style.corner_radius_bottom_right = 2
-	paper_style.content_margin_left = 12.0
-	paper_style.content_margin_right = 12.0
-	paper_style.content_margin_top = 10.0
-	paper_style.content_margin_bottom = 12.0
+	paper_style.corner_radius_top_left = 5
+	paper_style.corner_radius_top_right = 5
+	paper_style.corner_radius_bottom_left = 5
+	paper_style.corner_radius_bottom_right = 5
+	paper_style.shadow_size = 6
+	paper_style.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
+	paper_style.content_margin_left = 8.0
+	paper_style.content_margin_right = 8.0
+	paper_style.content_margin_top = 6.0
+	paper_style.content_margin_bottom = 6.0
+	paper_panel.add_theme_stylebox_override("panel", paper_style)
+	desk_panel.add_child(paper_panel)
+	paper_style.corner_radius_top_left = 7
+	paper_style.corner_radius_top_right = 7
+	paper_style.corner_radius_bottom_left = 7
+	paper_style.corner_radius_bottom_right = 7
+	paper_style.shadow_size = 6
+	paper_style.shadow_color = Color(0.04, 0.06, 0.12, 0.28)
+	paper_style.content_margin_left = 8.0
+	paper_style.content_margin_right = 8.0
+	paper_style.content_margin_top = 6.0
+	paper_style.content_margin_bottom = 6.0
 	paper_panel.add_theme_stylebox_override("panel", paper_style)
 	page_margin.add_child(paper_panel)
 
 	var doc_vbox := VBoxContainer.new()
 	doc_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	doc_vbox.add_theme_constant_override("separation", 8)
+	doc_vbox.add_theme_constant_override("separation", 4)
 	paper_panel.add_child(doc_vbox)
 
 	# 1. ส่วนหัวกระดาษรายงาน (Document Header)
@@ -439,8 +446,8 @@ func _build_word_posttest_ui() -> void:
 	status_bar.custom_minimum_size = Vector2(0, 12)
 	var sb_style := StyleBoxFlat.new()
 	sb_style.bg_color = Color(0.09, 0.32, 0.65, 1.0)
-	sb_style.corner_radius_bottom_left = 3
-	sb_style.corner_radius_bottom_right = 3
+	sb_style.corner_radius_bottom_left = 7
+	sb_style.corner_radius_bottom_right = 7
 	sb_style.content_margin_left = 8.0
 	sb_style.content_margin_right = 8.0
 	status_bar.add_theme_stylebox_override("panel", sb_style)
@@ -463,38 +470,75 @@ func _build_word_posttest_ui() -> void:
 	_update_progress_status()
 
 func _build_doc_header(parent: VBoxContainer) -> void:
-	var header_box := PanelContainer.new()
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.93, 0.96, 1.0, 1.0)
-	sb.border_width_left = 3
-	sb.border_width_bottom = 1
-	sb.border_color = Color(0.12, 0.38, 0.72, 1.0)
-	sb.content_margin_left = 8.0
-	sb.content_margin_right = 8.0
-	sb.content_margin_top = 5.0
-	sb.content_margin_bottom = 5.0
-	header_box.add_theme_stylebox_override("panel", sb)
-	parent.add_child(header_box)
+	var header_vbox := VBoxContainer.new()
+	header_vbox.add_theme_constant_override("separation", 3)
+	parent.add_child(header_vbox)
 
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 2)
-	header_box.add_child(vbox)
+	# Running Head (หัวกระดาษรายงานมหาวิทยาลัย)
+	var run_hbox := HBoxContainer.new()
+	header_vbox.add_child(run_hbox)
+
+	var run_left := Label.new()
+	run_left.text = "รายงานสรุปผลการตรวจพิสูจน์หลักฐานดิจิทัลและการกู้คืนระบบ (Post-test 10 คะแนน)"
+	run_left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	run_left.add_theme_font_override("font", FONT_THAI_REG)
+	run_left.add_theme_font_size_override("font_size", 5)
+	run_left.add_theme_color_override("font_color", Color(0.42, 0.47, 0.55, 1.0))
+	run_hbox.add_child(run_left)
+
+	var run_right := Label.new()
+	run_right.text = "กลุ่มที่ 8 • ฉบับสมบูรณ์"
+	run_right.add_theme_font_override("font", FONT_THAI_REG)
+	run_right.add_theme_font_size_override("font_size", 5)
+	run_right.add_theme_color_override("font_color", Color(0.42, 0.47, 0.55, 1.0))
+	run_hbox.add_child(run_right)
+
+	var top_rule := ColorRect.new()
+	top_rule.custom_minimum_size = Vector2(0, 1)
+	top_rule.color = Color(0.78, 0.82, 0.88, 1.0)
+	header_vbox.add_child(top_rule)
+
+	var title_box := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.98, 0.99, 1.0, 1.0)
+	sb.border_width_bottom = 2
+	sb.border_color = Color(0.12, 0.16, 0.23, 1.0)
+	sb.content_margin_left = 6.0
+	sb.content_margin_right = 6.0
+	sb.content_margin_top = 4.0
+	sb.content_margin_bottom = 6.0
+	title_box.add_theme_stylebox_override("panel", sb)
+	header_vbox.add_child(title_box)
+
+	var t_vbox := VBoxContainer.new()
+	t_vbox.add_theme_constant_override("separation", 2)
+	title_box.add_child(t_vbox)
+
+	var type_lbl := Label.new()
+	type_lbl.text = "รายงานสรุปผลการปฏิบัติการทางนิติวิทยาศาสตร์ดิจิทัล (INCIDENT & FORENSIC REPORT)"
+	type_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	type_lbl.add_theme_font_override("font", FONT_THAI_BOLD)
+	type_lbl.add_theme_font_size_override("font_size", 6)
+	type_lbl.add_theme_color_override("font_color", Color(0.35, 0.42, 0.52, 1.0))
+	t_vbox.add_child(type_lbl)
 
 	var title_lbl := Label.new()
-	title_lbl.text = "📄 รายงานกลุ่มฉบับสมบูรณ์: การวิเคราะห์และรับมือภัยคุกคามแรนซัมแวร์ (Post-test 10 คะแนน)"
+	title_lbl.text = "รายงานสรุปผลการสืบสวนเหตุการณ์ภัยคุกคามทางไซเบอร์และแนวทางการกู้คืนระบบ"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_lbl.add_theme_font_override("font", FONT_THAI_BOLD)
-	title_lbl.add_theme_font_size_override("font_size", 6)
-	title_lbl.add_theme_color_override("font_color", Color(0.08, 0.24, 0.48, 1.0))
+	title_lbl.add_theme_font_size_override("font_size", 9)
+	title_lbl.add_theme_color_override("font_color", Color(0.06, 0.1, 0.18, 1.0))
 	title_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	vbox.add_child(title_lbl)
+	t_vbox.add_child(title_lbl)
 
 	var sub_lbl := Label.new()
-	sub_lbl.text = "ผู้จัดทำ: เมย์ (กลุ่มที่ 8) | กู้คืนข้อมูลสำเร็จแล้ว นำองค์ความรู้จากการสืบสวนและกู้ระบบมาสรุปรายงานฉบับสมบูรณ์ส่งอาจารย์"
+	sub_lbl.text = "คณะผู้จัดทำ: นางสาวเมย์ และสมาชิกกลุ่มที่ 8  |  อ้างอิงผลตรวจจากเครื่องวิเคราะห์แยกส่วน (TaoDam Lab) และการกู้คืนระบบตามมาตรฐาน 3-2-1"
+	sub_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub_lbl.add_theme_font_override("font", FONT_THAI_REG)
 	sub_lbl.add_theme_font_size_override("font_size", 5)
-	sub_lbl.add_theme_color_override("font_color", Color(0.25, 0.32, 0.42, 1.0))
+	sub_lbl.add_theme_color_override("font_color", Color(0.28, 0.34, 0.42, 1.0))
 	sub_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	vbox.add_child(sub_lbl)
+	t_vbox.add_child(sub_lbl)
 
 func _build_paragraph_1(parent: VBoxContainer) -> void:
 	var sec_vbox := VBoxContainer.new()
@@ -502,10 +546,10 @@ func _build_paragraph_1(parent: VBoxContainer) -> void:
 	parent.add_child(sec_vbox)
 
 	var sec_title := Label.new()
-	sec_title.text = "1. ช่องทางการโจมตีและผลกระทบของมัลแวร์ (Threat Delivery & Impact)"
+	sec_title.text = "1. การวิเคราะห์ต้นตอการโจมตีและกลไกของเพย์โหลดในเอกสาร (Threat Delivery & Payload Analysis)"
 	sec_title.add_theme_font_override("font", FONT_THAI_BOLD)
-	sec_title.add_theme_font_size_override("font_size", 6)
-	sec_title.add_theme_color_override("font_color", Color(0.1, 0.28, 0.55, 1.0))
+	sec_title.add_theme_font_size_override("font_size", 7)
+	sec_title.add_theme_color_override("font_color", Color(0.08, 0.14, 0.24, 1.0))
 	sec_vbox.add_child(sec_title)
 
 	_para1_rtl = _create_paragraph_rtl()
@@ -514,113 +558,141 @@ func _build_paragraph_1(parent: VBoxContainer) -> void:
 	var dd_box := _create_dropdown_group_panel()
 	sec_vbox.add_child(dd_box)
 	var dd_vbox := VBoxContainer.new()
-	dd_vbox.add_theme_constant_override("separation", 3)
+	dd_vbox.add_theme_constant_override("separation", 4)
 	dd_box.add_child(dd_vbox)
 
 	dd_vbox.add_child(_create_dropdown_row(DROPDOWN_QUESTIONS[0]))
 	dd_vbox.add_child(_create_dropdown_row(DROPDOWN_QUESTIONS[1]))
 
 func _build_figure_1_checkbox_visual(parent: VBoxContainer) -> void:
-	var fig_panel := PanelContainer.new()
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.95, 0.97, 0.99, 1.0)
-	sb.border_width_left = 1
-	sb.border_width_top = 2
-	sb.border_width_right = 1
-	sb.border_width_bottom = 1
-	sb.border_color = Color(0.18, 0.45, 0.78, 1.0)
-	sb.corner_radius_top_left = 4
-	sb.corner_radius_top_right = 4
-	sb.corner_radius_bottom_left = 4
-	sb.corner_radius_bottom_right = 4
-	sb.content_margin_left = 8.0
-	sb.content_margin_right = 8.0
-	sb.content_margin_top = 6.0
-	sb.content_margin_bottom = 6.0
-	fig_panel.add_theme_stylebox_override("panel", sb)
+	var fig_panel := _create_academic_figure_frame()
 	parent.add_child(fig_panel)
 
 	var fig_vbox := VBoxContainer.new()
-	fig_vbox.add_theme_constant_override("separation", 5)
+	fig_vbox.add_theme_constant_override("separation", 4)
 	fig_panel.add_child(fig_vbox)
 
-	var fig_header := Label.new()
-	fig_header.text = "🖼️ ภาพประกอบที่ 1 (Figure 1): แผนผังโครงสร้างไฟล์เอกสารและการวิเคราะห์ความปลอดภัย (เลือกติ๊กภาคละ 2 ข้อ)"
-	fig_header.add_theme_font_override("font", FONT_THAI_BOLD)
-	fig_header.add_theme_font_size_override("font_size", 6)
-	fig_header.add_theme_color_override("font_color", Color(0.12, 0.32, 0.62, 1.0))
-	fig_vbox.add_child(fig_header)
-
-	var visual_grid := HBoxContainer.new()
-	visual_grid.add_theme_constant_override("separation", 8)
-	fig_vbox.add_child(visual_grid)
-
-	# การ์ดภาพซ้าย: ข้อ 1.1 ตรวจสอบโครงสร้างและโค้ดแฝง
+	# --- ภาพที่ 1.1: ผลตรวจโครงสร้าง Report_Final.docx ในแล็บเต่าดำ (สีพาสเทลอ่อน) ---
 	var card_a := _create_visual_subcard()
-	card_a.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	visual_grid.add_child(card_a)
+	fig_vbox.add_child(card_a)
 	var card_a_vbox := VBoxContainer.new()
-	card_a_vbox.add_theme_constant_override("separation", 3)
+	card_a_vbox.add_theme_constant_override("separation", 4)
 	card_a.add_child(card_a_vbox)
 
-	var banner_a := PanelContainer.new()
-	banner_a.add_theme_stylebox_override("panel", _create_diagram_banner_style(Color(0.88, 0.93, 1.0, 1.0)))
-	card_a_vbox.add_child(banner_a)
-	var banner_a_lbl := Label.new()
-	banner_a_lbl.text = "📊 แผนภาพ 1.1: ผลตรวจ Report_Final.docx ในเต่าดำ\n(vbaProject.bin + Helper.dat + FILE_WIPE)"
-	banner_a_lbl.add_theme_font_override("font", FONT_THAI_BOLD)
-	banner_a_lbl.add_theme_font_size_override("font_size", 5)
-	banner_a_lbl.add_theme_color_override("font_color", Color(0.08, 0.28, 0.58, 1.0))
-	banner_a.add_child(banner_a_lbl)
+	var schematic_a_hbox := HBoxContainer.new()
+	schematic_a_hbox.add_theme_constant_override("separation", 4)
+	card_a_vbox.add_child(schematic_a_hbox)
+
+	var box_a1 := _create_pastel_diagram_box(
+		"(ก) โครงสร้างภายในไฟล์ Report_Final.docx (ZIP Tree)",
+		"├── [Content_Types].xml & _rels/.rels\n├── word/document.xml & word/styles.xml\n└── 🚨 word/vbaProject.bin [พบโมดูลมาโครแฝง!]",
+		Color(1.0, 0.95, 0.95, 1.0),
+		Color(0.94, 0.6, 0.6, 1.0),
+		Color(0.6, 0.12, 0.12, 1.0),
+		ICON_FOLDER
+	)
+	box_a1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	schematic_a_hbox.add_child(box_a1)
+
+	schematic_a_hbox.add_child(_create_diagram_arrow_label())
+
+	var box_a2 := _create_pastel_diagram_box(
+		"(ข) ชุดคำสั่งอำพรางภายในโมดูล vbaProject.bin",
+		"1. สตริง Base64: \"T2ZmaWNlX1VwZGF0ZV9IZWxwZXIuZXhl\"\n2. สตริงเลขฐานสิบหก (Hex): \"46 49 4C 45 5F 57 49 50 45\"\n   ➔ ถอดรหัสได้คำสั่งทำลายไฟล์ (FILE_WIPE)",
+		Color(0.96, 0.95, 1.0, 1.0),
+		Color(0.75, 0.66, 0.96, 1.0),
+		Color(0.28, 0.16, 0.55, 1.0),
+		ICON_WARN
+	)
+	box_a2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	schematic_a_hbox.add_child(box_a2)
+
+	card_a_vbox.add_child(_create_academic_caption_label(
+		"ภาพที่ 1.1: ผลการแยกวิเคราะห์โครงสร้าง OpenXML ของไฟล์ต้องสงสัย (ก) และชุดคำสั่งที่ถูกเข้ารหัสอำพรางภายในโมดูลมาโคร (ข)"
+	))
 
 	var prompt_a := Label.new()
-	prompt_a.text = "ติ๊กเลือก 2 ส่วนประกอบที่เป็นพฤติกรรมของมัลแวร์จริง:"
+	prompt_a.text = "[คำถามประกอบภาพที่ 1.1] ข้อใดคือ \"หลักฐานทางนิติวิทยาศาสตร์ 2 ประการ\" ที่พิสูจน์ว่าไฟล์นี้มีเพย์โหลดอันตรายแฝงอยู่? (ติ๊กเลือก 2 ข้อ)"
 	prompt_a.add_theme_font_override("font", FONT_THAI_BOLD)
-	prompt_a.add_theme_font_size_override("font_size", 5)
-	prompt_a.add_theme_color_override("font_color", Color(0.2, 0.25, 0.35, 1.0))
+	prompt_a.add_theme_font_size_override("font_size", 6)
+	prompt_a.add_theme_color_override("font_color", Color(0.12, 0.16, 0.24, 1.0))
+	prompt_a.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	card_a_vbox.add_child(prompt_a)
 
 	_fig1_part_a_checks.clear()
-	for opt: Dictionary in FIG1_PART_A_OPTIONS:
-		var cb := _create_word_checkbox(str(opt["text"]), str(opt["id"]))
-		cb.toggled.connect(func(_val: bool) -> void:
-			_mark_first_interaction()
-			_update_progress_status()
+	var shuffled_a: Array[Dictionary] = FIG1_PART_A_OPTIONS.duplicate()
+	shuffled_a.shuffle()
+	for opt: Dictionary in shuffled_a:
+		var cb := _create_word_checkbox(str(opt["text"]), str(opt["id"]), bool(opt["is_correct"]))
+		cb.toggled.connect(func(pressed: bool) -> void:
+			_on_fig1_checkbox_toggled(_fig1_part_a_checks, cb, pressed)
 		)
 		card_a_vbox.add_child(cb)
 		_fig1_part_a_checks.append(cb)
 
-	# การ์ดภาพขวา: ข้อ 1.2 มาตรการเตรียมเครื่องตรวจแยกส่วน
+	# --- ภาพที่ 1.2: มาตรการตั้งค่าเครื่องวิเคราะห์แยกส่วน TaoDam (สีพาสเทลอ่อน) ---
 	var card_b := _create_visual_subcard()
-	card_b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	visual_grid.add_child(card_b)
+	fig_vbox.add_child(card_b)
 	var card_b_vbox := VBoxContainer.new()
-	card_b_vbox.add_theme_constant_override("separation", 3)
+	card_b_vbox.add_theme_constant_override("separation", 4)
 	card_b.add_child(card_b_vbox)
 
-	var banner_b := PanelContainer.new()
-	banner_b.add_theme_stylebox_override("panel", _create_diagram_banner_style(Color(0.88, 0.96, 0.92, 1.0)))
-	card_b_vbox.add_child(banner_b)
-	var banner_b_lbl := Label.new()
-	banner_b_lbl.text = "🛡️ แผนภาพ 1.2: การเตรียมเครื่องวิเคราะห์แยกส่วน (เต่าดำ)\n(Air-gapped Lab & Forensic Environment)"
-	banner_b_lbl.add_theme_font_override("font", FONT_THAI_BOLD)
-	banner_b_lbl.add_theme_font_size_override("font_size", 5)
-	banner_b_lbl.add_theme_color_override("font_color", Color(0.06, 0.42, 0.25, 1.0))
-	banner_b.add_child(banner_b_lbl)
+	var schematic_b_vbox := VBoxContainer.new()
+	schematic_b_vbox.add_theme_constant_override("separation", 3)
+	card_b_vbox.add_child(schematic_b_vbox)
+
+	var box_b1 := _create_pastel_diagram_box(
+		"(ก) การตัดขาดเครือข่าย (Air-Gapped Isolation)",
+		"ปิด Wi-Fi และถอดสาย LAN ขาออกทั้งหมด\nเพื่อสกัดกั้นการติดต่อเซิร์ฟเวอร์ควบคุม (C2)",
+		Color(0.93, 0.99, 0.96, 1.0),
+		Color(0.45, 0.84, 0.65, 1.0),
+		Color(0.06, 0.38, 0.24, 1.0),
+		ICON_LOCK
+	)
+	box_b1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	schematic_b_vbox.add_child(box_b1)
+
+	var box_b2 := _create_pastel_diagram_box(
+		"(ข) การแยกบัญชีและข้อมูล (Account Hygiene)",
+		"ไม่ล็อกอินบัญชี Cloud Sync ส่วนตัว\nและไม่เสียบสื่อบันทึกข้อมูลงานจริงค้างไว้",
+		Color(0.94, 0.97, 1.0, 1.0),
+		Color(0.58, 0.77, 0.98, 1.0),
+		Color(0.08, 0.26, 0.52, 1.0),
+		ICON_TOOL
+	)
+	box_b2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	schematic_b_vbox.add_child(box_b2)
+
+	var box_b3 := _create_pastel_diagram_box(
+		"(ค) การป้องกันการเขียนทับ (Write Protection)",
+		"ตรวจสอบผ่านสำเนาหลักฐานแบบอ่านอย่างเดียว\nเพื่อรักษาค่า MD5 Hash และ Timestamp เดิม",
+		Color(1.0, 0.98, 0.92, 1.0),
+		Color(0.95, 0.76, 0.4, 1.0),
+		Color(0.55, 0.28, 0.05, 1.0),
+		ICON_DISK
+	)
+	box_b3.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	schematic_b_vbox.add_child(box_b3)
+
+	card_b_vbox.add_child(_create_academic_caption_label(
+		"ภาพที่ 1.2: แผนภาพแสดงสถาปัตยกรรมความปลอดภัยของเครื่องคอมพิวเตอร์แยกส่วน (TaoDam Lab) สำหรับตรวจพิสูจน์มัลแวร์"
+	))
 
 	var prompt_b := Label.new()
-	prompt_b.text = "ติ๊กเลือก 2 มาตรการความปลอดภัยที่ถูกต้อง:"
+	prompt_b.text = "[คำถามประกอบภาพที่ 1.2] ในการตั้งค่าเครื่องคอมพิวเตอร์แยกส่วน (TaoDam) เพื่อวิเคราะห์มัลแวร์โดยไม่ให้เกิดการรั่วไหล ต้องปฏิบัติตามข้อใด? (ติ๊กเลือก 2 ข้อ)"
 	prompt_b.add_theme_font_override("font", FONT_THAI_BOLD)
-	prompt_b.add_theme_font_size_override("font_size", 5)
-	prompt_b.add_theme_color_override("font_color", Color(0.2, 0.25, 0.35, 1.0))
+	prompt_b.add_theme_font_size_override("font_size", 6)
+	prompt_b.add_theme_color_override("font_color", Color(0.12, 0.16, 0.24, 1.0))
+	prompt_b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	card_b_vbox.add_child(prompt_b)
 
 	_fig1_part_b_checks.clear()
-	for opt: Dictionary in FIG1_PART_B_OPTIONS:
-		var cb := _create_word_checkbox(str(opt["text"]), str(opt["id"]))
-		cb.toggled.connect(func(_val: bool) -> void:
-			_mark_first_interaction()
-			_update_progress_status()
+	var shuffled_b: Array[Dictionary] = FIG1_PART_B_OPTIONS.duplicate()
+	shuffled_b.shuffle()
+	for opt: Dictionary in shuffled_b:
+		var cb := _create_word_checkbox(str(opt["text"]), str(opt["id"]), bool(opt["is_correct"]))
+		cb.toggled.connect(func(pressed: bool) -> void:
+			_on_fig1_checkbox_toggled(_fig1_part_b_checks, cb, pressed)
 		)
 		card_b_vbox.add_child(cb)
 		_fig1_part_b_checks.append(cb)
@@ -631,10 +703,10 @@ func _build_paragraph_2(parent: VBoxContainer) -> void:
 	parent.add_child(sec_vbox)
 
 	var sec_title := Label.new()
-	sec_title.text = "2. การจำกัดความเสียหายและการตรวจพิสูจน์พยานหลักฐาน (Containment & Forensic Triage)"
+	sec_title.text = "2. การจำกัดความเสียหายและการตรวจพิสูจน์พยานหลักฐานดิจิทัล (Containment & Digital Forensics)"
 	sec_title.add_theme_font_override("font", FONT_THAI_BOLD)
-	sec_title.add_theme_font_size_override("font_size", 6)
-	sec_title.add_theme_color_override("font_color", Color(0.1, 0.28, 0.55, 1.0))
+	sec_title.add_theme_font_size_override("font_size", 7)
+	sec_title.add_theme_color_override("font_color", Color(0.08, 0.14, 0.24, 1.0))
 	sec_vbox.add_child(sec_title)
 
 	_para2_rtl = _create_paragraph_rtl()
@@ -643,7 +715,7 @@ func _build_paragraph_2(parent: VBoxContainer) -> void:
 	var dd_box := _create_dropdown_group_panel()
 	sec_vbox.add_child(dd_box)
 	var dd_vbox := VBoxContainer.new()
-	dd_vbox.add_theme_constant_override("separation", 3)
+	dd_vbox.add_theme_constant_override("separation", 4)
 	dd_box.add_child(dd_vbox)
 
 	dd_vbox.add_child(_create_dropdown_row(DROPDOWN_QUESTIONS[2]))
@@ -651,38 +723,58 @@ func _build_paragraph_2(parent: VBoxContainer) -> void:
 	dd_vbox.add_child(_create_dropdown_row(DROPDOWN_QUESTIONS[4]))
 
 func _build_figure_2_dragdrop_visual(parent: VBoxContainer) -> void:
-	var fig_panel := PanelContainer.new()
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.96, 0.97, 1.0, 1.0)
-	sb.border_width_left = 1
-	sb.border_width_top = 2
-	sb.border_width_right = 1
-	sb.border_width_bottom = 1
-	sb.border_color = Color(0.28, 0.35, 0.75, 1.0)
-	sb.corner_radius_top_left = 4
-	sb.corner_radius_top_right = 4
-	sb.corner_radius_bottom_left = 4
-	sb.corner_radius_bottom_right = 4
-	sb.content_margin_left = 8.0
-	sb.content_margin_right = 8.0
-	sb.content_margin_top = 6.0
-	sb.content_margin_bottom = 6.0
-	fig_panel.add_theme_stylebox_override("panel", sb)
+	var fig_panel := _create_academic_figure_frame()
 	parent.add_child(fig_panel)
 
 	var fig_vbox := VBoxContainer.new()
-	fig_vbox.add_theme_constant_override("separation", 5)
+	fig_vbox.add_theme_constant_override("separation", 4)
 	fig_panel.add_child(fig_vbox)
 
+	var flow_diagram_hbox := HBoxContainer.new()
+	flow_diagram_hbox.add_theme_constant_override("separation", 3)
+	fig_vbox.add_child(flow_diagram_hbox)
+
+	var step_badges: Array[Dictionary] = [
+		{"title": "ระยะที่ 1: พิสูจน์หลักฐาน", "sub": "เทียบ MD5 Hash & Event Log", "bg": Color(0.94, 0.97, 1.0, 1.0), "bd": Color(0.6, 0.78, 0.98, 1.0), "fg": Color(0.08, 0.28, 0.55, 1.0), "icon": ICON_SEARCH},
+		{"title": "ระยะที่ 2: ระงับโปรเซส", "sub": "บูตระบบเข้าสู่ Safe Mode", "bg": Color(0.96, 0.95, 1.0, 1.0), "bd": Color(0.75, 0.66, 0.96, 1.0), "fg": Color(0.28, 0.16, 0.55, 1.0), "icon": ICON_LOCK},
+		{"title": "ระยะที่ 3: ถอนการฝังตัว", "sub": "ลบ Scheduled Task & Startup", "bg": Color(1.0, 0.98, 0.92, 1.0), "bd": Color(0.95, 0.76, 0.4, 1.0), "fg": Color(0.55, 0.28, 0.05, 1.0), "icon": ICON_TOOL},
+		{"title": "ระยะที่ 4: กู้คืน 3-2-1", "sub": "ดึง Clean Snapshot ก่อนเกิดเหตุ", "bg": Color(0.93, 0.99, 0.96, 1.0), "bd": Color(0.45, 0.84, 0.65, 1.0), "fg": Color(0.06, 0.38, 0.24, 1.0), "icon": ICON_CHECK}
+	]
+	for idx: int in range(step_badges.size()):
+		var sb_info: Dictionary = step_badges[idx]
+		var sbox := _create_pastel_diagram_box(str(sb_info["title"]), str(sb_info["sub"]), sb_info["bg"], sb_info["bd"], sb_info["fg"], sb_info.get("icon") as Texture2D)
+		sbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		flow_diagram_hbox.add_child(sbox)
+		if idx < step_badges.size() - 1:
+			flow_diagram_hbox.add_child(_create_diagram_arrow_label())
+
+	fig_vbox.add_child(_create_academic_caption_label(
+		"ภาพที่ 2.1: แผนผังลำดับขั้นตอนทางเทคนิคในการตรวจพิสูจน์ ถอนการฝังตัวถาวร (Persistence) และกู้คืนข้อมูลตามมาตรฐาน 3-2-1"
+	))
+
+	var header_hbox := HBoxContainer.new()
+	fig_vbox.add_child(header_hbox)
+
 	var fig_header := Label.new()
-	fig_header.text = "🔀 ภาพประกอบที่ 2 (Figure 2): แผนผังลำดับขั้นตอนการตอบสนองและกู้คืน (ลากบล็อกวาง หรือคลิกเพื่อเติม)"
+	fig_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fig_header.text = "[กิจกรรมประกอบภาพที่ 2.1] ลากบล็อกขั้นตอนด้านล่างมาวางเรียงลำดับ ขั้นที่ 1 ➔ 4 (หรือคลิกที่บล็อกเพื่อเติม):"
 	fig_header.add_theme_font_override("font", FONT_THAI_BOLD)
 	fig_header.add_theme_font_size_override("font_size", 6)
-	fig_header.add_theme_color_override("font_color", Color(0.2, 0.22, 0.58, 1.0))
-	fig_vbox.add_child(fig_header)
+	fig_header.add_theme_color_override("font_color", Color(0.12, 0.16, 0.24, 1.0))
+	fig_header.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	header_hbox.add_child(fig_header)
+
+	var reset_flow_btn := Button.new()
+	reset_flow_btn.text = "ล้างลำดับ"
+	reset_flow_btn.custom_minimum_size = Vector2(44, 14)
+	reset_flow_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	reset_flow_btn.add_theme_font_override("font", FONT_THAI_REG)
+	reset_flow_btn.add_theme_font_size_override("font_size", 6)
+	reset_flow_btn.pressed.connect(_on_fig2_reset_pressed)
+	header_hbox.add_child(reset_flow_btn)
 
 	var flow_vbox := VBoxContainer.new()
-	flow_vbox.add_theme_constant_override("separation", 3)
+	flow_vbox.add_theme_constant_override("separation", 4)
 	fig_vbox.add_child(flow_vbox)
 
 	_fig2_slots.clear()
@@ -696,7 +788,7 @@ func _build_figure_2_dragdrop_visual(parent: VBoxContainer) -> void:
 		badge.text = "ขั้นที่ %d ➔" % (i + 1)
 		badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		badge.add_theme_font_override("font", FONT_THAI_BOLD)
-		badge.add_theme_font_size_override("font_size", 5)
+		badge.add_theme_font_size_override("font_size", 6)
 		badge.add_theme_color_override("font_color", Color(0.22, 0.15, 0.48, 1.0))
 		slot_row.add_child(badge)
 
@@ -705,12 +797,16 @@ func _build_figure_2_dragdrop_visual(parent: VBoxContainer) -> void:
 		slot_btn.font_ref = FONT_THAI_REG
 		slot_btn.puzzle_ref = self
 		slot_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		slot_btn.custom_minimum_size = Vector2(0, 17)
+		slot_btn.custom_minimum_size = Vector2(0, 16)
 		slot_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		slot_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		slot_btn.clip_text = true
 		slot_btn.add_theme_font_override("font", FONT_THAI_REG)
-		slot_btn.add_theme_font_size_override("font_size", 5)
+		slot_btn.add_theme_font_size_override("font_size", 6)
+		slot_btn.add_theme_color_override("font_color", Color(0.06, 0.09, 0.15, 1.0))
+		slot_btn.add_theme_color_override("font_focus_color", Color(0.06, 0.09, 0.15, 1.0))
+		slot_btn.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+		slot_btn.add_theme_color_override("font_pressed_color", Color(0.02, 0.25, 0.55, 1.0))
 		slot_btn.pressed.connect(func() -> void:
 			_on_flowchart_slot_clicked(i)
 		)
@@ -720,7 +816,7 @@ func _build_figure_2_dragdrop_visual(parent: VBoxContainer) -> void:
 	var pool_title := Label.new()
 	pool_title.text = "📦 คลังบล็อกขั้นตอน (ลากไปวางในช่อง ขั้นที่ 1-4 ด้านบน หรือคลิกที่บล็อกเพื่อเติมลงช่องว่าง):"
 	pool_title.add_theme_font_override("font", FONT_THAI_BOLD)
-	pool_title.add_theme_font_size_override("font_size", 5)
+	pool_title.add_theme_font_size_override("font_size", 6)
 	pool_title.add_theme_color_override("font_color", Color(0.25, 0.28, 0.38, 1.0))
 	fig_vbox.add_child(pool_title)
 
@@ -728,8 +824,28 @@ func _build_figure_2_dragdrop_visual(parent: VBoxContainer) -> void:
 	pool_vbox.add_theme_constant_override("separation", 3)
 	fig_vbox.add_child(pool_vbox)
 
+	_fig2_pool_title = pool_title
+	_fig2_pool_container = pool_vbox
+
 	_fig2_pool_btns.clear()
-	for item: Dictionary in FIG2_STEP_ITEMS:
+	var shuffled_steps: Array[Dictionary] = FIG2_STEP_ITEMS.duplicate()
+	shuffled_steps.shuffle()
+
+	var matches_correct: bool = true
+	if shuffled_steps.size() == FIG2_CORRECT_ORDER.size():
+		for idx: int in range(shuffled_steps.size()):
+			if str(shuffled_steps[idx]["id"]) != FIG2_CORRECT_ORDER[idx]:
+				matches_correct = false
+				break
+	else:
+		matches_correct = false
+
+	if matches_correct and shuffled_steps.size() >= 2:
+		var tmp: Dictionary = shuffled_steps[0]
+		shuffled_steps[0] = shuffled_steps[1]
+		shuffled_steps[1] = tmp
+
+	for item: Dictionary in shuffled_steps:
 		var sid := str(item["id"])
 		var stext := str(item["short"])
 		var pbtn := PosttestDragPoolBtn.new()
@@ -741,20 +857,54 @@ func _build_figure_2_dragdrop_visual(parent: VBoxContainer) -> void:
 		pbtn.custom_minimum_size = Vector2(0, 16)
 		pbtn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		pbtn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		pbtn.clip_text = true
 		pbtn.text = "⠿  " + stext
 		pbtn.add_theme_font_override("font", FONT_THAI_REG)
-		pbtn.add_theme_font_size_override("font_size", 5)
+		pbtn.add_theme_font_size_override("font_size", 6)
+
+		var pool_sb := StyleBoxFlat.new()
+		pool_sb.bg_color = Color(0.97, 0.98, 1.0, 1.0)
+		pool_sb.border_width_left = 2
+		pool_sb.border_width_top = 1
+		pool_sb.border_width_right = 1
+		pool_sb.border_width_bottom = 1
+		pool_sb.border_color = Color(0.55, 0.65, 0.8, 1.0)
+		pool_sb.corner_radius_top_left = 3
+		pool_sb.corner_radius_top_right = 3
+		pool_sb.corner_radius_bottom_left = 3
+		pool_sb.corner_radius_bottom_right = 3
+		pool_sb.content_margin_left = 6.0
+		pool_sb.content_margin_right = 6.0
+		pool_sb.content_margin_top = 2.0
+		pool_sb.content_margin_bottom = 2.0
+		pbtn.add_theme_stylebox_override("normal", pool_sb)
+
+		var pool_hover := pool_sb.duplicate() as StyleBoxFlat
+		pool_hover.bg_color = Color(0.9, 0.95, 1.0, 1.0)
+		pool_hover.border_color = Color(0.2, 0.48, 0.85, 1.0)
+		pbtn.add_theme_stylebox_override("hover", pool_hover)
+		pbtn.add_theme_stylebox_override("focus", pool_hover)
+
+		var pool_pressed := pool_sb.duplicate() as StyleBoxFlat
+		pool_pressed.bg_color = Color(0.82, 0.9, 1.0, 1.0)
+		pool_pressed.border_color = Color(0.15, 0.4, 0.75, 1.0)
+		pbtn.add_theme_stylebox_override("pressed", pool_pressed)
+
+		pbtn.add_theme_color_override("font_color", Color(0.06, 0.09, 0.15, 1.0))
+		pbtn.add_theme_color_override("font_focus_color", Color(0.06, 0.09, 0.15, 1.0))
+		pbtn.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+		pbtn.add_theme_color_override("font_pressed_color", Color(0.02, 0.25, 0.55, 1.0))
+		pbtn.add_theme_color_override("font_disabled_color", Color(0.5, 0.55, 0.65, 1.0))
+		pbtn.puzzle_ref = self
+		pbtn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		pbtn.custom_minimum_size = Vector2(0, 16)
+		pbtn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		pbtn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		pbtn.text = "⠿  " + stext
+		pbtn.add_theme_font_override("font", FONT_THAI_REG)
+		pbtn.add_theme_font_size_override("font_size", 6)
 		pool_vbox.add_child(pbtn)
 		_fig2_pool_btns[sid] = pbtn
-
-	var reset_flow_btn := Button.new()
-	reset_flow_btn.text = "🔄 ล้างคำตอบแผนผัง Figure 2 จัดเรียงใหม่"
-	reset_flow_btn.custom_minimum_size = Vector2(0, 15)
-	reset_flow_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	reset_flow_btn.add_theme_font_override("font", FONT_THAI_REG)
-	reset_flow_btn.add_theme_font_size_override("font_size", 5)
-	reset_flow_btn.pressed.connect(_on_fig2_reset_pressed)
-	fig_vbox.add_child(reset_flow_btn)
 
 func _build_paragraph_3(parent: VBoxContainer) -> void:
 	var sec_vbox := VBoxContainer.new()
@@ -764,7 +914,7 @@ func _build_paragraph_3(parent: VBoxContainer) -> void:
 	var sec_title := Label.new()
 	sec_title.text = "3. มาตรการกู้คืนระบบและความต่อเนื่องทางธุรกิจ (Business Continuity & Recovery)"
 	sec_title.add_theme_font_override("font", FONT_THAI_BOLD)
-	sec_title.add_theme_font_size_override("font_size", 6)
+	sec_title.add_theme_font_size_override("font_size", 7)
 	sec_title.add_theme_color_override("font_color", Color(0.1, 0.28, 0.55, 1.0))
 	sec_vbox.add_child(sec_title)
 
@@ -774,7 +924,7 @@ func _build_paragraph_3(parent: VBoxContainer) -> void:
 	var dd_box := _create_dropdown_group_panel()
 	sec_vbox.add_child(dd_box)
 	var dd_vbox := VBoxContainer.new()
-	dd_vbox.add_theme_constant_override("separation", 3)
+	dd_vbox.add_theme_constant_override("separation", 4)
 	dd_box.add_child(dd_vbox)
 
 	dd_vbox.add_child(_create_dropdown_row(DROPDOWN_QUESTIONS[5]))
@@ -799,14 +949,14 @@ func _build_submit_footer(parent: VBoxContainer) -> void:
 	_progress_label = Label.new()
 	_progress_label.text = "สถานะการทำรายงาน: เติมคำ (0/6) | Figure 1 (0/2 ส่วน) | Figure 2 (0/4 ขั้นตอน)"
 	_progress_label.add_theme_font_override("font", FONT_THAI_BOLD)
-	_progress_label.add_theme_font_size_override("font_size", 5)
+	_progress_label.add_theme_font_size_override("font_size", 6)
 	_progress_label.add_theme_color_override("font_color", Color(0.1, 0.35, 0.7, 1.0))
 	f_vbox.add_child(_progress_label)
 
 	_status_msg_label = Label.new()
 	_status_msg_label.text = ""
 	_status_msg_label.add_theme_font_override("font", FONT_THAI_REG)
-	_status_msg_label.add_theme_font_size_override("font_size", 5)
+	_status_msg_label.add_theme_font_size_override("font_size", 6)
 	_status_msg_label.add_theme_color_override("font_color", Color(0.85, 0.2, 0.1, 1.0))
 	_status_msg_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	f_vbox.add_child(_status_msg_label)
@@ -816,7 +966,7 @@ func _build_submit_footer(parent: VBoxContainer) -> void:
 	_submit_btn.custom_minimum_size = Vector2(0, 22)
 	_submit_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	_submit_btn.add_theme_font_override("font", FONT_THAI_BOLD)
-	_submit_btn.add_theme_font_size_override("font_size", 6)
+	_submit_btn.add_theme_font_size_override("font_size", 7)
 	var btn_sb := StyleBoxFlat.new()
 	btn_sb.bg_color = Color(0.12, 0.45, 0.85, 1.0)
 	btn_sb.corner_radius_top_left = 3
@@ -845,7 +995,7 @@ func _create_paragraph_rtl() -> RichTextLabel:
 	rtl.add_theme_font_override("bold_font", FONT_THAI_BOLD)
 	rtl.add_theme_font_size_override("normal_font_size", 6)
 	rtl.add_theme_font_size_override("bold_font_size", 6)
-	rtl.add_theme_color_override("default_color", Color(0.12, 0.14, 0.18, 1.0))
+	rtl.add_theme_color_override("default_color", Color(0.05, 0.08, 0.14, 1.0))
 	rtl.add_theme_constant_override("line_separation", 2)
 	return rtl
 
@@ -855,10 +1005,10 @@ func _create_dropdown_group_panel() -> PanelContainer:
 	sb.bg_color = Color(0.96, 0.97, 0.99, 1.0)
 	sb.border_width_left = 2
 	sb.border_color = Color(0.25, 0.52, 0.85, 1.0)
-	sb.content_margin_left = 6.0
-	sb.content_margin_right = 6.0
-	sb.content_margin_top = 4.0
-	sb.content_margin_bottom = 4.0
+	sb.content_margin_left = 8.0
+	sb.content_margin_right = 8.0
+	sb.content_margin_top = 6.0
+	sb.content_margin_bottom = 6.0
 	p.add_theme_stylebox_override("panel", sb)
 	return p
 
@@ -868,11 +1018,11 @@ func _create_dropdown_row(q: Dictionary) -> HBoxContainer:
 	row.add_theme_constant_override("separation", 6)
 
 	var lbl := Label.new()
-	lbl.custom_minimum_size = Vector2(68, 0)
+	lbl.custom_minimum_size = Vector2(56, 0)
 	lbl.text = str(q["label"])
 	lbl.add_theme_font_override("font", FONT_THAI_BOLD)
-	lbl.add_theme_font_size_override("font_size", 5)
-	lbl.add_theme_color_override("font_color", Color(0.08, 0.3, 0.65, 1.0))
+	lbl.add_theme_font_size_override("font_size", 6)
+	lbl.add_theme_color_override("font_color", Color(0.06, 0.22, 0.52, 1.0))
 	row.add_child(lbl)
 
 	var opt_btn := OptionButton.new()
@@ -881,17 +1031,89 @@ func _create_dropdown_row(q: Dictionary) -> HBoxContainer:
 	opt_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	opt_btn.clip_text = true
 	opt_btn.add_theme_font_override("font", FONT_THAI_REG)
-	opt_btn.add_theme_font_size_override("font_size", 5)
-	var popup := opt_btn.get_popup()
+	opt_btn.add_theme_font_size_override("font_size", 6)
+
+	# บังคับสีฟอนต์ทุกสถานะให้มี Contrast สูง คมชัด
+	opt_btn.add_theme_color_override("font_color", Color(0.05, 0.12, 0.25, 1.0))
+	opt_btn.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+	opt_btn.add_theme_color_override("font_focus_color", Color(0.05, 0.12, 0.25, 1.0))
+	opt_btn.add_theme_color_override("font_pressed_color", Color(0.02, 0.25, 0.55, 1.0))
+	opt_btn.add_theme_color_override("font_disabled_color", Color(0.45, 0.5, 0.6, 1.0))
+
+	var dd_sb := StyleBoxFlat.new()
+	dd_sb.bg_color = Color(1.0, 1.0, 1.0, 1.0)
+	dd_sb.border_width_left = 1
+	dd_sb.border_width_top = 1
+	dd_sb.border_width_right = 1
+	dd_sb.border_width_bottom = 1
+	dd_sb.border_color = Color(0.65, 0.72, 0.82, 1.0)
+	dd_sb.corner_radius_top_left = 2
+	dd_sb.corner_radius_top_right = 2
+	dd_sb.corner_radius_bottom_left = 2
+	dd_sb.corner_radius_bottom_right = 2
+	dd_sb.content_margin_left = 5.0
+	dd_sb.content_margin_right = 5.0
+	dd_sb.content_margin_top = 2.0
+	dd_sb.content_margin_bottom = 2.0
+	opt_btn.add_theme_stylebox_override("normal", dd_sb)
+	var dd_hover := dd_sb.duplicate() as StyleBoxFlat
+	dd_hover.border_color = Color(0.2, 0.48, 0.85, 1.0)
+	dd_hover.bg_color = Color(0.96, 0.98, 1.0, 1.0)
+	opt_btn.add_theme_stylebox_override("hover", dd_hover)
+	var dd_pressed := dd_sb.duplicate() as StyleBoxFlat
+	dd_pressed.bg_color = Color(0.92, 0.96, 1.0, 1.0)
+	opt_btn.add_theme_stylebox_override("pressed", dd_pressed)
+
+	var popup: PopupMenu = opt_btn.get_popup()
 	if popup:
 		popup.add_theme_font_override("font", FONT_THAI_REG)
 		popup.add_theme_font_size_override("font_size", 6)
+		popup.add_theme_color_override("font_color", Color(0.06, 0.09, 0.16, 1.0))
+		popup.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+		popup.add_theme_color_override("font_accelerator_color", Color(0.06, 0.09, 0.16, 1.0))
+		popup.add_theme_color_override("font_disabled_color", Color(0.55, 0.6, 0.68, 1.0))
+
+		var pop_sb := StyleBoxFlat.new()
+		pop_sb.bg_color = Color(0.99, 0.99, 1.0, 1.0)
+		pop_sb.border_width_left = 1
+		pop_sb.border_width_top = 1
+		pop_sb.border_width_right = 1
+		pop_sb.border_width_bottom = 1
+		pop_sb.border_color = Color(0.45, 0.62, 0.85, 1.0)
+		pop_sb.shadow_size = 4
+		pop_sb.shadow_color = Color(0.05, 0.08, 0.15, 0.22)
+		pop_sb.content_margin_left = 4.0
+		pop_sb.content_margin_right = 4.0
+		pop_sb.content_margin_top = 2.0
+		pop_sb.content_margin_bottom = 2.0
+		popup.add_theme_stylebox_override("panel", pop_sb)
+
+		var hover_item_sb := StyleBoxFlat.new()
+		hover_item_sb.bg_color = Color(0.85, 0.92, 1.0, 1.0)
+		hover_item_sb.border_width_left = 1
+		hover_item_sb.border_color = Color(0.25, 0.55, 0.9, 1.0)
+		hover_item_sb.corner_radius_top_left = 2
+		hover_item_sb.corner_radius_top_right = 2
+		hover_item_sb.corner_radius_bottom_right = 2
+		hover_item_sb.corner_radius_bottom_left = 2
+		hover_item_sb.content_margin_left = 4.0
+		hover_item_sb.content_margin_right = 4.0
+		hover_item_sb.content_margin_top = 2.0
+		hover_item_sb.content_margin_bottom = 2.0
+		popup.add_theme_stylebox_override("hover", hover_item_sb)
 
 	var options: Array = q["options"]
-	for i: int in range(options.size()):
-		var pair: Array = options[i]
+	if options.size() > 0:
+		opt_btn.add_item(str(options[0][0]))
+		opt_btn.set_item_metadata(0, str(options[0][1]))
+
+	var choices: Array = options.slice(1).duplicate()
+	choices.shuffle()
+	for i: int in range(choices.size()):
+		var pair: Array = choices[i]
 		opt_btn.add_item(str(pair[0]))
-		opt_btn.set_item_metadata(i, str(pair[1]))
+		opt_btn.set_item_metadata(i + 1, str(pair[1]))
+
 	opt_btn.select(0)
 	opt_btn.item_selected.connect(func(_idx: int) -> void:
 		_mark_first_interaction()
@@ -916,12 +1138,113 @@ func _create_visual_subcard() -> PanelContainer:
 	sb.corner_radius_top_right = 3
 	sb.corner_radius_bottom_left = 3
 	sb.corner_radius_bottom_right = 3
-	sb.content_margin_left = 6.0
-	sb.content_margin_right = 6.0
-	sb.content_margin_top = 5.0
-	sb.content_margin_bottom = 5.0
+	sb.content_margin_left = 8.0
+	sb.content_margin_right = 8.0
+	sb.content_margin_top = 6.0
+	sb.content_margin_bottom = 6.0
 	p.add_theme_stylebox_override("panel", sb)
 	return p
+
+func _create_academic_figure_frame() -> PanelContainer:
+	var fig_panel := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.98, 0.985, 0.995, 1.0)
+	sb.border_width_left = 1
+	sb.border_width_top = 1
+	sb.border_width_right = 1
+	sb.border_width_bottom = 1
+	sb.border_color = Color(0.62, 0.68, 0.76, 1.0)
+	sb.corner_radius_top_left = 3
+	sb.corner_radius_top_right = 3
+	sb.corner_radius_bottom_left = 3
+	sb.corner_radius_bottom_right = 3
+	sb.content_margin_left = 8.0
+	sb.content_margin_right = 8.0
+	sb.content_margin_top = 6.0
+	sb.content_margin_bottom = 6.0
+	fig_panel.add_theme_stylebox_override("panel", sb)
+	return fig_panel
+
+func _create_pastel_diagram_box(title_txt: String, body_txt: String, bg_col: Color, border_col: Color, title_col: Color, icon_tex: Texture2D = null) -> PanelContainer:
+	var box := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = bg_col
+	sb.border_width_left = 1
+	sb.border_width_top = 2
+	sb.border_width_right = 1
+	sb.border_width_bottom = 1
+	sb.border_color = border_col
+	sb.corner_radius_top_left = 3
+	sb.corner_radius_top_right = 3
+	sb.corner_radius_bottom_left = 3
+	sb.corner_radius_bottom_right = 3
+	sb.content_margin_left = 4.0
+	sb.content_margin_right = 4.0
+	sb.content_margin_top = 4.0
+	sb.content_margin_bottom = 4.0
+	box.add_theme_stylebox_override("panel", sb)
+
+	var vb := VBoxContainer.new()
+	vb.add_theme_constant_override("separation", 2)
+	box.add_child(vb)
+
+	var title_hbox := HBoxContainer.new()
+	title_hbox.add_theme_constant_override("separation", 3)
+	vb.add_child(title_hbox)
+
+	if icon_tex != null:
+		var icon_rect := TextureRect.new()
+		icon_rect.texture = icon_tex
+		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_rect.custom_minimum_size = Vector2(12, 12)
+		title_hbox.add_child(icon_rect)
+
+	var bullet_lbl := Label.new()
+	bullet_lbl.text = "•"
+	bullet_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	bullet_lbl.add_theme_font_override("font", FONT_THAI_BOLD)
+	bullet_lbl.add_theme_font_size_override("font_size", 6)
+	bullet_lbl.add_theme_color_override("font_color", title_col)
+	title_hbox.add_child(bullet_lbl)
+
+	var t_lbl := Label.new()
+	t_lbl.text = title_txt
+	t_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	t_lbl.add_theme_font_override("font", FONT_THAI_BOLD)
+	t_lbl.add_theme_font_size_override("font_size", 6)
+	t_lbl.add_theme_color_override("font_color", title_col)
+	t_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title_hbox.add_child(t_lbl)
+
+	var b_lbl := Label.new()
+	b_lbl.text = body_txt
+	b_lbl.add_theme_font_override("font", FONT_THAI_REG)
+	b_lbl.add_theme_font_size_override("font_size", 5)
+	b_lbl.add_theme_color_override("font_color", Color(0.05, 0.08, 0.14, 1.0))
+	b_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(b_lbl)
+	return box
+
+func _create_diagram_arrow_label() -> Label:
+	var arr := Label.new()
+	arr.text = "➔"
+	arr.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	arr.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	arr.add_theme_font_override("font", FONT_THAI_BOLD)
+	arr.add_theme_font_size_override("font_size", 6)
+	arr.add_theme_color_override("font_color", Color(0.35, 0.42, 0.52, 1.0))
+	return arr
+
+func _create_academic_caption_label(caption_text: String) -> Label:
+	var cap := Label.new()
+	cap.text = caption_text
+	cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cap.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	cap.add_theme_font_override("font", FONT_THAI_BOLD)
+	cap.add_theme_font_size_override("font_size", 5)
+	cap.add_theme_color_override("font_color", Color(0.28, 0.34, 0.44, 1.0))
+	return cap
 
 func _create_diagram_banner_style(bg: Color) -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
@@ -936,17 +1259,33 @@ func _create_diagram_banner_style(bg: Color) -> StyleBoxFlat:
 	sb.content_margin_bottom = 4.0
 	return sb
 
-func _create_word_checkbox(text_label: String, meta_id: String) -> CheckBox:
+func _create_word_checkbox(text_label: String, meta_id: String, is_correct: bool = false) -> CheckBox:
 	var cb := CheckBox.new()
 	cb.text = text_label
 	cb.set_meta("option_id", meta_id)
+	cb.set_meta("is_correct", is_correct)
 	cb.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	cb.add_theme_font_override("font", FONT_THAI_REG)
-	cb.add_theme_font_size_override("font_size", 5)
-	cb.add_theme_color_override("font_color", Color(0.15, 0.18, 0.24, 1.0))
-	cb.add_theme_color_override("font_pressed_color", Color(0.06, 0.38, 0.72, 1.0))
-	cb.add_theme_color_override("font_hover_color", Color(0.08, 0.32, 0.62, 1.0))
+	cb.add_theme_font_size_override("font_size", 6)
+	# บังคับสีฟอนต์เข้ม คมชัด ทุกสถานะป้องกันกลืนกับพื้นหลังขาว
+	cb.add_theme_color_override("font_color", Color(0.06, 0.09, 0.15, 1.0))
+	cb.add_theme_color_override("font_focus_color", Color(0.06, 0.09, 0.15, 1.0))
+	cb.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+	cb.add_theme_color_override("font_hover_pressed_color", Color(0.02, 0.25, 0.55, 1.0))
+	cb.add_theme_color_override("font_pressed_color", Color(0.05, 0.32, 0.68, 1.0))
+	cb.add_theme_color_override("font_disabled_color", Color(0.48, 0.52, 0.6, 1.0))
 	return cb
+
+func _on_fig1_checkbox_toggled(group: Array[CheckBox], changed_cb: CheckBox, pressed: bool) -> void:
+	_mark_first_interaction()
+	if pressed:
+		var checked_list: Array[CheckBox] = []
+		for cb: CheckBox in group:
+			if cb.button_pressed and cb != changed_cb:
+				checked_list.append(cb)
+		if checked_list.size() >= 2:
+			checked_list[0].set_pressed_no_signal(false)
+	_update_progress_status()
 
 # ---------------------------------------------------------------------------
 # อัปเดตข้อความ Live Preview ในย่อหน้าเมื่อผู้เล่นเลือก Dropdown
@@ -956,30 +1295,29 @@ func _format_blank_inline(blank_id: int) -> String:
 	if not opt_btn or opt_btn.selected <= 0:
 		return "[b][color=#c8321e]__(%d)__[/color][/b]" % blank_id
 	var full_text: String = opt_btn.get_item_text(opt_btn.selected)
-	var short_text: String = full_text.get_slice(" (", 0)
-	return "[b][color=#0d5c9e][u] (%d) %s [/u][/color][/b]" % [blank_id, short_text]
+	return "[b][color=#0d5c9e][u] (%d) %s [/u][/color][/b]" % [blank_id, full_text]
 
 func _refresh_paragraph_texts() -> void:
 	if _para1_rtl:
 		_para1_rtl.text = (
-			"      ผู้โจมตีมักส่งไฟล์เอกสารผ่านอีเมลหรือไดรฟ์แชร์โดยใช้เทคนิค %s "
-			+ "เพื่อหลอกให้เหยื่อหลงเชื่อ เมื่อเปิดไฟล์เอกสารและกดยินยอมให้รัน Macro โค้ดที่แฝงอยู่จะดาวน์โหลดหรือสั่งรัน %s "
-			+ "เข้ามาเข้ารหัสหรือทำลายไฟล์ข้อมูลสำคัญของเครื่องเป้าหมาย"
+			"      จากการสืบสวนบันทึกเหตุการณ์พบว่า ผู้โจมตีเริ่มต้นด้วยการทำ %s "
+			+ "เพื่อหลอกให้เหยื่อเชื่อว่าเป็นอีเมลเร่งด่วนจากบุคลากรในมหาวิทยาลัย "
+			+ "เมื่อเหยื่อดาวน์โหลดและเปิดไฟล์เอกสาร โค้ดอันตรายในรูปแบบ %s "
+			+ "จึงถูกเรียกใช้งานและเข้าทำลายข้อมูลในเครื่องทันที"
 		) % [_format_blank_inline(1), _format_blank_inline(2)]
 
 	if _para2_rtl:
 		_para2_rtl.text = (
-			"      เมื่อตรวจพบความผิดปกติ มาตรการแรกที่ต้องทำทันทีคือ %s "
-			+ "เพื่อป้องกันการแพร่กระจายไปยังอุปกรณ์อื่นและระงับการซิงค์ไฟล์เสียขึ้นคลาวด์ จากนั้นจึงสร้าง %s "
-			+ "ของระบบและไฟล์ต้องสงสัย แล้วจึงคำนวณและเทียบค่า %s "
-			+ "เพื่อยืนยันว่าหลักฐานดิจิทัลที่นำไปตรวจในเครื่องแยกส่วนไม่มีการถูกแก้ไขหรือเปลี่ยนแปลงระหว่างการสืบสวน"
+			"      ในขั้นตอนการควบคุมสถานการณ์ ผู้สืบสวนต้องดำเนินการ %s "
+			+ "เป็นอันดับแรกเพื่อป้องกันความเสียหายลุกลามไปยังพื้นที่จัดเก็บข้อมูลร่วม "
+			+ "จากนั้นจึงนำข้อมูลจากเครื่องเกิดเหตุมาตรวจพิสูจน์บนเครื่องวิเคราะห์แยกส่วนโดยยึดหลักการ %s "
+			+ "และใช้หน้าต่าง Command Prompt รันคำสั่งตรวจวัด %s เทียบกับตารางอ้างอิงในไฟล์ Manifest"
 		) % [_format_blank_inline(3), _format_blank_inline(4), _format_blank_inline(5)]
 
 	if _para3_rtl:
 		_para3_rtl.text = (
-			"      ในการกู้คืนระบบกลับสู่ภาวะปกติ องค์กรควรมีมาตรการสำรองข้อมูลตามหลัก %s "
-			+ "โดยเลือกกู้คืนจากจุดเวลาก่อนเกิดเหตุการณ์การติดเชื้อลงบนพื้นที่สะอาด "
-			+ "เพื่อให้มั่นใจว่าจะไม่นำไฟล์ที่ถูกฝังมัลแวร์หรือมัลแวร์ที่ยังแฝงตัวอยู่กลับเข้าสู่ระบบการทำงานจริง"
+			"      ในขั้นตอนสุดท้ายของการกู้คืนระบบ ผู้สืบสวนได้ดำเนินการ %s "
+			+ "เพื่อให้มั่นใจว่าระบบและไฟล์ข้อมูลสำคัญทั้งหมดกลับมาใช้งานได้อย่างปลอดภัยโดยไม่เกิดการติดเชื้อซ้ำ"
 		) % [_format_blank_inline(6)]
 
 # ---------------------------------------------------------------------------
@@ -1055,17 +1393,18 @@ func _on_fig2_reset_pressed() -> void:
 
 func _refresh_fig2_ui() -> void:
 	var used_ids: Dictionary = {}
+	var filled_count: int = 0
 	for slot: PosttestDropSlotBtn in _fig2_slots:
 		var sid: String = slot.current_step_id
 		if sid.is_empty():
 			slot.text = "[ ลากบล็อกจากด้านล่างมาวาง หรือคลิกบล็อกเพื่อเติม ]"
 			var empty_sb := StyleBoxFlat.new()
-			empty_sb.bg_color = Color(0.98, 0.99, 1.0, 1.0)
+			empty_sb.bg_color = Color(0.96, 0.98, 1.0, 1.0)
 			empty_sb.border_width_left = 1
 			empty_sb.border_width_top = 1
 			empty_sb.border_width_right = 1
 			empty_sb.border_width_bottom = 1
-			empty_sb.border_color = Color(0.65, 0.72, 0.85, 1.0)
+			empty_sb.border_color = Color(0.55, 0.65, 0.8, 1.0)
 			empty_sb.corner_radius_top_left = 3
 			empty_sb.corner_radius_top_right = 3
 			empty_sb.corner_radius_bottom_left = 3
@@ -1073,12 +1412,21 @@ func _refresh_fig2_ui() -> void:
 			empty_sb.content_margin_left = 6.0
 			empty_sb.content_margin_right = 6.0
 			slot.add_theme_stylebox_override("normal", empty_sb)
-			slot.add_theme_color_override("font_color", Color(0.45, 0.5, 0.6, 1.0))
+			var empty_hover := empty_sb.duplicate() as StyleBoxFlat
+			empty_hover.bg_color = Color(0.91, 0.95, 1.0, 1.0)
+			empty_hover.border_color = Color(0.25, 0.52, 0.85, 1.0)
+			slot.add_theme_stylebox_override("hover", empty_hover)
+			slot.add_theme_stylebox_override("focus", empty_hover)
+			slot.add_theme_color_override("font_color", Color(0.22, 0.32, 0.45, 1.0))
+			slot.add_theme_color_override("font_focus_color", Color(0.22, 0.32, 0.45, 1.0))
+			slot.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+			slot.add_theme_color_override("font_pressed_color", Color(0.02, 0.25, 0.55, 1.0))
 		else:
 			used_ids[sid] = true
+			filled_count += 1
 			slot.text = "✅ " + slot.current_step_text + "  (คลิกเพื่อนำออก)"
 			var filled_sb := StyleBoxFlat.new()
-			filled_sb.bg_color = Color(0.88, 0.94, 1.0, 1.0)
+			filled_sb.bg_color = Color(0.9, 0.95, 1.0, 1.0)
 			filled_sb.border_width_left = 2
 			filled_sb.border_width_top = 1
 			filled_sb.border_width_right = 1
@@ -1091,11 +1439,19 @@ func _refresh_fig2_ui() -> void:
 			filled_sb.content_margin_left = 6.0
 			filled_sb.content_margin_right = 6.0
 			slot.add_theme_stylebox_override("normal", filled_sb)
-			slot.add_theme_color_override("font_color", Color(0.08, 0.25, 0.52, 1.0))
+			var filled_hover := filled_sb.duplicate() as StyleBoxFlat
+			filled_hover.bg_color = Color(0.82, 0.91, 1.0, 1.0)
+			slot.add_theme_stylebox_override("hover", filled_hover)
+			slot.add_theme_stylebox_override("focus", filled_hover)
+			slot.add_theme_color_override("font_color", Color(0.06, 0.09, 0.15, 1.0))
+			slot.add_theme_color_override("font_focus_color", Color(0.06, 0.09, 0.15, 1.0))
+			slot.add_theme_color_override("font_hover_color", Color(0.02, 0.25, 0.55, 1.0))
+			slot.add_theme_color_override("font_pressed_color", Color(0.02, 0.25, 0.55, 1.0))
 
 	for sid: String in _fig2_pool_btns.keys():
 		var pbtn: PosttestDragPoolBtn = _fig2_pool_btns[sid]
 		var is_used: bool = used_ids.has(sid)
+		pbtn.visible = not is_used
 		pbtn.disabled = is_used
 		if is_used:
 			pbtn.text = "✓ (วางในแผนผังแล้ว) " + pbtn.step_text
@@ -1103,6 +1459,12 @@ func _refresh_fig2_ui() -> void:
 		else:
 			pbtn.text = "⠿  " + pbtn.step_text
 			pbtn.modulate = Color(1, 1, 1, 1.0)
+
+	var all_slots_filled: bool = (filled_count >= _fig2_slots.size()) and (_fig2_slots.size() > 0)
+	if _fig2_pool_title and is_instance_valid(_fig2_pool_title):
+		_fig2_pool_title.visible = not all_slots_filled
+	if _fig2_pool_container and is_instance_valid(_fig2_pool_container):
+		_fig2_pool_container.visible = not all_slots_filled
 
 # ---------------------------------------------------------------------------
 # การตรวจสอบและคำนวณคะแนน Post-test (เต็ม 10 คะแนน)
@@ -1165,15 +1527,15 @@ func _calculate_posttest_scores() -> void:
 	# 2. คะแนน Figure 1 CheckBox (2 คะแนน: ส่วนละ 1 คะแนนเมื่อติ๊กถูกครบ 2 ข้อ)
 	_last_checkbox_score = 0
 	var part_a_correct: int = 0
-	for i: int in range(_fig1_part_a_checks.size()):
-		if _fig1_part_a_checks[i].button_pressed and bool(FIG1_PART_A_OPTIONS[i]["is_correct"]):
+	for cb: CheckBox in _fig1_part_a_checks:
+		if cb.button_pressed and bool(cb.get_meta("is_correct", false)):
 			part_a_correct += 1
 	if part_a_correct == 2 and _count_checked(_fig1_part_a_checks) == 2:
 		_last_checkbox_score += 1
 
 	var part_b_correct: int = 0
-	for i: int in range(_fig1_part_b_checks.size()):
-		if _fig1_part_b_checks[i].button_pressed and bool(FIG1_PART_B_OPTIONS[i]["is_correct"]):
+	for cb: CheckBox in _fig1_part_b_checks:
+		if cb.button_pressed and bool(cb.get_meta("is_correct", false)):
 			part_b_correct += 1
 	if part_b_correct == 2 and _count_checked(_fig1_part_b_checks) == 2:
 		_last_checkbox_score += 1

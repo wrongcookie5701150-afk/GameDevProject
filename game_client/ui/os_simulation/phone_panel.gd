@@ -46,6 +46,14 @@ var march_history: String = ""
 func _ready() -> void:
 	_init_chime_player()
 
+	var global_settings = get_node_or_null("/root/GlobalSettings")
+	if global_settings and global_settings.has_method("make_window_draggable"):
+		if chat_name_btn and chat_name_btn.get_parent() is Control:
+			global_settings.make_window_draggable(self, chat_name_btn.get_parent() as Control)
+		var chat_icon_panel := find_child("ChatIcon", true, false) as Control
+		if chat_icon_panel:
+			global_settings.make_window_draggable(self, chat_icon_panel)
+
 	if toggle_btn and not toggle_btn.pressed.is_connected(_on_toggle_pressed):
 		toggle_btn.pressed.connect(_on_toggle_pressed)
 	

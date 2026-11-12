@@ -82,6 +82,13 @@ func _ready() -> void:
 		folder_btn.visible = false
 	if menu_files:
 		menu_files.visible = false
+
+	# Remove any leftover TaskObjective node
+	var task_obj := find_child("TaskObjective", true, false)
+	if task_obj:
+		if task_obj is CanvasItem:
+			task_obj.hide()
+		task_obj.queue_free()
 	
 	if not visibility_changed.is_connected(_on_self_visibility_changed):
 		visibility_changed.connect(_on_self_visibility_changed)
@@ -180,6 +187,12 @@ func _init_taskbar() -> void:
 		start_menu_popup.visible = false
 	if wifi_popup:
 		wifi_popup.visible = false
+		var global_settings = get_node_or_null("/root/GlobalSettings")
+		if global_settings and global_settings.has_method("make_window_draggable"):
+			var wifi_header: Control = wifi_popup.find_child("Label", true, false) as Control
+			if not wifi_header:
+				wifi_header = wifi_popup
+			global_settings.make_window_draggable(wifi_popup, wifi_header)
 	if notification_toast:
 		notification_toast.visible = false
 	

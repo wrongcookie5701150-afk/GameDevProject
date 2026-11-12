@@ -23,6 +23,17 @@ const MAX_SLOTS: int = 3
 var investigation_phase: int = 0
 var pinned_notes: Array[String] = []
 
+## รายการ note_id ของโน้ตความรู้ที่ผู้เล่นถืออยู่ในกระเป๋าขณะนี้
+var knowledge_notes: Array[String]:
+	get:
+		var held: Array[String] = []
+		for slot in slots:
+			if not slot.is_empty():
+				var item_id: String = slot.get("id", "")
+				if item_id.begins_with("note_"):
+					held.append(item_id)
+		return held
+
 const KNOWLEDGE_NOTES: Dictionary = {
 	"note_forensic_prep": {
 		"name": "📝 โน้ต #1: การเก็บสำเนาหลักฐาน",
@@ -162,6 +173,12 @@ func has_item(item_id: String) -> bool:
 		if not slot.is_empty() and slot.get("id", "") == item_id:
 			return true
 	return false
+
+## ตรวจสอบว่าผู้เล่นได้รับโน้ตนี้แล้วหรือไม่ (ทั้งในกระเป๋าหรือแปะบนกระดานแล้ว)
+func has_knowledge_note(note_id: String) -> bool:
+	if pinned_notes.has(note_id):
+		return true
+	return has_item(note_id)
 
 ## นำไอเทมออกจากกระเป๋า
 func remove_item(item_id: String) -> bool:
