@@ -22,7 +22,6 @@ buses/default_bus_layout="uid://csq7tjqxsjycq"
 [autoload]
 
 TelemetryManager="*res://autoload/TelemetryManager.gd"
-MCPRuntimeServer="*res://addons/godot_mcp_toolkit/runtime/mcp_runtime_server.gd"
 GlobalSettings="*res://autoload/GlobalSettings.gd"
 InventoryManager="*res://autoload/InventoryManager.gd"
 FloatMenu="*res://ui/menus/FloatMenu.tscn"
@@ -39,10 +38,6 @@ window/vsync/vsync_mode=2
 [dotnet]
 
 project/assembly_name="CyberSecurityGame"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/godot_mcp_toolkit/plugin.cfg")
 
 [gui]
 

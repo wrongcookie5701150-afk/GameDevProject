@@ -6,7 +6,7 @@
 [ext_resource type="FontFile" uid="uid://g6hovebpvdx7" path="res://assets/fonts/ARMBOX MOON Night Demo Version 1.0.0/Demo Version 1.0.0/MOON Night DEMO Mac.otf" id="4_cplki"]
 [ext_resource type="FontFile" uid="uid://bhjdsvmnuqwxw" path="res://assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf" id="4_isu03"]
 [ext_resource type="PackedScene" uid="uid://b1nv3nt0rybar" path="res://ui/overlays/inventory_bar.tscn" id="6_c3x6t"]
-[ext_resource type="PackedScene" uid="uid://don7kdjxkwybq" path="res://scenes/initial/note_board.tscn" id="7_c3x6t"]
+[ext_resource type="PackedScene" uid="uid://don7kdjxkwybq" path="res://Scenes/Initial/note_board.tscn" id="7_c3x6t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isu03"]
 bg_color = Color(0, 0, 0, 0.8)

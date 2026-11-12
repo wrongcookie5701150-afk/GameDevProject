@@ -1,4 +1,3 @@
-class_name NoteBoardUI
 extends Control
 
 ## หน้าต่าง UI แสดงกระดานเบาะแส & คำตอบสำหรับแก้ไข Puzzle

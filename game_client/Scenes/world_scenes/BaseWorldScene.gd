@@ -25,7 +25,7 @@ func open_note_board() -> void:
 		if not nb_controls.is_empty():
 			note_board_ui = nb_controls[0] as Control
 	if not note_board_ui:
-		var nb_scene = load("res://scenes/initial/note_board.tscn")
+		var nb_scene = load("res://Scenes/Initial/note_board.tscn")
 		if nb_scene:
 			note_board_ui = nb_scene.instantiate() as Control
 			var canvas = find_child("CanvasLayer", true, false)
