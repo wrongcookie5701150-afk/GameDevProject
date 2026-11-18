@@ -45,8 +45,13 @@ func _ready() -> void:
 			phone_panel.messages_read.connect(_on_phone_messages_read)
 		if phone_panel.has_signal("closed"):
 			phone_panel.closed.connect(_on_phone_closed)
+		if phone_panel.has_method("set_tasks"):
+			phone_panel.set_tasks([
+				{ "id": "read_mesa", "text": "กด [C] เช็คข้อความจากเมษาในมือถือ", "completed": false },
+				{ "id": "use_computer", "text": "เดินไปที่คอมพิวเตอร์ [Spacebar] เพื่อทำงานกลุ่ม", "completed": false }
+			])
 	if task_objective:
-		task_objective.text = "     ภารกิจ: กด [P] เพื่อเช็คแชทเมษา\n           - จากนั้นไปที่คอมพิวเตอร์ [Spacebar]"
+		task_objective.text = "     ภารกิจ: กด [C] แชท / [T] ภารกิจ (เช็คแชทเมษา)\n           - จากนั้นไปที่คอมพิวเตอร์ [Spacebar]"
 		task_objective.show()
 	if inspect_hint:
 		inspect_hint.hide()
@@ -102,6 +107,10 @@ func _connect_all_interact_objects() -> void:
 			child.interaction_requested.connect(_on_interactable_requested)
 
 func _unhandled_input(event: InputEvent) -> void:
+	var focused: Control = get_viewport().gui_get_focus_owner()
+	if focused is LineEdit or focused is TextEdit:
+		return
+
 	if event.is_action_pressed("Exit") or (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q):
 		if phone_panel and phone_panel.visible:
 			_toggle_phone()
@@ -115,14 +124,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_P:
-			var focused: Control = get_viewport().gui_get_focus_owner()
-			if focused is LineEdit or focused is TextEdit:
-				return
-			_toggle_phone()
-			get_viewport().set_input_as_handled()
-			return
+	if event.is_action_pressed("Chat"):
+		_toggle_phone("chat")
+		get_viewport().set_input_as_handled()
+		return
+
+	if event.is_action_pressed("Task"):
+		_toggle_phone("task")
+		get_viewport().set_input_as_handled()
+		return
 
 var _last_interact_frame: int = -1
 var _last_interact_obj: InteractObject = null
@@ -149,7 +159,7 @@ func _on_interactable_approached(interact_object: InteractObject, _player: Node2
 			"notebook", "taodam":
 				object_detail.text = "TaoDam: โน้ตบุ๊กเครื่องสำรอง (ยังไม่ได้ใช้ตอนนี้)"
 			"note_board":
-				object_detail.text = "NoteBoard: กระดานบันทึกเบาะแส"
+				object_detail.text = "NoteBoard: กระดานบันทึกเบาะแส (ยังไม่มีโน้ตแปะอยู่)"
 			"lamp":
 				object_detail.text = "Lamp: โคมไฟอ่านหนังสือของเมย์"
 			"bookshelf":
@@ -182,11 +192,13 @@ func _on_interactable_requested(interact_object: InteractObject) -> void:
 		"computer", "desktop":
 			if not _messages_read:
 				if task_objective:
-					task_objective.text = "     ภารกิจ: กด [P] เพื่อเปิดมือถืออ่านแชทเมษาก่อน!"
+					task_objective.text = "     ภารกิจ: กด [C] เพื่อเปิดมือถืออ่านแชทเมษาก่อน!"
 				if object_detail:
-					object_detail.text = "เมย์: ลองกด [P] เปิดมือถือดูข้อความที่เมษาส่งมาก่อนดีกว่า"
+					object_detail.text = "เมย์: ลองกด [C] เปิดมือถือดูข้อความที่เมษาส่งมาก่อนดีกว่า"
 					object_detail.show()
 				return
+			if phone_panel and phone_panel.has_method("set_task_completed"):
+				phone_panel.set_task_completed("use_computer", true)
 			_enter_pc_scene()
 		"note_board":
 			open_note_board()
@@ -198,14 +210,14 @@ func _on_interactable_requested(interact_object: InteractObject) -> void:
 			if object_detail:
 				object_detail.show()
 
-func _toggle_phone() -> void:
+func _toggle_phone(target_mode: String = "") -> void:
 	if not phone_panel:
 		return
 	if phone_panel.has_method("toggle_phone"):
-		phone_panel.toggle_phone()
+		phone_panel.toggle_phone(target_mode)
 	else:
 		phone_panel.visible = not phone_panel.visible
-	if phone_panel.visible and not _messages_read:
+	if phone_panel.visible and not _messages_read and (target_mode == "" or target_mode == "chat"):
 		_mark_messages_read()
 
 func _on_phone_messages_read(contact: String) -> void:
@@ -230,6 +242,8 @@ func _mark_messages_read() -> void:
 	if _messages_read:
 		return
 	_messages_read = true
+	if phone_panel and phone_panel.has_method("set_task_completed"):
+		phone_panel.set_task_completed("read_mesa", true)
 	if message_status_label:
 		message_status_label.text = "Messages read"
 	if task_objective:

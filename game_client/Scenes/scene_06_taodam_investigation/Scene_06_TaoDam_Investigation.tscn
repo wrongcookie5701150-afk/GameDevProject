@@ -10,6 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://5fibvbiun4qk" path="res://ui/os_simulation/notebook_screen.tscn" id="8_notebook"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="9_font_mono"]
 [ext_resource type="FontFile" uid="uid://dcatixcyiyblp" path="res://assets/fonts/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf" id="10_font_thai"]
+[ext_resource type="PackedScene" path="res://ui/os_simulation/phone_panel_taodam.tscn" id="11_phone_taodam"]
+[ext_resource type="PackedScene" path="res://ui/os_simulation/Application/terminal.tscn" id="12_terminal"]
+[ext_resource type="PackedScene" uid="uid://4hbbts3rjmd4" path="res://ui/overlays/Checklist_UI.tscn" id="13_checklist"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toolbar"]
 content_margin_left = 6.0
@@ -58,6 +61,7 @@ script = ExtResource("1_scene_script")
 [node name="NotebookScreen" parent="CanvasLayer" unique_id=1187460663 instance=ExtResource("8_notebook")]
 
 [node name="ForensicToolbar" type="PanelContainer" parent="CanvasLayer" unique_id=1231183758]
+visible = false
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -82,6 +86,7 @@ theme_override_constants/separation = 3
 [node name="HashButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=528949437]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "1.Hash(T08)"
@@ -89,6 +94,7 @@ text = "1.Hash(T08)"
 [node name="EventLogButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=1427916060]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "2.EventLog(T06)"
@@ -96,6 +102,7 @@ text = "2.EventLog(T06)"
 [node name="DriveHistoryButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=789653556]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "3.DriveLog(T07)"
@@ -103,6 +110,7 @@ text = "3.DriveLog(T07)"
 [node name="MacroButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=485537213]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "4.Macro(T09)"
@@ -110,6 +118,7 @@ text = "4.Macro(T09)"
 [node name="DecoderButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=235026751]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "5.Decode(T10-11)"
@@ -117,6 +126,7 @@ text = "5.Decode(T10-11)"
 [node name="PersistenceButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/Tools" unique_id=330700848]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "6.StopTask(T12)"
@@ -132,17 +142,33 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
 theme_override_fonts/font = ExtResource("10_font_thai")
 theme_override_font_sizes/font_size = 6
-text = "⚡ เสียบ EV-DRIVE (E:) แล้ว: เริ่มจากกด [1.Hash(T08)] เพื่อเทียบค่า MD5 ของหลักฐาน"
+text = "⚡ เสียบ EV-DRIVE (E:) แล้ว: เลือกคลิกเปิดเครื่องมือหรือสำรวจไฟล์หลักฐานในไดรฟ์ได้อย่างอิสระ"
 autowrap_mode = 3
+
+[node name="CmdButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=1779981508]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("9_font_mono")
+theme_override_font_sizes/font_size = 6
+text = "CMD"
 
 [node name="InspectorButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=1779981506]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("9_font_mono")
 theme_override_font_sizes/font_size = 6
 text = "Inspector"
 
+[node name="PhoneButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=1779981507]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("10_font_thai")
+theme_override_font_sizes/font_size = 6
+text = "📱 มือถือ [P]"
+
 [node name="ClosePuzzleButton" type="Button" parent="CanvasLayer/ForensicToolbar/Content/BottomRow" unique_id=224492934]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("10_font_thai")
 theme_override_font_sizes/font_size = 6
 text = "พับหน้าต่าง [Q]"
@@ -165,9 +191,24 @@ visible = false
 [node name="Puzzle_Persistence_Order" parent="CanvasLayer" unique_id=1017190843 instance=ExtResource("7_sequence")]
 visible = false
 
+[node name="PhonePanel" parent="CanvasLayer" instance=ExtResource("11_phone_taodam")]
+visible = false
+z_index = 60
+offset_left = 287.0
+offset_top = 46.0
+offset_right = 408.0
+offset_bottom = 261.0
+
+[node name="Terminal" parent="CanvasLayer" instance=ExtResource("12_terminal")]
+visible = false
+z_index = 25
+
+[node name="Checklist_UI" parent="CanvasLayer" instance=ExtResource("13_checklist")]
+z_index = 30
+
 [node name="CompletionPanel" type="PanelContainer" parent="CanvasLayer" unique_id=183166026]
 visible = false
-z_index = 35
+z_index = 45
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

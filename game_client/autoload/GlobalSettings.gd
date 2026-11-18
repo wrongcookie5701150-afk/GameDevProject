@@ -159,3 +159,50 @@ func _update_bus(bus_name: String, vol_pct: float, mute: bool) -> void:
 		else:
 			AudioServer.set_bus_mute(idx, false)
 			AudioServer.set_bus_volume_db(idx, linear_to_db(vol_pct / 100.0))
+
+## ทำให้หน้าต่างเป้าหมายสามารถคลิกลากย้ายตำแหน่งผ่านส่วนหัวหน้าต่างได้
+func make_window_draggable(target_window: Control, header_node: Control) -> void:
+	if not target_window or not header_node:
+		return
+
+	header_node.mouse_filter = Control.MOUSE_FILTER_STOP
+	header_node.mouse_default_cursor_shape = Control.CURSOR_MOVE
+
+	for child in header_node.get_children():
+		if not (child is BaseButton):
+			if child is Control:
+				child.mouse_filter = Control.MOUSE_FILTER_PASS
+
+	var drag_state := {
+		"dragging": false,
+		"mouse_offset": Vector2.ZERO
+	}
+
+	header_node.gui_input.connect(func(event: InputEvent) -> void:
+		if not is_instance_valid(target_window):
+			return
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					target_window.move_to_front()
+					drag_state["dragging"] = true
+					drag_state["mouse_offset"] = target_window.get_global_mouse_position() - target_window.global_position
+				else:
+					drag_state["dragging"] = false
+		elif event is InputEventMouseMotion and drag_state["dragging"]:
+			var vp_size: Vector2 = target_window.get_viewport_rect().size
+			var win_size: Vector2 = target_window.size
+			if win_size.x <= 0:
+				win_size.x = target_window.custom_minimum_size.x if target_window.custom_minimum_size.x > 0 else 100.0
+			if win_size.y <= 0:
+				win_size.y = target_window.custom_minimum_size.y if target_window.custom_minimum_size.y > 0 else 50.0
+
+			var new_pos: Vector2 = target_window.get_global_mouse_position() - drag_state["mouse_offset"]
+			var min_x: float = -(win_size.x - 24.0)
+			var max_x: float = vp_size.x - 24.0
+			var min_y: float = 0.0
+			var max_y: float = vp_size.y - 24.0
+			new_pos.x = clampf(new_pos.x, min_x, max_x)
+			new_pos.y = clampf(new_pos.y, min_y, max_y)
+			target_window.global_position = new_pos
+	)

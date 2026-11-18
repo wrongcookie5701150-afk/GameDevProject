@@ -12,10 +12,11 @@ gradient = SubResource("Gradient_f3c6c")
 fill_from = Vector2(0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rr0yd"]
+content_margin_left = 10.0
 texture = SubResource("GradientTexture2D_p70ae")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_apeb1"]
-content_margin_left = 0.0
+content_margin_left = 8.0
 content_margin_top = 0.0
 content_margin_right = 0.0
 content_margin_bottom = 0.0
@@ -34,38 +35,35 @@ task_id = &"T05"
 
 [node name="TaskObjective" type="Panel" parent="." unique_id=1847338986]
 layout_mode = 1
-anchors_preset = -1
-anchor_bottom = 0.12592593
-offset_left = 268.0
-offset_top = 10.0
-offset_right = 476.0
-offset_bottom = 82.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -258.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = 90.0
+grow_horizontal = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_rr0yd")
 metadata/_edit_use_anchors_ = true
 
 [node name="Content" type="VBoxContainer" parent="TaskObjective" unique_id=334025]
-clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = 4.0
-offset_right = -6.0
-offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 1
 alignment = 1
 
 [node name="TitleLabel" type="Label" parent="TaskObjective/Content" unique_id=441630581]
 layout_mode = 2
 theme_override_font_sizes/font_size = 8
-text = "Task 05: Isolate TaoDam before inspection"
+text = "เป้าหมาย: มาตรการกักกันระบบเครื่องเต่าดำ (Isolation Checklist)"
 horizontal_alignment = 1
 
-[node name="WifiCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=1720067943]
+[node name="task01" type="CheckBox" parent="TaskObjective/Content" unique_id=1720067943]
 layout_mode = 2
 size_flags_horizontal = 5
 theme_override_constants/icon_max_width = 8
@@ -73,9 +71,9 @@ theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
 theme_override_icons/checked = ExtResource("2_73pwj")
 theme_override_icons/unchecked = ExtResource("3_ewn6q")
-text = "Wi-Fi is off"
+text = "1. ตัดช่องทางการเชื่อมต่อเครือข่ายไร้สายของเครื่อง"
 
-[node name="LanCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=2051288174]
+[node name="task02" type="CheckBox" parent="TaskObjective/Content" unique_id=1064603653]
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 4
@@ -84,9 +82,9 @@ theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
 theme_override_icons/checked = ExtResource("2_73pwj")
 theme_override_icons/unchecked = ExtResource("3_ewn6q")
-text = "LAN cable is unplugged"
+text = "2. ตรวจสอบสถานะบัญชีที่ผูกไว้ในตั้งค่าระบบของเครื่อง"
 
-[node name="AccountsCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=1064603653]
+[node name="task03" type="CheckBox" parent="TaskObjective/Content" unique_id=9200891]
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 4
@@ -95,15 +93,4 @@ theme_override_font_sizes/font_size = 6
 theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
 theme_override_icons/checked = ExtResource("2_73pwj")
 theme_override_icons/unchecked = ExtResource("3_ewn6q")
-text = "No personal email or account is connected"
-
-[node name="FilesCheck" type="CheckBox" parent="TaskObjective/Content" unique_id=9200891]
-layout_mode = 2
-size_flags_horizontal = 5
-size_flags_vertical = 4
-theme_override_constants/icon_max_width = 8
-theme_override_font_sizes/font_size = 6
-theme_override_styles/normal = SubResource("StyleBoxEmpty_apeb1")
-theme_override_icons/checked = ExtResource("2_73pwj")
-theme_override_icons/unchecked = ExtResource("3_ewn6q")
-text = "No important work files are stored on this laptop"
+text = "3. สำรวจไฟล์และโฟลเดอร์สำคัญในพื้นที่จัดเก็บหลัก"

@@ -34,6 +34,53 @@ func _ready() -> void:
 	if get_tree().current_scene == self:
 		_setup_standalone_back_button()
 	_setup_scaffolding_ui()
+	_setup_draggable_window()
+
+func _setup_draggable_window() -> void:
+	var global_settings = get_node_or_null("/root/GlobalSettings")
+	if not global_settings or not global_settings.has_method("make_window_draggable"):
+		return
+
+	var window_node: Control = null
+	var candidate_windows: Array[String] = ["Panel", "MainWindow", "TaskObjective", "WordWindow", "WindowPanel", "ContentPanel", "MainPanel"]
+	for win_name in candidate_windows:
+		var node = find_child(win_name, true, false) as Control
+		if node and node != self:
+			window_node = node
+			break
+
+	if not window_node:
+		for child in get_children():
+			if child is Panel or (child is Control and child.get_child_count() > 0 and not (child is Button)):
+				window_node = child
+				break
+
+	if not window_node:
+		return
+
+	var header_node: Control = null
+	var candidate_headers: Array[String] = ["TopHeaderBar", "TitleBar", "HeaderBar", "TitleLabel", "Header", "Title"]
+	for head_name in candidate_headers:
+		var node = window_node.find_child(head_name, true, false) as Control
+		if node:
+			header_node = node
+			break
+
+	if not header_node:
+		for child in window_node.get_children():
+			if child is Label:
+				header_node = child
+				break
+			elif child is Container:
+				for sub_child in child.get_children():
+					if sub_child is Label:
+						header_node = sub_child
+						break
+				if header_node:
+					break
+
+	if window_node and header_node:
+		global_settings.make_window_draggable(window_node, header_node)
 
 func _setup_standalone_back_button() -> void:
 	var back_btn := Button.new()
@@ -182,7 +229,7 @@ func _show_hint_banner(msg: String) -> void:
 	if _hint_banner_panel:
 		_hint_banner_panel.show()
 
-func submit_puzzle(answer: Variant) -> void:
+func submit_puzzle(answer: Variant = null) -> void:
 	if is_resolved:
 		return
 

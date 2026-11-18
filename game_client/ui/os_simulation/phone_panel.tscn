@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://difynsjqa3i4t"]
 
-[ext_resource type="Script" uid="uid://dfynsjqa3i4tp" path="res://ui/os_simulation/phone_panel.gd" id="1_phone_script"]
+[ext_resource type="Script" uid="uid://cas0fexw2fiak" path="res://ui/os_simulation/phone_panel.gd" id="1_phone_script"]
 [ext_resource type="Texture2D" uid="uid://clo5h2mlgrjqg" path="res://assets/Icon32x32/dialogue_page.png" id="1_fu1tn"]
 [ext_resource type="Texture2D" uid="uid://dehg8lv2dqopn" path="res://icon.svg" id="2_yojre"]
 [ext_resource type="Texture2D" uid="uid://hvo8lqp7067a" path="res://assets/Icon32x32/arrow_up.png" id="3_yojre"]
@@ -268,3 +268,53 @@ layout_mode = 2
 theme_override_constants/icon_max_width = 8
 theme_override_styles/normal = SubResource("StyleBoxFlat_e1x0l")
 icon = ExtResource("3_yojre")
+
+[node name="TaskContent" type="VBoxContainer" parent="InnerBorder/HBoxContainer/ChatContent" unique_id=184352091]
+visible = false
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TaskHeader" type="Button" parent="InnerBorder/HBoxContainer/ChatContent/TaskContent" unique_id=2102140316]
+layout_mode = 2
+theme_override_constants/icon_max_width = 10
+theme_override_font_sizes/font_size = 6
+theme_override_styles/normal = SubResource("StyleBoxFlat_up108")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1845q")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_e1x0l")
+text = "Tasks & Objectives"
+icon = ExtResource("1_fu1tn")
+alignment = 0
+
+[node name="TaskDateLabel" type="Label" parent="InnerBorder/HBoxContainer/ChatContent/TaskContent" unique_id=98317265]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.701961, 0.741176, 0.8, 0.705882)
+theme_override_font_sizes/font_size = 5
+text = "Current Checklist"
+horizontal_alignment = 1
+
+[node name="TaskScrollContainer" type="ScrollContainer" parent="InnerBorder/HBoxContainer/ChatContent/TaskContent" unique_id=1284719284]
+layout_mode = 2
+size_flags_vertical = 3
+theme = SubResource("Theme_phone_scroll")
+horizontal_scroll_mode = 0
+
+[node name="TaskListLabel" type="Label" parent="InnerBorder/HBoxContainer/ChatContent/TaskContent/TaskScrollContainer" unique_id=680272333]
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 6
+text = "• ไม่มีภารกิจค้างอยู่"
+autowrap_mode = 3
+
+[node name="TaskHintLabel" type="Label" parent="InnerBorder/HBoxContainer/ChatContent/TaskContent" unique_id=98317266]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.7, 0.85, 0.8)
+theme_override_font_sizes/font_size = 5
+text = "[Toggle / C] สลับกลับหน้าแชท"
+horizontal_alignment = 1

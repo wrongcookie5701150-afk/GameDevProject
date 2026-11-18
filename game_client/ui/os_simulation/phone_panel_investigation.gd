@@ -10,12 +10,24 @@ var march_chat_done: bool = false
 var is_march_typing: bool = false
 
 const MARCH_CHAT_LINES: Array[Dictionary] = [
-	{ "sender": "March", "text": "Roblox ป่าวน้อง หรือทำการบ้านอยู่?" },
+	{ "sender": "March", "text": "เล่น Roblox ป่าวน้อง" },
 	{ "sender": "May", "text": "พี่มาร์ชคะ! แย่แล้ว คอมหนูโดนไวรัส ไฟล์งานเปลี่ยนนามสกุลเป็น .locked หมดเลย!" },
 	{ "sender": "March", "text": "เฮ้ย โดน Ransomware เล่นงานแล้ว! เพิ่งเปิดไฟล์แปลกๆ หรือกดอะไรไปใช่มั้ย?" },
 	{ "sender": "May", "text": "หนูเพิ่งเปิดไฟล์รายงานใน GG Disk แล้วเผลอกด 'Enable Content' ไปค่ะ..." },
-	{ "sender": "March", "text": "นั่นแหละ Macro ไวรัส! รีบตัดเน็ตคอมเครื่องนั้นด่วนเลย อย่าให้ CloudSync ซิงค์ไฟล์เสียไปทับบนคลาวด์" },
-	{ "sender": "March", "text": "ยังมีโน้ตบุ๊ก 'เต่าดำ' (TaoDam) อยู่ใช่มั้ย? ให้ใช้เครื่องเต่าดำที่แยกเน็ตมาตรวจสอบ Timeline กับหลักฐาน" },
+	{ 
+		"sender": "March", 
+		"text": "นั่นแหละ Macro ไวรัส! รีบตัดเน็ตคอมเครื่องนั้นด่วนเลย อย่าให้ CloudSync ซิงค์ไฟล์เสียไปทับบนคลาวด์",
+		"is_task": true,
+		"task_id": "isolate_network",
+		"task_text": "ตัดเน็ตเพื่อหยุด CloudSync ซิงค์ไฟล์เสียทับบนคลาวด์"
+	},
+	{ 
+		"sender": "March", 
+		"text": "ยังมีโน้ตบุ๊ก 'เต่าดำ' (TaoDam) อยู่ใช่มั้ย? ให้ใช้เครื่องเต่าดำที่แยกเน็ตมาตรวจสอบ Timeline กับหลักฐาน",
+		"is_task": true,
+		"task_id": "prepare_taodam",
+		"task_text": "ไปหาโน้ตบุ๊ก 'เต่าดำ' และ Flashdrive มาตรวจสอบหลักฐาน"
+	},
 	{ "sender": "May", "text": "เข้าใจแล้วค่ะ หนูจะรีบไปตรวจเครื่องเต่าดำเดี๋ยวนี้!" }
 ]
 
@@ -24,21 +36,33 @@ func _ready() -> void:
 	march_history = ""
 	super._ready()
 	
+	if current_tasks.is_empty():
+		add_task("consult_march", "ปรึกษาพี่มาร์ช (March) ทางแชทมือถือ [C]", false)
+	
 	# ต้องเปิดไปแล้วว่างก่อนตามที่ผู้ใช้กำหนด (March's chat must be blank first)
 	if messages_label:
 		messages_label.text = ""
 
-func open_phone() -> void:
-	super.open_phone()
+func open_phone(target_mode: String = "") -> void:
+	super.open_phone(target_mode)
 	switch_to_contact("march")
-	if march_chat_done:
-		march_chat_completed.emit()
-	elif not is_march_typing:
-		start_march_chat()
+	if current_view_mode == "chat":
+		if march_chat_done:
+			march_chat_completed.emit()
+		elif not is_march_typing:
+			start_march_chat()
 
 func switch_to_contact(contact: String) -> void:
 	super.switch_to_contact(contact)
-	if contact == "march" and visible:
+	if contact == "march" and visible and current_view_mode == "chat":
+		if march_chat_done:
+			march_chat_completed.emit()
+		elif not is_march_typing:
+			start_march_chat()
+
+func switch_view_mode(mode: String) -> void:
+	super.switch_view_mode(mode)
+	if mode == "chat" and visible and current_contact == "march":
 		if march_chat_done:
 			march_chat_completed.emit()
 		elif not is_march_typing:
@@ -84,6 +108,12 @@ func start_march_chat() -> void:
 		if current_contact == "march":
 			messages_label.text = march_history
 		_scroll_to_bottom()
+		
+		# If this message is a task/mission:
+		if msg.get("is_task", false):
+			play_task_chime()
+			add_task(msg.get("task_id", ""), msg.get("task_text", ""), false)
+		
 		await get_tree().create_timer(0.4).timeout
 		if not is_instance_valid(self) or not is_march_typing:
 			return
@@ -93,6 +123,10 @@ func start_march_chat() -> void:
 func finish_march_chat() -> void:
 	is_march_typing = false
 	march_chat_done = true
+	set_task_completed("consult_march", true)
+	for msg: Dictionary in MARCH_CHAT_LINES:
+		if msg.get("is_task", false):
+			add_task(msg.get("task_id", ""), msg.get("task_text", ""), false)
 	if chat_name_btn:
 		chat_name_btn.text = "March (พี่มาร์ช)"
 	var full_history: String = ""

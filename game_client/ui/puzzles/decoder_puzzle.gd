@@ -30,6 +30,7 @@ func _ready() -> void:
 	submit_button.pressed.connect(_on_submit_pressed)
 	hint_button.pressed.connect(_on_hint_pressed)
 	answer_input.text_submitted.connect(func(_t: String) -> void: _on_submit_pressed())
+	answer_input.text_changed.connect(func(_t: String) -> void: mark_decision_started())
 
 func validate_answer(answer: Variant) -> bool:
 	var submitted_value: String = str(answer).strip_edges().trim_suffix(".dat").trim_suffix(".exe")
@@ -91,6 +92,7 @@ func on_solve_failed() -> void:
 		feedback_label.text = "❌ โหมดการทำงานยังไม่ตรง (ต้องแปลง Hex เป็น Base64 แล้วแปลงซ้ำเป็นข้อความ หรือกดปุ่ม คำใบ้)"
 
 func _on_submit_pressed() -> void:
+	mark_decision_started()
 	var clean_input: String = answer_input.text.strip_edges().trim_suffix(".dat").trim_suffix(".exe")
 	if decode_stage == 0:
 		_decoded_output = "Office_Update_Helper" if clean_input.to_lower() == "office_update_helper" else clean_input
@@ -100,28 +102,36 @@ func _on_submit_pressed() -> void:
 	submit_puzzle(clean_input)
 
 func _on_hint_pressed() -> void:
-	hint_used = true
-	if decode_stage == 0:
-		answer_input.text = "Office_Update_Helper"
-		feedback_label.text = "💡 ถอดรหัส Base64 ได้ชื่อไฟล์: Office_Update_Helper (เติมค่าลงในช่องแล้ว กด Submit ได้เลย)"
-	else:
-		answer_input.text = "FILE_WIPE"
-		feedback_label.text = "💡 ถอดรหัส Hex -> Base64 (RklMRV9XSVBF) ได้โหมด: FILE_WIPE (เติมค่าลงในช่องแล้ว กด Submit ได้เลย)"
+	mark_decision_started()
+	var hint_msg: String = request_scaffolding_hint()
+	if current_hint_tier >= 3:
+		if decode_stage == 0:
+			answer_input.text = "Office_Update_Helper"
+		else:
+			answer_input.text = "FILE_WIPE"
+	feedback_label.text = "💡 คำใบ้ [ระดับ %d]: %s" % [current_hint_tier, hint_msg]
 
 func _refresh_stage() -> void:
 	answer_input.clear()
 	answer_input.editable = true
 	submit_button.show()
 	hint_button.show()
+	current_hint_tier = 0
 	if decode_stage == 0:
+		hint_tier_1 = "สตริงที่ลงท้ายด้วย '=' มักเป็นการเข้ารหัสแบบ Base64"
+		hint_tier_2 = "นำค่าสตริงไปถอดรหัสในแอป CyberChef หรือ Decoder บนเดสก์ท็อปเต่าดำ"
+		hint_tier_3 = "ถอดรหัส Base64 จะได้ชื่อไฟล์: Office_Update_Helper (เติมค่าลงในช่องแล้ว)"
 		title_label.text = "[5/6] T10 / P05: Decode Helper Name (1/2)"
 		instruction_label.text = "ขั้นที่ 1/2: ถอดรหัส Base64 เพื่อหาชื่อไฟล์ Helper ที่ถูกฝังไว้"
 		encoded_label.text = HELPER_BASE64
-		feedback_label.text = "คัดลอกไปถอดรหัสในแอป Decoder หรือกดปุ่ม 'คำใบ้ / เติมค่า' เพื่อดึงผลลัพธ์"
+		feedback_label.text = "คัดลอกไปถอดรหัสในแอป Decoder หรือกดปุ่มคำใบ้เพื่อขอความช่วยเหลือ"
 		answer_input.placeholder_text = "ระบุชื่อไฟล์ Helper..."
 	else:
+		hint_tier_1 = "สตริงประกอบด้วยตัวเลขและอักษร a-f คือการเข้ารหัส Hexadecimal (เลขฐาน 16)"
+		hint_tier_2 = "แปลง Hex เป็นข้อความจะได้สตริง Base64 'RklMRV9XSVBF' จากนั้นถอดรหัส Base64 อีกชั้น"
+		hint_tier_3 = "ถอดรหัส Hex -> Base64 -> ข้อความ จะได้โหมดการทำงาน: FILE_WIPE (เติมค่าลงในช่องแล้ว)"
 		title_label.text = "[5/6] T11 / P06: Decode Helper Mode (2/2)"
 		instruction_label.text = "ขั้นที่ 2/2: ถอดรหัส MODE จาก Hex -> Base64 -> ข้อความ"
-		encoded_label.text = "TARGET: UHJvamVjdF9Gb2xkZXI= (Project_Folder)\nMODE (Hex): %s" % MODE_HEX
+		encoded_label.text = "TARGET: UHJvamVjdF9Gb2xkZXI=\nMODE (Hex): %s" % MODE_HEX
 		feedback_label.text = "ถอดรหัส Hex จะได้ Base64 แล้วถอดรหัส Base64 อีกครั้งเพื่อหาโหมดการทำงาน"
 		answer_input.placeholder_text = "ระบุโหมดการทำงาน..."

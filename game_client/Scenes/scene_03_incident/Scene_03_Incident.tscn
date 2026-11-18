@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://b6ftkbcxjco0f" path="res://ui/os_simulation/desktop_screen.tscn" id="1_desktop_base"]
 [ext_resource type="Script" uid="uid://dp85fqvvxyipn" path="res://scenes/scene_03_incident/Scene_03_Incident.gd" id="2_incident_script"]
 [ext_resource type="FontFile" uid="uid://clkm7j1liksi4" path="res://assets/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf" id="3_qar8n"]
+[ext_resource type="Texture2D" uid="uid://ctlpl0vvtc8r5" path="res://assets/Icon32x32/minimize.png" id="4_minimize_icon"]
+[ext_resource type="Texture2D" uid="uid://clf7xpoesnj6d" path="res://assets/Icon32x32/exit (2).png" id="5_exit_icon"]
+[ext_resource type="Texture2D" uid="uid://6440goc1hs0q" path="res://assets/Icon32x32/txt.png" id="6_txt_icon"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_typing_paper"]
 content_margin_left = 15.0
@@ -17,31 +20,44 @@ bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48kt2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ransom_window"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_min_hover"]
 content_margin_left = 2.0
-content_margin_top = 2.0
 content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(0.12, 0.05, 0.05, 0.98)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.85, 0.15, 0.15, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-shadow_color = Color(0, 0, 0, 0.7)
-shadow_size = 10
+bg_color = Color(0.82, 0.82, 0.85, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_hover"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color(0.9, 0.2, 0.2, 1)
+corner_radius_top_right = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ransom_window"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.68, 0.7, 0.74, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
 
 [node name="Scene_03_Incident" unique_id=588632451 instance=ExtResource("1_desktop_base")]
 script = ExtResource("2_incident_script")
 
-[node name="MsWord" parent="WindowContainer" parent_id_path=PackedInt32Array(194827103) index="1" unique_id=908828390]
-visible = false
+[node name="MarginContainer" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace" parent_id_path=PackedInt32Array(908828390, 2133986910) index="0" unique_id=596463150]
+custom_minimum_size = Vector2(0, 165)
 
 [node name="PassageLabel" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="0" unique_id=1531474539]
+custom_minimum_size = Vector2(340, 140)
+offset_bottom = 540.5
 theme_override_styles/normal = SubResource("StyleBoxFlat_typing_paper")
 
 [node name="TextEdit" parent="WindowContainer/MsWord/ColorRect/VBoxContainer/Workspace/MarginContainer/TypingPuzzle" parent_id_path=PackedInt32Array(908828390, 1160543254) index="1" unique_id=1525266629]
@@ -54,7 +70,6 @@ visible = false
 
 [node name="RansomNote" type="PanelContainer" parent="." index="4" unique_id=884719283]
 unique_name_in_owner = true
-visible = false
 z_index = 35
 layout_mode = 1
 anchors_preset = 8
@@ -75,9 +90,9 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="TitleBar" type="ColorRect" parent="RansomNote/VBox" index="0" unique_id=1847291824]
-custom_minimum_size = Vector2(0, 14)
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
-color = Color(0.75, 0.1, 0.1, 1)
+color = Color(0.93, 0.94, 0.96, 1)
 
 [node name="Margin" type="MarginContainer" parent="RansomNote/VBox/TitleBar" index="0" unique_id=1847291825]
 layout_mode = 1
@@ -86,17 +101,86 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_right = 6
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 2
 
-[node name="Title" type="Label" parent="RansomNote/VBox/TitleBar/Margin" index="0" unique_id=1847291826]
+[node name="HBox" type="HBoxContainer" parent="RansomNote/VBox/TitleBar/Margin" index="0" unique_id=1847291826]
 layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="RansomNote/VBox/TitleBar/Margin/HBox" index="0" unique_id=1847291831]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6_txt_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="RansomNote/VBox/TitleBar/Margin/HBox" index="1" unique_id=1847291832]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.12, 0.12, 0.15, 1)
 theme_override_fonts/font = ExtResource("3_qar8n")
 theme_override_font_sizes/font_size = 6
 text = "README_TO_RECOVER_FILES.txt - Notepad"
 vertical_alignment = 1
 
-[node name="Body" type="MarginContainer" parent="RansomNote/VBox" index="1" unique_id=1847291827]
+[node name="WindowControls" type="HBoxContainer" parent="RansomNote/VBox/TitleBar/Margin/HBox" index="2" unique_id=1847291833]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="MinimizeButton" type="Button" parent="RansomNote/VBox/TitleBar/Margin/HBox/WindowControls" index="0" unique_id=1847291834]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 6
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_48kt2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ftuyi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_min_hover")
+icon = ExtResource("4_minimize_icon")
+
+[node name="CloseButton" type="Button" parent="RansomNote/VBox/TitleBar/Margin/HBox/WindowControls" index="1" unique_id=1847291835]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 6
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_48kt2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ftuyi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_close_hover")
+icon = ExtResource("5_exit_icon")
+icon_alignment = 1
+
+[node name="MenuBar" type="ColorRect" parent="RansomNote/VBox" index="1" unique_id=1847291836]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+color = Color(0.97, 0.97, 0.98, 1)
+
+[node name="Margin" type="MarginContainer" parent="RansomNote/VBox/MenuBar" index="0" unique_id=1847291837]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 1
+
+[node name="MenuLabel" type="Label" parent="RansomNote/VBox/MenuBar/Margin" index="0" unique_id=1847291838]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.4, 0.45, 1)
+theme_override_fonts/font = ExtResource("3_qar8n")
+theme_override_font_sizes/font_size = 5
+text = "File    Edit    Format    View    Help"
+vertical_alignment = 1
+
+[node name="MenuDivider" type="ColorRect" parent="RansomNote/VBox" index="2" unique_id=1847291839]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+color = Color(0.88, 0.89, 0.91, 1)
+
+[node name="Body" type="MarginContainer" parent="RansomNote/VBox" index="3" unique_id=1847291827]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 8
@@ -110,34 +194,25 @@ theme_override_constants/separation = 6
 
 [node name="HeaderLabel" type="Label" parent="RansomNote/VBox/Body/ContentVBox" index="0" unique_id=1847291829]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
+theme_override_colors/font_color = Color(0.85, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_qar8n")
 theme_override_font_sizes/font_size = 7
-text = "⚠️ YOUR FILES HAVE BEEN ENCRYPTED! ⚠️"
+text = "=== YOUR FILES HAVE BEEN ENCRYPTED! ==="
 horizontal_alignment = 1
 
 [node name="MessageText" type="Label" parent="RansomNote/VBox/Body/ContentVBox" index="1" unique_id=1847291830]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.9, 0.9, 1)
+theme_override_colors/font_color = Color(0.12, 0.12, 0.15, 1)
 theme_override_fonts/font = ExtResource("3_qar8n")
 theme_override_font_sizes/font_size = 5
-text = "All project files, reports, and diagrams have been locked using military-grade encryption.
+text = "All project files, reports, and diagrams have been locked using military-grade encryption (.locked).
 
 DO NOT modify, rename, or delete files, as it will lead to PERMANENT DATA CORRUPTION.
 
 Wait for further instructions."
+vertical_alignment = 1
 autowrap_mode = 2
-
-[node name="ContinueButton" type="Button" parent="RansomNote/VBox/Body/ContentVBox" index="2" unique_id=1847291831]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-size_flags_vertical = 10
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(1, 0.9, 0.9, 1)
-theme_override_fonts/font = ExtResource("3_qar8n")
-theme_override_font_sizes/font_size = 6
-text = "What happened to my files?! (ปิดหน้าต่าง)"
 
 [node name="GlitchOverlay" type="ColorRect" parent="." index="5" unique_id=773819284]
 unique_name_in_owner = true

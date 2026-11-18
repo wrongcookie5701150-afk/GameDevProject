@@ -9,6 +9,7 @@ const MAIN_MENU_PATH: String = "res://ui/menus/MainMenu.tscn"
 @onready var evaluation_ui: KsaEvaluation = $CanvasLayer/KSA_Evaluation_UI
 
 var knowledge_panel: PanelContainer = null
+var note_board_popup: Control = null
 
 func _ready() -> void:
 	var inv = get_node_or_null("/root/InventoryManager")
@@ -49,13 +50,19 @@ func _ready() -> void:
 
 func _on_backup_recovered() -> void:
 	backup_puzzle.hide()
-	report_puzzle.show()
-	report_puzzle.start_puzzle()
-	stage_label.text = "📝 เครื่อง PC ของเมย์: ขั้นตอนที่ 2/2 - กู้คืนข้อมูลสำเร็จ! นั่งทำรายงานสรุปเหตุการณ์ให้เสร็จ"
+	var inv = get_node_or_null("/root/InventoryManager")
+	if inv:
+		if inv.has_method("award_knowledge_note"):
+			inv.call("award_knowledge_note", "note_backup_recovery", self)
+		if inv.has_method("pin_all_inventory_notes_to_board"):
+			inv.call("pin_all_inventory_notes_to_board")
+	_show_key_knowledge_summary()
 
 func _on_report_submitted() -> void:
 	report_puzzle.hide()
-	_show_key_knowledge_summary()
+	evaluation_ui.show()
+	evaluation_ui.start_puzzle()
+	stage_label.text = "🎉 ทำรายงานเสร็จสมบูรณ์! สรุปผลการประเมินทักษะและพัฒนาการ (KSA Evaluation)"
 
 func _show_key_knowledge_summary() -> void:
 	if not knowledge_panel:
@@ -121,7 +128,7 @@ func _show_key_knowledge_summary() -> void:
 		scroll.add_child(body)
 
 		var next_btn := Button.new()
-		next_btn.text = "ดูผลการประเมินทักษะ (Proceed to Skill Assessment) →"
+		next_btn.text = "เข้าสู่การทำแบบทดสอบ Post-test ใน MS Word (Proceed to Post-test) →"
 		next_btn.custom_minimum_size = Vector2(0, 20)
 		next_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		next_btn.add_theme_font_size_override("font_size", 8)
@@ -141,14 +148,14 @@ func _show_key_knowledge_summary() -> void:
 		knowledge_panel.offset_bottom = 95
 
 	knowledge_panel.show()
-	stage_label.text = "📚 สรุปองค์ความรู้สำคัญ 4 ด้าน (Key Knowledge Summary) จากการรับมือ Ransomware"
+	stage_label.text = "📚 สรุปองค์ความรู้สำคัญ 4 ด้าน (Key Knowledge Summary) ทบทวนก่อนทำ Post-test"
 
 func _on_knowledge_summary_proceed() -> void:
 	if knowledge_panel:
 		knowledge_panel.hide()
-	evaluation_ui.show()
-	evaluation_ui.start_puzzle()
-	stage_label.text = "🎉 ทำรายงานเสร็จสมบูรณ์! สรุปผลการประเมินทักษะ (KSA Evaluation)"
+	report_puzzle.show()
+	report_puzzle.start_puzzle()
+	stage_label.text = "📝 เครื่อง PC ของเมย์: ขั้นตอนที่ 2/2 - กู้คืนข้อมูลสำเร็จ! นั่งทำแบบทดสอบ Post-test 10 คะแนน ใน MS Word"
 
 func _on_evaluation_acknowledged() -> void:
 	TelemetryManager.active_timers.clear()
